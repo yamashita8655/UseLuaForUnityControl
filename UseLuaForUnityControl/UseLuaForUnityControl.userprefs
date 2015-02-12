@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\LuaDllCreate\unity\LuaDllTest\Assets\LuaManager.cs">
+    <Files>
+      <File FileName="..\LuaDllCreate\unity\LuaDllTest\Assets\LuaManager.cs" Line="247" Column="1" />
+      <File FileName="..\LuaDllCreate\unity\LuaDllTest\Assets\luatest.cs" Line="40" Column="39" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

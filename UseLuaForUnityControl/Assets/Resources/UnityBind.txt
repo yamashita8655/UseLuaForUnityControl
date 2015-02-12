@@ -1,0 +1,7 @@
+function LuaLoadLevel(sceneName)
+	UnityLoadLevel(sceneName)
+end
+
+function LuaDebugLog(logString)
+	UnityDebugLog(logString)
+end
