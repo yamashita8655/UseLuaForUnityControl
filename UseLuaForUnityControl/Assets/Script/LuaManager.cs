@@ -227,10 +227,13 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 				Debug.Log ("LUA_TSTRING : " + resString);
 				break;
 			case 5://LuaTypes.LUA_TTABLE:
+				Debug.Log ("LUA_TTABLE : ");
 				break;
 			case 6://LuaTypes.LUA_TFUNCTION:
+				Debug.Log ("LUA_TFUNCTION : ");
 				break;
 			case 7://LuaTypes.LUA_TUSERDATA:
+				Debug.Log ("LUA_TUSERDATA : ");
 				break;
 			//case LuaTypes.LUA_TTHREAD:
 			//	break;

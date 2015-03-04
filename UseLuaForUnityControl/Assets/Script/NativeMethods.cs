@@ -179,8 +179,8 @@ namespace LuaDLLTest
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "luaL_newmetatable")]
 		//internal static extern int LuaLNewMetatable (IntPtr luaState, string meta);
 
-		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "lua_getfield")]
-		//internal static extern void LuaGetField (IntPtr luaState, int stackPos, string meta);
+		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "lua_getfield")]
+		internal static extern void lua_getfield (IntPtr luaState, int stackPos, string meta);
 
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "luaL_checkudata")]
 		//internal static extern IntPtr LuaLCheckUData (IntPtr luaState, int stackPos, string meta);

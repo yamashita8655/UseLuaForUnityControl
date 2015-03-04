@@ -1,0 +1,8 @@
+function CallUnityDebugLog()
+	UnityDebugLog()
+end
+
+function CallUnityDebugLogUseArg(debugstring)
+	UnityDebugLogUseArg("Lua2C#:"..debugstring)
+end
+

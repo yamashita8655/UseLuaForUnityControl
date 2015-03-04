@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\HowToUseLua.cs" />
      <Compile Include="Assets\Script\LuaManager.cs" />
      <Compile Include="Assets\Script\NativeMethods.cs" />
      <Compile Include="Assets\Script\SingletonMonoBehaviourFast.cs.cs" />
@@ -54,6 +55,7 @@
      <Compile Include="Assets\Script\test1-scenechange\Test1_StartUp.cs" />
      <None Include="Assets\Resources\function_lua.txt" />
      <None Include="Assets\Resources\load_lua.txt" />
+     <None Include="Assets\Resources\UnityFunction.txt" />
      <None Include="Assets\Resources\UnityBind.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

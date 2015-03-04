@@ -5,3 +5,12 @@ end
 function LuaDebugLog(logString)
 	UnityDebugLog(logString)
 end
+
+function LuaTableTest()
+	table = {}
+	table["1"] = {arg1="name1", arg2="name2"}
+--	table["2"] = "two"
+--	table["3"] = "three"
+--	table["4"] = "fore"
+	UnityTableTest(table)
+end

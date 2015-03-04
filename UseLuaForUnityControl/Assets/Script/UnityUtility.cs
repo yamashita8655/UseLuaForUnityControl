@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 
 public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
-	IntPtr mLuaState;
 	GCHandle gcHandle;
 	delegate int DelegateUnityLoadLevel(IntPtr luaState);
 
@@ -36,6 +35,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		IntPtr LuaUnityDebugLogIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityDebugLog);
 		LuaManager.Instance.AddUnityFunction(file.name, "UnityDebugLog", LuaUnityDebugLogIntPtr);
 		
+		// デバッグログ呼び出す奴
+		DelegateUnityLoadLevel LuaUnityTableTest = new DelegateUnityLoadLevel (UnityTableTest);
+		IntPtr LuaUnityTableTestIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityTableTest);
+		LuaManager.Instance.AddUnityFunction(file.name, "UnityTableTest", LuaUnityTableTestIntPtr);
+
 		// Luaの関数に必要な情報を作って、呼び出し
 		LuaManager.FunctionData data = new LuaManager.FunctionData();
 		data.returnValueNum = 0;
@@ -52,6 +56,13 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		list2.Add("Debug1");
 		data2.argList = list2;
 		ArrayList returnList2 = LuaManager.Instance.Call(file.name, data2);
+
+		LuaManager.FunctionData data3 = new LuaManager.FunctionData();
+		data3.returnValueNum = 0;
+		data3.functionName = "LuaTableTest";
+		ArrayList list3 = new ArrayList();
+		data3.argList = list3;
+		ArrayList returnList3 = LuaManager.Instance.Call(file.name, data3);
 
 /*		mLuaState = NativeMethods.luaL_newstate();
 		NativeMethods.luaL_openlibs(mLuaState);
@@ -97,4 +108,25 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		return 0;
 	}
+
+	public int UnityTableTest(IntPtr luaState)
+	{
+		Debug.Log ("UnityTableTest");
+		NativeMethods.lua_getfield(luaState, 1, "1");
+		NativeMethods.lua_getfield(luaState, 2, "arg1");
+		NativeMethods.lua_getfield(luaState, 2, "arg2");
+//		NativeMethods.lua_getfield(luaState, 1, "2");
+//		NativeMethods.lua_getfield(luaState, 1, "3");
+//		NativeMethods.lua_getfield(luaState, 1, "4");
+		LuaManager.Instance.printStack (luaState);
+
+/*		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string logstring = Marshal.PtrToStringAnsi(res_s);
+		Debug.Log (logstring);*/
+		
+		return 0;
+	}
 }
+
+

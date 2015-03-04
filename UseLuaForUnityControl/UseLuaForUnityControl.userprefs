@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\LuaDllCreate\unity\LuaDllTest\Assets\LuaManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\FTBS\svndir\trunk\program\client\unity\app\Assets\Scripts\Game\Common\BillingLimit\BillingLimitScrEventListener.cs">
     <Files>
-      <File FileName="..\LuaDllCreate\unity\LuaDllTest\Assets\LuaManager.cs" Line="247" Column="1" />
-      <File FileName="..\LuaDllCreate\unity\LuaDllTest\Assets\luatest.cs" Line="40" Column="39" />
+      <File FileName="..\..\..\FTBS\svndir\trunk\program\client\unity\app\Assets\Scripts\Test\ModelViewer\MV_Model_PL.cs" Line="44" Column="49" />
+      <File FileName="..\..\..\FTBS\svndir\trunk\program\client\unity\app\Assets\Scripts\Game\Common\BillingLimit\BillingLimitScrEventListener.cs" Line="13" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
