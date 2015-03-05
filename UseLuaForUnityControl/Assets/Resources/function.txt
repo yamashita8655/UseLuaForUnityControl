@@ -1,0 +1,4 @@
+function FunctionDebugLog()
+	MainDebugLog()
+	UnityDebugLogUseArg("function.txt")
+end

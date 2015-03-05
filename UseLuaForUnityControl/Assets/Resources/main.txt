@@ -1,0 +1,3 @@
+function MainDebugLog()
+	UnityDebugLogUseArg("main.txt")
+end

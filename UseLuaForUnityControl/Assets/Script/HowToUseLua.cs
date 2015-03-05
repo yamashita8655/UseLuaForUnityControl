@@ -14,10 +14,11 @@ public class HowToUseLua : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		test1 ();
-		test2 ();
+//		test1 ();
+//		test2 ();
 //		test3 ();
-		test4 ();
+//		test4 ();
+		test5 ();
 	}
 
 	void test1()
@@ -85,10 +86,25 @@ public class HowToUseLua : MonoBehaviour {
 	}
 
 	// コルーチンテスト
-	//LuaState cotest_State;
-	//LuaState co;
+	IntPtr cotest_State;
+	IntPtr co;
 	void test3()
 	{
+		cotest_State = NativeMethods.luaL_newstate();
+		NativeMethods.luaL_openlibs(cotest_State);// これは、Lua側に必要な基本的な機能を関連付けている
+
+		// Lua読み込み
+		TextAsset file = Resources.Load<TextAsset>("coroutine");
+		int res = NativeMethods.luaL_loadstring (cotest_State, file.text);
+		res = NativeMethods.lua_pcallk (cotest_State, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
+
+		co = NativeMethods.lua_newthread(cotest_State);
+		NativeMethods.lua_getglobal(co, "step");
+
+		res = NativeMethods.lua_resume (co, cotest_State, 0);
+		printStack (co);
+
+
 /*		cotest_State = Lua.LuaOpen ();
 		Lua.LuaOpenBase(cotest_State);
 		int res = Lua.LuaLLoadFile (cotest_State, Application.persistentDataPath + "/" + "coroutine.lua");
@@ -152,23 +168,22 @@ public class HowToUseLua : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		/*if (Input.GetMouseButtonDown (0)) {
+		if (Input.GetMouseButtonDown (0)) {
 			Debug.Log ("click");
 
-
-			if(cotest_State != null)
+			if(cotest_State != IntPtr.Zero)
 			{
-				if(Lua.LuaResume(co, 0) != 0)
+				if(NativeMethods.lua_resume (co, cotest_State, 0) != 0)
 				{
-					printStackKeralua(co);
+					printStack(co);
 				}
 				else
 				{
-					Lua.LuaClose (cotest_State);
-					cotest_State = null;
+					NativeMethods.lua_close (cotest_State);
+					cotest_State = IntPtr.Zero;
 				}
 			}
-		}*/
+		}
 	}
 
 	// Luaがわかる関数は、intを返すSystem.IntPtrを一つ引数に持つ関数のみ
@@ -188,4 +203,80 @@ public class HowToUseLua : MonoBehaviour {
 		return 0;
 	}
 
+	public void printStack(IntPtr luastate)
+	{
+		int num = NativeMethods.lua_gettop (luastate);
+		Debug.Log ("count = " + num);
+		if(num==0)
+		{
+			return;
+		}
+		
+		for(int i = num; i >= 1; i--)
+		{
+			int type = NativeMethods.lua_type(luastate, i);
+			
+			switch(type) {
+			case 0://LuaTypes.LUA_TNIL:
+				break;
+			case 1://LuaTypes.LUA_TBOOLEAN:
+				int res_b = NativeMethods.lua_toboolean(luastate, i);
+				Debug.Log ("LUA_TBOOLEAN : " + res_b);
+				break;
+			case 2://LuaTypes.LUA_TLIGHTUSERDATA:
+				break;
+			case 3://LuaTypes.LUA_TNUMBER:
+				double res_d = NativeMethods.lua_tonumberx(luastate, i, 0);
+				Debug.Log ("LUA_TNUMBER : " + res_d);
+				break;
+			case 4://LuaTypes.LUA_TSTRING:
+				uint res;
+				IntPtr res_s = NativeMethods.lua_tolstring(luastate, i, out res);
+				string resString = Marshal.PtrToStringAnsi(res_s);
+				Debug.Log ("LUA_TSTRING : " + resString);
+				break;
+			case 5://LuaTypes.LUA_TTABLE:
+				Debug.Log ("LUA_TTABLE : ");
+				break;
+			case 6://LuaTypes.LUA_TFUNCTION:
+				Debug.Log ("LUA_TFUNCTION : ");
+				break;
+			case 7://LuaTypes.LUA_TUSERDATA:
+				Debug.Log ("LUA_TUSERDATA : ");
+				break;
+				//case LuaTypes.LUA_TTHREAD:
+				//	break;
+			}
+		}
+	}
+
+	void test5()
+	{
+		// こっちは、何らかの方法でLuaスクリプトをバッファに展開して使うタイプ
+		// これが出来たので、アセットバンドルに含めることも可能だと思う
+		IntPtr luastate = NativeMethods.luaL_newstate();
+		NativeMethods.luaL_openlibs(luastate);// これは、Lua側に必要な基本的な機能を関連付けている
+		
+		// Lua読み込み
+		TextAsset file = Resources.Load<TextAsset>("main");
+		int res = NativeMethods.luaL_loadstring (luastate, file.text);
+		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
+
+		// 試しに2個読み込んでみる
+		TextAsset file2 = Resources.Load<TextAsset>("function");
+		res = NativeMethods.luaL_loadstring (luastate, file2.text);
+		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
+
+		// ここから引数ありの方
+		// Lua側にC#の関数を登録する（多分、C#の関数のポインタを渡して、Lua側からもアドレスにAccess出来るようにしてるんだと思う）
+		LuaUnityDebugLogUseArg = new DelegateLuaBindFunction (UnityDebugLogUseArg);
+		IntPtr LuaUnityDebugLogUseArgIntPtr = Marshal.GetFunctionPointerForDelegate (LuaUnityDebugLogUseArg);// これが例のIOSで使えない関数ね
+		NativeMethods.lua_pushcclosure (luastate, LuaUnityDebugLogUseArgIntPtr, 0);
+		NativeMethods.lua_setglobal (luastate, "UnityDebugLogUseArg");
+
+		// Luaで定義した関数をスタックに積む。Luaは関数も変数のひとつに過ぎないらしい
+		NativeMethods.lua_getglobal(luastate, "FunctionDebugLog");
+		// 関数呼び出し。
+		res = NativeMethods.lua_pcallk (luastate, 0, 0, 0);// 引数の数と、戻り値の数を指定しなければならない
+	}
 }

@@ -53,8 +53,11 @@
      <Compile Include="Assets\Script\UnityUtility.cs" />
      <Compile Include="Assets\Script\test1-scenechange\Test1_Next.cs" />
      <Compile Include="Assets\Script\test1-scenechange\Test1_StartUp.cs" />
+     <None Include="Assets\Resources\function.txt" />
      <None Include="Assets\Resources\function_lua.txt" />
      <None Include="Assets\Resources\load_lua.txt" />
+     <None Include="Assets\Resources\main.txt" />
+     <None Include="Assets\Resources\coroutine.txt" />
      <None Include="Assets\Resources\UnityFunction.txt" />
      <None Include="Assets\Resources\UnityBind.txt" />
   </ItemGroup>

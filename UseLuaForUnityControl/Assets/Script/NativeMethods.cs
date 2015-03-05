@@ -266,6 +266,12 @@ namespace LuaDLLTest
 		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "lua_setglobal")]
 		internal static extern void lua_setglobal (IntPtr luaState, string name);
 
+		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "lua_newthread")]
+		internal static extern IntPtr lua_newthread (IntPtr luaState);
+
+		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "lua_resume")]
+		internal static extern int lua_resume (IntPtr luaState1, IntPtr luaState2, int n);
+		
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "luanet_registryindex")]
 		//internal static extern int LuaNetRegistryIndex ();
 
