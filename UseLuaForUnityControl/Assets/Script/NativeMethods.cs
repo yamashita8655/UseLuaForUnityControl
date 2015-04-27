@@ -55,11 +55,11 @@ namespace LuaDLLTest
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "luaL_loadstring")]
 		//internal static extern int LuaLLoadString (IntPtr luaState, byte [] chunk);
 
-		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_createtable")]
-		//internal static extern void LuaCreateTable (IntPtr luaState, int narr, int nrec);
+		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_createtable")]
+		internal static extern void lua_createtable (IntPtr luaState, int narr, int nrec);
 
-		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_gettable")]
-		//internal static extern void LuaGetTable (IntPtr luaState, int index);
+		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_gettable")]
+		internal static extern void lua_gettable (IntPtr luaState, int index);
 
 		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_settop")]
 		internal static extern void lua_settop (IntPtr luaState, int newTop);
@@ -73,8 +73,8 @@ namespace LuaDLLTest
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_rawget")]
 		//internal static extern void LuaRawGet (IntPtr luaState, int index);
 
-		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_settable")]
-		//internal static extern void LuaSetTable (IntPtr luaState, int index);
+		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_settable")]
+		internal static extern void lua_settable (IntPtr luaState, int index);
 
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_rawset")]
 		//internal static extern void LuaRawSet (IntPtr luaState, int index);

@@ -1,4 +1,4 @@
 function FunctionDebugLog()
-	MainDebugLog()
-	UnityDebugLogUseArg("function.txt")
+	res = MainDebugLog()
+	return res
 end

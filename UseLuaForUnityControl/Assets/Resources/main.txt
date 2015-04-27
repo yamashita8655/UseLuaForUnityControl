@@ -1,3 +1,3 @@
 function MainDebugLog()
-	UnityDebugLogUseArg("main.txt")
+	return "main.txt"
 end

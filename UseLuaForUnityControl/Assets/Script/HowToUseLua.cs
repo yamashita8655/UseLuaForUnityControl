@@ -17,8 +17,9 @@ public class HowToUseLua : MonoBehaviour {
 //		test1 ();
 //		test2 ();
 //		test3 ();
-//		test4 ();
-		test5 ();
+		test4 ();
+//		test5 ();
+//		test6 ();
 	}
 
 	void test1()
@@ -153,7 +154,7 @@ public class HowToUseLua : MonoBehaviour {
 
 		// ここから引数ありの方
 		// Lua側にC#の関数を登録する（多分、C#の関数のポインタを渡して、Lua側からもアドレスにAccess出来るようにしてるんだと思う）
-		LuaUnityDebugLogUseArg = new DelegateLuaBindFunction (UnityDebugLogUseArg);
+/*		LuaUnityDebugLogUseArg = new DelegateLuaBindFunction (UnityDebugLogUseArg);
 		IntPtr LuaUnityDebugLogUseArgIntPtr = Marshal.GetFunctionPointerForDelegate (LuaUnityDebugLogUseArg);// これが例のIOSで使えない関数ね
 		NativeMethods.lua_pushcclosure (luastate, LuaUnityDebugLogUseArgIntPtr, 0);
 		NativeMethods.lua_setglobal (luastate, "UnityDebugLogUseArg");
@@ -163,7 +164,7 @@ public class HowToUseLua : MonoBehaviour {
 		NativeMethods.lua_pushstring(luastate, "C#から渡した引数文字列だよ");
 
 		// 関数呼び出し。
-		res = NativeMethods.lua_pcallk (luastate, 1, 0, 0);// 引数の数と、戻り値の数を指定しなければならない
+		res = NativeMethods.lua_pcallk (luastate, 1, 0, 0);// 引数の数と、戻り値の数を指定しなければならない*/
 	}
 
 	// Update is called once per frame
@@ -189,8 +190,18 @@ public class HowToUseLua : MonoBehaviour {
 	// Luaがわかる関数は、intを返すSystem.IntPtrを一つ引数に持つ関数のみ
 	int UnityDebugLog(System.IntPtr L)
 	{
+		printStack (L);
 		Debug.Log ("Luaから呼ばれたUnityDebugLog");
-		return 0;
+		uint output;
+		IntPtr res_s = NativeMethods.lua_tolstring(L, 1, out output);
+		string resString = Marshal.PtrToStringAnsi(res_s);
+
+		NativeMethods.lua_settop(L, 0);
+		NativeMethods.lua_pushstring(L, "pushstring1");
+		NativeMethods.lua_pushstring(L, "pushstring2");
+		printStack (L);
+		Debug.Log (resString);
+		return 1;
 	}
 
 	int UnityDebugLogUseArg(System.IntPtr L)
@@ -267,16 +278,39 @@ public class HowToUseLua : MonoBehaviour {
 		res = NativeMethods.luaL_loadstring (luastate, file2.text);
 		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
 
-		// ここから引数ありの方
-		// Lua側にC#の関数を登録する（多分、C#の関数のポインタを渡して、Lua側からもアドレスにAccess出来るようにしてるんだと思う）
-		LuaUnityDebugLogUseArg = new DelegateLuaBindFunction (UnityDebugLogUseArg);
-		IntPtr LuaUnityDebugLogUseArgIntPtr = Marshal.GetFunctionPointerForDelegate (LuaUnityDebugLogUseArg);// これが例のIOSで使えない関数ね
-		NativeMethods.lua_pushcclosure (luastate, LuaUnityDebugLogUseArgIntPtr, 0);
-		NativeMethods.lua_setglobal (luastate, "UnityDebugLogUseArg");
-
 		// Luaで定義した関数をスタックに積む。Luaは関数も変数のひとつに過ぎないらしい
 		NativeMethods.lua_getglobal(luastate, "FunctionDebugLog");
 		// 関数呼び出し。
-		res = NativeMethods.lua_pcallk (luastate, 0, 0, 0);// 引数の数と、戻り値の数を指定しなければならない
+		res = NativeMethods.lua_pcallk (luastate, 0, 1, 0);// 引数の数と、戻り値の数を指定しなければならない
+
+		uint strint_res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out strint_res);
+		string resString = Marshal.PtrToStringAnsi(res_s);
+		Debug.Log ("LUA_TSTRING : " + resString);
+	}
+
+	// 自作したLua.dllでluaInterface/Luanetが使えるものなのか試してみる
+	void test6()
+	{
+		// こっちは、何らかの方法でLuaスクリプトをバッファに展開して使うタイプ
+		// これが出来たので、アセットバンドルに含めることも可能だと思う
+		IntPtr luastate = NativeMethods.luaL_newstate();
+		NativeMethods.luaL_openlibs(luastate);// これは、Lua側に必要な基本的な機能を関連付けている
+		
+		// Lua読み込み
+		TextAsset file = Resources.Load<TextAsset>("use_luainterface");
+		int res = NativeMethods.luaL_loadstring (luastate, file.text);
+		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
+
+		// Luaで定義した関数をスタックに積む。Luaは関数も変数のひとつに過ぎないらしい
+		NativeMethods.lua_getglobal(luastate, "MainDebugLog");
+		// 関数呼び出し。
+		res = NativeMethods.lua_pcallk (luastate, 0, 1, 0);// 引数の数と、戻り値の数を指定しなければならない
+		
+		uint strint_res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out strint_res);
+		string resString = Marshal.PtrToStringAnsi(res_s);
+		Debug.Log ("LUA_TSTRING : " + resString);
 	}
 }
+

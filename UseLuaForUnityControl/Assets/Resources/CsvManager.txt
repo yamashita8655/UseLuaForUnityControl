@@ -1,0 +1,128 @@
+--Unity側から呼ばれ、Unity側の処理を呼び出す
+--Unity～というのは、Unity側から関数の登録がされていないと使えない（というか、処理がない）
+
+--こちらは、CSVのデータを全て保持しておくマスターデータみたいな物
+CsvData = {}
+
+--こっから、各CSVに紐づいたデータを取りやすくまとめて、保持しておくもの
+--基本的に、必要な時にマスターからパースして、保存しておく形をとる
+StringList = {}
+
+
+--Unity側に読み込むCSVリストを送って、Lua側に文字列を返すようにする
+function LoadCsv()
+	CSV_LIST = {
+		"AssetBundleData/Common/OnMemory/csv/cl_item.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_item_set.csv",
+		"AssetBundleData/Common/OnMemory/csv/ui_string.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_achievement_reward.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_battle.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_battle_continue_cost.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_battle_setting.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_billing_product_info.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_billing_use.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_collection_shop.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_collection_shop_lineup.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_commission.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_effect_append.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_enemy.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_enemy_ai.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_enemy_drop.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_enemy_growth.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_enemy_party_position.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_gacha.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_gacha_discount.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_gacha_lineup.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_game_event.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_hub.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_invite.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_invite_reward_from.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_invite_reward_to.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_login_bonus.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_login_bonus_reward.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_login_bonus_reward_select.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_login_bonus_setting.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_mission.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_mission_reward.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_model.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_monster.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_player_exp.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_quest.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_quest_event.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_quest_hub.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_quest_occur.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_quest_section.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_quest_star_reward.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_raid_boss.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_raid_boss_info.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_ranking_reward.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_shop_lineup.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_skill.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_skill_effect.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_special.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_special_effect.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_special_lv_effect.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_combine_evolve_cost.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_combine_evolve_material.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_combine_strength_cost.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_combine_strength_exp.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_combine_strength_rate.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_exp.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_growth.csv",
+		"AssetBundleData/Common/OnMemory/csv/cl_unit_initial.csv"
+	}
+
+	time = os.clock()
+	--中身を走査する
+	for key, value in pairs(CSV_LIST) do
+		UnityLoadCsv(value)
+	end
+	--UnityDebugLog(os.clock() - time)
+end
+
+--Unity側から読み込まれたテキストリソースが返ってくるので、パースする
+function ParseCsvResource(filename, text)
+	CsvData[filename] = {}
+	--改行コードまでの文を取り出す
+	for value in  string.gmatch(text, "(.-)\n") do
+		--UnityDebugLog(value)
+		--最初のIDをキーとして使う
+		id = string.match(value, "(.-),")
+		--UnityDebugLog(id)
+		CsvData[filename][id] = value
+		SplitWord = split(value, ",")
+		for i, value2 in  ipairs(SplitWord) do
+			--UnityDebugLog(value2)
+		end
+	end
+end
+
+--ui_stringのCSVデータを取得
+function GetCsvData(filename, key)
+	UnityDebugLog("-----start:GetCsvData-----")
+	UnityDebugLog(filename)
+	UnityDebugLog(key)
+	text = StringList[key]
+	if text == nil then
+		StringList[key] = {}
+		baseString = CsvData[filename][key]
+		SplitString = split(baseString, ",")
+		count = 0
+		for i, value in  ipairs(SplitString) do
+			StringList[key][tostring(i-1)] = value
+			count = count + 1
+		end
+		StringList[key]["length"] = count
+		text = StringList[key]
+	else
+	end
+	return text
+end
+
+-- 分割.
+-- コピペで持ってきたので、内容理解してない
+function split(str, del)
+	p, nrep = str:gsub("%s*"..del.."%s*", "")
+	return { str:match((("%s*(.-)%s*"..del.."%s*"):rep(nrep).."(.*)")) } 
+end

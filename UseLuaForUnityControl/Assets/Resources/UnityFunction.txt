@@ -1,5 +1,6 @@
 function CallUnityDebugLog()
-	UnityDebugLog()
+	res = UnityDebugLog("teststring")
+	UnityDebugLog(res)
 end
 
 function CallUnityDebugLogUseArg(debugstring)

@@ -16,15 +16,49 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 		public ArrayList argList;	// 引数リスト。これがあれば、引数の数も取得可能
 	}
 
+	public class TableData
+	{
+		public ArrayList tableDataList;// 作成するテーブルに使うデータ。文字列か数値になるはず
+		public TableData()
+		{
+			tableDataList = new ArrayList ();
+		}
+	}
+	
+	public class LuaOrderData
+	{
+		public string key = "";
+		public ArrayList value = null;
+		
+		public LuaOrderData()
+		{
+			key = "";
+			value = new ArrayList ();
+		}
+	}
+	
+	public delegate int DelegateLuaBindFunction(IntPtr luaState);
+
 	Dictionary<string, IntPtr> mLuaStateMap = null;
+	Dictionary<string, DelegateLuaBindFunction> mDelegateAddressMap = null;
+
 	
 	void Awake () {
 		base.Awake ();
+		DontDestroyOnLoad (this);
 	}
 	
 	public void Init()
 	{
-		mLuaStateMap = new Dictionary<string, IntPtr>();
+		if (mLuaStateMap == null) 
+		{
+			mLuaStateMap = new Dictionary<string, IntPtr> ();
+		}
+
+		if (mDelegateAddressMap == null) 
+		{
+			mDelegateAddressMap = new Dictionary<string, DelegateLuaBindFunction> ();
+		}
 	}
 
 	// LuaStateを使えるようにする初期化みたいな物
@@ -49,6 +83,11 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 			NativeMethods.lua_close(pair.Value);
 		}
 		mLuaStateMap = null;
+
+//		foreach (KeyValuePair<string, DelegateLuaBindFunction> pair in mDelegateAddressMap) {
+//			pair.Value = null;// null入れられない
+//		}
+		mDelegateAddressMap = null;
 	}
 
 	void Update () {
@@ -139,17 +178,30 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 				}
 				NativeMethods.lua_pushboolean(luastate, boolnum);
 			}
-		}
-		
-		int res = NativeMethods.lua_pcallk (luastate, fData.argList.Count, fData.returnValueNum, 0);
+			else if(val is TableData)
+			{
+				int top = NativeMethods.lua_gettop(luastate);
+				NativeMethods.lua_createtable(luastate, top, 1);
+				for(int j = 0; j < (val as TableData).tableDataList.Count; j++)
+				{
+					int tablecount = 0;
+					NativeMethods.lua_pushstring(luastate, (j+1).ToString());
+					tablecount++;
+					NativeMethods.lua_pushstring(luastate, (val as TableData).tableDataList[j] as String);
+					tablecount++;
 
+					NativeMethods.lua_settable(luastate, -(tablecount+1));// テーブルに登録した数+テーブル本体
+				}
+			}
+		}
+		int res = NativeMethods.lua_pcallk (luastate, fData.argList.Count, fData.returnValueNum, 0);
 		ArrayList returnList = new ArrayList();
 		getStack(luastate, returnList);
 
 		return returnList;
 	}
 	
-	private void getStack(IntPtr luastate, ArrayList list)
+	public void getStack(IntPtr luastate, ArrayList list)
 	{
 		int num = NativeMethods.lua_gettop (luastate);
 		Debug.Log ("count = " + num);
@@ -183,6 +235,26 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 				list.Add(resString);
 				break;
 			case 5://LuaTypes.LUA_TTABLE:
+				TableData tdata = new TableData();
+				// まず、長さが指定されているはずなので、取得する
+				NativeMethods.lua_getfield (luastate, i, "length");
+				int tableLength = (int)NativeMethods.lua_tonumberx (luastate, i+1, 0);
+				for (int j = 0; j < tableLength; j++) 
+				{
+					// テーブルだけスタックに積んでおきたいので、トップの位置調整
+					NativeMethods.lua_settop (luastate, i);
+					
+					// テーブルから、添え字に見立てた文字列からデータを取得
+					NativeMethods.lua_getfield (luastate, i, j.ToString());
+					
+					// コントロールネームをスタックに積む
+					uint r;
+					IntPtr r_s = NativeMethods.lua_tolstring(luastate, i+1, out r);
+					string text = Marshal.PtrToStringAnsi(r_s);
+					tdata.tableDataList.Add(text);
+					Debug.Log (text);
+				}
+				list.Add(tdata);
 				break;
 			case 6://LuaTypes.LUA_TFUNCTION:
 				break;
@@ -192,6 +264,15 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 			//	break;
 			}
 		}
+	}
+
+	public string GetString(IntPtr luastate, int index)
+	{
+		uint r;
+		IntPtr r_s = NativeMethods.lua_tolstring(luastate, index, out r);
+		string text = Marshal.PtrToStringAnsi(r_s);
+
+		return text;
 	}
 	
 	public void printStack(IntPtr luastate)
@@ -209,31 +290,32 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 
 			switch(type) {
 			case 0://LuaTypes.LUA_TNIL:
+				Debug.Log ("stack:"+i+" LUA_TNIL");
 				break;
 			case 1://LuaTypes.LUA_TBOOLEAN:
 				int res_b = NativeMethods.lua_toboolean(luastate, i);
-				Debug.Log ("LUA_TBOOLEAN : " + res_b);
+				Debug.Log ("stack:"+i+" LUA_TBOOLEAN : " + res_b);
 				break;
 			case 2://LuaTypes.LUA_TLIGHTUSERDATA:
 				break;
 			case 3://LuaTypes.LUA_TNUMBER:
 				double res_d = NativeMethods.lua_tonumberx(luastate, i, 0);
-				Debug.Log ("LUA_TNUMBER : " + res_d);
+				Debug.Log ("stack:"+i+" LUA_TNUMBER : " + res_d);
 				break;
 			case 4://LuaTypes.LUA_TSTRING:
 				uint res;
 				IntPtr res_s = NativeMethods.lua_tolstring(luastate, i, out res);
 				string resString = Marshal.PtrToStringAnsi(res_s);
-				Debug.Log ("LUA_TSTRING : " + resString);
+				Debug.Log ("stack:"+i+" LUA_TSTRING : " + resString);
 				break;
 			case 5://LuaTypes.LUA_TTABLE:
-				Debug.Log ("LUA_TTABLE : ");
+				Debug.Log ("stack:"+i+" LUA_TTABLE");
 				break;
 			case 6://LuaTypes.LUA_TFUNCTION:
-				Debug.Log ("LUA_TFUNCTION : ");
+				Debug.Log ("stack:"+i+" LUA_TFUNCTION");
 				break;
 			case 7://LuaTypes.LUA_TUSERDATA:
-				Debug.Log ("LUA_TUSERDATA : ");
+				Debug.Log ("stack:"+i+" LUA_TUSERDATA");
 				break;
 			//case LuaTypes.LUA_TTHREAD:
 			//	break;
@@ -242,10 +324,19 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 	}
 	
 	// Lua側にUnityの関数を教える
-	public void AddUnityFunction(string filename, string functionName, IntPtr functionPointer)
+	// Lua側からUnityの関数を呼び出す時に、ガベコレで関数デリゲートを持ってかれないように参照も保持する
+	public void AddUnityFunction(string filename, string functionName, IntPtr functionPointer, DelegateLuaBindFunction function)
 	{
 		IntPtr luastate = GetLuaState (filename);
 		NativeMethods.lua_pushcclosure (luastate, functionPointer, 0);
 		NativeMethods.lua_setglobal (luastate, functionName);
+
+		mDelegateAddressMap.Add(filename+functionName, function);
+	}
+
+
+	public void AddDelegateAddress(string functionName, DelegateLuaBindFunction function)
+	{
+		mDelegateAddressMap.Add(functionName, function);
 	}
 }
