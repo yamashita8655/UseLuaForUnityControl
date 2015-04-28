@@ -195,6 +195,8 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 			}
 		}
 		int res = NativeMethods.lua_pcallk (luastate, fData.argList.Count, fData.returnValueNum, 0);
+		printStack (luastate);
+
 		ArrayList returnList = new ArrayList();
 		getStack(luastate, returnList);
 
