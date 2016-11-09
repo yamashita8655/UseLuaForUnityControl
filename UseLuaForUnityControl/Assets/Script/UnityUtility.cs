@@ -10,7 +10,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	IntPtr mLuaState;
 	GCHandle gcHandle;
-
+	
+	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
 	
 	public class MonoPInvokeCallbackAttribute : System.Attribute
 	{
@@ -19,6 +20,50 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	}
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
+
+	// プレハブを読み込む
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityLoadPrefabAfter(IntPtr luaState)
+	{
+		Debug.Log ("UnityLoadPrefabAfter");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string prefabname = Marshal.PtrToStringAnsi(res_s);
+		Debug.Log (prefabname);
+
+		string ext = Path.GetExtension(prefabname);
+		UnityEngine.Object obj = Resources.Load(prefabname.Substring(0, prefabname.Length - ext.Length), typeof(GameObject));
+		GameObject retObj = UnityEngine.Object.Instantiate(obj) as GameObject;
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string parentObjectName = Marshal.PtrToStringAnsi(res_s);
+		
+		GameObject parent = GameObjectCacheManager.Instance.FindGameObject(parentObjectName);
+		retObj.transform.SetParent(parent.transform);
+		retObj.transform.localPosition = Vector3.zero;
+		retObj.transform.localScale	= Vector3.one;
+
+		return 0;
+	}
+
+	// シーンを切り替える
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityChangeScene(IntPtr luaState)
+	{
+		Debug.Log ("UnityChangeScene");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string sceneName = Marshal.PtrToStringAnsi(res_s);
+		Debug.Log (sceneName);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string parentName = Marshal.PtrToStringAnsi(res_s);
+
+		GameObject parent =	GameObjectCacheManager.Instance.FindGameObject(parentName);
+		GameSceneManager.Instance.ChangeScene(sceneName, parent);
+
+		return 0;
+	}
 
 	// プレハブを読み込んでシーンに追加する。ファイル名はLua側から渡される
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
@@ -192,7 +237,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	// Update関数を呼び出したいLuaスクリプトのマップ
 	static Dictionary<string, string> mLuaCallUpdateMap = null;
 
-	string scriptName = "UnityBind";
+//	string scriptName = "UnityBind";
+	public string scriptName = "UnityBindTest";
 
 	void Awake () {
 		base.Awake ();
@@ -228,9 +274,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		BindCommonFunction (scriptName);
 
 		// LuaのCsvManager初期化処理
-		LuaManager.DelegateLuaBindFunction LuaUnityInitCsvManager = new LuaManager.DelegateLuaBindFunction (UnityInitCsvManager);
+/*		LuaManager.DelegateLuaBindFunction LuaUnityInitCsvManager = new LuaManager.DelegateLuaBindFunction (UnityInitCsvManager);
 		IntPtr LuaUnityInitCsvManagerIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityInitCsvManager);
-		LuaManager.Instance.AddUnityFunction(file.name, "UnityInitCsvManager", LuaUnityInitCsvManagerIntPtr, LuaUnityInitCsvManager);
+		LuaManager.Instance.AddUnityFunction(file.name, "UnityInitCsvManager", LuaUnityInitCsvManagerIntPtr, LuaUnityInitCsvManager);*/
 
 /*		mLuaState = NativeMethods.luaL_newstate();
 		NativeMethods.luaL_openlibs(mLuaState);
@@ -287,7 +333,17 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadLuaFile = new LuaManager.DelegateLuaBindFunction (UnityLoadLuaFile);
 		IntPtr LuaUnityLoadLuaFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadLuaFile);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadLuaFile", LuaUnityLoadLuaFileIntPtr, LuaUnityLoadLuaFile);
-		
+
+		// シーン(と呼んでる、オブジェクト)の切り替え
+		LuaManager.DelegateLuaBindFunction LuaUnityChangeScene = new LuaManager.DelegateLuaBindFunction (UnityChangeScene);
+		IntPtr LuaUnityChangeSceneIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityChangeScene);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityChangeScene", LuaUnityChangeSceneIntPtr, LuaUnityChangeScene);
+
+		// プレハブだけの読み込み処理
+		LuaManager.DelegateLuaBindFunction LuaUnityLoadPrefabAfter = new LuaManager.DelegateLuaBindFunction (UnityLoadPrefabAfter);
+		IntPtr LuaUnityLoadPrefabAfterIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadPrefabAfter);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadPrefabAfter", LuaUnityLoadPrefabAfterIntPtr, LuaUnityLoadPrefabAfter);
+
 		// プレハブの読み込み処理
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadPrefab = new LuaManager.DelegateLuaBindFunction (UnityLoadPrefab);
 		IntPtr LuaUnityLoadPrefabIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadPrefab);
