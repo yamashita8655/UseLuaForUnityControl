@@ -13,3 +13,4 @@ public class InputEventHandler : MonoBehaviour {
 		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
 	}
 }
+

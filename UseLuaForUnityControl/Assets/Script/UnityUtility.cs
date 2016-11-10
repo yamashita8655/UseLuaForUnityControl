@@ -20,6 +20,44 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	}
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
+	
+	// Animationを再生する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityPlayAnimator(IntPtr luaState)
+	{
+		Debug.Log ("UnityPlayAnimator");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string prefabname = Marshal.PtrToStringAnsi(res_s);
+		Debug.Log (prefabname);
+
+		string ext = Path.GetExtension(prefabname);
+		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
+		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string animationName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string callbackMethodName = Marshal.PtrToStringAnsi(res_s);
+
+		CutinControllerBase contoller = retObj.GetComponent<CutinControllerBase>();
+		contoller.Play(animationName, () => {
+			if (callbackMethodName != "") {
+				// Lua側のメイン関数を呼び出す
+				LuaManager.FunctionData data = new LuaManager.FunctionData();
+				data.returnValueNum = 0;
+				data.functionName = callbackMethodName;
+				ArrayList list = new ArrayList();
+				data.argList = list;
+				ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+				Debug.Log("CallBack!!!!!");
+			}
+		});
+		
+		return 0;
+	}
+
 
 	// プレハブを読み込む
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
@@ -32,8 +70,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		Debug.Log (prefabname);
 
 		string ext = Path.GetExtension(prefabname);
-		UnityEngine.Object obj = Resources.Load(prefabname.Substring(0, prefabname.Length - ext.Length), typeof(GameObject));
-		GameObject retObj = UnityEngine.Object.Instantiate(obj) as GameObject;
+		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
+		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path);
+		retObj.SetActive(false);
 		
 		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
 		string parentObjectName = Marshal.PtrToStringAnsi(res_s);
@@ -338,6 +377,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityChangeScene = new LuaManager.DelegateLuaBindFunction (UnityChangeScene);
 		IntPtr LuaUnityChangeSceneIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityChangeScene);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityChangeScene", LuaUnityChangeSceneIntPtr, LuaUnityChangeScene);
+
+		// アニメーションを再生する
+		LuaManager.DelegateLuaBindFunction LuaUnityPlayAnimator = new LuaManager.DelegateLuaBindFunction (UnityPlayAnimator);
+		IntPtr LuaUnityPlayAnimatorIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityPlayAnimator);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityPlayAnimator", LuaUnityPlayAnimatorIntPtr, LuaUnityPlayAnimator);
 
 		// プレハブだけの読み込み処理
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadPrefabAfter = new LuaManager.DelegateLuaBindFunction (UnityLoadPrefabAfter);

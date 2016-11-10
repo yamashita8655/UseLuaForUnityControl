@@ -30,6 +30,19 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 		}
 
 		output = GameObject.Find(objectName);
+		GameObjectCacheDict.Add(objectName, output);
+		return output;
+	}
+	
+	public GameObject LoadGameObject(string objectName) {
+		GameObject output = null;
+		if (GameObjectCacheDict.TryGetValue(objectName, out output)) {
+			return output;
+		}
+
+		UnityEngine.Object obj = Resources.Load(objectName, typeof(GameObject));
+		output = UnityEngine.Object.Instantiate(obj) as GameObject;
+		GameObjectCacheDict.Add(objectName, output);
 		return output;
 	}
 }

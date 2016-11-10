@@ -1,1 +1,82 @@
---Unity側から呼ばれ、Unity側の処理を呼び出す--Unity～というのは、Unity側から関数の登録がされていないと使えない（というか、処理がない）--LuaのMain関数みたいな奴function LuaMain()	--LuaLoadPrefabAfter("Prefabs/TitleScene", "MainCanvas")	--LuaLoadPrefabAfter("Prefabs/HomeScene", "MainCanvas")	LuaChangeScene("Title", "MainCanvas")	LuaChangeScene("Home", "MainCanvas")end--タイトルシーンの作成function InitTitleScene()	--タイトルシーンに移動する	LuaLoadLevel("TitleScene")end--課金ポイント画面の作成function InitShopBillingPoint()	--課金ポイントを表示する為の処理		--まず、その画面のハンドリングを行うLuaScriptの読み込み	LoadLuaFile("ShopBillingPoint")	LuaBindCommonFunction("ShopBillingPoint")	LuaCallLuaFunction("ShopBillingPoint", "Init")end--シーンオブジェクトの切り替えfunction LuaChangeScene(sceneName, parentName)	UnityChangeScene(sceneName, parentName)end--プレハブをロードするだけfunction LuaLoadPrefabAfter(prefabName, parentName)	UnityLoadPrefabAfter(prefabName, parentName)end--プレハブのロードfunction LuaLoadPrefab(prefabName)	UnityLoadPrefab(prefabName)end--シーンの切り替えfunction LuaLoadLevel(sceneName)	UnityLoadLevel(sceneName)end--他のLuaの関数を呼び出すfunction LuaCallLuaFunction(fileName, functionName)	UnityCallLuaFunction(fileName, functionName)end--基本Lua関数を使えるようにするfunction LuaBindCommonFunction(fileName)	UnityBindCommonFunction(fileName)end--Luaファイルを読み込んで、アクセスできる状態にするfunction LoadLuaFile(filename)	UnityLoadLuaFile(filename)end--Unity側から呼び出される。Event系の関数function EventClickButton(eventName)	if eventName == "ChangeSceneHome" then		LuaChangeScene("Home", "MainCanvas")	elseif eventName == "ChangeSceneTitle" then		LuaChangeScene("Title", "MainCanvas")	endend
+--Unity側から呼ばれ、Unity側の処理を呼び出す--Unity～というのは、Unity側から関数の登録がされていないと使えない（というか、処理がない）
+--LuaのMain関数みたいな奴
+function LuaMain()
+	LuaChangeScene("Title", "MainCanvas")
+	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "SystemCanvas")
+end
+
+--タイトルシーンの作成
+function InitTitleScene()
+	--タイトルシーンに移動する
+	LuaLoadLevel("TitleScene")
+end
+
+--課金ポイント画面の作成
+function InitShopBillingPoint()
+
+	--課金ポイントを表示する為の処理
+	--まず、その画面のハンドリングを行うLuaScriptの読み込み
+	LoadLuaFile("ShopBillingPoint")
+	LuaBindCommonFunction("ShopBillingPoint")
+	LuaCallLuaFunction("ShopBillingPoint", "Init")
+end
+
+--アニメーション再生
+function LuaPlayAnimator(objectName, animationName, callbackMethodName)
+	UnityPlayAnimator(objectName, animationName, callbackMethodName)
+end
+
+--シーンオブジェクトの切り替え
+function LuaChangeScene(sceneName, parentName)
+	UnityChangeScene(sceneName, parentName)
+end
+
+--プレハブをロードするだけ
+function LuaLoadPrefabAfter(prefabName, parentName)
+	UnityLoadPrefabAfter(prefabName, parentName)
+end
+
+--プレハブのロード
+function LuaLoadPrefab(prefabName)
+	UnityLoadPrefab(prefabName)
+end
+
+--シーンの切り替え
+function LuaLoadLevel(sceneName)
+	UnityLoadLevel(sceneName)
+end
+
+--他のLuaの関数を呼び出す
+function LuaCallLuaFunction(fileName, functionName)
+	UnityCallLuaFunction(fileName, functionName)
+end
+
+--基本Lua関数を使えるようにする
+function LuaBindCommonFunction(fileName)
+	UnityBindCommonFunction(fileName)
+end
+
+--Luaファイルを読み込んで、アクセスできる状態にする
+function LoadLuaFile(filename)
+	UnityLoadLuaFile(filename)
+end
+
+--Unity側から呼び出される。Event系の関数
+function EventClickButton(eventName)
+	if eventName == "ChangeSceneHome" then
+		LuaPlayAnimator("Prefabs/System/FadeObject", "FadeIn", "TitleFadeInEnd")
+	elseif eventName == "ChangeSceneTitle" then
+		LuaPlayAnimator("Prefabs/System/FadeObject", "FadeIn", "HomeFadeInEnd")
+	end
+end
+
+function TitleFadeInEnd()
+	LuaChangeScene("Home", "MainCanvas")
+	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+end
+
+function HomeFadeInEnd()
+	LuaChangeScene("Title", "MainCanvas")
+	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+end
+
