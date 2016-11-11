@@ -79,9 +79,30 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		GameObject parent = GameObjectCacheManager.Instance.FindGameObject(parentObjectName);
 		retObj.transform.SetParent(parent.transform);
-		retObj.transform.localPosition = Vector3.zero;
+		retObj.GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
+//		retObj.transform.localPosition = Vector3.zero;
 		retObj.transform.localScale	= Vector3.one;
 
+		return 0;
+	}
+	
+	// アクティブを設定する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetActive(IntPtr luaState)
+	{
+		Debug.Log ("UnitySetActive");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string prefabname = Marshal.PtrToStringAnsi(res_s);
+		Debug.Log (prefabname);
+
+		string ext = Path.GetExtension(prefabname);
+		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
+		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path);
+		
+		bool res_bool = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 2));//true=1 false=0
+		retObj.SetActive(res_bool);
+		
 		return 0;
 	}
 
@@ -372,6 +393,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadLuaFile = new LuaManager.DelegateLuaBindFunction (UnityLoadLuaFile);
 		IntPtr LuaUnityLoadLuaFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadLuaFile);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadLuaFile", LuaUnityLoadLuaFileIntPtr, LuaUnityLoadLuaFile);
+		
+		// アクティブの切り替え
+		LuaManager.DelegateLuaBindFunction LuaUnitySetActive = new LuaManager.DelegateLuaBindFunction (UnitySetActive);
+		IntPtr LuaUnitySetActiveIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetActive);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetActive", LuaUnitySetActiveIntPtr, LuaUnitySetActive);
 
 		// シーン(と呼んでる、オブジェクト)の切り替え
 		LuaManager.DelegateLuaBindFunction LuaUnityChangeScene = new LuaManager.DelegateLuaBindFunction (UnityChangeScene);
