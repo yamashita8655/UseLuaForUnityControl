@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System;
 using LuaDLLTest;
@@ -21,6 +22,19 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
 	
+	// オブジェクトを探して、Findリストに登録する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityFindObject(IntPtr luaState)
+	{
+		Debug.Log ("UnityFindObject");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		GameObjectCacheManager.Instance.FindGameObject(objectName);
+		
+		return 0;
+	}
+	
 	// Animationを再生する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityPlayAnimator(IntPtr luaState)
@@ -33,7 +47,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
-		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path);
+		GameObject retObj = GameObjectCacheManager.Instance.FindGameObject(path);
 		
 		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
 		string animationName = Marshal.PtrToStringAnsi(res_s);
@@ -68,13 +82,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string prefabname = Marshal.PtrToStringAnsi(res_s);
 		Debug.Log (prefabname);
+		
+		IntPtr res_objectName = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_objectName);
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
-		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path);
+		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path, objectName);
 		retObj.SetActive(false);
 		
-		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
 		string parentObjectName = Marshal.PtrToStringAnsi(res_s);
 		
 		GameObject parent = GameObjectCacheManager.Instance.FindGameObject(parentObjectName);
@@ -98,7 +115,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
-		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path);
+		GameObject retObj = GameObjectCacheManager.Instance.FindGameObject(path);
 		
 		bool res_bool = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 2));//true=1 false=0
 		retObj.SetActive(res_bool);
@@ -394,6 +411,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		IntPtr LuaUnityLoadLuaFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadLuaFile);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadLuaFile", LuaUnityLoadLuaFileIntPtr, LuaUnityLoadLuaFile);
 		
+		// オブジェクトの検索
+		LuaManager.DelegateLuaBindFunction LuaUnityFindObject = new LuaManager.DelegateLuaBindFunction (UnityFindObject);
+		IntPtr LuaUnityFindObjectIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityFindObject);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityFindObject", LuaUnityFindObjectIntPtr, LuaUnityFindObject);
+
 		// アクティブの切り替え
 		LuaManager.DelegateLuaBindFunction LuaUnitySetActive = new LuaManager.DelegateLuaBindFunction (UnitySetActive);
 		IntPtr LuaUnitySetActiveIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetActive);

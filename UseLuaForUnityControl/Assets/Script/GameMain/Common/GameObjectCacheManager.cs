@@ -15,7 +15,8 @@ using System;
 /// </summary>
 public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 {
-	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
+	Dictionary<string, GameObject> RowGameObjectCacheDict = new Dictionary<string, GameObject>();
+	Dictionary<string, GameObject> InstantiateGameObjectCacheDict = new Dictionary<string, GameObject>();
 	/// <summary>
 	/// シーンマネージャ初期化処理
 	/// </summary>
@@ -25,24 +26,32 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 	
 	public GameObject FindGameObject(string objectName) {
 		GameObject output = null;
-		if (GameObjectCacheDict.TryGetValue(objectName, out output)) {
+		if (InstantiateGameObjectCacheDict.TryGetValue(objectName, out output)) {
 			return output;
 		}
 
 		output = GameObject.Find(objectName);
-		GameObjectCacheDict.Add(objectName, output);
+		InstantiateGameObjectCacheDict.Add(objectName, output);
 		return output;
 	}
 	
-	public GameObject LoadGameObject(string objectName) {
+	public GameObject LoadGameObject(string loadPath, string objectName) {
 		GameObject output = null;
-		if (GameObjectCacheDict.TryGetValue(objectName, out output)) {
-			return output;
+		GameObject obj = null;
+		if (RowGameObjectCacheDict.TryGetValue(loadPath, out obj)) {
+		} else {
+			obj = Resources.Load<GameObject>(loadPath);
+			RowGameObjectCacheDict.Add(loadPath, obj);
 		}
-
-		UnityEngine.Object obj = Resources.Load(objectName, typeof(GameObject));
+		
 		output = UnityEngine.Object.Instantiate(obj) as GameObject;
-		GameObjectCacheDict.Add(objectName, output);
+		if (objectName != "") {
+			output.name = objectName;
+		} else {
+			output.name = output.name.Replace("(Clone)", "");
+		}
+		InstantiateGameObjectCacheDict.Add(output.name, output);
+		
 		return output;
 	}
 }

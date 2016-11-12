@@ -3,31 +3,41 @@
 --LuaのMain関数みたいな奴
 function LuaMain()
 	LuaChangeScene("Title", "MainCanvas")
-	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "SystemCanvas")
-	LuaLoadPrefabAfter("Prefabs/HeaderObject", "HeaderFooterCanvas")
-	LuaLoadPrefabAfter("Prefabs/FooterObject", "HeaderFooterCanvas")
-	LuaSetActive("Prefabs/HeaderObject", false)
-	LuaSetActive("Prefabs/FooterObject", false)
+	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
+	LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
+	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
+	LuaSetActive("HeaderObject", false)
+	LuaSetActive("FooterObject", false)
+end
+
+--オブジェクト検索
+--引数：ヒエラルキに登録しているオブジェクト名を指定する
+--結果：Unity側のヒエラルキオブジェクトディクショナリに登録されて、アクセス可能になる
+function LuaFindObject(hierarchyName)
+	UnityFindObject(hierarchyName)
 end
 
 --アニメーション再生
-function LuaPlayAnimator(objectName, animationName, callbackMethodName)
-	UnityPlayAnimator(objectName, animationName, callbackMethodName)
+--引数：オブジェクト名、アニメーション名、アニメーションが終わった後のLua側のコールバック関数名
+function LuaPlayAnimator(hierarchyName, animationName, callbackMethodName)
+	UnityPlayAnimator(hierarchyName, animationName, callbackMethodName)
 end
 
 --シーンオブジェクトの切り替え
-function LuaChangeScene(sceneName, parentName)
-	UnityChangeScene(sceneName, parentName)
+--引数：シーン名、SetParentしたい親のオブジェクト名
+function LuaChangeScene(sceneName, parentHierarchyName)
+	UnityChangeScene(sceneName, parentHierarchyName)
 end
 
 --アクティブの切り替え
-function LuaSetActive(prefabName, active)
-	UnitySetActive(prefabName, active)
+--引数：
+function LuaSetActive(hierarchyName, active)
+	UnitySetActive(hierarchyName, active)
 end
 
 --プレハブをロードするだけ
-function LuaLoadPrefabAfter(prefabName, parentName)
-	UnityLoadPrefabAfter(prefabName, parentName)
+function LuaLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
+	UnityLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
 end
 
 --プレハブのロード
@@ -58,15 +68,15 @@ end
 --Unity側から呼び出される。Event系の関数
 function EventClickButton(eventName)
 	if eventName == "TitleScene_ClickHome" then
-		LuaPlayAnimator("Prefabs/System/FadeObject", "FadeIn", "TitleScene_ClickHome_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", "TitleScene_ClickHome_Callback")
 	elseif eventName == "Footer_ClickHome" then
-		LuaPlayAnimator("Prefabs/System/FadeObject", "FadeIn", "Footer_ClickHome_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickHome_Callback")
 	elseif eventName == "Footer_ClickCustom" then
-		LuaPlayAnimator("Prefabs/System/FadeObject", "FadeIn", "Footer_ClickCustom_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickCustom_Callback")
 	elseif eventName == "Footer_ClickQuest" then
-		LuaPlayAnimator("Prefabs/System/FadeObject", "FadeIn", "Footer_ClickQuest_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickQuest_Callback")
 	elseif eventName == "Footer_ClickOption" then
-		LuaPlayAnimator("Prefabs/System/FadeObject", "FadeIn", "Footer_ClickOption_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickOption_Callback")
 	end
 end
 
@@ -74,31 +84,36 @@ end
 --ホームへ行く
 function TitleScene_ClickHome_Callback()
 	LuaChangeScene("Home", "MainCanvas")
-	LuaSetActive("Prefabs/HeaderObject", true)
-	LuaSetActive("Prefabs/FooterObject", true)
-	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+	LuaSetActive("HeaderObject", true)
+	LuaSetActive("FooterObject", true)
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
 
 --フッターボタン関数
 function Footer_ClickHome_Callback()
 	LuaChangeScene("Home", "MainCanvas")
-	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
 function Footer_ClickHome_Callback()
 	LuaChangeScene("Home", "MainCanvas")
-	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
 function Footer_ClickCustom_Callback()
 	LuaChangeScene("Custom", "MainCanvas")
-	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
 function Footer_ClickQuest_Callback()
 	LuaChangeScene("Quest", "MainCanvas")
-	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+	LuaFindObject("QuestScrollContent")
+	for i = 0, 9 do
+		LuaLoadPrefabAfter("Prefabs/QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
+		LuaSetActive("QuestSelectListNode"..i, true)
+	end
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
 function Footer_ClickOption_Callback()
 	LuaChangeScene("Option", "MainCanvas")
-	LuaPlayAnimator("Prefabs/System/FadeObject", "FadeOut", "")
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
 
 --ホームシーン関数
