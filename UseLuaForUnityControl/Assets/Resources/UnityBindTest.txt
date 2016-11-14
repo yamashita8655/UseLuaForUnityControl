@@ -1,5 +1,9 @@
 --Unity側から呼ばれ、Unity側の処理を呼び出す--Unity～というのは、Unity側から関数の登録がされていないと使えない（というか、処理がない）
 
+QuestCount = 5
+ScreenWidth = ""
+ScreenHeight = ""
+
 --LuaのMain関数みたいな奴
 function LuaMain()
 	LuaChangeScene("Title", "MainCanvas")
@@ -8,6 +12,23 @@ function LuaMain()
 	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
+end
+
+--ゲームの情報
+function SetUnityGameData(screenWidth, screenHeight)
+	ScreenWidth = screenWidth
+	ScreenHeight = screenHeight
+end
+
+function LuaUnityDebugLog(log)
+	UnityDebugLog(log)
+end
+
+--オブジェクト破棄
+--引数：ヒエラルキに登録しているオブジェクト名を指定する
+--結果：Unity側のヒエラルキオブジェクトディクショナリから削除する
+function LuaDestroyObject(hierarchyName)
+	UnityDestroyObject(hierarchyName)
 end
 
 --オブジェクト検索
@@ -27,6 +48,12 @@ end
 --引数：シーン名、SetParentしたい親のオブジェクト名
 function LuaChangeScene(sceneName, parentHierarchyName)
 	UnityChangeScene(sceneName, parentHierarchyName)
+end
+
+--ローテーションの設定
+--引数：hierarchy名と、x,y,zの回転角度(degree)
+function LuaSetRotate(hierarchyName, x, y, z)
+	UnitySetRotate(hierarchyName, x, y, z)
 end
 
 --アクティブの切り替え
@@ -67,16 +94,20 @@ end
 
 --Unity側から呼び出される。Event系の関数
 function EventClickButton(eventName)
-	if eventName == "TitleScene_ClickHome" then
+	if eventName == "TitleSceneGoHomeButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "TitleScene_ClickHome_Callback")
-	elseif eventName == "Footer_ClickHome" then
+	elseif eventName == "HomeButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickHome_Callback")
-	elseif eventName == "Footer_ClickCustom" then
+	elseif eventName == "CustomButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickCustom_Callback")
-	elseif eventName == "Footer_ClickQuest" then
+	elseif eventName == "QuestButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickQuest_Callback")
-	elseif eventName == "Footer_ClickOption" then
+	elseif eventName == "OptionButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickOption_Callback")
+	elseif eventName == "QuestSelectListNode0" then
+		LuaPlayAnimator("FadeObject", "FadeIn", "QuestScene_ClickButton_Callback")
+	elseif eventName == "BattleOptionButton" then
+		LuaPlayAnimator("FadeObject", "FadeIn", "BattleScene_ClickBackButton_Callback")
 	end
 end
 
@@ -94,10 +125,6 @@ function Footer_ClickHome_Callback()
 	LuaChangeScene("Home", "MainCanvas")
 	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
-function Footer_ClickHome_Callback()
-	LuaChangeScene("Home", "MainCanvas")
-	LuaPlayAnimator("FadeObject", "FadeOut", "")
-end
 function Footer_ClickCustom_Callback()
 	LuaChangeScene("Custom", "MainCanvas")
 	LuaPlayAnimator("FadeObject", "FadeOut", "")
@@ -105,7 +132,11 @@ end
 function Footer_ClickQuest_Callback()
 	LuaChangeScene("Quest", "MainCanvas")
 	LuaFindObject("QuestScrollContent")
-	for i = 0, 9 do
+	for i = 0, QuestCount-1 do
+		LuaDestroyObject("QuestSelectListNode"..i, "QuestScrollContent")
+	end
+
+	for i = 0, QuestCount-1 do
 		LuaLoadPrefabAfter("Prefabs/QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
 		LuaSetActive("QuestSelectListNode"..i, true)
 	end
@@ -114,6 +145,43 @@ end
 function Footer_ClickOption_Callback()
 	LuaChangeScene("Option", "MainCanvas")
 	LuaPlayAnimator("FadeObject", "FadeOut", "")
+end
+
+--クエストシーン関数
+function QuestScene_ClickButton_Callback()
+	LuaChangeScene("Battle", "MainCanvas")
+	LuaSetActive("HeaderObject", false)
+	LuaSetActive("FooterObject", false)
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
+end
+
+--バトルシーン関数
+function BattleScene_ClickBackButton_Callback()
+	LuaChangeScene("Home", "MainCanvas")
+	LuaSetActive("HeaderObject", true)
+	LuaSetActive("FooterObject", true)
+	LuaFindObject("PlayerCharacter")
+	LuaPlayAnimator("FadeObject", "FadeOut", "")
+end
+
+function BattleOnMouseDown(touchx, touchy)
+	offsetx = touchx - (ScreenWidth/2)
+	offsety = touchy - (ScreenHeight/2)
+
+	radian = math.atan2(offsety, offsetx)
+	degree = radian * 180 / 3.1415
+	LuaUnityDebugLog(degree)
+	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
+end
+
+function BattleOnMouseDrag(touchx, touchy)
+	offsetx = touchx - (ScreenWidth/2)
+	offsety = touchy - (ScreenHeight/2)
+
+	radian = math.atan2(offsety, offsetx)
+	degree = radian * 180 / 3.1415
+	LuaUnityDebugLog(degree)
+	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
 end
 
 --ホームシーン関数

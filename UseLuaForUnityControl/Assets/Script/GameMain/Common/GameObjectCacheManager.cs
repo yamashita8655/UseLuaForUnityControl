@@ -54,4 +54,13 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 		
 		return output;
 	}
+	
+	public void RemoveGameObject(string objectName) {
+		GameObject output = null;
+		if (InstantiateGameObjectCacheDict.TryGetValue(objectName, out output) == false) {
+			return;
+		}
+		InstantiateGameObjectCacheDict.Remove(objectName);
+		Destroy(output);
+	}
 }

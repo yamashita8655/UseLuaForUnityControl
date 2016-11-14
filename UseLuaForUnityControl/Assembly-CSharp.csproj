@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\GameMain\BootScene.cs" />
+     <Compile Include="Assets\Script\GameMain\Common\BattleInputEventHandler.cs" />
      <Compile Include="Assets\Script\GameMain\Common\CutinControllerBase.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameSceneManager.cs" />

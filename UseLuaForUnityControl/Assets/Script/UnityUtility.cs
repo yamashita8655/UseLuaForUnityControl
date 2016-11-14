@@ -22,6 +22,19 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
 	
+	// オブジェクトを破棄する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityDestroyObject(IntPtr luaState)
+	{
+		Debug.Log ("UnityDestroyObject");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		GameObjectCacheManager.Instance.RemoveGameObject(objectName);
+		
+		return 0;
+	}
+	
 	// オブジェクトを探して、Findリストに登録する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityFindObject(IntPtr luaState)
@@ -72,7 +85,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 
-
 	// プレハブを読み込む
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadPrefabAfter(IntPtr luaState)
@@ -100,6 +112,25 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 //		retObj.transform.localPosition = Vector3.zero;
 		retObj.transform.localScale	= Vector3.one;
 
+		return 0;
+	}
+	
+	// ローテーションを設定する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetRotate(IntPtr luaState)
+	{
+		Debug.Log ("UnitySetRotate");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		
+		float x = (float)NativeMethods.lua_tonumberx(luaState, 2, 0);
+		float y = (float)NativeMethods.lua_tonumberx(luaState, 3, 0);
+		float z = (float)NativeMethods.lua_tonumberx(luaState, 4, 0);
+		
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		obj.transform.localRotation = Quaternion.Euler(new Vector3(x,y,z));
+		
 		return 0;
 	}
 	
@@ -337,6 +368,23 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		}
 	}
 
+
+	public void SetUnityData(Vector2 canvasSize) {
+		Debug.Log(Screen.width);
+		Debug.Log(Screen.height);
+		// Lua側のメイン関数を呼び出す
+		LuaManager.FunctionData data = new LuaManager.FunctionData();
+		data.returnValueNum = 0;
+		data.functionName = "SetUnityGameData";
+		ArrayList list = new ArrayList();
+		//list.Add(canvasSize.x);
+		//list.Add(canvasSize.y);
+		list.Add((float)Screen.width);
+		list.Add((float)Screen.height);
+		data.argList = list;
+		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
+	}
+
 	public void Init()
 	{
 		mLuaCallUpdateMap = new Dictionary<string, string>();
@@ -383,7 +431,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		ArrayList list = new ArrayList();
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
-
 	}
 
 	static public void BindCommonFunction(string scriptName)
@@ -411,10 +458,20 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		IntPtr LuaUnityLoadLuaFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadLuaFile);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadLuaFile", LuaUnityLoadLuaFileIntPtr, LuaUnityLoadLuaFile);
 		
+		// オブジェクトの破棄
+		LuaManager.DelegateLuaBindFunction LuaUnityDestroyObject = new LuaManager.DelegateLuaBindFunction (UnityDestroyObject);
+		IntPtr LuaUnityDestroyObjectIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityDestroyObject);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityDestroyObject", LuaUnityDestroyObjectIntPtr, LuaUnityDestroyObject);
+		
 		// オブジェクトの検索
 		LuaManager.DelegateLuaBindFunction LuaUnityFindObject = new LuaManager.DelegateLuaBindFunction (UnityFindObject);
 		IntPtr LuaUnityFindObjectIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityFindObject);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityFindObject", LuaUnityFindObjectIntPtr, LuaUnityFindObject);
+		
+		// ローテーションの設定
+		LuaManager.DelegateLuaBindFunction LuaUnitySetRotate = new LuaManager.DelegateLuaBindFunction (UnitySetRotate);
+		IntPtr LuaUnitySetRotateIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetRotate);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetRotate", LuaUnitySetRotateIntPtr, LuaUnitySetRotate);
 
 		// アクティブの切り替え
 		LuaManager.DelegateLuaBindFunction LuaUnitySetActive = new LuaManager.DelegateLuaBindFunction (UnitySetActive);
