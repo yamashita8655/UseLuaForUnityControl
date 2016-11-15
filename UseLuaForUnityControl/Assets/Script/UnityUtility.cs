@@ -101,7 +101,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
 		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path, objectName);
-		retObj.SetActive(false);
+		//retObj.SetActive(false);
 		
 		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
 		string parentObjectName = Marshal.PtrToStringAnsi(res_s);
@@ -115,11 +115,30 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 	
+	// ポジションを設定する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetPosition(IntPtr luaState)
+	{
+		//Debug.Log ("UnitySetPosition");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		
+		float x = (float)NativeMethods.lua_tonumberx(luaState, 2, 0);
+		float y = (float)NativeMethods.lua_tonumberx(luaState, 3, 0);
+		float z = (float)NativeMethods.lua_tonumberx(luaState, 4, 0);
+		
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		obj.transform.localPosition = new Vector3(x,y,z);
+		
+		return 0;
+	}
+	
 	// ローテーションを設定する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetRotate(IntPtr luaState)
 	{
-		Debug.Log ("UnitySetRotate");
+		//Debug.Log ("UnitySetRotate");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_s);
@@ -369,7 +388,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	}
 
 
-	public void SetUnityData(Vector2 canvasSize) {
+	public void SetUnityData(float canvasFactor) {
 		Debug.Log(Screen.width);
 		Debug.Log(Screen.height);
 		// Lua側のメイン関数を呼び出す
@@ -381,6 +400,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		//list.Add(canvasSize.y);
 		list.Add((float)Screen.width);
 		list.Add((float)Screen.height);
+		list.Add((float)canvasFactor);
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 	}
@@ -467,6 +487,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityFindObject = new LuaManager.DelegateLuaBindFunction (UnityFindObject);
 		IntPtr LuaUnityFindObjectIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityFindObject);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityFindObject", LuaUnityFindObjectIntPtr, LuaUnityFindObject);
+		
+		// ポジションの設定
+		LuaManager.DelegateLuaBindFunction LuaUnitySetPosition = new LuaManager.DelegateLuaBindFunction (UnitySetPosition);
+		IntPtr LuaUnitySetPositionIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetPosition);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetPosition", LuaUnitySetPositionIntPtr, LuaUnitySetPosition);
 		
 		// ローテーションの設定
 		LuaManager.DelegateLuaBindFunction LuaUnitySetRotate = new LuaManager.DelegateLuaBindFunction (UnitySetRotate);

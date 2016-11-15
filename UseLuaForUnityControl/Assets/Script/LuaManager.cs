@@ -206,7 +206,7 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 	public void getStack(IntPtr luastate, ArrayList list)
 	{
 		int num = NativeMethods.lua_gettop (luastate);
-		Debug.Log ("count = " + num);
+		//Debug.Log ("count = " + num);
 		
 		if(num==0)
 		{
@@ -280,7 +280,7 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 	public void printStack(IntPtr luastate)
 	{
 		int num = NativeMethods.lua_gettop (luastate);
-		Debug.Log ("count = " + num);
+		//Debug.Log ("count = " + num);
 		if(num==0)
 		{
 			return;

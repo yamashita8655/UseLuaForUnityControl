@@ -3,6 +3,49 @@
 QuestCount = 5
 ScreenWidth = ""
 ScreenHeight = ""
+CanvasFactor = 0.0
+
+PlayerBulletList = {}
+BulletCounter = 0
+Foo = {}
+
+
+-- クラス定義
+BulletObject = {}
+
+-- メソッド定義
+function BulletObject.GetPosition(self) 
+	return self.positionx, self.positiony, self.positionz
+end
+function BulletObject.GetRotate(self) 
+	return self.rotatex, self.rotatey, self.rotatez
+end
+function BulletObject.GetName(self) 
+	return self.name
+end
+function BulletObject.AddPosition(self, x, y, z)
+	self.positionx = self.positionx + x 
+	self.positiony = self.positiony + y 
+	self.positionz = self.positionz + z 
+end
+
+-- コンストラクタ
+function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number)
+	local obj = {
+		positionx = posx, 
+		positiony = posy,
+		positionz = posz,
+		rotatex = rotx, 
+		rotatey = roty,
+		rotatez = rotz,
+		name = name,
+		number = number
+	}
+  -- メタテーブルセット
+  return setmetatable(obj, {__index = BulletObject})
+end
+
+
 
 --LuaのMain関数みたいな奴
 function LuaMain()
@@ -10,14 +53,16 @@ function LuaMain()
 	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
 	LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
 	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
+	LuaSetActive("FadeObject", false)
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
 end
 
 --ゲームの情報
-function SetUnityGameData(screenWidth, screenHeight)
+function SetUnityGameData(screenWidth, screenHeight, canvasFactor)
 	ScreenWidth = screenWidth
 	ScreenHeight = screenHeight
+	CanvasFactor = canvasFactor
 end
 
 function LuaUnityDebugLog(log)
@@ -48,6 +93,12 @@ end
 --引数：シーン名、SetParentしたい親のオブジェクト名
 function LuaChangeScene(sceneName, parentHierarchyName)
 	UnityChangeScene(sceneName, parentHierarchyName)
+end
+
+--ローテーションの設定
+--引数：hierarchy名と、x,y,zの座標
+function LuaSetPosition(hierarchyName, x, y, z)
+	UnitySetPosition(hierarchyName, x, y, z)
 end
 
 --ローテーションの設定
@@ -104,7 +155,7 @@ function EventClickButton(eventName)
 		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickQuest_Callback")
 	elseif eventName == "OptionButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "Footer_ClickOption_Callback")
-	elseif eventName == "QuestSelectListNode0" then
+	elseif eventName == "QuestSelectListNode1" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "QuestScene_ClickButton_Callback")
 	elseif eventName == "BattleOptionButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", "BattleScene_ClickBackButton_Callback")
@@ -132,11 +183,11 @@ end
 function Footer_ClickQuest_Callback()
 	LuaChangeScene("Quest", "MainCanvas")
 	LuaFindObject("QuestScrollContent")
-	for i = 0, QuestCount-1 do
+	for i = 1, QuestCount do
 		LuaDestroyObject("QuestSelectListNode"..i, "QuestScrollContent")
 	end
 
-	for i = 0, QuestCount-1 do
+	for i = 1, QuestCount do
 		LuaLoadPrefabAfter("Prefabs/QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
 		LuaSetActive("QuestSelectListNode"..i, true)
 	end
@@ -161,28 +212,65 @@ function BattleScene_ClickBackButton_Callback()
 	LuaSetActive("HeaderObject", true)
 	LuaSetActive("FooterObject", true)
 	LuaFindObject("PlayerCharacter")
+	LuaFindObject("PlayerBulletRoot")
 	LuaPlayAnimator("FadeObject", "FadeOut", "")
 end
 
 function BattleOnMouseDown(touchx, touchy)
-	offsetx = touchx - (ScreenWidth/2)
-	offsety = touchy - (ScreenHeight/2)
+	local offsetx = touchx - (ScreenWidth/2)
+	local offsety = touchy - (ScreenHeight/2)
 
-	radian = math.atan2(offsety, offsetx)
-	degree = radian * 180 / 3.1415
-	LuaUnityDebugLog(degree)
+	local radian = math.atan2(offsety, offsetx)
+	local degree = radian * 180 / 3.1415
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
+
+	CreateBullet(touchx, touchy, degree-90)
 end
 
 function BattleOnMouseDrag(touchx, touchy)
-	offsetx = touchx - (ScreenWidth/2)
-	offsety = touchy - (ScreenHeight/2)
+	local offsetx = touchx - (ScreenWidth/2)
+	local offsety = touchy - (ScreenHeight/2)
 
-	radian = math.atan2(offsety, offsetx)
-	degree = radian * 180 / 3.1415
-	LuaUnityDebugLog(degree)
+	local radian = math.atan2(offsety, offsetx)
+	local degree = radian * 180 / 3.1415
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
 end
 
+function BattleUpdate()
+	local playerBulletCount = #PlayerBulletList
+	for i = 1 , playerBulletCount do
+		PlayerBulletList[i].AddPosition(PlayerBulletList[i], 0, 1, 0)
+		local name = PlayerBulletList[i].GetName(PlayerBulletList[i])
+		local x,y,z = PlayerBulletList[i].GetPosition(PlayerBulletList[i])
+		LuaSetPosition(name, x, y, z)
+	end
+end
+	
+function CreateBullet(touchx, touchy, degree)
+	LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..BulletCounter, "PlayerBulletRoot")
+	LuaFindObject("BulletObject"..BulletCounter)
+	LuaSetRotate("BulletObject"..BulletCounter, 0, 0, degree)
+	local bullet = BulletObject.new((touchx-ScreenWidth/2)/CanvasFactor,
+	(touchy-ScreenHeight/2)/CanvasFactor, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter)
+	BulletCounter = BulletCounter + 1
+	table.insert(PlayerBulletList, bullet)
+end
+
 --ホームシーン関数
+
+----コルーチンテスト
+--function CallCoroutine()
+--	local coro = coroutine.create(LuaMainLoop)
+--	coroutine.resume(coro)-- これで、初めて一回実行される
+--	coroutine.resume(coro)-- 以降、yieldで止めていた所から再開される
+--end
+--
+--function LuaMainLoop()
+--	counter = 0
+--	while true do
+--		LuaUnityDebugLog(counter)
+--		counter = counter + 1
+--		coroutine.yield(0)
+--	end
+--end
 
