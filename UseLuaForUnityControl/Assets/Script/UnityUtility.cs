@@ -115,6 +115,23 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 	
+	// テキストの設定
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetText(IntPtr luaState)
+	{
+		//Debug.Log ("UnitySetPosition");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string text = Marshal.PtrToStringAnsi(res_s);
+		obj.GetComponent<Text>().text = text;
+		
+		return 0;
+	}
+	
 	// ポジションを設定する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetPosition(IntPtr luaState)
@@ -487,6 +504,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityFindObject = new LuaManager.DelegateLuaBindFunction (UnityFindObject);
 		IntPtr LuaUnityFindObjectIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityFindObject);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityFindObject", LuaUnityFindObjectIntPtr, LuaUnityFindObject);
+		
+		// テキストの設定
+		LuaManager.DelegateLuaBindFunction LuaUnitySetText = new LuaManager.DelegateLuaBindFunction (UnitySetText);
+		IntPtr LuaUnitySetTextIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetText);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetText", LuaUnitySetTextIntPtr, LuaUnitySetText);
 		
 		// ポジションの設定
 		LuaManager.DelegateLuaBindFunction LuaUnitySetPosition = new LuaManager.DelegateLuaBindFunction (UnitySetPosition);

@@ -4,6 +4,8 @@ QuestCount = 5
 ScreenWidth = ""
 ScreenHeight = ""
 CanvasFactor = 0.0
+ShootInterval = 0.25
+ShootCooltime = 0.0
 
 PlayerBulletList = {}
 BulletCounter = 0
@@ -28,9 +30,30 @@ function BulletObject.AddPosition(self, x, y, z)
 	self.positiony = self.positiony + y 
 	self.positionz = self.positionz + z 
 end
+function BulletObject.Update(self, deltaTime)
+	local radian = (self.rotatez+90) / 180 * 3.1415
+	local addx = math.cos(radian)
+	local addy = math.sin(radian)
+
+	self.positionx = self.positionx + addx*5
+	self.positiony = self.positiony + addy*5
+	
+	local name = self.name
+	LuaSetPosition(name, self.positionx, self.positiony, self.positionz)
+
+	self.existCounter = self.existCounter + deltaTime
+end
+function BulletObject.IsExist(self)
+	local isExist = true
+	if self.existCounter > self.existTime then
+		isExist = false
+	end
+
+	return isExist
+end
 
 -- コンストラクタ
-function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number)
+function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number, existTime)
 	local obj = {
 		positionx = posx, 
 		positiony = posy,
@@ -39,7 +62,9 @@ function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number)
 		rotatey = roty,
 		rotatez = rotz,
 		name = name,
-		number = number
+		number = number,
+		existTime = existTime,
+		existCounter = 0.0
 	}
   -- メタテーブルセット
   return setmetatable(obj, {__index = BulletObject})
@@ -51,11 +76,13 @@ end
 function LuaMain()
 	LuaChangeScene("Title", "MainCanvas")
 	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
+	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "", "SystemCanvas")
 	LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
 	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
 	LuaSetActive("FadeObject", false)
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
+	LuaFindObject("DebugDisplayText")
 end
 
 --ゲームの情報
@@ -81,6 +108,12 @@ end
 --結果：Unity側のヒエラルキオブジェクトディクショナリに登録されて、アクセス可能になる
 function LuaFindObject(hierarchyName)
 	UnityFindObject(hierarchyName)
+end
+
+--テキスト設定
+--引数：ヒエラルキに登録しているオブジェクト名と、設定する文字列
+function LuaSetText(hierarchyName, text)
+	UnitySetText(hierarchyName, text)
 end
 
 --アニメーション再生
@@ -224,7 +257,7 @@ function BattleOnMouseDown(touchx, touchy)
 	local degree = radian * 180 / 3.1415
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
 
-	CreateBullet(touchx, touchy, degree-90)
+	--CreateBullet(touchx, touchy, degree-90)
 end
 
 function BattleOnMouseDrag(touchx, touchy)
@@ -234,26 +267,60 @@ function BattleOnMouseDrag(touchx, touchy)
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
+	
+	CreateBullet(touchx, touchy, degree-90)
 end
 
-function BattleUpdate()
+function BattleUpdate(deltaTime)
+	ShootCooltime = ShootCooltime + deltaTime
+	--LuaSetText("DebugDisplayText", deltaTime)
 	local playerBulletCount = #PlayerBulletList
 	for i = 1 , playerBulletCount do
-		PlayerBulletList[i].AddPosition(PlayerBulletList[i], 0, 1, 0)
-		local name = PlayerBulletList[i].GetName(PlayerBulletList[i])
-		local x,y,z = PlayerBulletList[i].GetPosition(PlayerBulletList[i])
-		LuaSetPosition(name, x, y, z)
+		--UpdateBulletPosition(PlayerBulletList[i])
+		PlayerBulletList[i].Update(PlayerBulletList[i], deltaTime)
 	end
+	
+	index = 1
+	while true do
+		if index > #PlayerBulletList then
+			break
+		end
+
+		bullet = PlayerBulletList[index]
+		isExist = bullet.IsExist(bullet)
+		if isExist then
+			index = index + 1
+		else
+			LuaDestroyObject(bullet.GetName(bullet))
+			table.remove(PlayerBulletList, index)
+		end
+	end
+end
+
+function UpdateBulletPosition(bulletData)
+	local rotatex, rotatey, rotatez = bulletData.GetRotate(bulletData)
+	local radian = (rotatez+90) / 180 * 3.1415
+	local addx = math.cos(radian)
+	local addy = math.sin(radian)
+
+	bulletData.AddPosition(bulletData, addx*5, addy*5, 0)
+	local name = bulletData.GetName(bulletData)
+	local x,y,z = bulletData.GetPosition(bulletData)
+	LuaSetPosition(name, x, y, z)
 end
 	
 function CreateBullet(touchx, touchy, degree)
-	LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..BulletCounter, "PlayerBulletRoot")
-	LuaFindObject("BulletObject"..BulletCounter)
-	LuaSetRotate("BulletObject"..BulletCounter, 0, 0, degree)
-	local bullet = BulletObject.new((touchx-ScreenWidth/2)/CanvasFactor,
-	(touchy-ScreenHeight/2)/CanvasFactor, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter)
-	BulletCounter = BulletCounter + 1
-	table.insert(PlayerBulletList, bullet)
+	if (ShootCooltime) >= ShootInterval then
+		LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..BulletCounter, "PlayerBulletRoot")
+		LuaFindObject("BulletObject"..BulletCounter)
+		LuaSetRotate("BulletObject"..BulletCounter, 0, 0, degree)
+		--local bullet = BulletObject.new((touchx-ScreenWidth/2)/CanvasFactor, (touchy-ScreenHeight/2)/CanvasFactor, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter, 1.0)
+		local bullet = BulletObject.new(0, 0, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter, 1.0)
+
+		BulletCounter = BulletCounter + 1
+		table.insert(PlayerBulletList, bullet)
+		ShootCooltime = 0.0
+	end
 end
 
 --ホームシーン関数
