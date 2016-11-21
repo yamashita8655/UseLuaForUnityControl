@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,15 +12,17 @@ using LuaDLLTest;
 
 public class HowToUseLua : MonoBehaviour {
 
+	[SerializeField] Text text;
 	// Use this for initialization
 	void Start () {
 
 //		test1 ();
 //		test2 ();
 //		test3 ();
-		test4 ();
+//		test4 ();
 //		test5 ();
 //		test6 ();
+		test7 ();
 	}
 
 	void test1()
@@ -312,5 +315,35 @@ public class HowToUseLua : MonoBehaviour {
 		string resString = Marshal.PtrToStringAnsi(res_s);
 		Debug.Log ("LUA_TSTRING : " + resString);
 	}
+
+	void test7()
+	{
+		// こっちは、何らかの方法でLuaスクリプトをバッファに展開して使うタイプ
+		// これが出来たので、アセットバンドルに含めることも可能だと思う
+		IntPtr luastate = NativeMethods.luaL_newstate();
+		NativeMethods.luaL_openlibs(luastate);// これは、Lua側に必要な基本的な機能を関連付けている
+
+		// Lua読み込み
+		TextAsset file = Resources.Load<TextAsset>("LuaTestCaller");
+		int res = NativeMethods.luaL_loadstring (luastate, file.text);
+		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
+
+		// Luaで定義した関数をスタックに積む。Luaは関数も変数のひとつに過ぎないらしい
+		NativeMethods.lua_getglobal(luastate, "TestCall");
+//		NativeMethods.lua_getglobal(luastate, "TestReturnValue");
+
+		int num = NativeMethods.lua_gettop (luastate);
+
+		// 関数呼び出し。
+		res = NativeMethods.lua_pcallk (luastate, 0, 1, 0);// 引数の数と、戻り値の数を指定しなければならない
+
+		num = NativeMethods.lua_gettop (luastate);
+
+		// 戻り値がスタックに積まれているので、取得
+		double value = NativeMethods.lua_tonumberx(luastate, 1, 0);
+		Debug.Log (value);
+		text.text = value.ToString();
+	}
+
 }
 

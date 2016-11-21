@@ -11,6 +11,7 @@ public class BootScene : MonoBehaviour {
 	void Start () {
 		GameSceneManager.Instance.Initialize();
 		GameObjectCacheManager.Instance.Initialize();
+		ResourceManager.Instance.Init();
 		UnityUtility.Instance.Init();
 		float factor = MainCanvas.scaleFactor;
 		UnityUtility.Instance.SetUnityData(factor);

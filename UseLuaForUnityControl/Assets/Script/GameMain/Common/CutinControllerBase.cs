@@ -20,6 +20,8 @@ public class CutinControllerBase : MonoBehaviour
 	bool		IsStop = true;
 	Action		EndCallback = null;
 	int			PrevStateHash = 0;
+	bool 		IsLoop = false;
+	bool 		IsAutoActiveFalse = false;
 
 	[SerializeField]	public	GameObject	EffectRootObject;
 	[SerializeField]	public	Animator	BaseAnimation;
@@ -43,7 +45,7 @@ public class CutinControllerBase : MonoBehaviour
 	/// <summary>
 	/// データ読み込む
 	/// </summary>
-	public void Play(string stateName, Action callback)
+	public void Play(string stateName, bool isLoop, bool isAutoActiveFalse, Action callback)
 	{
 		EffectRootObject.SetActive(true);
 //		BaseAnimation.Play(stateName);
@@ -51,18 +53,26 @@ public class CutinControllerBase : MonoBehaviour
 		BaseAnimation.SetTrigger(stateName);
 		EndCallback = callback;
 		IsStop = false;
+		IsLoop = isLoop;
+		IsAutoActiveFalse = isAutoActiveFalse;
 		Resume();
 	}
 
 	public void Update()
 	{
+		if (IsLoop == true) {
+			return;
+		}
+
 		AnimatorStateInfo animatorStateInfo = BaseAnimation.GetCurrentAnimatorStateInfo( 0 );
 		if (IsStop == true) {
 		} else {
 			if (PrevStateHash != animatorStateInfo.shortNameHash) {
 				if ( animatorStateInfo.IsName("Stop") )
 				{
-					EffectRootObject.SetActive(false);
+					if (IsAutoActiveFalse == true) {
+						EffectRootObject.SetActive(false);
+					}
 					IsStop = true;
 					if (EndCallback != null) {
 						EndCallback();

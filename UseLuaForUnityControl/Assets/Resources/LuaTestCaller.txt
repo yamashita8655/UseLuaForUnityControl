@@ -1,0 +1,11 @@
+--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
+
+--require(".\LuaUtility.txt")
+
+function TestCall()
+	dofile("C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/Resources/LuaUtility.lua")
+	value = TestReturnValue()
+	return value
+	--return 5
+end
+

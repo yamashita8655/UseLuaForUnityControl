@@ -11,9 +11,10 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	IntPtr mLuaState;
 	GCHandle gcHandle;
+
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
-	
+
 	public class MonoPInvokeCallbackAttribute : System.Attribute
 	{
 		private Type type;
@@ -22,6 +23,25 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
 	
+	// データを非同期で読み込む
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityLoadFileAsync(IntPtr luaState)
+	{
+		Debug.Log("UnityLoadFileAsync");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string loadpath = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string savepath = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+	
+		ResourceManager.Instance.AddLoaderData(loadpath, savepath, callbackName);
+		return 0;
+	}
+
 	// オブジェクトを破棄する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityDestroyObject(IntPtr luaState)
@@ -64,12 +84,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
 		string animationName = Marshal.PtrToStringAnsi(res_s);
+
+		bool isLoop = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 3));//true=1 false=0
 		
-		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		bool isAutoActiveFalse = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 4));//true=1 false=0
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 5, out res);
 		string callbackMethodName = Marshal.PtrToStringAnsi(res_s);
 
 		CutinControllerBase contoller = retObj.GetComponent<CutinControllerBase>();
-		contoller.Play(animationName, () => {
+		contoller.Play(animationName, isLoop, isAutoActiveFalse, () => {
 			if (callbackMethodName != "") {
 				// Lua側のメイン関数を呼び出す
 				LuaManager.FunctionData data = new LuaManager.FunctionData();
@@ -166,6 +190,25 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
 		obj.transform.localRotation = Quaternion.Euler(new Vector3(x,y,z));
+		
+		return 0;
+	}
+	
+	// スケールを設定する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetScale(IntPtr luaState)
+	{
+		//Debug.Log ("UnitySetPosition");
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		
+		float x = (float)NativeMethods.lua_tonumberx(luaState, 2, 0);
+		float y = (float)NativeMethods.lua_tonumberx(luaState, 3, 0);
+		float z = (float)NativeMethods.lua_tonumberx(luaState, 4, 0);
+		
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		obj.transform.localScale = new Vector3(x,y,z);
 		
 		return 0;
 	}
@@ -404,7 +447,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		}
 	}
 
-
 	public void SetUnityData(float canvasFactor) {
 		Debug.Log(Screen.width);
 		Debug.Log(Screen.height);
@@ -418,6 +460,14 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		list.Add((float)Screen.width);
 		list.Add((float)Screen.height);
 		list.Add((float)canvasFactor);
+		string streamingAssetsPath = "";
+#if UNITY_EDITOR
+		streamingAssetsPath = "file:///" + Application.streamingAssetsPath;
+#elif UNITY_ANDROID
+		streamingAssetsPath = Application.streamingAssetsPath;
+#endif
+		list.Add(streamingAssetsPath);
+		list.Add(Application.persistentDataPath);
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 	}
@@ -468,6 +518,20 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		ArrayList list = new ArrayList();
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
+
+		Debug.Log("AfterMain!!!!");
+
+		// 仮 Androidで、StreamingAsstesの物を、アクセスできる場所にコピーする処理
+/*#if UNITY_ANDROID
+				string path = Application.streamingAssetsPath + "/LuaUtility.lua";
+				WWW www = new WWW(path);
+				while(!www.isDone){
+				}
+
+				string toPath = Application.persistentDataPath + "/LuaUtility.lua";
+
+				File.WriteAllBytes(toPath, www.bytes);
+#endif*/
 	}
 
 	static public void BindCommonFunction(string scriptName)
@@ -484,11 +548,15 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		// これは、ガベコレタイミングを遅らせるだけらしいので、解決にはならんから使わない
 		//GC.KeepAlive (LuaUnityLoadLevel);
 		//GC.KeepAlive (LuaUnityLoadLevelIntPtr);
-		
 		// デバッグログ
 		LuaManager.DelegateLuaBindFunction LuaUnityDebugLog = new LuaManager.DelegateLuaBindFunction (UnityDebugLog);
 		IntPtr LuaUnityDebugLogIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityDebugLog);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityDebugLog", LuaUnityDebugLogIntPtr, LuaUnityDebugLog);
+		
+		// 非同期ファイル読み込み
+		LuaManager.DelegateLuaBindFunction LuaUnityLoadFileAsync = new LuaManager.DelegateLuaBindFunction (UnityLoadFileAsync);
+		IntPtr LuaUnityLoadFileAsyncIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadFileAsync);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadFileAsync", LuaUnityLoadFileAsyncIntPtr, LuaUnityLoadFileAsync);
 
 		// Luaファイル読み込み処理
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadLuaFile = new LuaManager.DelegateLuaBindFunction (UnityLoadLuaFile);
@@ -519,6 +587,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnitySetRotate = new LuaManager.DelegateLuaBindFunction (UnitySetRotate);
 		IntPtr LuaUnitySetRotateIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetRotate);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetRotate", LuaUnitySetRotateIntPtr, LuaUnitySetRotate);
+
+		// スケールの設定
+		LuaManager.DelegateLuaBindFunction LuaUnitySetScale = new LuaManager.DelegateLuaBindFunction (UnitySetScale);
+		IntPtr LuaUnitySetScaleIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetScale);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetScale", LuaUnitySetScaleIntPtr, LuaUnitySetScale);
 
 		// アクティブの切り替え
 		LuaManager.DelegateLuaBindFunction LuaUnitySetActive = new LuaManager.DelegateLuaBindFunction (UnitySetActive);
