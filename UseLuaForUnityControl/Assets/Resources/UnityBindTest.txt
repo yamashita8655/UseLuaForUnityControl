@@ -6,13 +6,6 @@ ScreenHeight = ""
 StreamingDataPath = ""
 PersistentDataPath = ""
 CanvasFactor = 0.0
-ShootInterval = 0.25
-ShootCooltime = 0.0
-
-PlayerBulletList = {}
-BulletCounter = 0
-
-EnemyCounter = 0
 
 IsLoading = false
 
@@ -20,68 +13,10 @@ IsLoading = false
 LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
-	"BulletManager.lua"
+	"BulletManager.lua",
+	"EnemyManager.lua"
 }
 LuaFileLoadedCount = 0
-
-
--- クラス定義
-BulletObject = {}
-
--- メソッド定義
-function BulletObject.GetPosition(self) 
-	return self.positionx, self.positiony, self.positionz
-end
-function BulletObject.GetRotate(self) 
-	return self.rotatex, self.rotatey, self.rotatez
-end
-function BulletObject.GetName(self) 
-	return self.name
-end
-function BulletObject.AddPosition(self, x, y, z)
-	self.positionx = self.positionx + x 
-	self.positiony = self.positiony + y 
-	self.positionz = self.positionz + z 
-end
-function BulletObject.Update(self, deltaTime)
-	local radian = (self.rotatez+90) / 180 * 3.1415
-	local addx = math.cos(radian)
-	local addy = math.sin(radian)
-
-	self.positionx = self.positionx + addx*5
-	self.positiony = self.positiony + addy*5
-	
-	local name = self.name
-	LuaSetPosition(name, self.positionx, self.positiony, self.positionz)
-
-	self.existCounter = self.existCounter + deltaTime
-end
-function BulletObject.IsExist(self)
-	local isExist = true
-	if self.existCounter > self.existTime then
-		isExist = false
-	end
-
-	return isExist
-end
-
--- コンストラクタ
-function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number, existTime)
-	local obj = {
-		positionx = posx, 
-		positiony = posy,
-		positionz = posz,
-		rotatex = rotx, 
-		rotatey = roty,
-		rotatez = rotz,
-		name = name,
-		number = number,
-		existTime = existTime,
-		existCounter = 0.0
-	}
-  -- メタテーブルセット
-  return setmetatable(obj, {__index = BulletObject})
-end
 
 --
 function LuaUnityLoadFileAsync(loadPath, savePath, callbackName)
@@ -110,15 +45,15 @@ end
 
 --LuaのMain関数みたいな奴
 function LuaMain()
-	--LuaChangeScene("Title", "MainCanvas")
-	--LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
-	--LuaLoadPrefabAfter("Prefabs/System/LoadingTextObject", "", "SystemCanvas")
-	--LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
-	--LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
-	--LuaSetActive("FadeObject", false)
-	--LuaSetActive("HeaderObject", false)
-	--LuaSetActive("FooterObject", false)
-	--LuaSetActive("LoadingTextObject", false)
+	LuaChangeScene("Title", "MainCanvas")
+	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
+	LuaLoadPrefabAfter("Prefabs/System/LoadingTextObject", "", "SystemCanvas")
+	LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
+	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
+	LuaSetActive("FadeObject", false)
+	LuaSetActive("HeaderObject", false)
+	LuaSetActive("FooterObject", false)
+	LuaSetActive("LoadingTextObject", false)
 	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "", "SystemCanvas")
 	LuaFindObject("DebugDisplayText")
 end
@@ -131,8 +66,8 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, streamingData
 	StreamingDataPath = streamingDataPath 
 	PersistentDataPath = persistentDataPath
 	
-	LuaUnityLoadFileAsync(StreamingDataPath.."/LuaUtility.lua", PersistentDataPath.."/LuaUtility.lua", "LoadCallbackTest")
-	LuaUnityLoadFileAsync(StreamingDataPath.."/LuaUtility2.txt", PersistentDataPath.."/LuaUtility2.txt", "LoadCallbackTest2")
+	--LuaUnityLoadFileAsync(StreamingDataPath.."/LuaUtility.lua", PersistentDataPath.."/LuaUtility.lua", "LoadCallbackTest")
+	--LuaUnityLoadFileAsync(StreamingDataPath.."/LuaUtility2.txt", PersistentDataPath.."/LuaUtility2.txt", "LoadCallbackTest2")
 	
 end
 
@@ -145,6 +80,13 @@ function LoadAllLuaScript()
 		savePath = PersistentDataPath.."/"..LuaFileList[index]
 		LuaUnityLoadFileAsync(loadPath, savePath, "LoadAllLuaScriptCallback")
 	else
+		--BulletManager.Instance():Initialize()
+		--value = BulletManager.Instance():GetShootInterval()
+		--LuaUnityDebugLog(value)
+		--BulletManager.Instance():SetShootInterval(1.775)
+		--value = BulletManager.Instance():GetShootInterval()
+		--LuaUnityDebugLog(value)
+		
 		LuaChangeScene("Home", "MainCanvas")
 		LuaSetActive("HeaderObject", true)
 		LuaSetActive("FooterObject", true)
@@ -153,7 +95,8 @@ end
 
 --Luaの分割ファイル読み込み
 function LoadAllLuaScriptCallback()
-	dofile(PersistentDataPath.."/"..LuaFileList[LuaFileLoadedCount])
+	index = LuaFileLoadedCount+1
+	dofile(PersistentDataPath.."/"..LuaFileList[index])
 	LuaFileLoadedCount = LuaFileLoadedCount + 1
 	UpdateLoadingData()
 	LoadAllLuaScript()
@@ -325,6 +268,7 @@ end
 --クエストシーン関数
 function QuestScene_ClickButton_Callback()
 	LuaChangeScene("Battle", "MainCanvas")
+	BulletManager.Instance():Initialize()
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
@@ -349,17 +293,12 @@ function BattleOnMouseDown(touchx, touchy)
 	local degree = radian * 180 / 3.1415
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
 
-	--CreateBullet(touchx, touchy, degree-90)
 	--テスト
-	SpawnEnemy(touchx, touchy)
+	SpawnEnemy(touchx, touchy, degree)
 end
 
-function SpawnEnemy(posx, posy)
-	LuaLoadPrefabAfter("Prefabs/EnemyCharacterObject", "EnemyCharacterObject"..EnemyCounter, "EnemyCharacterRoot")
-	local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
-	local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
-	LuaSetPosition("EnemyCharacterObject"..EnemyCounter, offsetx, offsety, 0)
-	EnemyCounter = EnemyCounter + 1
+function SpawnEnemy(posx, posy, degree)
+	EnemyManager.Instance():CreateEnemy(posx, posy, degree)
 end
 
 function BattleOnMouseDrag(touchx, touchy)
@@ -370,48 +309,52 @@ function BattleOnMouseDrag(touchx, touchy)
 	local degree = radian * 180 / 3.1415
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
 	
-	CreateBullet(touchx, touchy, degree-90)
+	BulletManager.Instance():CreateBullet(touchx, touchy, degree-90);
 end
 
 --Unity側から呼ばれる、更新関数
 function BattleUpdate(deltaTime)
-	ShootCooltime = ShootCooltime + deltaTime
-	--LuaSetText("DebugDisplayText", deltaTime)
-	local playerBulletCount = #PlayerBulletList
-	for i = 1 , playerBulletCount do
-		PlayerBulletList[i].Update(PlayerBulletList[i], deltaTime)
-	end
-	
-	--弾の生存期間をチェックして、削除する時間があったら、Unity側のオブジェクトを消してリストから消去
-	index = 1
-	while true do
-		if index > #PlayerBulletList then
-			break
-		end
+	BulletManager.Instance():Update(deltaTime)
+	EnemyManager.Instance():Update(deltaTime)
+end
 
-		bullet = PlayerBulletList[index]
-		isExist = bullet.IsExist(bullet)
-		if isExist then
-			index = index + 1
-		else
-			LuaDestroyObject(bullet.GetName(bullet))
-			table.remove(PlayerBulletList, index)
+--当たり判定
+function CheckBump()
+	playerBulletList = BulletManager.Instance():GetList()
+	enemyList = EnemyManager.Instance():GetList()
+	
+	bulletIndex = 1
+	while true do
+		if bulletIndex > #playerBulletList then
+			enemyIndex = 1
+			while true do
+				if enemyIndex > #enemyList then
+					
+
+
+
+				end
+			end
 		end
 	end
 end
 
-function CreateBullet(touchx, touchy, degree)
-	if (ShootCooltime) >= ShootInterval then
-		LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..BulletCounter, "PlayerBulletRoot")
-		LuaFindObject("BulletObject"..BulletCounter)
-		LuaSetRotate("BulletObject"..BulletCounter, 0, 0, degree)
-		--local bullet = BulletObject.new((touchx-ScreenWidth/2)/CanvasFactor, (touchy-ScreenHeight/2)/CanvasFactor, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter, 1.0)
-		local bullet = BulletObject.new(0, 0, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter, 1.0)
+function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, rightWidth, rightHeight)
+	isHit = false
 
-		BulletCounter = BulletCounter + 1
-		table.insert(PlayerBulletList, bullet)
-		ShootCooltime = 0.0
-	end
+	leftTL = {leftPosX-leftWidth/2, leftPosY+leftHeight/2}
+	leftTR = {leftPosX+leftWidth/2, leftPosY+leftHeight/2}
+	leftBL = {leftPosX-leftWidth/2, leftPosY-leftHeight/2}
+	leftBR = {leftPosX-leftWidth/2, leftPosY-leftHeight/2}
+	
+	rightTL = {rightPosX-rightWidth/2, rightPosY+rightHeight/2}
+	rightTR = {rightPosX+rightWidth/2, rightPosY+rightHeight/2}
+	rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
+	rightBR = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
+
+	--if then
+	--end
+
 end
 
 --ホームシーン関数

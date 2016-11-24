@@ -3,66 +3,94 @@
 -- クラス定義
 BulletManager = {}
 
+-- シングルトン用定義
+local _instance = nil
+function BulletManager.Instance() 
+	if not _instance then
+		_instance = BulletManager
+		_instance:Initialize()
+		setmetatable(_instance, { __index = BulletManager })
+	end
+
+	return _instance
+end
+
 -- メソッド定義
-function BulletManager.Initialize(self) 
+--function BulletManager.Initialize(self)と同じ 
+function BulletManager:Initialize() 
 	self.ShootCooltime = 0.0
 	self.ShootInterval = 0.25
 	self.BulletCounter = 0
 	self.PlayerBulletList = {}
 end
 
-function BulletManager.CreateBullet(touchx, touchy, degree, self) 
-	if (ShootCooltime) >= ShootInterval then
-		LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..BulletCounter, "PlayerBulletRoot")
-		LuaFindObject("BulletObject"..BulletCounter)
-		LuaSetRotate("BulletObject"..BulletCounter, 0, 0, degree)
+function BulletManager:GetList() 
+	return self.PlayerBulletList
+end
+
+function BulletManager:GetShootInterval() 
+	return self.ShootInterval
+end
+function BulletManager:SetShootInterval(value) 
+	self.ShootInterval = value
+end
+
+function BulletManager:CreateBullet(touchx, touchy, degree) 
+	if (self.ShootCooltime) >= self.ShootInterval then
+		LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..self.BulletCounter, "PlayerBulletRoot")
+		LuaFindObject("BulletObject"..self.BulletCounter)
+		LuaSetRotate("BulletObject"..self.BulletCounter, 0, 0, degree)
 		--local bullet = BulletObject.new((touchx-ScreenWidth/2)/CanvasFactor, (touchy-ScreenHeight/2)/CanvasFactor, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter, 1.0)
-		local bullet = BulletObject.new(0, 0, 0, 0, 0, degree, "BulletObject"..BulletCounter, BulletCounter, 1.0)
+		local bullet = BulletObject.new(0, 0, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 2.0, 32, 32)
 
-		BulletCounter = BulletCounter + 1
-		table.insert(PlayerBulletList, bullet)
-		ShootCooltime = 0.0
+		self.BulletCounter = self.BulletCounter + 1
+		table.insert(self.PlayerBulletList, bullet)
+		self.ShootCooltime = 0.0
 	end
 end
 
-function BulletManager.Update(deltaTime, self) 
-	ShootCooltime = ShootCooltime + deltaTime
-	local playerBulletCount = #PlayerBulletList
+function BulletManager:Update(deltaTime) 
+	self.ShootCooltime = self.ShootCooltime + deltaTime
+	local playerBulletCount = #self.PlayerBulletList
 	for i = 1 , playerBulletCount do
-		PlayerBulletList[i].Update(PlayerBulletList[i], deltaTime)
+		self.PlayerBulletList[i].Update(self.PlayerBulletList[i], deltaTime)
 	end
+	
+	self:CheckBulletExist() 
 end
 
-function BulletManager.CheckBulletExist(self) 
+function BulletManager:CheckBulletExist() 
 	--弾の生存期間をチェックして、削除する時間があったら、Unity側のオブジェクトを消してリストから消去
 	index = 1
 	while true do
-		if index > #PlayerBulletList then
+		if index > #self.PlayerBulletList then
 			break
 		end
 
-		bullet = PlayerBulletList[index]
+		bullet = self.PlayerBulletList[index]
 		isExist = bullet.IsExist(bullet)
 		if isExist then
 			index = index + 1
 		else
 			LuaDestroyObject(bullet.GetName(bullet))
-			table.remove(PlayerBulletList, index)
+			table.remove(self.PlayerBulletList, index)
 		end
 	end
 end
 
--- コンストラクタ
-function BulletManager.new()
-	local obj = {
-		ShootCooltime = 0.0,
-		ShootInterval = 0.25,
-		BulletCounter = 0,
-		PlayerBulletList = {},
-	}
-  -- メタテーブルセット
-  return setmetatable(obj, {__index = BulletManager})
-end
+--return BulletManager
+
+---- コンストラクタ
+--function BulletManager.new()
+--	local obj = {
+--		ShootCooltime = 0.0,
+--		ShootInterval = 0.25,
+--		BulletCounter = 0,
+--		PlayerBulletList = {},
+--	}
+--  -- メタテーブルセット
+--  return setmetatable(obj, {__index = BulletManager})
+--end
 
 -- クラス定義
 -- 弾クラス
@@ -90,8 +118,7 @@ function BulletObject.Update(self, deltaTime)
 	self.PositionX = self.PositionX + addx*5
 	self.PositionY = self.PositionY + addy*5
 	
-	local name = self.Name
-	LuaSetPosition(Name, self.PositionX, self.PositionY, self.PositionZ)
+	LuaSetPosition(self.Name, self.PositionX, self.PositionY, self.PositionZ)
 
 	self.ExistCounter = self.ExistCounter + deltaTime
 end
@@ -106,7 +133,7 @@ function BulletObject.IsExist(self)
 end
 
 -- コンストラクタ
-function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number, existTime)
+function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number, existTime, width, height)
 	local obj = {
 		PositionX = posx, 
 		PositionY = posy,
@@ -117,6 +144,8 @@ function BulletObject.new(posx, posy, posz, rotx, roty, rotz, name, number, exis
 		Name = name,
 		Number = number,
 		ExistTime = existTime,
+		Width = width,
+		Height = height,
 		ExistCounter = 0.0
 	}
   -- メタテーブルセット
