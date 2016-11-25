@@ -294,7 +294,7 @@ function BattleOnMouseDown(touchx, touchy)
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
 
 	--テスト
-	SpawnEnemy(touchx, touchy, degree)
+	--SpawnEnemy(touchx, touchy, degree)
 end
 
 function SpawnEnemy(posx, posy, degree)
@@ -316,45 +316,101 @@ end
 function BattleUpdate(deltaTime)
 	BulletManager.Instance():Update(deltaTime)
 	EnemyManager.Instance():Update(deltaTime)
+	CheckBump()
 end
 
 --当たり判定
 function CheckBump()
 	playerBulletList = BulletManager.Instance():GetList()
 	enemyList = EnemyManager.Instance():GetList()
-	
+
 	bulletIndex = 1
 	while true do
-		if bulletIndex > #playerBulletList then
+		if bulletIndex <= #playerBulletList then
 			enemyIndex = 1
 			while true do
-				if enemyIndex > #enemyList then
+				if enemyIndex <= #enemyList then
+					enemyX, enemyY, enemyZ = enemyList[enemyIndex]:GetPosition()
+					enemyWidth, enemyHeight = enemyList[enemyIndex]:GetSize()
+
+					bullet = playerBulletList[bulletIndex]
+					enemy = enemyList[enemyIndex]
 					
+					bulletX, bulletY, bulletZ = bullet:GetPosition()
+					bulletWidth, bulletHeight = bullet:GetSize()
 
+					isHit = IsHit(enemyX, enemyY, enemyWidth, enemyHeight, bulletX, bulletY, bulletWidth, bulletHeight)
 
-
+					if isHit == true then
+						--LuaUnityDebugLog("IsHit!!!!!")
+						LuaDestroyObject(enemy:GetName())
+						table.remove(enemyList, enemyIndex)
+					else
+						enemyIndex = enemyIndex + 1
+					end
+				else
+					break
 				end
 			end
+			bulletIndex = bulletIndex + 1
+		else
+			break
 		end
 	end
 end
 
 function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, rightWidth, rightHeight)
-	isHit = false
+	x = 1
+	y = 2
 
 	leftTL = {leftPosX-leftWidth/2, leftPosY+leftHeight/2}
 	leftTR = {leftPosX+leftWidth/2, leftPosY+leftHeight/2}
 	leftBL = {leftPosX-leftWidth/2, leftPosY-leftHeight/2}
-	leftBR = {leftPosX-leftWidth/2, leftPosY-leftHeight/2}
+	leftBR = {leftPosX+leftWidth/2, leftPosY-leftHeight/2}
 	
 	rightTL = {rightPosX-rightWidth/2, rightPosY+rightHeight/2}
 	rightTR = {rightPosX+rightWidth/2, rightPosY+rightHeight/2}
 	rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
-	rightBR = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
+	rightBR = {rightPosX+rightWidth/2, rightPosY-rightHeight/2}
 
-	--if then
-	--end
+	
+	--左オブジェクトの左上が、右オブジェクトの範囲内に入っているかどうか
+	--x座標が範囲内か確認
+	if (leftTL[x] >= rightTL[x] and leftTL[x] <= rightTR[x]) then
+		--y座標が範囲内か確認
+		if (leftTL[y] <= rightTL[y] and leftTL[y] >= rightBL[y]) then
+			return true
+		end
+	end
+	
+	--左オブジェクトの右上が、右オブジェクトの範囲内に入っているかどうか
+	--x座標が範囲内か確認
+	if (leftTR[x] >= rightTL[x] and leftTR[x] <= rightTR[x]) then
+		--y座標が範囲内か確認
+		if (leftTR[y] <= rightTR[y] and leftTR[y] >= rightBR[y]) then
+			return true
+		end
+	end
 
+	--左オブジェクトの左下が、右オブジェクトの範囲内に入っているかどうか
+	--x座標が範囲内か確認
+	if (leftBL[x] >= rightBL[x] and leftBL[x] <= rightBR[x]) then
+		--y座標が範囲内か確認
+		if (leftBL[y] <= rightTL[y] and leftBL[y] >= rightBL[y]) then
+			return true
+		end
+	end
+	
+	--左オブジェクトの右下が、右オブジェクトの範囲内に入っているかどうか
+	--x座標が範囲内か確認
+	if (leftBR[x] >= rightBL[x] and leftBR[x] <= rightBR[x]) then
+		--y座標が範囲内か確認
+		if (leftBR[y] <= rightTR[y] and leftBR[y] >= rightBR[y]) then
+			return true
+		end
+	end
+
+	return false
 end
 
 --ホームシーン関数

@@ -20,6 +20,8 @@ end
 function EnemyManager:Initialize() 
 	self.EnemyCounter = 0
 	self.EnemyList = {}
+	self.EnemySpawnTimer = 1.0
+	self.EnemySpawnCounter = 0.0
 end
 
 function EnemyManager:GetList() 
@@ -40,9 +42,19 @@ function EnemyManager:CreateEnemy(posx, posy, degree)
 end
 
 function EnemyManager:Update(deltaTime) 
+	self.EnemySpawnCounter = self.EnemySpawnCounter + deltaTime
+	if self.EnemySpawnCounter >= self.EnemySpawnTimer then
+		spawnX = math.random(-600, 600)
+		spawnY = math.random(-300, 300)
+		local radian = math.atan2(spawnY, spawnX)
+		local degree = radian * 180 / 3.1415
+		self:CreateEnemy(spawnX+(ScreenWidth/2), spawnY+(ScreenHeight/2), degree-90-180)
+		self.EnemySpawnCounter = 0.0
+	end
+	
 	local enemyCount = #self.EnemyList
 	for i = 1 , enemyCount do
-		self.EnemyList[i].Update(self.EnemyList[i], deltaTime)
+		self.EnemyList[i]:Update(deltaTime)
 	end
 end
 
@@ -52,27 +64,31 @@ EnemyObject = {}
 
 -- メソッド定義
 -- 敵の座標取得
-function EnemyObject.GetPosition(self) 
+function EnemyObject:GetPosition() 
 	return self.PositionX, self.PositionY, self.PositionZ
 end
+-- 敵のサイズ取得
+function EnemyObject:GetSize() 
+	return self.Width, self.Height
+end
 -- 敵の回転率種痘
-function EnemyObject.GetRotate(self) 
+function EnemyObject:GetRotate() 
 	return self.RotateX, self.RotateY, self.RotateZ
 end
 -- 敵の名前取得
-function EnemyObject.GetName(self) 
+function EnemyObject:GetName() 
 	return self.Name
 end
 -- 敵の状態更新
-function EnemyObject.Update(self, deltaTime)
+function EnemyObject:Update(deltaTime)
 	local radian = (self.RotateZ+90) / 180 * 3.1415
 	local addx = math.cos(radian)
 	local addy = math.sin(radian)
 
-	self.PositionX = self.PositionX + addx*5
-	self.PositionY = self.PositionY + addy*5
+	self.PositionX = self.PositionX + addx*1
+	self.PositionY = self.PositionY + addy*1
 	
-	--LuaSetPosition(self.Name, self.PositionX, self.PositionY, self.PositionZ)
+	LuaSetPosition(self.Name, self.PositionX, self.PositionY, self.PositionZ)
 end
 
 -- コンストラクタ

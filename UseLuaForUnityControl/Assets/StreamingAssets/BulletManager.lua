@@ -53,7 +53,7 @@ function BulletManager:Update(deltaTime)
 	self.ShootCooltime = self.ShootCooltime + deltaTime
 	local playerBulletCount = #self.PlayerBulletList
 	for i = 1 , playerBulletCount do
-		self.PlayerBulletList[i].Update(self.PlayerBulletList[i], deltaTime)
+		self.PlayerBulletList[i]:Update(deltaTime)
 	end
 	
 	self:CheckBulletExist() 
@@ -68,11 +68,11 @@ function BulletManager:CheckBulletExist()
 		end
 
 		bullet = self.PlayerBulletList[index]
-		isExist = bullet.IsExist(bullet)
+		isExist = bullet:IsExist()
 		if isExist then
 			index = index + 1
 		else
-			LuaDestroyObject(bullet.GetName(bullet))
+			LuaDestroyObject(bullet:GetName())
 			table.remove(self.PlayerBulletList, index)
 		end
 	end
@@ -98,32 +98,36 @@ BulletObject = {}
 
 -- ƒƒ\ƒbƒh’è‹`
 -- ’e‚ÌÀ•WŽæ“¾
-function BulletObject.GetPosition(self) 
+function BulletObject:GetPosition() 
 	return self.PositionX, self.PositionY, self.PositionZ
 end
+-- ’e‚ÌƒTƒCƒYŽæ“¾
+function BulletObject:GetSize() 
+	return self.Width, self.Height
+end
 -- ’e‚Ì‰ñ“]—¦Ží“—
-function BulletObject.GetRotate(self) 
+function BulletObject:GetRotate() 
 	return self.RotateX, self.RotateY, self.RotateZ
 end
 -- ’e‚Ì–¼‘OŽæ“¾
-function BulletObject.GetName(self) 
+function BulletObject:GetName() 
 	return self.Name
 end
 -- ’e‚Ìó‘ÔXV
-function BulletObject.Update(self, deltaTime)
+function BulletObject:Update(deltaTime)
 	local radian = (self.RotateZ+90) / 180 * 3.1415
 	local addx = math.cos(radian)
 	local addy = math.sin(radian)
 
-	self.PositionX = self.PositionX + addx*5
-	self.PositionY = self.PositionY + addy*5
+	self.PositionX = self.PositionX + addx*10
+	self.PositionY = self.PositionY + addy*10
 	
 	LuaSetPosition(self.Name, self.PositionX, self.PositionY, self.PositionZ)
 
 	self.ExistCounter = self.ExistCounter + deltaTime
 end
 -- ’e‚Ì¶‘¶Šm”F
-function BulletObject.IsExist(self)
+function BulletObject:IsExist()
 	local isExist = true
 	if self.ExistCounter > self.ExistTime then
 		isExist = false
