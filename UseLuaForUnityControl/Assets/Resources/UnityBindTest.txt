@@ -14,7 +14,11 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"BulletManager.lua",
-	"EnemyManager.lua"
+	"EnemyManager.lua",
+	"ObjectBase.lua",
+	"BulletBase.lua",
+	"NormalBullet.lua",
+	"SpeedBullet.lua"
 }
 LuaFileLoadedCount = 0
 
@@ -309,7 +313,8 @@ function BattleOnMouseDrag(touchx, touchy)
 	local degree = radian * 180 / 3.1415
 	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
 	
-	BulletManager.Instance():CreateBullet(touchx, touchy, degree-90);
+	BulletManager.Instance():CreateNormalBullet(touchx, touchy, degree-90);
+	--BulletManager.Instance():CreateSpeedBullet(touchx, touchy, degree-90);
 end
 
 --Unityë§Ç©ÇÁåƒÇŒÇÍÇÈÅAçXêVä÷êî
