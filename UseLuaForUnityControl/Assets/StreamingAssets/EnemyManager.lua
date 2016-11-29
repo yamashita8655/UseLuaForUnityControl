@@ -9,7 +9,7 @@ function EnemyManager.Instance()
 	if not _instance then
 		_instance = EnemyManager
 		_instance:Initialize()
-		setmetatable(_instance, { __index = EnemyManager })
+		--setmetatable(_instance, { __index = EnemyManager })
 	end
 
 	return _instance
@@ -34,7 +34,7 @@ function EnemyManager:CreateEnemy(posx, posy, degree)
 	local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
 	LuaFindObject("EnemyCharacterObject"..self.EnemyCounter)
 	LuaSetRotate("EnemyCharacterObject"..self.EnemyCounter, 0, 0, degree)
-	local enemy = EnemyObject.new(offsetx, offsety, 0, 0, 0, degree, "EnemyCharacterObject"..self.EnemyCounter, self.EnemyCounter, 32, 32)
+	local enemy = NormalEnemyCharacter.new(offsetx, offsety, 0, 0, 0, degree, "EnemyCharacterObject"..self.EnemyCounter, self.EnemyCounter, 32, 32)
 
 	self.EnemyCounter = self.EnemyCounter + 1
 	table.insert(self.EnemyList, enemy)
@@ -58,55 +58,20 @@ function EnemyManager:Update(deltaTime)
 	end
 end
 
--- クラス定義
--- 敵クラス
-EnemyObject = {}
-
--- メソッド定義
--- 敵の座標取得
-function EnemyObject:GetPosition() 
-	return self.PositionX, self.PositionY, self.PositionZ
-end
--- 敵のサイズ取得
-function EnemyObject:GetSize() 
-	return self.Width, self.Height
-end
--- 敵の回転率種痘
-function EnemyObject:GetRotate() 
-	return self.RotateX, self.RotateY, self.RotateZ
-end
--- 敵の名前取得
-function EnemyObject:GetName() 
-	return self.Name
-end
--- 敵の状態更新
-function EnemyObject:Update(deltaTime)
-	local radian = (self.RotateZ+90) / 180 * 3.1415
-	local addx = math.cos(radian)
-	local addy = math.sin(radian)
-
-	self.PositionX = self.PositionX + addx*1
-	self.PositionY = self.PositionY + addy*1
-	
-	LuaSetPosition(self.Name, self.PositionX, self.PositionY, self.PositionZ)
-end
-
--- コンストラクタ
-function EnemyObject.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
-	local obj = {
-		PositionX = posx, 
-		PositionY = posy,
-		PositionZ = posz,
-		RotateX = rotx, 
-		RotateY = roty,
-		RotateZ = rotz,
-		Name = name,
-		Number = number,
-		ExistTime = existTime,
-		Width = width,
-		Height = height,
-	}
-  -- メタテーブルセット
-  return setmetatable(obj, {__index = EnemyObject})
+function EnemyManager:RemoveDeadObject()
+	local index = 1
+	while true do
+		if index <= #self.EnemyList then
+			local obj = self.EnemyList[index]
+			if obj:GetDeadFlag() == true then
+				LuaDestroyObject(obj:GetName())
+				table.remove(self.EnemyList, index)
+			else
+				index = index + 1
+			end
+		else
+			break
+		end
+	end
 end
 

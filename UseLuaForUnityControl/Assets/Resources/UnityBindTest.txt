@@ -18,7 +18,11 @@ LuaFileList = {
 	"ObjectBase.lua",
 	"BulletBase.lua",
 	"NormalBullet.lua",
-	"SpeedBullet.lua"
+	"SpeedBullet.lua",
+	"CharacterBase.lua",
+	"NormalEnemyCharacter.lua",
+	"PlayerCharacter.lua",
+	"PlayerManager.lua"
 }
 LuaFileLoadedCount = 0
 
@@ -84,13 +88,6 @@ function LoadAllLuaScript()
 		savePath = PersistentDataPath.."/"..LuaFileList[index]
 		LuaUnityLoadFileAsync(loadPath, savePath, "LoadAllLuaScriptCallback")
 	else
-		--BulletManager.Instance():Initialize()
-		--value = BulletManager.Instance():GetShootInterval()
-		--LuaUnityDebugLog(value)
-		--BulletManager.Instance():SetShootInterval(1.775)
-		--value = BulletManager.Instance():GetShootInterval()
-		--LuaUnityDebugLog(value)
-		
 		LuaChangeScene("Home", "MainCanvas")
 		LuaSetActive("HeaderObject", true)
 		LuaSetActive("FooterObject", true)
@@ -272,7 +269,12 @@ end
 --クエストシーン関数
 function QuestScene_ClickButton_Callback()
 	LuaChangeScene("Battle", "MainCanvas")
+	PlayerManager.Instance():Initialize()
 	BulletManager.Instance():Initialize()
+	EnemyManager.Instance():Initialize()
+	local posx = ScreenWidth/2
+	local posy = ScreenHeight/2
+	PlayerManager.Instance():CreatePlayer(posx, posy, 0)
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
@@ -283,7 +285,6 @@ function BattleScene_ClickBackButton_Callback()
 	LuaChangeScene("Home", "MainCanvas")
 	LuaSetActive("HeaderObject", true)
 	LuaSetActive("FooterObject", true)
-	LuaFindObject("PlayerCharacter")
 	LuaFindObject("PlayerBulletRoot")
 	LuaFindObject("EnemyObjectRoot")
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
@@ -295,7 +296,7 @@ function BattleOnMouseDown(touchx, touchy)
 
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
-	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
+	PlayerManager.Instance():SetRotate(0, 0, degree-90)
 
 	--テスト
 	--SpawnEnemy(touchx, touchy, degree)
@@ -311,7 +312,7 @@ function BattleOnMouseDrag(touchx, touchy)
 
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
-	LuaSetRotate("PlayerCharacter", 0, 0, degree-90)
+	PlayerManager.Instance():SetRotate(0, 0, degree-90)
 	
 	BulletManager.Instance():CreateNormalBullet(touchx, touchy, degree-90);
 	--BulletManager.Instance():CreateSpeedBullet(touchx, touchy, degree-90);
@@ -319,6 +320,7 @@ end
 
 --Unity側から呼ばれる、更新関数
 function BattleUpdate(deltaTime)
+	PlayerManager.Instance():Update(deltaTime)
 	BulletManager.Instance():Update(deltaTime)
 	EnemyManager.Instance():Update(deltaTime)
 	CheckBump()
@@ -329,39 +331,39 @@ function CheckBump()
 	playerBulletList = BulletManager.Instance():GetList()
 	enemyList = EnemyManager.Instance():GetList()
 
-	bulletIndex = 1
-	while true do
-		if bulletIndex <= #playerBulletList then
-			enemyIndex = 1
-			while true do
-				if enemyIndex <= #enemyList then
-					enemyX, enemyY, enemyZ = enemyList[enemyIndex]:GetPosition()
-					enemyWidth, enemyHeight = enemyList[enemyIndex]:GetSize()
+	-- 弾と敵とのあたり判定
+	-- 当たったオブジェクト双方に、DeadFlagのtrueを付与する
+	
+	for bulletIndex = 1, #playerBulletList do
+		for enemyIndex = 1, #enemyList do
+			enemy = enemyList[enemyIndex]
+			bullet = playerBulletList[bulletIndex]
 
-					bullet = playerBulletList[bulletIndex]
-					enemy = enemyList[enemyIndex]
-					
-					bulletX, bulletY, bulletZ = bullet:GetPosition()
-					bulletWidth, bulletHeight = bullet:GetSize()
+			enemyDead = enemy:GetDeadFlag()
+			bulletDead = bullet:GetDeadFlag()
 
-					isHit = IsHit(enemyX, enemyY, enemyWidth, enemyHeight, bulletX, bulletY, bulletWidth, bulletHeight)
+			if (enemyDead == true) or (bulletDead == true) then
+			else
+				enemyX, enemyY, enemyZ = enemy:GetPosition()
+				enemyWidth, enemyHeight = enemy:GetSize()
 
-					if isHit == true then
-						--LuaUnityDebugLog("IsHit!!!!!")
-						LuaDestroyObject(enemy:GetName())
-						table.remove(enemyList, enemyIndex)
-					else
-						enemyIndex = enemyIndex + 1
-					end
-				else
-					break
+				bulletX, bulletY, bulletZ = bullet:GetPosition()
+				bulletWidth, bulletHeight = bullet:GetSize()
+
+				isHit = IsHit(enemyX, enemyY, enemyWidth, enemyHeight, bulletX, bulletY, bulletWidth, bulletHeight)
+
+				if isHit == true then
+					enemy:SetDeadFlag(true)
+					bullet:SetDeadFlag(true)
 				end
 			end
-			bulletIndex = bulletIndex + 1
-		else
-			break
 		end
 	end
+
+	-- 死亡フラグが立っている物を削除する
+	EnemyManager:RemoveDeadObject()
+	BulletManager:RemoveDeadObject()
+
 end
 
 function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, rightWidth, rightHeight)

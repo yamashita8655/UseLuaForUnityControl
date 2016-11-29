@@ -9,7 +9,7 @@ function BulletManager.Instance()
 	if not _instance then
 		_instance = BulletManager
 		_instance:Initialize()
-		setmetatable(_instance, { __index = BulletManager })
+		--setmetatable(_instance, { __index = BulletManager })
 	end
 
 	return _instance
@@ -77,19 +77,36 @@ end
 
 function BulletManager:CheckBulletExist() 
 	--弾の生存期間をチェックして、削除する時間があったら、Unity側のオブジェクトを消してリストから消去
-	index = 1
+	local index = 1
 	while true do
 		if index > #self.PlayerBulletList then
 			break
 		end
 
-		bullet = self.PlayerBulletList[index]
-		isExist = bullet:IsExist()
+		local bullet = self.PlayerBulletList[index]
+		local isExist = bullet:IsExist()
 		if isExist then
 			index = index + 1
 		else
 			LuaDestroyObject(bullet:GetName())
 			table.remove(self.PlayerBulletList, index)
+		end
+	end
+end
+
+function BulletManager:RemoveDeadObject()
+	local index = 1
+	while true do
+		if index <= #self.PlayerBulletList then
+			local obj = self.PlayerBulletList[index]
+			if obj:GetDeadFlag() == true then
+				LuaDestroyObject(obj:GetName())
+				table.remove(self.PlayerBulletList, index)
+			else
+				index = index + 1
+			end
+		else
+			break
 		end
 	end
 end
