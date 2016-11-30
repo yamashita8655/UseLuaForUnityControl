@@ -75,3 +75,15 @@ function EnemyManager:RemoveDeadObject()
 	end
 end
 
+function EnemyManager:Release()
+	local index = 1
+	while true do
+		if index <= #self.EnemyList then
+			local obj = self.EnemyList[index]
+			LuaDestroyObject(obj:GetName())
+			table.remove(self.EnemyList, index)
+		else
+			break
+		end
+	end
+end

@@ -13,6 +13,7 @@ IsLoading = false
 LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
+	"LuaUtilityClass.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
 	"ObjectBase.lua",
@@ -22,33 +23,15 @@ LuaFileList = {
 	"CharacterBase.lua",
 	"NormalEnemyCharacter.lua",
 	"PlayerCharacter.lua",
-	"PlayerManager.lua"
+	"PlayerManager.lua",
+	"PlayerCharacterConfig.lua",
+	"GameManager.lua",
 }
 LuaFileLoadedCount = 0
 
 --
 function LuaUnityLoadFileAsync(loadPath, savePath, callbackName)
 	UnityLoadFileAsync(loadPath, savePath, callbackName)
-end
-
-function LoadCallbackTest()
-	LuaUnityDebugLog("CallBack!!")
-	LuaSetText("DebugDisplayText", PersistentDataPath)
-	dofile(PersistentDataPath.."/LuaUtility.lua")
-	res1 = ReturnIntValue()
-	res2 = ReturnStringValue()
-	testClass = TestClassObject.new("TestClassName")
-	LuaUnityDebugLog("value:"..res1..res2..testClass.GetName(testClass))
-	TestClassDebugLog()
-end
-
-function LoadCallbackTest2()
-	LuaUnityDebugLog("CallBack2!!")
-	LuaSetText("DebugDisplayText", PersistentDataPath)
-	dofile(PersistentDataPath.."/LuaUtility2.txt")
-	res1 = GetNoNameValue()
-	testClass = NoNameClassObject.new("NoNameClassObject")
-	LuaUnityDebugLog("value:"..res1..testClass.GetName(testClass))
 end
 
 --LuaのMain関数みたいな奴
@@ -74,9 +57,6 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, streamingData
 	StreamingDataPath = streamingDataPath 
 	PersistentDataPath = persistentDataPath
 	
-	--LuaUnityLoadFileAsync(StreamingDataPath.."/LuaUtility.lua", PersistentDataPath.."/LuaUtility.lua", "LoadCallbackTest")
-	--LuaUnityLoadFileAsync(StreamingDataPath.."/LuaUtility2.txt", PersistentDataPath.."/LuaUtility2.txt", "LoadCallbackTest2")
-	
 end
 
 --Luaの分割ファイル読み込み
@@ -88,10 +68,18 @@ function LoadAllLuaScript()
 		savePath = PersistentDataPath.."/"..LuaFileList[index]
 		LuaUnityLoadFileAsync(loadPath, savePath, "LoadAllLuaScriptCallback")
 	else
-		LuaChangeScene("Home", "MainCanvas")
-		LuaSetActive("HeaderObject", true)
-		LuaSetActive("FooterObject", true)
+		InitGame()
 	end
+end
+
+function InitGame()
+	-- とりあえず、ゲーム開始時の初期設定をする
+	GameManager.Instance():Initialize()
+	GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter001)
+
+	LuaChangeScene("Home", "MainCanvas")
+	LuaSetActive("HeaderObject", true)
+	LuaSetActive("FooterObject", true)
 end
 
 --Luaの分割ファイル読み込み
@@ -266,6 +254,7 @@ function Footer_ClickOption_Callback()
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
 end
 
+flag = 0
 --クエストシーン関数
 function QuestScene_ClickButton_Callback()
 	LuaChangeScene("Battle", "MainCanvas")
@@ -274,7 +263,18 @@ function QuestScene_ClickButton_Callback()
 	EnemyManager.Instance():Initialize()
 	local posx = ScreenWidth/2
 	local posy = ScreenHeight/2
-	PlayerManager.Instance():CreatePlayer(posx, posy, 0)
+	
+	-- キャラ切り替えテスト
+	selectCharacter = nil
+	if flag == 0 then
+		selectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
+		flag = 1
+	else
+		selectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
+	end
+
+	PlayerManager.Instance():CreatePlayer(selectCharacter, posx, posy, 0)
+
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
@@ -282,6 +282,9 @@ end
 
 --バトルシーン関数
 function BattleScene_ClickBackButton_Callback()
+	EnemyManager.Instance():Release()
+	BulletManager.Instance():Release()
+	PlayerManager.Instance():Release()
 	LuaChangeScene("Home", "MainCanvas")
 	LuaSetActive("HeaderObject", true)
 	LuaSetActive("FooterObject", true)
@@ -291,31 +294,11 @@ function BattleScene_ClickBackButton_Callback()
 end
 
 function BattleOnMouseDown(touchx, touchy)
-	local offsetx = touchx - (ScreenWidth/2)
-	local offsety = touchy - (ScreenHeight/2)
-
-	local radian = math.atan2(offsety, offsetx)
-	local degree = radian * 180 / 3.1415
-	PlayerManager.Instance():SetRotate(0, 0, degree-90)
-
-	--テスト
-	--SpawnEnemy(touchx, touchy, degree)
-end
-
-function SpawnEnemy(posx, posy, degree)
-	EnemyManager.Instance():CreateEnemy(posx, posy, degree)
+	PlayerManager.Instance():OnMouseDown(touchx, touchy)
 end
 
 function BattleOnMouseDrag(touchx, touchy)
-	local offsetx = touchx - (ScreenWidth/2)
-	local offsety = touchy - (ScreenHeight/2)
-
-	local radian = math.atan2(offsety, offsetx)
-	local degree = radian * 180 / 3.1415
-	PlayerManager.Instance():SetRotate(0, 0, degree-90)
-	
-	BulletManager.Instance():CreateNormalBullet(touchx, touchy, degree-90);
-	--BulletManager.Instance():CreateSpeedBullet(touchx, touchy, degree-90);
+	PlayerManager.Instance():OnMouseDrag(touchx, touchy)
 end
 
 --Unity側から呼ばれる、更新関数

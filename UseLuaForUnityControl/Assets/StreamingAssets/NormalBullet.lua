@@ -31,6 +31,7 @@ function NormalBullet.new(posx, posy, posz, rotx, roty, rotz, name, number, widt
 	end
 	
 	-- メタテーブルセット
-	return setmetatable(this, {__index = NormalBullet})
+	--return setmetatable(this, {__index = NormalBullet})
+	return this
 end
 

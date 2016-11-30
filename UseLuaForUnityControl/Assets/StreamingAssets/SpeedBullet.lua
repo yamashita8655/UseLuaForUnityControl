@@ -30,7 +30,6 @@ function SpeedBullet.new(posx, posy, posz, rotx, roty, rotz, name, number, width
 		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 	
-	-- メタテーブルセット
-	return setmetatable(this, {__index = SpeedBullet})
+	return this
 end
 

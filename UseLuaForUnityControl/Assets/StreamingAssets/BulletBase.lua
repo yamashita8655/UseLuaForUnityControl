@@ -27,6 +27,7 @@ function BulletBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 	end
 
 	-- メタテーブルセット
-	return setmetatable(this, {__index = BulletBase})
+	--return setmetatable(this, {__index = BulletBase})
+	return this
 end
 

@@ -70,6 +70,7 @@ function ObjectBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 	end
 
 	-- メタテーブルセット
-	return setmetatable(this, {__index = ObjectBase})
+	--return setmetatable(this, {__index = ObjectBase})
+	return this
 end
 

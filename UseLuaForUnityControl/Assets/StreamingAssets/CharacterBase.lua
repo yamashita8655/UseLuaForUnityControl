@@ -27,6 +27,7 @@ function CharacterBase.new(posx, posy, posz, rotx, roty, rotz, name, number, wid
 	end
 
 	-- メタテーブルセット
-	return setmetatable(this, {__index = CharacterBase})
+	--return setmetatable(this, {__index = CharacterBase})
+	return this
 end
 

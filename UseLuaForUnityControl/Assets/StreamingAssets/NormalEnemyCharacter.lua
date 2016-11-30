@@ -31,7 +31,6 @@ function NormalEnemyCharacter.new(posx, posy, posz, rotx, roty, rotz, name, numb
 		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 
-	-- メタテーブルセット
-	return setmetatable(this, {__index = NormalEnemyCharacter})
+	return this
 end
 
