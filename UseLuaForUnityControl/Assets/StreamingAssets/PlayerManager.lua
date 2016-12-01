@@ -38,7 +38,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local name = playerDataConfig.Name
 		local width = playerDataConfig.Width
 		local height = playerDataConfig.Height
-		local shootPointList = playerDataConfig.ShootPointList
+		local bulletEmitterPointList = playerDataConfig.BulletEmitterPointList
 
 		LuaLoadPrefabAfter(prefabName, name, "PlayerCharacterRoot")
 		local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
@@ -47,8 +47,12 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		LuaSetRotate(name, 0, 0, degree)
 		local player = PlayerCharacter.new(offsetx, offsety, 0, 0, 0, degree, name, width, height)
 
-		for i = 1, #shootPointList do
-			player:AddShootPoint(shootPointList[i])
+		LuaUnityDebugLog("EMITTER_LENGTH!"..#bulletEmitterPointList)
+		for i = 1, #bulletEmitterPointList do
+			--emitter = BulletEmitter.new()
+			emitter = BulletEmitterSatellite.new()
+			emitter:Initialize(bulletEmitterPointList[i], 0.25, Vector2.new(0, 0))
+			player:AddBulletEmitter(emitter)
 		end
 
 		self.PlayerCharacterInstance = player
@@ -66,13 +70,9 @@ function PlayerManager:OnMouseDown(touchx, touchy)
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
 	
+	self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
 	PlayerManager.Instance():SetRotate(0, 0, degree-90)
-	
-	local canShoot = self.PlayerCharacterInstance:CanShootBullet()
-	if canShoot then
-		BulletManager.Instance():CreateSpeedBullet(touchx, touchy, degree-90);
-		self.PlayerCharacterInstance:ResetBulletCooltime()
-	end
+	self.PlayerCharacterInstance:ShootBullet(degree-90)
 end
 
 function PlayerManager:OnMouseDrag(touchx, touchy) 
@@ -81,14 +81,9 @@ function PlayerManager:OnMouseDrag(touchx, touchy)
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
 	
+	self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
 	PlayerManager.Instance():SetRotate(0, 0, degree-90)
-	
-	local canShoot = self.PlayerCharacterInstance:CanShootBullet()
-	if canShoot then
-		BulletManager.Instance():CreateSpeedBullet(touchx, touchy, degree-90);
-		self.PlayerCharacterInstance:ResetBulletCooltime()
-	end
-	--BulletManager.Instance():CreateNormalBullet(touchx, touchy, degree-90);
+	self.PlayerCharacterInstance:ShootBullet(degree-90)
 end
 
 function PlayerManager:Release() 

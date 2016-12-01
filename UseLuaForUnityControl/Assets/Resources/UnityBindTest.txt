@@ -14,6 +14,7 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
+	"BulletEmitter.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
 	"ObjectBase.lua",
@@ -80,6 +81,16 @@ function InitGame()
 	LuaChangeScene("Home", "MainCanvas")
 	LuaSetActive("HeaderObject", true)
 	LuaSetActive("FooterObject", true)
+
+	TablePos = Vector2.new(100, 100)
+	BasePos = TablePos
+	WorkPos = TablePos
+	UnityDebugLog(BasePos.x)
+	UnityDebugLog(WorkPos.x)
+	
+	WorkPos.x = 90
+	UnityDebugLog(BasePos.x)
+	UnityDebugLog(WorkPos.x)
 end
 
 --LuaÇÃï™äÑÉtÉ@ÉCÉãì«Ç›çûÇ›

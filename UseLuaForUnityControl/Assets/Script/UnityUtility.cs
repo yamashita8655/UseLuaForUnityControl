@@ -27,7 +27,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadFileAsync(IntPtr luaState)
 	{
-		Debug.Log("UnityLoadFileAsync");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string loadpath = Marshal.PtrToStringAnsi(res_s);
@@ -46,7 +45,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityDestroyObject(IntPtr luaState)
 	{
-		Debug.Log ("UnityDestroyObject");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_s);
@@ -59,7 +57,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityFindObject(IntPtr luaState)
 	{
-		Debug.Log ("UnityFindObject");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_s);
@@ -72,11 +69,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityPlayAnimator(IntPtr luaState)
 	{
-		Debug.Log ("UnityPlayAnimator");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string prefabname = Marshal.PtrToStringAnsi(res_s);
-		Debug.Log (prefabname);
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
@@ -102,7 +97,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 				ArrayList list = new ArrayList();
 				data.argList = list;
 				ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
-				Debug.Log("CallBack!!!!!");
 			}
 		});
 		
@@ -113,11 +107,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadPrefabAfter(IntPtr luaState)
 	{
-		Debug.Log ("UnityLoadPrefabAfter");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string prefabname = Marshal.PtrToStringAnsi(res_s);
-		Debug.Log (prefabname);
 		
 		IntPtr res_objectName = NativeMethods.lua_tolstring(luaState, 2, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_objectName);
@@ -143,7 +135,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetText(IntPtr luaState)
 	{
-		//Debug.Log ("UnitySetPosition");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_s);
@@ -160,7 +151,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetPosition(IntPtr luaState)
 	{
-		//Debug.Log ("UnitySetPosition");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_s);
@@ -179,7 +169,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetRotate(IntPtr luaState)
 	{
-		//Debug.Log ("UnitySetRotate");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_s);
@@ -198,7 +187,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetScale(IntPtr luaState)
 	{
-		//Debug.Log ("UnitySetPosition");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_s);
@@ -217,11 +205,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetActive(IntPtr luaState)
 	{
-		Debug.Log ("UnitySetActive");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string prefabname = Marshal.PtrToStringAnsi(res_s);
-		Debug.Log (prefabname);
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
@@ -237,11 +223,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityChangeScene(IntPtr luaState)
 	{
-		Debug.Log ("UnityChangeScene");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string sceneName = Marshal.PtrToStringAnsi(res_s);
-		Debug.Log (sceneName);
 
 		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
 		string parentName = Marshal.PtrToStringAnsi(res_s);
@@ -256,11 +240,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadPrefab(IntPtr luaState)
 	{
-		Debug.Log ("UnityLoadPrefab");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string prefabname = Marshal.PtrToStringAnsi(res_s);
-		Debug.Log (prefabname);
 		
 		string ext = Path.GetExtension(prefabname);
 		UnityEngine.Object obj = Resources.Load(prefabname.Substring(0, prefabname.Length - ext.Length), typeof(GameObject));
@@ -276,7 +258,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadLevel(IntPtr luaState)
 	{
-		Debug.Log ("UnityLoadLevel");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string sceneName = Marshal.PtrToStringAnsi(res_s);
@@ -288,11 +269,10 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityDebugLog(IntPtr luaState)
 	{
-		Debug.Log ("UnityDebugLog");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string logstring = Marshal.PtrToStringAnsi(res_s);
-		Debug.Log (logstring);
+		Debug.Log(logstring);
 		
 		return 0;
 	}
@@ -300,7 +280,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadLuaFile(IntPtr luaState)
 	{
-		Debug.Log ("UnityLoadLuaFile");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string luaFileName = Marshal.PtrToStringAnsi(res_s);
@@ -315,7 +294,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityInitCsvManager(IntPtr luaState)
 	{
-		Debug.Log ("UnityInitCsvManager");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string luaFileName = Marshal.PtrToStringAnsi(res_s);
@@ -341,11 +319,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadCsv(IntPtr luastate)
 	{
-		Debug.Log ("UnityLoadCsv");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out res);
 		string csvname = Marshal.PtrToStringAnsi(res_s);
-		Debug.Log (csvname);
 		string ext = Path.GetExtension(csvname);
 		TextAsset csvloadscript = Resources.Load<TextAsset>(csvname.Substring(0, csvname.Length - ext.Length));
 		
@@ -367,7 +343,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityCallLuaFunction(IntPtr luastate)
 	{
-		Debug.Log ("UnityCallLuaFunction");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out res);
 		string csvname = Marshal.PtrToStringAnsi(res_s);
@@ -391,7 +366,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityAddCallUpdateScript(IntPtr luastate)
 	{
-		Debug.Log ("UnityAddCallUpdateScript");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out res);
 		string csvname = Marshal.PtrToStringAnsi(res_s);
@@ -410,7 +384,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityBindCommonFunction(IntPtr luastate)
 	{
-		Debug.Log ("UnityBindCommonFunction");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out res);
 		string csvname = Marshal.PtrToStringAnsi(res_s);
@@ -448,8 +421,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	}
 
 	public void SetUnityData(float canvasFactor) {
-		Debug.Log(Screen.width);
-		Debug.Log(Screen.height);
 		// Lua側のメイン関数を呼び出す
 		LuaManager.FunctionData data = new LuaManager.FunctionData();
 		data.returnValueNum = 0;
@@ -518,8 +489,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		ArrayList list = new ArrayList();
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
-
-		Debug.Log("AfterMain!!!!");
 
 		// 仮 Androidで、StreamingAsstesの物を、アクセスできる場所にコピーする処理
 /*#if UNITY_ANDROID

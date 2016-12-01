@@ -14,34 +14,37 @@ function PlayerCharacter.new(posx, posy, posz, rotx, roty, rotz, name, width, he
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
 	this.MoveSpeed = 1.0
-	this.ShootPointList = {}
-	this.ShootCooltime = 0.0
-	this.ShootInterval = 0.25
+	this.BulletEmitterList = {}
 
 	-- メソッド定義
 	-- 更新
 	this.BaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
-		self.ShootCooltime = self.ShootCooltime + deltaTime
+		for i = 1, #self.BulletEmitterList do
+			emitter = self.BulletEmitterList[i]
+			emitter:Update(deltaTime)
+		end
 	end
 	
 	-- 弾が発射されるポイントの追加
-	this.AddShootPoint = function(self, point)
-		table.insert(self.ShootPointList, point)
+	this.AddBulletEmitter = function(self, emitter)
+		table.insert(self.BulletEmitterList, emitter)
 	end
 	
 	-- 弾のクールタイムが終わっているかどうか
-	this.CanShootBullet = function(self)
-		local canShoot = false
-		if self.ShootCooltime > self.ShootInterval then
-			canShoot = true
+	this.ShootBullet = function(self, degree)
+		for i = 1, #self.BulletEmitterList do
+			emitter = self.BulletEmitterList[i]
+			emitter:ShootBullet(degree)
 		end
-		return canShoot
 	end
 	
-	-- 弾のクールタイムリセット
-	this.ResetBulletCooltime = function(self)
-		self.ShootCooltime = 0.0
+	-- BulletEmitterSatellite
+	this.UpdateSatelliteEmitterPosition = function(self, radian, degree)
+		for i = 1, #self.BulletEmitterList do
+			emitter = self.BulletEmitterList[i]
+			emitter:UpdatePosition(radian, degree)
+		end
 	end
 	
 	-- メタテーブルセット

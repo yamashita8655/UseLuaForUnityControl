@@ -14,6 +14,8 @@ function Vector2.new(x, y)
 	-- メソッド定義
 	--this.Function = function()
 	--end
+
+	return this
 end
 
 -- 3点を表すオブジェクト
@@ -30,5 +32,7 @@ function Vector3.new(x, y, z)
 	-- メソッド定義
 	--this.Function = function()
 	--end
+	
+	return this
 end
 

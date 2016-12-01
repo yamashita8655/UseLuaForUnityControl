@@ -26,25 +26,23 @@ function BulletManager:GetList()
 	return self.PlayerBulletList
 end
 
-function BulletManager:CreateNormalBullet(touchx, touchy, degree) 
+function BulletManager:CreateNormalBullet(posx, posy, degree) 
 	LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..self.BulletCounter, "PlayerBulletRoot")
 	LuaFindObject("BulletObject"..self.BulletCounter)
 	LuaSetRotate("BulletObject"..self.BulletCounter, 0, 0, degree)
 	
-	--local bullet = BulletObject.new(0, 0, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 2.0, 32, 32)
-	local bullet = NormalBullet.new(0, 0, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
+	local bullet = BulletObject.new(posx, posy, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 2.0, 32, 32) local bullet = NormalBullet.new(0, 0, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
 
 	self.BulletCounter = self.BulletCounter + 1
 	table.insert(self.PlayerBulletList, bullet)
 end
 
-function BulletManager:CreateSpeedBullet(touchx, touchy, degree) 
+function BulletManager:CreateSpeedBullet(posx, posy, degree) 
 	LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..self.BulletCounter, "PlayerBulletRoot")
 	LuaFindObject("BulletObject"..self.BulletCounter)
 	LuaSetRotate("BulletObject"..self.BulletCounter, 0, 0, degree)
 	
-	--local bullet = BulletObject.new(0, 0, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 2.0, 32, 32)
-	local bullet = SpeedBullet.new(0, 0, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
+	local bullet = SpeedBullet.new(posx, posy, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
 
 	self.BulletCounter = self.BulletCounter + 1
 	table.insert(self.PlayerBulletList, bullet)
