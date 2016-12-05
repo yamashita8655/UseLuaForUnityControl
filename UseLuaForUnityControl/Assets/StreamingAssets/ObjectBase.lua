@@ -17,9 +17,68 @@ function ObjectBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 		Width = width,
 		Height = height,
 		DeadFlag = false,
+		NowHp = 0,
+		MaxHp = 0,
 	}
 
 	-- メソッド定義
+	-- 初期化
+	this.Initialize = function(self, nowHp, maxHp)
+		self.NowHp = nowHp
+		self.MaxHp = maxHp
+	end
+	
+	-- 現在HPの加減算
+	this.AddNowHp = function(self, addValue)
+		self.NowHp = self.NowHp + addValue
+		if self.NowHp < 0 then
+			self.NowHp = 0
+		end
+		if self.NowHp > self.MaxHp then
+			self.NowHp = self.MaxHp
+		end
+	end
+	
+	-- 現在HPの直接値指定
+	this.SetNowHp = function(self, value)
+		self.NowHp = value
+		if self.NowHp < 0 then
+			self.NowHp = 0
+		end
+		if self.NowHp > self.MaxHp then
+			self.NowHp = self.MaxHp
+		end
+	end
+	
+	-- 最大HPの加減算
+	this.AddMaxHp = function(self, addValue)
+		if addValue > 0 then
+			self.NowHp = self.NowHp + addValue
+		end
+		self.MaxHp = self.MaxHp + addValue
+		if self.MaxHp <= 0 then
+			self.MaxHp = 1
+		end
+		if self.NowHp > self.MaxHp then
+			self.NowHp = self.MaxHp
+		end
+	end
+	
+	-- 最大HPの直接値指定
+	this.SetMaxHp = function(self, value)
+		if value > self.MaxHp then
+			diffValue = value - self.MaxHp
+			self.NowHp = self.NowHp + diffValue
+		end
+		self.MaxHp = value
+		if self.MaxHp <= 0 then
+			self.MaxHp = 1
+		end
+		if self.NowHp > self.MaxHp then
+			self.NowHp = self.MaxHp
+		end
+	end
+
 	-- 座標取得
 	this.GetPosition = function(self)
 		return self.PositionX, self.PositionY, self.PositionZ
@@ -62,11 +121,13 @@ function ObjectBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 	end
 	
 	-- 生存状態
-	this.GetDeadFlag = function(self) 
-		return self.DeadFlag
-	end
-	this.SetDeadFlag = function(self, isDead) 
-		self.DeadFlag = isDead
+	this.IsAlive = function(self) 
+		local isAlive = true
+		-- HPが0以下だったら、いる
+		if self.NowHp <= 0 then
+			isAlive = false
+		end
+		return isAlive
 	end
 
 	-- メタテーブルセット

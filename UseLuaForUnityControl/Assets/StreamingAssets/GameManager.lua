@@ -17,6 +17,7 @@ end
 -- メソッド定義
 function GameManager:Initialize() 
 	self.SelectPlayerCharacterData = nil
+	self.BattleDeltaTime = 1.0/60.0
 end
 
 -- 選択しているキャラクターデータ指定
@@ -25,6 +26,11 @@ function GameManager:SetSelectPlayerCharacterData(selectCharacterData)
 end
 function GameManager:GetSelectPlayerCharacterData() 
 	return self.SelectPlayerCharacterData
+end
+
+-- 呼び出される毎に加算する時間
+function GameManager:GetBattleDeltaTime() 
+	return self.BattleDeltaTime
 end
 
 function GameManager:Update(deltaTime) 

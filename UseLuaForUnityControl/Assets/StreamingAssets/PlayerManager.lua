@@ -31,6 +31,10 @@ function PlayerManager:SetRotate(rotatex, rotatey, rotatez)
 	LuaSetRotate(self.PlayerCharacterInstance.Name, rotatex, rotatey, rotatez)
 end
 
+function PlayerManager:GetPlayer() 
+	return self.PlayerCharacterInstance
+end
+
 function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree) 
 	if (self.PlayerCharacterInstance) then
 	else
@@ -38,6 +42,8 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local name = playerDataConfig.Name
 		local width = playerDataConfig.Width
 		local height = playerDataConfig.Height
+		local nowHp = playerDataConfig.NowHp
+		local maxHp = playerDataConfig.MaxHp
 		local bulletEmitterPointList = playerDataConfig.BulletEmitterPointList
 
 		LuaLoadPrefabAfter(prefabName, name, "PlayerCharacterRoot")
@@ -46,6 +52,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		LuaFindObject(name)
 		LuaSetRotate(name, 0, 0, degree)
 		local player = PlayerCharacter.new(offsetx, offsety, 0, 0, 0, degree, name, width, height)
+		player:Initialize(nowHp, maxHp)
 
 		LuaUnityDebugLog("EMITTER_LENGTH!"..#bulletEmitterPointList)
 		for i = 1, #bulletEmitterPointList do

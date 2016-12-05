@@ -14,16 +14,19 @@ function BulletBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
 	this.MoveSpeed = 0.0
+	this.Attack = 0
 
 	-- メソッド定義
-	-- 弾の生存確認
-	this.IsExist = function(self)
-		local isExist = true
-		if self.ExistCounter > self.ExistTime then
-			isExist = false
-		end
-	
-		return isExist
+	-- 初期化
+	this.ObjectBaseInitialize = this.Initialize
+	this.Initialize = function(self, nowHp, maxHp, attack)
+		this:ObjectBaseInitialize(nowHp, maxHp)
+		self.Attack = attack
+	end
+
+	-- 攻撃力の取得
+	this.GetAttack = function(self)
+		return self.Attack
 	end
 
 	-- メタテーブルセット

@@ -32,6 +32,7 @@ function BulletManager:CreateNormalBullet(posx, posy, degree)
 	LuaSetRotate("BulletObject"..self.BulletCounter, 0, 0, degree)
 	
 	local bullet = BulletObject.new(posx, posy, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 2.0, 32, 32) local bullet = NormalBullet.new(0, 0, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
+	bullet:Initialize(1, 1, 1)
 
 	self.BulletCounter = self.BulletCounter + 1
 	table.insert(self.PlayerBulletList, bullet)
@@ -43,6 +44,7 @@ function BulletManager:CreateSpeedBullet(posx, posy, degree)
 	LuaSetRotate("BulletObject"..self.BulletCounter, 0, 0, degree)
 	
 	local bullet = SpeedBullet.new(posx, posy, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
+	bullet:Initialize(1, 1, 1)
 
 	self.BulletCounter = self.BulletCounter + 1
 	table.insert(self.PlayerBulletList, bullet)
@@ -66,8 +68,8 @@ function BulletManager:CheckBulletExist()
 		end
 
 		local bullet = self.PlayerBulletList[index]
-		local isExist = bullet:IsExist()
-		if isExist then
+		local IsAlive = bullet:IsAlive()
+		if IsAlive then
 			index = index + 1
 		else
 			LuaDestroyObject(bullet:GetName())
@@ -81,7 +83,7 @@ function BulletManager:RemoveDeadObject()
 	while true do
 		if index <= #self.PlayerBulletList then
 			local obj = self.PlayerBulletList[index]
-			if obj:GetDeadFlag() == true then
+			if obj:IsAlive() == false then
 				LuaDestroyObject(obj:GetName())
 				table.remove(self.PlayerBulletList, index)
 			else

@@ -14,8 +14,21 @@ function NormalEnemyCharacter.new(posx, posy, posz, rotx, roty, rotz, name, numb
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
 	this.MoveSpeed = 1.0
+	this.Attack = 0
 
 	-- メソッド定義
+	-- 初期化
+	this.CharacterBaseInitialize = this.Initialize
+	this.Initialize = function(self, nowHp, maxHp, attack)
+		this:CharacterBaseInitialize(nowHp, maxHp)
+		self.Attack = attack
+	end
+	
+	-- 攻撃力の取得
+	this.GetAttack = function(self)
+		return self.Attack
+	end
+
 	-- 更新
 	this.BaseUpdate = this.Update
 	this.Update = function(self, deltaTime)

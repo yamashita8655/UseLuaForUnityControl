@@ -14,6 +14,7 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
+	"SpawnController.lua",
 	"BulletEmitter.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
@@ -27,6 +28,9 @@ LuaFileList = {
 	"PlayerManager.lua",
 	"PlayerCharacterConfig.lua",
 	"GameManager.lua",
+	"EnemyConfig.lua",
+	"EnemySpawnData.lua",
+	"EnemySpawnTable.lua",
 }
 LuaFileLoadedCount = 0
 
@@ -82,15 +86,8 @@ function InitGame()
 	LuaSetActive("HeaderObject", true)
 	LuaSetActive("FooterObject", true)
 
-	TablePos = Vector2.new(100, 100)
-	BasePos = TablePos
-	WorkPos = TablePos
-	UnityDebugLog(BasePos.x)
-	UnityDebugLog(WorkPos.x)
-	
-	WorkPos.x = 90
-	UnityDebugLog(BasePos.x)
-	UnityDebugLog(WorkPos.x)
+	--test
+	--LuaUnityDebugLog(SpawnTable[1].SpawnData)
 end
 
 --Luaの分割ファイル読み込み
@@ -270,8 +267,12 @@ flag = 0
 function QuestScene_ClickButton_Callback()
 	LuaChangeScene("Battle", "MainCanvas")
 	PlayerManager.Instance():Initialize()
+
 	BulletManager.Instance():Initialize()
+	
 	EnemyManager.Instance():Initialize()
+	EnemyManager:CreateSpawnController(SpawnTable) 
+	
 	local posx = ScreenWidth/2
 	local posy = ScreenHeight/2
 	
@@ -285,7 +286,7 @@ function QuestScene_ClickButton_Callback()
 	end
 
 	PlayerManager.Instance():CreatePlayer(selectCharacter, posx, posy, 0)
-
+	
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
@@ -314,9 +315,13 @@ end
 
 --Unity側から呼ばれる、更新関数
 function BattleUpdate(deltaTime)
-	PlayerManager.Instance():Update(deltaTime)
-	BulletManager.Instance():Update(deltaTime)
-	EnemyManager.Instance():Update(deltaTime)
+	--PlayerManager.Instance():Update(deltaTime)
+	--BulletManager.Instance():Update(deltaTime)
+	--EnemyManager.Instance():Update(deltaTime)
+	-- 線形補間で計算はしないので、実際に経過しているフレーム自体を固定にして、処理落ち対策とする
+	PlayerManager.Instance():Update(GameManager:GetBattleDeltaTime())
+	BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
+	EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
 	CheckBump()
 end
 
@@ -333,10 +338,10 @@ function CheckBump()
 			enemy = enemyList[enemyIndex]
 			bullet = playerBulletList[bulletIndex]
 
-			enemyDead = enemy:GetDeadFlag()
-			bulletDead = bullet:GetDeadFlag()
+			local enemyIsAlive = enemy:IsAlive()
+			local bulletIsAlive = bullet:IsAlive()
 
-			if (enemyDead == true) or (bulletDead == true) then
+			if (enemyIsAlive == false) or (bulletIsAlive == false) then
 			else
 				enemyX, enemyY, enemyZ = enemy:GetPosition()
 				enemyWidth, enemyHeight = enemy:GetSize()
@@ -347,9 +352,38 @@ function CheckBump()
 				isHit = IsHit(enemyX, enemyY, enemyWidth, enemyHeight, bulletX, bulletY, bulletWidth, bulletHeight)
 
 				if isHit == true then
-					enemy:SetDeadFlag(true)
-					bullet:SetDeadFlag(true)
+					local bulletAttack = bullet:GetAttack()
+					enemy:AddNowHp(-bulletAttack)
+					bullet:AddNowHp(-1)
 				end
+			end
+		end
+	end
+	
+	-- 敵と自キャラとのあたり判定
+	-- 当たったら、敵の種別を判定して、削除する敵だったら、DeadFlagのtrueを付与する
+
+	player = PlayerManager:GetPlayer()
+	
+	for enemyIndex = 1, #enemyList do
+		enemy = enemyList[enemyIndex]
+
+		enemyIsAlive = enemy:IsAlive()
+
+		if (enemyIsAlive == false)then
+		else
+			enemyX, enemyY, enemyZ = enemy:GetPosition()
+			enemyWidth, enemyHeight = enemy:GetSize()
+
+			playerX, playerY, playerZ = player:GetPosition()
+			playerWidth, playerHeight = player:GetSize()
+
+			isHit = IsHit(enemyX, enemyY, enemyWidth, enemyHeight, playerX, playerY, playerWidth, playerHeight)
+
+			if isHit == true then
+				local attack = enemy:GetAttack()
+				enemy:SetNowHp(0)
+				player:AddNowHp(-attack)
 			end
 		end
 	end
@@ -359,6 +393,8 @@ function CheckBump()
 	BulletManager:RemoveDeadObject()
 
 end
+
+counter = 0
 
 function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, rightWidth, rightHeight)
 	x = 1
@@ -374,7 +410,6 @@ function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, 
 	rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
 	rightBR = {rightPosX+rightWidth/2, rightPosY-rightHeight/2}
 
-	
 	--左オブジェクトの左上が、右オブジェクトの範囲内に入っているかどうか
 	--x座標が範囲内か確認
 	if (leftTL[x] >= rightTL[x] and leftTL[x] <= rightTR[x]) then
