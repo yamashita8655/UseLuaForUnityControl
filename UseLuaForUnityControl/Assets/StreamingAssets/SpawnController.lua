@@ -93,7 +93,7 @@ function SpawnListData.new()
 				local posy = self.SpawnData.Position.y
 				local radian = math.atan2(posy, posx)
 				local degree = radian * 180 / 3.1415
-				EnemyManager:CreateEnemy(posx+(ScreenWidth/2), posy+(ScreenHeight/2), degree-90-180) 
+				EnemyManager:CreateEnemy(posx+(ScreenWidth/2), posy+(ScreenHeight/2), degree-90-180, self.SpawnData.EnemyType)
 				self.IntervalCounter = 0
 				self.SpawnedCounter = self.SpawnedCounter + 1
 				if self.SpawnedCounter >= self.SpawnData.Value then

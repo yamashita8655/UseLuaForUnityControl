@@ -8,39 +8,25 @@ NormalEnemyCharacter = {}
 
 -- コンストラクタ
 function NormalEnemyCharacter.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
-	local this = CharacterBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
+	local this = EnemyBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
 	
 	-- メンバ変数
-	this.ExistCounter = 0.0
-	this.ExistTime = 0.0
-	this.MoveSpeed = 1.0
-	this.Attack = 0
 
 	-- メソッド定義
 	-- 初期化
-	this.CharacterBaseInitialize = this.Initialize
+	this.EnemyBaseInitialize = this.Initialize
 	this.Initialize = function(self, nowHp, maxHp, attack)
-		this:CharacterBaseInitialize(nowHp, maxHp)
+		this:EnemyBaseInitialize(nowHp, maxHp)
 		self.Attack = attack
 	end
 	
-	-- 攻撃力の取得
-	this.GetAttack = function(self)
-		return self.Attack
-	end
-
 	-- 更新
 	this.BaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
-		local radian = (self.RotateZ+90) / 180 * 3.1415
-		local addx = math.cos(radian)
-		local addy = math.sin(radian)
-
-		self.PositionX = self.PositionX + addx*self.MoveSpeed
-		self.PositionY = self.PositionY + addy*self.MoveSpeed
-		
+		local addx, addy = self.MoveController:Calc(self.RotateZ+90)
+		self.PositionX = self.PositionX + addx
+		self.PositionY = self.PositionY + addy
 		LuaSetPosition(self.Name, self.PositionX, self.PositionY, self.PositionZ)
-
 		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 

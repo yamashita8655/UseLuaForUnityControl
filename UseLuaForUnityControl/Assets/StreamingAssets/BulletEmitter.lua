@@ -27,7 +27,8 @@ function EmitterBase.new()
 	this.ShootBullet = function(self, degree)
 		local canShoot = self:CanShootBullet()
 		if canShoot then
-			BulletManager.Instance():CreateSpeedBullet(self.Position.x, self.Position.y, degree);
+			--BulletManager.Instance():CreateSpeedBullet(self.Position.x, self.Position.y, degree, CharacterType.Player);
+			BulletManager.Instance():CreateNormalBullet(self.Position.x, self.Position.y, degree, CharacterType.Player);
 			self:ResetBulletCooltime()
 		end
 	end

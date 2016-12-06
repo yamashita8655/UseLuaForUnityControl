@@ -35,8 +35,7 @@ function EnemyManager:GetList()
 	return self.EnemyList
 end
 
-function EnemyManager:CreateEnemy(posx, posy, degree) 
-	local enemyConfig = EnemyStraight
+function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig) 
 	local enemyName = enemyConfig.Name..self.EnemyCounter
 	
 	LuaLoadPrefabAfter(enemyConfig.PrefabName, enemyName, "EnemyCharacterRoot")
@@ -44,8 +43,35 @@ function EnemyManager:CreateEnemy(posx, posy, degree)
 	local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
 	LuaFindObject(enemyName)
 	LuaSetRotate(enemyName, 0, 0, degree)
-	local enemy = NormalEnemyCharacter.new(offsetx, offsety, 0, 0, 0, degree, enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+
+	local moveController = nil
+	if enemyConfig.MoveType == MoveTypeEnum.Straight then
+		moveController = MoveControllerStraight.new()
+		moveController:Initialize(2)--movespeedBŒã‚©‚çÝ’è‚µ‚È‚¨‚·
+	elseif enemyConfig.MoveType == MoveTypeEnum.SinCurve then
+		moveController = MoveControllerSinCurve.new()
+		moveController:Initialize(1, 1, 1)--self, sinCurveRotateValue, periodValue, moveSpeedBŒã‚©‚ç‚’‚™
+	else
+		moveController = MoveControllerStraight.new()
+		moveController:Initialize(2)--movespeedBŒã‚©‚çÝ’è‚µ‚È‚¨‚·
+	end
+
+	local enemy = nil
+
+	if enemyConfig.EnemyType == EnemyTypeEnum.Normal then
+		enemy = NormalEnemyCharacter.new(offsetx, offsety, 0, 0, 0, degree, enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+	elseif enemyConfig.EnemyType == EnemyTypeEnum.BulletShooter then
+		--enemy = SinCurveEnemy.new(offsetx, offsety, 0, 0, 0, degree, enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+	else
+		enemy = NormalEnemyCharacter.new(offsetx, offsety, 0, 0, 0, degree, enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+	end
+
 	enemy:Initialize(enemyConfig.NowHp, enemyConfig.MaxHp, enemyConfig.Attack)
+	enemy:SetMoveController(moveController)
+		
+	--emitter = BulletEmitter.new()
+	--emitter:Initialize(Vector2.new(offsetx, offsety), 0.25, Vector2.new(0, 0))
+	--enemy:AddBulletEmitter(emitter)
 
 	self.EnemyCounter = self.EnemyCounter + 1
 	table.insert(self.EnemyList, enemy)
@@ -53,16 +79,6 @@ function EnemyManager:CreateEnemy(posx, posy, degree)
 end
 
 function EnemyManager:Update(deltaTime) 
-	--self.EnemySpawnCounter = self.EnemySpawnCounter + deltaTime
-	--if self.EnemySpawnCounter >= self.EnemySpawnTimer then
-	--	spawnX = math.random(-600, 600)
-	--	spawnY = math.random(-300, 300)
-	--	local radian = math.atan2(spawnY, spawnX)
-	--	local degree = radian * 180 / 3.1415
-	--	self:CreateEnemy(spawnX+(ScreenWidth/2), spawnY+(ScreenHeight/2), degree-90-180)
-	--	self.EnemySpawnCounter = 0.0
-	--end
-
 	self.SpawnController:Update(deltaTime)
 	
 	local enemyCount = #self.EnemyList

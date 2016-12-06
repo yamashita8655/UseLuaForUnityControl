@@ -36,3 +36,22 @@ function Vector3.new(x, y, z)
 	return this
 end
 
+-- クラス定義
+UtilityFunction = {}
+
+-- シングルトン用定義
+local _instance = nil
+function UtilityFunction.Instance() 
+	if not _instance then
+		_instance = UtilityFunction
+		_instance:Initialize()
+		--setmetatable(_instance, { __index = EnemyManager })
+	end
+
+	return _instance
+end
+
+-- メソッド定義
+function UtilityFunction:Initialize() 
+end
+

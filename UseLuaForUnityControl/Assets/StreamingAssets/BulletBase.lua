@@ -15,18 +15,46 @@ function BulletBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 	this.ExistTime = 0.0
 	this.MoveSpeed = 0.0
 	this.Attack = 0
+	this.MoveController = nil
 
 	-- メソッド定義
 	-- 初期化
 	this.ObjectBaseInitialize = this.Initialize
-	this.Initialize = function(self, nowHp, maxHp, attack)
+	this.Initialize = function(self, nowHp, maxHp, attack, existTime)
 		this:ObjectBaseInitialize(nowHp, maxHp)
 		self.Attack = attack
+		self.ExistTime = existTime
+	end
+	
+	--移動処理クラスの設定
+	this.SetMoveController = function(self, controller)
+		self.MoveController = controller
 	end
 
 	-- 攻撃力の取得
 	this.GetAttack = function(self)
 		return self.Attack
+	end
+	
+	-- 生存判定
+	this.ObjectBaseIsAlive = this.IsAlive
+	this.IsAlive = function(self)
+		local isAlive = this:ObjectBaseIsAlive()
+		if isAlive == false then
+			return false
+		end
+
+		if self.ExistCounter > self.ExistTime then
+			return false
+		end
+
+		return true
+	end
+	
+	-- 更新判定
+	this.ObjectBaseUpdate = this.Update
+	this.Update = function(self, deltaTime)
+		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 
 	-- メタテーブルセット

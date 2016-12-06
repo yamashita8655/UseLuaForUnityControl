@@ -14,7 +14,11 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
+	"BaseMoveController.lua",
+	"MoveControllerSinCurve.lua",
+	"MoveControllerStraight.lua",
 	"SpawnController.lua",
+	"EnemyBase.lua",
 	"BulletEmitter.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
@@ -24,6 +28,7 @@ LuaFileList = {
 	"SpeedBullet.lua",
 	"CharacterBase.lua",
 	"NormalEnemyCharacter.lua",
+	"SinCurveEnemy.lua",
 	"PlayerCharacter.lua",
 	"PlayerManager.lua",
 	"PlayerCharacterConfig.lua",
@@ -323,11 +328,22 @@ function BattleUpdate(deltaTime)
 	BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
 	EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
 	CheckBump()
+
+	--local radian = (testRotate) / 180 * 3.1415
+	--testx = math.cos(radian)
+	--testy = math.sin(radian)
+
+	--LuaUnityDebugLog(testx.."/"..testy)
+
+	--testRotate = testRotate + 1
+	--if testRotate >= 360 then
+	--	testRotate = 0
+	--end
 end
 
 --“–‚½‚è”»’è
 function CheckBump()
-	playerBulletList = BulletManager.Instance():GetList()
+	playerBulletList = BulletManager.Instance():GetPlayerBulletList()
 	enemyList = EnemyManager.Instance():GetList()
 
 	-- ’e‚Æ“G‚Æ‚Ì‚ ‚½‚è”»’è
