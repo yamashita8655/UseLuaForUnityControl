@@ -45,28 +45,26 @@ function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig)
 	LuaSetRotate(enemyName, 0, 0, degree)
 
 	local moveController = nil
-	if enemyConfig.MoveType == MoveTypeEnum.Straight then
+	if enemyConfig.MoveType:MoveType() == MoveTypeEnum.Straight then
 		moveController = MoveControllerStraight.new()
-		moveController:Initialize(2)--movespeedÅBå„Ç©ÇÁê›íËÇµÇ»Ç®Ç∑
-	elseif enemyConfig.MoveType == MoveTypeEnum.SinCurve then
+	elseif enemyConfig.MoveType:MoveType() == MoveTypeEnum.SinCurve then
 		moveController = MoveControllerSinCurve.new()
-		moveController:Initialize(1, 1, 1)--self, sinCurveRotateValue, periodValue, moveSpeedÅBå„Ç©ÇÁÇíÇô
-	else
-		moveController = MoveControllerStraight.new()
-		moveController:Initialize(2)--movespeedÅBå„Ç©ÇÁê›íËÇµÇ»Ç®Ç∑
 	end
+	moveController:Initialize(enemyConfig.MoveType)
 
 	local enemy = nil
 
 	if enemyConfig.EnemyType == EnemyTypeEnum.Normal then
-		enemy = NormalEnemyCharacter.new(offsetx, offsety, 0, 0, 0, degree, enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+		enemy = NormalEnemyCharacter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+		enemy:Initialize(enemyConfig.NowHp, enemyConfig.MaxHp, enemyConfig.Attack)
 	elseif enemyConfig.EnemyType == EnemyTypeEnum.BulletShooter then
-		--enemy = SinCurveEnemy.new(offsetx, offsety, 0, 0, 0, degree, enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
-	else
-		enemy = NormalEnemyCharacter.new(offsetx, offsety, 0, 0, 0, degree, enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+		enemy = EnemyShooter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
+		enemy:Initialize(enemyConfig.NowHp, enemyConfig.MaxHp, enemyConfig.Attack)
+		emitter = BulletEmitter.new()
+		emitter:Initialize(Vector2.new(0, 0), 0.25, Bullet0002, enemy:GetPosition(), CharacterType.Enemy)
+		enemy:AddBulletEmitter(emitter)
 	end
 
-	enemy:Initialize(enemyConfig.NowHp, enemyConfig.MaxHp, enemyConfig.Attack)
 	enemy:SetMoveController(moveController)
 		
 	--emitter = BulletEmitter.new()
@@ -75,7 +73,7 @@ function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig)
 
 	self.EnemyCounter = self.EnemyCounter + 1
 	table.insert(self.EnemyList, enemy)
-	LuaSetPosition(enemy.Name, enemy.PositionX, enemy.PositionY, enemy.PositionZ)
+	LuaSetPosition(enemy.Name, enemy.Position.x, enemy.Position.y, enemy.Position.z)
 end
 
 function EnemyManager:Update(deltaTime) 

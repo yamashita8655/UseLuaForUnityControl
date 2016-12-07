@@ -14,26 +14,29 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
+	"MoveConfig.lua",
 	"BaseMoveController.lua",
 	"MoveControllerSinCurve.lua",
 	"MoveControllerStraight.lua",
 	"SpawnController.lua",
 	"EnemyBase.lua",
+	"EmitterConfig.lua",
+	"EnemyConfig.lua",
+	"BulletConfig.lua",
 	"BulletEmitter.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
 	"ObjectBase.lua",
 	"BulletBase.lua",
 	"NormalBullet.lua",
-	"SpeedBullet.lua",
 	"CharacterBase.lua",
 	"NormalEnemyCharacter.lua",
+	"EnemyShooter.lua",
 	"SinCurveEnemy.lua",
 	"PlayerCharacter.lua",
 	"PlayerManager.lua",
 	"PlayerCharacterConfig.lua",
 	"GameManager.lua",
-	"EnemyConfig.lua",
 	"EnemySpawnData.lua",
 	"EnemySpawnTable.lua",
 }
@@ -344,11 +347,12 @@ end
 --ìñÇΩÇËîªíË
 function CheckBump()
 	playerBulletList = BulletManager.Instance():GetPlayerBulletList()
+	enemyBulletList = BulletManager.Instance():GetEnemyBulletList()
 	enemyList = EnemyManager.Instance():GetList()
+	player = PlayerManager:GetPlayer()
 
 	-- íeÇ∆ìGÇ∆ÇÃÇ†ÇΩÇËîªíË
 	-- ìñÇΩÇ¡ÇΩÉIÉuÉWÉFÉNÉgëoï˚Ç…ÅADeadFlagÇÃtrueÇïtó^Ç∑ÇÈ
-	
 	for bulletIndex = 1, #playerBulletList do
 		for enemyIndex = 1, #enemyList do
 			enemy = enemyList[enemyIndex]
@@ -359,13 +363,13 @@ function CheckBump()
 
 			if (enemyIsAlive == false) or (bulletIsAlive == false) then
 			else
-				enemyX, enemyY, enemyZ = enemy:GetPosition()
+				enemyPosition = enemy:GetPosition()
 				enemyWidth, enemyHeight = enemy:GetSize()
 
-				bulletX, bulletY, bulletZ = bullet:GetPosition()
+				bulletPosition = bullet:GetPosition()
 				bulletWidth, bulletHeight = bullet:GetSize()
 
-				isHit = IsHit(enemyX, enemyY, enemyWidth, enemyHeight, bulletX, bulletY, bulletWidth, bulletHeight)
+				isHit = IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
 
 				if isHit == true then
 					local bulletAttack = bullet:GetAttack()
@@ -378,9 +382,6 @@ function CheckBump()
 	
 	-- ìGÇ∆é©ÉLÉÉÉâÇ∆ÇÃÇ†ÇΩÇËîªíË
 	-- ìñÇΩÇ¡ÇΩÇÁÅAìGÇÃéÌï ÇîªíËÇµÇƒÅAçÌèúÇ∑ÇÈìGÇæÇ¡ÇΩÇÁÅADeadFlagÇÃtrueÇïtó^Ç∑ÇÈ
-
-	player = PlayerManager:GetPlayer()
-	
 	for enemyIndex = 1, #enemyList do
 		enemy = enemyList[enemyIndex]
 
@@ -388,18 +389,72 @@ function CheckBump()
 
 		if (enemyIsAlive == false)then
 		else
-			enemyX, enemyY, enemyZ = enemy:GetPosition()
+			enemyPosition = enemy:GetPosition()
 			enemyWidth, enemyHeight = enemy:GetSize()
 
-			playerX, playerY, playerZ = player:GetPosition()
+			playerPosition = player:GetPosition()
 			playerWidth, playerHeight = player:GetSize()
 
-			isHit = IsHit(enemyX, enemyY, enemyWidth, enemyHeight, playerX, playerY, playerWidth, playerHeight)
+			isHit = IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
 
 			if isHit == true then
 				local attack = enemy:GetAttack()
 				enemy:SetNowHp(0)
 				player:AddNowHp(-attack)
+			end
+		end
+	end
+	
+	-- ìGíeÇ∆é©ÉLÉÉÉâÇ∆ÇÃÇ†ÇΩÇËîªíË
+	-- ìñÇΩÇ¡ÇΩÇÁÅAìGÇÃéÌï ÇîªíËÇµÇƒÅAçÌèúÇ∑ÇÈìGÇæÇ¡ÇΩÇÁÅADeadFlagÇÃtrueÇïtó^Ç∑ÇÈ
+	for bulletIndex = 1, #enemyBulletList do
+		bullet = enemyBulletList[bulletIndex]
+
+		bulletIsAlive = bullet:IsAlive()
+
+		if (bulletIsAlive == false)then
+		else
+			bulletPosition = bullet:GetPosition()
+			bulletWidth, bulletHeight = bullet:GetSize()
+
+			playerPosition = player:GetPosition()
+			playerWidth, playerHeight = player:GetSize()
+
+			isHit = IsHit(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
+
+			if isHit == true then
+				local attack = bullet:GetAttack()
+				bullet:SetNowHp(0)
+				player:AddNowHp(-attack)
+			end
+		end
+	end
+	
+	-- ìGíeÇ∆é©íeÇ∆ÇÃÇ†ÇΩÇËîªíË
+	for playerBulletIndex = 1, #playerBulletList do
+		for enemyBulletIndex = 1, #enemyBulletList do
+			enemyBullet = enemyBulletList[enemyBulletIndex]
+			playerBullet = playerBulletList[playerBulletIndex]
+
+			local enemyBulletIsAlive = enemyBullet:IsAlive()
+			local playerBulletIsAlive = playerBullet:IsAlive()
+
+			if (enemyBulletIsAlive == false) or (playerBulletIsAlive == false) then
+			else
+				enemyBulletPosition = enemyBullet:GetPosition()
+				enemyBulletWidth, enemyBulletHeight = enemyBullet:GetSize()
+
+				playerBulletPosition = playerBullet:GetPosition()
+				playerBulletWidth, playerBulletHeight = playerBullet:GetSize()
+
+				isHit = IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
+
+				if isHit == true then
+					local playerBulletAttack = playerBullet:GetAttack()
+					local enemyBulletAttack = enemyBullet:GetAttack()
+					enemyBullet:AddNowHp(-playerBulletAttack)
+					playerBullet:AddNowHp(-enemyBulletAttack)
+				end
 			end
 		end
 	end

@@ -4,14 +4,10 @@
 ObjectBase = {}
 
 -- コンストラクタ
-function ObjectBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
+function ObjectBase.new(position, rotate, name, number, width, height)
 	local this = {
-		PositionX = posx, 
-		PositionY = posy,
-		PositionZ = posz,
-		RotateX = rotx, 
-		RotateY = roty,
-		RotateZ = rotz,
+		Position = position,
+		Rotate = rotate,
 		Name = name,
 		Number = number,
 		Width = width,
@@ -81,13 +77,13 @@ function ObjectBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 
 	-- 座標取得
 	this.GetPosition = function(self)
-		return self.PositionX, self.PositionY, self.PositionZ
+		return self.Position
 	end
 	-- 座標設定
 	this.SetPosition = function(self, positionx, positiony, positionz)
-		self.PositionX = positionx
-		self.PositionY = positiony
-		self.PositionZ = positionz
+		self.Position.x = positionx
+		self.Position.y = positiony
+		self.Position.z = positionz
 	end
 
 	-- サイズ取得
@@ -102,13 +98,13 @@ function ObjectBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width,
 
 	-- 回転率取得
 	this.GetRotate = function(self) 
-		return self.RotateX, self.RotateY, self.RotateZ
+		return self.Rotate
 	end
 	-- 回転率設定
 	this.SetRotate = function(self, rotatex, rotatey, rotatez) 
-		self.RotateX = rotatex
-		self.RotateY = rotatey
-		self.RotateZ = rotatez
+		self.Rotate.x = rotatex
+		self.Rotate.y = rotatey
+		self.Rotate.z = rotatez
 	end
 
 	-- 名前取得

@@ -13,9 +13,9 @@ function MoveControllerStraight.new()
 	-- メソッド定義
 	-- 初期化
 	this.BaseMoveControllerInitialize = this.Initialize
-	this.Initialize = function(self, moveSpeed)
+	this.Initialize = function(self, moveData)
 		this.BaseMoveControllerInitialize()
-		self.MoveSpeed = moveSpeed
+		self.MoveSpeed = moveData:MoveSpeed()
 	end
 
 	this.Calc = function(self, rotateZ)

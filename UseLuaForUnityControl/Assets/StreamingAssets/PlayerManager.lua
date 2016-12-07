@@ -44,26 +44,32 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local height = playerDataConfig.Height
 		local nowHp = playerDataConfig.NowHp
 		local maxHp = playerDataConfig.MaxHp
-		local bulletEmitterPointList = playerDataConfig.BulletEmitterPointList
+		local bulletEmitterList = playerDataConfig.BulletEmitterList
+		local equipBulletList = playerDataConfig.EquipBulletList
 
 		LuaLoadPrefabAfter(prefabName, name, "PlayerCharacterRoot")
 		local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
 		local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
 		LuaFindObject(name)
 		LuaSetRotate(name, 0, 0, degree)
-		local player = PlayerCharacter.new(offsetx, offsety, 0, 0, 0, degree, name, width, height)
+		local player = PlayerCharacter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), name, width, height)
 		player:Initialize(nowHp, maxHp)
 
-		LuaUnityDebugLog("EMITTER_LENGTH!"..#bulletEmitterPointList)
-		for i = 1, #bulletEmitterPointList do
-			--emitter = BulletEmitter.new()
-			emitter = BulletEmitterSatellite.new()
-			emitter:Initialize(bulletEmitterPointList[i], 0.25, Vector2.new(0, 0))
+		for i = 1, #bulletEmitterList do
+			emitter = nil
+			if bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Normal then
+				LuaUnityDebugLog("NORMAL!")
+				emitter = BulletEmitter.new()
+				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], player:GetPosition(), CharacterType.Player)
+			elseif bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Satellite then
+				emitter = BulletEmitterSatellite.new()
+				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], player:GetPosition(), CharacterType.Player, Vector2.new(0, 0))
+			end
 			player:AddBulletEmitter(emitter)
 		end
 
 		self.PlayerCharacterInstance = player
-		LuaSetPosition(player.Name, player.PositionX, player.PositionY, player.PositionZ)
+		LuaSetPosition(player.Name, player.Position.x, player.Position.y, player.Position.z)
 	end
 end
 

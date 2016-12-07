@@ -9,13 +9,19 @@ function EmitterBase.new()
 		Position = Vector2.new(0, 0),
 		ShootCooltime = 0.0,
 		ShootInterval = 0.25,
+		BulletConfig = {},
+		ParentPosition = {},
+		CharacterType = 0
 	}
 	
 	-- メソッド定義
 	-- 初期化
-	this.Initialize = function(self, position, interval)
+	this.Initialize = function(self, position, interval, bulletConfig, parentPosition, characterType)
 		self.Position = position
 		self.ShootInterval = interval
+		self.BulletConfig = bulletConfig
+		self.ParentPosition = parentPosition 
+		self.CharacterType = characterType 
 	end
 	
 	-- 更新
@@ -27,8 +33,7 @@ function EmitterBase.new()
 	this.ShootBullet = function(self, degree)
 		local canShoot = self:CanShootBullet()
 		if canShoot then
-			--BulletManager.Instance():CreateSpeedBullet(self.Position.x, self.Position.y, degree, CharacterType.Player);
-			BulletManager.Instance():CreateNormalBullet(self.Position.x, self.Position.y, degree, CharacterType.Player);
+			BulletManager.Instance():CreateNormalBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree, self.BulletConfig, self.CharacterType);
 			self:ResetBulletCooltime()
 		end
 	end
@@ -57,6 +62,10 @@ BulletEmitter = {}
 -- コンストラクタ
 function BulletEmitter.new()
 	local this = EmitterBase.new()
+	
+	this.UpdatePosition = function(self, radian, degree)
+	end
+	
 	return this
 end
 
@@ -73,8 +82,8 @@ function BulletEmitterSatellite.new()
 	-- メソッド定義
 	-- 初期化
 	this.BaseInitialize = this.Initialize
-	this.Initialize = function(self, position, interval, centerPosition)
-		this.BaseInitialize(self, position, interval)
+	this.Initialize = function(self, position, interval, bulletConfig, parentPosition, characterType, centerPosition)
+		this:BaseInitialize(position, interval, bulletConfig, parentPosition, characterType)
 		-- 新たに作成しないと、参照なので、Positionを書き換えると、SpawnPositionの値も変わってしまう
 		self.SpawnPosition = Vector2.new(position.x, position.y)
 		self.CenterPosition = centerPosition

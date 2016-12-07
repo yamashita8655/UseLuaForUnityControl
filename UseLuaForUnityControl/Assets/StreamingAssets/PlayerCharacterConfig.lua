@@ -8,12 +8,20 @@ PlayerCharacter001 = {
 	Height = 128,
 	NowHp = 100,
 	MaxHp = 100,
-	BulletEmitterPointList = {
-		Vector2.new(0, 100),
-		Vector2.new(0, -100),
-		--Vector2.new(100, 0),
-		--Vector2.new(-100, 0),
+	BulletEmitterList = {
+		Emitter001.new(0.25, Vector2.new(0, 100), EmitterTypeEnum.Normal),
+		Emitter001.new(0.25, Vector2.new(0, -100), EmitterTypeEnum.Normal),
+		Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
 	},
+	EquipBulletList = {
+		Bullet0002,
+		Bullet0002,
+		Bullet0002,
+		Bullet0002,
+		Bullet0001,
+	},-- ç°ÇÕÅABulletEmitterListÇ∆EquipBulletListÇÃêîÇÕìØÇ∂Ç…ÇµÇƒÇ®Ç©Ç»Ç¢Ç∆É_ÉÅ
 }
 
 PlayerCharacter002 = {
@@ -23,8 +31,8 @@ PlayerCharacter002 = {
 	Height = 64,
 	NowHp = 50,
 	MaxHp = 100,
-	BulletEmitterPointList = {
-		Vector2.new(0, 0),
+	BulletEmitterList = {
+		Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
 	},
 }
 

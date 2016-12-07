@@ -7,8 +7,8 @@ EnemyShooter = {}
 -- メソッド定義
 
 -- コンストラクタ
-function EnemyShooter.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
-	local this = EnemyBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
+function EnemyShooter.new(position, rotate, name, number, width, height)
+	local this = EnemyBase.new(position, rotate, name, number, width, height)
 	
 	-- メンバ変数
 	this.BulletEmitterList = {}
@@ -23,7 +23,15 @@ function EnemyShooter.new(posx, posy, posz, rotx, roty, rotz, name, number, widt
 	-- 更新
 	this.EnemyBaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
-		this.EnemyBaseUpdate(deltaTime)
+		this:EnemyBaseUpdate(deltaTime)
+
+		local targetPosition = Vector2.new(0, 0)-- プレイヤーキャラの位置
+		local offsetx = targetPosition.x - self.Position.x
+		local offsety = targetPosition.y - self.Position.y
+		local radian = math.atan2(offsety, offsetx)
+		local degree = radian * 180 / 3.1415
+		self:ShootBullet(degree-90)
+		
 		for i = 1, #self.BulletEmitterList do
 			emitter = self.BulletEmitterList[i]
 			emitter:Update(deltaTime)
@@ -35,7 +43,7 @@ function EnemyShooter.new(posx, posy, posz, rotx, roty, rotz, name, number, widt
 		table.insert(self.BulletEmitterList, emitter)
 	end
 	
-	-- 弾のクールタイムが終わっているかどうか
+	-- 弾発射
 	this.ShootBullet = function(self, degree)
 		for i = 1, #self.BulletEmitterList do
 			emitter = self.BulletEmitterList[i]

@@ -17,6 +17,13 @@ Spawn001_001_002 = {
 	Value     = 5,						--出現総数
 }
 
+Spawn001_001_003 = {
+	Position  = Vector2.new(250, 250),	--座標
+	EnemyType = Enemy0003,				--敵の種類
+	Interval  = 1,						--間隔
+	Value     = 1,						--出現総数
+}
+
 Spawn001_002_001 = {
 	Position  = Vector2.new(250, 250),	--座標
 	EnemyType = Enemy0001,				--敵の種類

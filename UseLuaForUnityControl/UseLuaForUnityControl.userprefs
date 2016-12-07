@@ -1,9 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\ResourceManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\UnityUtilityFunction.txt">
     <Files>
-      <File FileName="Assets\Script\UnityUtility.cs" Line="41" Column="36" />
-      <File FileName="Assets\Script\ResourceManager.cs" Line="45" Column="1" />
+      <File FileName="Assets\Resources\UnityUtilityFunction.txt" Line="1" Column="1" />
+      <File FileName="Assets\Script\UnityUtility.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\ResourceManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\NativeMethods.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\HowToUseLua.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameMain\BootScene.cs" Line="1" Column="1" />

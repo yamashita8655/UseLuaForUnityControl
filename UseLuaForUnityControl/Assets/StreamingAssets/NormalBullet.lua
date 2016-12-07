@@ -7,8 +7,8 @@ NormalBullet = {}
 -- メソッド定義
 
 -- コンストラクタ
-function NormalBullet.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
-	local this = BulletBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
+function NormalBullet.new(position, rotate, name, number, width, height)
+	local this = BulletBase.new(position, rotate, name, number, width, height)
 
 	-- メンバ変数
 	
@@ -16,10 +16,10 @@ function NormalBullet.new(posx, posy, posz, rotx, roty, rotz, name, number, widt
 	-- 更新
 	this.BaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
-		local addx, addy = self.MoveController:Calc(self.RotateZ+90)
-		self.PositionX = self.PositionX + addx
-		self.PositionY = self.PositionY + addy
-		LuaSetPosition(self.Name, self.PositionX, self.PositionY, self.PositionZ)
+		local addx, addy = self.MoveController:Calc(self.Rotate.z+90)
+		self.Position.x = self.Position.x + addx
+		self.Position.y = self.Position.y + addy
+		LuaSetPosition(self.Name, self.Position.x, self.Position.y, self.Position.z)
 		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 	

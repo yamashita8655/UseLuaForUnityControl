@@ -7,8 +7,8 @@ EnemyBase = {}
 -- メソッド定義
 
 -- コンストラクタ
-function EnemyBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
-	local this = CharacterBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
+function EnemyBase.new(position, rotate, name, number, width, height)
+	local this = CharacterBase.new(position, rotate, name, number, width, height)
 	
 	-- メンバ変数
 	this.ExistCounter = 0.0
@@ -34,6 +34,15 @@ function EnemyBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, 
 	-- 攻撃力の取得
 	this.GetAttack = function(self)
 		return self.Attack
+	end
+	
+	-- 更新
+	this.Update = function(self, deltaTime)
+		local addx, addy = self.MoveController:Calc(self.Rotate.z+90)
+		self.Position.x = self.Position.x + addx
+		self.Position.y = self.Position.y + addy
+		LuaSetPosition(self.Name, self.Position.x, self.Position.y, self.Position.z)
+		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 
 	return this

@@ -16,11 +16,11 @@ function MoveControllerSinCurve.new()
 	-- メソッド定義
 	-- 初期化
 	this.BaseMoveControllerInitialize = this.Initialize
-	this.Initialize = function(self, sinCurveRotateValue, periodValue, moveSpeed)
+	this.Initialize = function(self, moveData)
 		this.BaseMoveControllerInitialize()
-		self.SinCurveRotateValue = sinCurveRotateValue
-		self.PeriodValue = periodValue 
-		self.MoveSpeed = moveSpeed-- こっちが、振れ幅
+		self.SinCurveRotateValue = moveData:RotateValue()
+		self.PeriodValue = moveData:PeriodValue() 
+		self.MoveSpeed = moveData:MoveSpeed()-- こっちが、振れ幅
 	end
 
 

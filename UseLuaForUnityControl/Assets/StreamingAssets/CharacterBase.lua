@@ -7,8 +7,8 @@ CharacterBase = {}
 -- メソッド定義
 
 -- コンストラクタ
-function CharacterBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
-	local this = ObjectBase.new(posx, posy, posz, rotx, roty, rotz, name, number, width, height)
+function CharacterBase.new(position, rotate, name, number, width, height)
+	local this = ObjectBase.new(position, rotate, name, number, width, height)
 	
 	-- メンバ変数
 	this.ExistCounter = 0.0

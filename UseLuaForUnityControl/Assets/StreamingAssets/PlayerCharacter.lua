@@ -7,8 +7,8 @@ PlayerCharacter = {}
 -- メソッド定義
 
 -- コンストラクタ
-function PlayerCharacter.new(posx, posy, posz, rotx, roty, rotz, name, width, height)
-	local this = CharacterBase.new(posx, posy, posz, rotx, roty, rotz, name, 0, width, height)
+function PlayerCharacter.new(position, rotate, name, width, height)
+	local this = CharacterBase.new(position, rotate, name, 0, width, height)
 	
 	-- メンバ変数
 	this.ExistCounter = 0.0

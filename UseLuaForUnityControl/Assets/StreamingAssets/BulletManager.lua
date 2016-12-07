@@ -35,42 +35,24 @@ function BulletManager:GetEnemyBulletList()
 	return self.EnemyBulletList
 end
 
-function BulletManager:CreateNormalBullet(posx, posy, degree, characterType)
-	LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..self.BulletCounter, "PlayerBulletRoot")
-	LuaFindObject("BulletObject"..self.BulletCounter)
-	LuaSetRotate("BulletObject"..self.BulletCounter, 0, 0, degree)
+function BulletManager:CreateNormalBullet(posx, posy, degree, bulletConfig, characterType)
+	local name = "BulletObject"..self.BulletCounter
+	LuaLoadPrefabAfter(bulletConfig.PrefabName, name, "PlayerBulletRoot")
+	LuaFindObject(name)
+	LuaSetPosition(name, posx, posy, 0)
+	LuaSetRotate(name, 0, 0, degree)
 	
-	--local moveController = nil
-	--if bulletConfig.MoveType == MoveTypeEnum.Straight then
-	--	moveController = MoveControllerStraight.new()
-	--	moveController:Initialize(5)--movespeed。後から設定しなおす
-	--elseif bulletConfig.MoveType == MoveTypeEnum.SinCurve then
-	--	moveController = MoveControllerSinCurve.new()
-	--	moveController:Initialize(1, 1, 1)--self, sinCurveRotateValue, periodValue, moveSpeed。後からｒｙ
-	--else
-	--	moveController = MoveControllerStraight.new()
-	--	moveController:Initialize(5)--movespeed。後から設定しなおす
-	--end
 	local moveController = nil
-	moveController = MoveControllerStraight.new()
-	moveController:Initialize(5)--movespeed。後から設定しなおす
+	if bulletConfig.MoveType:MoveType() == MoveTypeEnum.Straight then
+		moveController = MoveControllerStraight.new()
+	elseif bulletConfig.MoveType:MoveType() == MoveTypeEnum.SinCurve then
+		moveController = MoveControllerSinCurve.new()
+	end
+	moveController:Initialize(bulletConfig.MoveType)--movespeed。後から設定しなおす
 	
-	--local bullet = NormalBullet.new(posx, posy, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 2.0, 32, 32) 
-	local bullet = NormalBullet.new(posx, posy, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
-	bullet:Initialize(1, 1, 1, 3)
+	local bullet = NormalBullet.new(Vector3.new(posx, posy, 0), Vector3.new(0, 0, degree), name, self.BulletCounter, bulletConfig.Width, bulletConfig.Height)
+	bullet:Initialize(bulletConfig.NowHp, bulletConfig.MaxHp, bulletConfig.Attack, bulletConfig.ExistTime) --this.Initialize = function(self, nowHp, maxHp, attack, existTime)
 	bullet:SetMoveController(moveController)
-
-	self.BulletCounter = self.BulletCounter + 1
-	self:AddBulletList(bullet, characterType) 
-end
-
-function BulletManager:CreateSpeedBullet(posx, posy, degree, characterType) 
-	LuaLoadPrefabAfter("Prefabs/BulletObject", "BulletObject"..self.BulletCounter, "PlayerBulletRoot")
-	LuaFindObject("BulletObject"..self.BulletCounter)
-	LuaSetRotate("BulletObject"..self.BulletCounter, 0, 0, degree)
-	
-	local bullet = SpeedBullet.new(posx, posy, 0, 0, 0, degree, "BulletObject"..self.BulletCounter, self.BulletCounter, 32, 32)
-	bullet:Initialize(1, 1, 1)
 
 	self.BulletCounter = self.BulletCounter + 1
 	self:AddBulletList(bullet, characterType) 
