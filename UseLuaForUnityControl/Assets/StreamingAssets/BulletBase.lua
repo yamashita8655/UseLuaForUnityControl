@@ -11,6 +11,7 @@ function BulletBase.new(position, rotate, name, number, width, height)
 	local this = ObjectBase.new(position, rotate, name, number, width, height)
 	
 	-- メンバ変数
+	this.BulletType = 0
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
 	this.MoveSpeed = 0.0
@@ -55,6 +56,11 @@ function BulletBase.new(position, rotate, name, number, width, height)
 	this.ObjectBaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
 		self.ExistCounter = self.ExistCounter + deltaTime
+	end
+	
+	-- 弾種別
+	this.GetBulletType = function(self)
+		return self.BulletType
 	end
 
 	-- メタテーブルセット

@@ -1,10 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\UnityUtilityFunction.txt">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\UnityUtility.cs">
     <Files>
+      <File FileName="Assets\Script\UnityUtility.cs" Line="161" Column="3" />
       <File FileName="Assets\Resources\UnityUtilityFunction.txt" Line="1" Column="1" />
-      <File FileName="Assets\Script\UnityUtility.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\ResourceManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\ResourceManager.cs" Line="56" Column="1" />
       <File FileName="Assets\Script\NativeMethods.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\HowToUseLua.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameMain\BootScene.cs" Line="1" Column="1" />
@@ -15,9 +15,6 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="D:\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="261" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\ResourceManager.cs" line="43" column="27" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\ResourceManager.cs" line="56" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\ResourceManager.cs" line="56" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

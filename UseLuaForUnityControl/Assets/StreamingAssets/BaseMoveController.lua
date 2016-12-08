@@ -14,6 +14,11 @@ function BaseMoveController.new()
 	this.Initialize = function(self)
 	end
 	
+	-- 計算
+	-- と書いてあるけど、毎フレーム呼び出される前提なので、deltaTimeも渡す
+	this.Initialize = function(self, deltaTime)
+	end
+	
 	return this
 end
 

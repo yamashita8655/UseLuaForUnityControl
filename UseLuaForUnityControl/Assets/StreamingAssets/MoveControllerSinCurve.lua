@@ -23,8 +23,7 @@ function MoveControllerSinCurve.new()
 		self.MoveSpeed = moveData:MoveSpeed()-- ‚±‚Á‚¿‚ªAU‚ê•
 	end
 
-
-	this.Calc = function(self, rotateZ)
+	this.Calc = function(self, deltaTime, rotateZ)
 		if self.IsCountUp then
 			self.SinCurveRotateValue = self.SinCurveRotateValue + self.PeriodValue-- ”’l‚Ì•”•ª‚ªA‰•œ‚ÌüŠú‚Ì‘¬‚³
 			if self.SinCurveRotateValue >= 180 then

@@ -9,18 +9,10 @@ PlayerCharacter001 = {
 	NowHp = 100,
 	MaxHp = 100,
 	BulletEmitterList = {
-		Emitter001.new(0.25, Vector2.new(0, 100), EmitterTypeEnum.Normal),
-		Emitter001.new(0.25, Vector2.new(0, -100), EmitterTypeEnum.Normal),
-		Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Normal),
-		Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Normal),
-		Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
 	},
 	EquipBulletList = {
-		Bullet0002,
-		Bullet0002,
-		Bullet0002,
-		Bullet0002,
-		Bullet0001,
+		BulletHomingTest,
 	},-- ¡‚ÍABulletEmitterList‚ÆEquipBulletList‚Ì”‚Í“¯‚¶‚É‚µ‚Ä‚¨‚©‚È‚¢‚Æƒ_ƒ
 }
 

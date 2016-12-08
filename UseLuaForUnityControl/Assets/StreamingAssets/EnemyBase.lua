@@ -38,7 +38,7 @@ function EnemyBase.new(position, rotate, name, number, width, height)
 	
 	-- çXêV
 	this.Update = function(self, deltaTime)
-		local addx, addy = self.MoveController:Calc(self.Rotate.z+90)
+		local addx, addy = self.MoveController:Calc(deltaTime, self.Rotate.z+90)
 		self.Position.x = self.Position.x + addx
 		self.Position.y = self.Position.y + addy
 		LuaSetPosition(self.Name, self.Position.x, self.Position.y, self.Position.z)

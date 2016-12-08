@@ -35,7 +35,7 @@ function BulletManager:GetEnemyBulletList()
 	return self.EnemyBulletList
 end
 
-function BulletManager:CreateNormalBullet(posx, posy, degree, bulletConfig, characterType)
+function BulletManager:CreateBullet(posx, posy, degree, bulletConfig, characterType)
 	local name = "BulletObject"..self.BulletCounter
 	LuaLoadPrefabAfter(bulletConfig.PrefabName, name, "PlayerBulletRoot")
 	LuaFindObject(name)
@@ -47,11 +47,20 @@ function BulletManager:CreateNormalBullet(posx, posy, degree, bulletConfig, char
 		moveController = MoveControllerStraight.new()
 	elseif bulletConfig.MoveType:MoveType() == MoveTypeEnum.SinCurve then
 		moveController = MoveControllerSinCurve.new()
+	elseif bulletConfig.MoveType:MoveType() == MoveTypeEnum.Homing then
+		moveController = MoveControllerHoming.new()
 	end
 	moveController:Initialize(bulletConfig.MoveType)--movespeedÅBå„Ç©ÇÁê›íËÇµÇ»Ç®Ç∑
 	
-	local bullet = NormalBullet.new(Vector3.new(posx, posy, 0), Vector3.new(0, 0, degree), name, self.BulletCounter, bulletConfig.Width, bulletConfig.Height)
-	bullet:Initialize(bulletConfig.NowHp, bulletConfig.MaxHp, bulletConfig.Attack, bulletConfig.ExistTime) --this.Initialize = function(self, nowHp, maxHp, attack, existTime)
+	local bullet = nil
+	if bulletConfig.BulletType == BulletTypeEnum.Normal then
+		bullet = NormalBullet.new(Vector3.new(posx, posy, 0), Vector3.new(0, 0, degree), name, self.BulletCounter, bulletConfig.Width, bulletConfig.Height)
+		bullet:Initialize(bulletConfig.NowHp, bulletConfig.MaxHp, bulletConfig.Attack, bulletConfig.ExistTime) --this.Initialize = function(self, nowHp, maxHp, attack, existTime)
+	elseif bulletConfig.BulletType == BulletTypeEnum.UseTargetPosition then
+		bullet = HomingBullet.new(Vector3.new(posx, posy, 0), Vector3.new(0, 0, degree), name, self.BulletCounter, bulletConfig.Width, bulletConfig.Height)
+		bullet:Initialize(bulletConfig.NowHp, bulletConfig.MaxHp, bulletConfig.Attack, bulletConfig.ExistTime) --this.Initialize = function(self, nowHp, maxHp, attack, existTime)
+	end
+
 	bullet:SetMoveController(moveController)
 
 	self.BulletCounter = self.BulletCounter + 1
@@ -79,6 +88,44 @@ function BulletManager:Update(deltaTime)
 	
 	self:CheckBulletExist(self.PlayerBulletList) 
 	self:CheckBulletExist(self.EnemyBulletList) 
+	
+	self:SetTargetPosition(self.PlayerBulletList) 
+	self:SetTargetPosition(self.EnemyBulletList) 
+end
+
+function BulletManager:SetTargetPosition(list) 
+	for i = 1, #list do
+		bullet = list[i]
+		if bullet:GetTarget() == nil or bullet:GetTarget():IsAlive() == false then
+			if bullet:GetBulletType() == BulletTypeEnum.UseTargetPosition then
+				bulletPosition = bullet:GetPosition()
+				enemyList = EnemyManager:GetList()
+				if #enemyList == 0 then
+				else
+					enemy = enemyList[1]
+					enemyPosition = enemy:GetPosition()
+					posx = enemyPosition.x - bulletPosition.x
+					posy = enemyPosition.y - bulletPosition.y
+					length = math.sqrt((posx*posx)+(posy*posy))
+					nearLength = length
+					nearEnemy = enemy
+					for j = 2, #enemyList do
+						enemy = enemyList[j]
+						enemyPosition = enemy:GetPosition()
+						posx = enemyPosition.x - bulletPosition.x
+						posy = enemyPosition.y - bulletPosition.y
+						length = math.sqrt((posx*posx)+(posy*posy))
+						if length < nearLength then
+							nearLength = length
+							nearEnemy = enemy
+						end
+					end
+					bullet:SetTarget(nearEnemy)
+				end
+			end
+		else
+		end
+	end
 end
 
 function BulletManager:CheckBulletExist(list) 

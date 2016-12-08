@@ -18,7 +18,7 @@ function MoveControllerStraight.new()
 		self.MoveSpeed = moveData:MoveSpeed()
 	end
 
-	this.Calc = function(self, rotateZ)
+	this.Calc = function(self, deltaTime, rotateZ)
 		local radian = rotateZ / 180 * 3.1415
 		local addx = math.cos(radian) * self.MoveSpeed
 		local addy = math.sin(radian) * self.MoveSpeed
