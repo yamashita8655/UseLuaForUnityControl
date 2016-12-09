@@ -1,23 +1,23 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- ƒvƒŒƒCƒ„[ƒNƒ‰ƒX
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¯ãƒ©ã‚¹
 PlayerCharacter = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function PlayerCharacter.new(position, rotate, name, width, height)
 	local this = CharacterBase.new(position, rotate, name, 0, width, height)
 	
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
 	this.MoveSpeed = 1.0
 	this.BulletEmitterList = {}
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.CharacterBaseInitialize = this.Initialize
 	this.Initialize = function(self, nowHp, maxHp)
 		this:CharacterBaseInitialize(nowHp, maxHp)
@@ -25,41 +25,41 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 		self:UpdateHpGauge()
 	end
 	
-	-- HPƒQ[ƒW‚ÌXV
+	-- HPã‚²ãƒ¼ã‚¸ã®æ›´æ–°
 	this.UpdateHpGauge = function(self)
 		barRate = self.NowHp / self.MaxHp
 		LuaSetScale("PlayerHPGaugeBar", 1.0, barRate, 1.0)
 	end
 	
-	-- Œ»İHP‚Ì‰ÁŒ¸Z
+	-- ç¾åœ¨HPã®åŠ æ¸›ç®—
 	this.CharacterBaseAddNowHp = this.AddNowHp
 	this.AddNowHp = function(self, addValue)
 		self:CharacterBaseAddNowHp(addValue)
 		self:UpdateHpGauge()
 	end
 	
-	-- Œ»İHP‚Ì’¼Ú’lw’è
+	-- ç¾åœ¨HPã®ç›´æ¥å€¤æŒ‡å®š
 	this.CharacterBaseSetNowHp = this.SetNowHp
 	this.SetNowHp = function(self, value)
 		self:CharacterBaseSetNowHp(value)
 		self:UpdateHpGauge()
 	end
 	
-	-- Å‘åHP‚Ì‰ÁŒ¸Z
+	-- æœ€å¤§HPã®åŠ æ¸›ç®—
 	this.CharacterBaseAddMaxHp = this.AddMaxHp
 	this.AddMaxHp = function(self, addValue)
 		self:CharacterBaseAddMaxHp(addValue)
 		self:UpdateHpGauge()
 	end
 	
-	-- Å‘åHP‚Ì’¼Ú’lw’è
+	-- æœ€å¤§HPã®ç›´æ¥å€¤æŒ‡å®š
 	this.CharacterBaseSetMaxHp = this.SetMaxHp
 	this.SetMaxHp = function(self, value)
 		self:CharacterBaseSetMaxHp(value)
 		self:UpdateHpGauge()
 	end
 
-	-- XV
+	-- æ›´æ–°
 	this.BaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
 		for i = 1, #self.BulletEmitterList do
@@ -68,12 +68,12 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 		end
 	end
 	
-	-- ’e‚ª”­Ë‚³‚ê‚éƒ|ƒCƒ“ƒg‚Ì’Ç‰Á
+	-- å¼¾ãŒç™ºå°„ã•ã‚Œã‚‹ãƒã‚¤ãƒ³ãƒˆã®è¿½åŠ 
 	this.AddBulletEmitter = function(self, emitter)
 		table.insert(self.BulletEmitterList, emitter)
 	end
 	
-	-- ’e‚ÌƒN[ƒ‹ƒ^ƒCƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	-- å¼¾ã®ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	this.ShootBullet = function(self, degree)
 		for i = 1, #self.BulletEmitterList do
 			emitter = self.BulletEmitterList[i]
@@ -89,7 +89,7 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 		end
 	end
 	
-	-- ƒƒ^ƒe[ƒuƒ‹ƒZƒbƒg
+	-- ãƒ¡ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚»ãƒƒãƒˆ
 	--return setmetatable(this, {__index = PlayerCharacter})
 	return this
 end

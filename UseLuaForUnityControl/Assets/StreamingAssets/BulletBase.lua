@@ -1,16 +1,16 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- ’eƒNƒ‰ƒX
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- å¼¾ã‚¯ãƒ©ã‚¹
 BulletBase = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function BulletBase.new(position, rotate, name, number, width, height)
 	local this = ObjectBase.new(position, rotate, name, number, width, height)
 	
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.BulletType = 0
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
@@ -18,8 +18,8 @@ function BulletBase.new(position, rotate, name, number, width, height)
 	this.Attack = 0
 	this.MoveController = nil
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.ObjectBaseInitialize = this.Initialize
 	this.Initialize = function(self, nowHp, maxHp, attack, existTime)
 		this:ObjectBaseInitialize(nowHp, maxHp)
@@ -27,17 +27,17 @@ function BulletBase.new(position, rotate, name, number, width, height)
 		self.ExistTime = existTime
 	end
 	
-	--ˆÚ“®ˆ—ƒNƒ‰ƒX‚Ìİ’è
+	--ç§»å‹•å‡¦ç†ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 	this.SetMoveController = function(self, controller)
 		self.MoveController = controller
 	end
 
-	-- UŒ‚—Í‚Ìæ“¾
+	-- æ”»æ’ƒåŠ›ã®å–å¾—
 	this.GetAttack = function(self)
 		return self.Attack
 	end
 	
-	-- ¶‘¶”»’è
+	-- ç”Ÿå­˜åˆ¤å®š
 	this.ObjectBaseIsAlive = this.IsAlive
 	this.IsAlive = function(self)
 		local isAlive = this:ObjectBaseIsAlive()
@@ -52,18 +52,18 @@ function BulletBase.new(position, rotate, name, number, width, height)
 		return true
 	end
 	
-	-- XV”»’è
+	-- æ›´æ–°åˆ¤å®š
 	this.ObjectBaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
 		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 	
-	-- ’eí•Ê
+	-- å¼¾ç¨®åˆ¥
 	this.GetBulletType = function(self)
 		return self.BulletType
 	end
 
-	-- ƒƒ^ƒe[ƒuƒ‹ƒZƒbƒg
+	-- ãƒ¡ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚»ãƒƒãƒˆ
 	--return setmetatable(this, {__index = BulletBase})
 	return this
 end

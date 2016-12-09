@@ -1,4 +1,4 @@
---Unity‘¤‚©‚çŒÄ‚Î‚êAUnity‘¤‚Ìˆ—‚ğŒÄ‚Ño‚·--Unity`‚Æ‚¢‚¤‚Ì‚ÍAUnity‘¤‚©‚çŠÖ”‚Ì“o˜^‚ª‚³‚ê‚Ä‚¢‚È‚¢‚Æg‚¦‚È‚¢i‚Æ‚¢‚¤‚©Aˆ—‚ª‚È‚¢j
+ï»¿--Unityå´ã‹ã‚‰å‘¼ã°ã‚Œã€Unityå´ã®å‡¦ç†ã‚’å‘¼ã³å‡ºã™--Unityï½ã¨ã„ã†ã®ã¯ã€Unityå´ã‹ã‚‰é–¢æ•°ã®ç™»éŒ²ãŒã•ã‚Œã¦ã„ãªã„ã¨ä½¿ãˆãªã„ï¼ˆã¨ã„ã†ã‹ã€å‡¦ç†ãŒãªã„ï¼‰
 
 QuestCount = 5
 ScreenWidth = ""
@@ -9,7 +9,7 @@ CanvasFactor = 0.0
 
 IsLoading = false
 
---StreamingAssets“à‚É‚ ‚éALua—p•ªŠ„ƒXƒNƒŠƒvƒgBÅI“I‚É‚ÍA‚±‚±‚ÍƒAƒZƒbƒgƒoƒ“ƒhƒ‹‚©‚ç“Ç‚İ‚Ş‚±‚Æ‚É‚È‚é‚Í‚¸
+--StreamingAssetså†…ã«ã‚ã‚‹ã€Luaç”¨åˆ†å‰²ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚æœ€çµ‚çš„ã«ã¯ã€ã“ã“ã¯ã‚¢ã‚»ãƒƒãƒˆãƒãƒ³ãƒ‰ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€ã“ã¨ã«ãªã‚‹ã¯ãš
 LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
@@ -50,7 +50,7 @@ function LuaUnityLoadFileAsync(loadPath, savePath, callbackName)
 	UnityLoadFileAsync(loadPath, savePath, callbackName)
 end
 
---Lua‚ÌMainŠÖ”‚İ‚½‚¢‚È“z
+--Luaã®Mainé–¢æ•°ã¿ãŸã„ãªå¥´
 function LuaMain()
 	LuaChangeScene("Title", "MainCanvas")
 	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
@@ -65,7 +65,7 @@ function LuaMain()
 	LuaFindObject("DebugDisplayText")
 end
 
---ƒQ[ƒ€‚Ìî•ñ
+--ã‚²ãƒ¼ãƒ ã®æƒ…å ±
 function SetUnityGameData(screenWidth, screenHeight, canvasFactor, streamingDataPath, persistentDataPath)
 	ScreenWidth = screenWidth
 	ScreenHeight = screenHeight
@@ -75,7 +75,7 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, streamingData
 	
 end
 
---Lua‚Ì•ªŠ„ƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+--Luaã®åˆ†å‰²ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 function LoadAllLuaScript()
 	local fileCount = #LuaFileList
 	if LuaFileLoadedCount < fileCount then
@@ -89,7 +89,7 @@ function LoadAllLuaScript()
 end
 
 function InitGame()
-	-- ‚Æ‚è‚ ‚¦‚¸AƒQ[ƒ€ŠJn‚Ì‰Šúİ’è‚ğ‚·‚é
+	-- ã¨ã‚Šã‚ãˆãšã€ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã®åˆæœŸè¨­å®šã‚’ã™ã‚‹
 	GameManager.Instance():Initialize()
 	GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter001)
 
@@ -101,7 +101,7 @@ function InitGame()
 	--LuaUnityDebugLog(SpawnTable[1].SpawnData)
 end
 
---Lua‚Ì•ªŠ„ƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+--Luaã®åˆ†å‰²ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 function LoadAllLuaScriptCallback()
 	index = LuaFileLoadedCount+1
 	dofile(PersistentDataPath.."/"..LuaFileList[index])
@@ -122,93 +122,93 @@ function LuaUnityDebugLog(log)
 	UnityDebugLog(log)
 end
 
---ƒIƒuƒWƒFƒNƒg”jŠü
---ˆø”FƒqƒGƒ‰ƒ‹ƒL‚É“o˜^‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg–¼‚ğw’è‚·‚é
---Œ‹‰ÊFUnity‘¤‚ÌƒqƒGƒ‰ƒ‹ƒLƒIƒuƒWƒFƒNƒgƒfƒBƒNƒVƒ‡ƒiƒŠ‚©‚çíœ‚·‚é
+--ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç ´æ£„
+--å¼•æ•°ï¼šãƒ’ã‚¨ãƒ©ãƒ«ã‚­ã«ç™»éŒ²ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã‚’æŒ‡å®šã™ã‚‹
+--çµæœï¼šUnityå´ã®ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªã‹ã‚‰å‰Šé™¤ã™ã‚‹
 function LuaDestroyObject(hierarchyName)
 	UnityDestroyObject(hierarchyName)
 end
 
---ƒIƒuƒWƒFƒNƒgŒŸõ
---ˆø”FƒqƒGƒ‰ƒ‹ƒL‚É“o˜^‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg–¼‚ğw’è‚·‚é
---Œ‹‰ÊFUnity‘¤‚ÌƒqƒGƒ‰ƒ‹ƒLƒIƒuƒWƒFƒNƒgƒfƒBƒNƒVƒ‡ƒiƒŠ‚É“o˜^‚³‚ê‚ÄAƒAƒNƒZƒX‰Â”\‚É‚È‚é
+--ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ¤œç´¢
+--å¼•æ•°ï¼šãƒ’ã‚¨ãƒ©ãƒ«ã‚­ã«ç™»éŒ²ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã‚’æŒ‡å®šã™ã‚‹
+--çµæœï¼šUnityå´ã®ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªã«ç™»éŒ²ã•ã‚Œã¦ã€ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ã«ãªã‚‹
 function LuaFindObject(hierarchyName)
 	UnityFindObject(hierarchyName)
 end
 
---ƒeƒLƒXƒgİ’è
---ˆø”FƒqƒGƒ‰ƒ‹ƒL‚É“o˜^‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg–¼‚ÆAİ’è‚·‚é•¶š—ñ
+--ãƒ†ã‚­ã‚¹ãƒˆè¨­å®š
+--å¼•æ•°ï¼šãƒ’ã‚¨ãƒ©ãƒ«ã‚­ã«ç™»éŒ²ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã¨ã€è¨­å®šã™ã‚‹æ–‡å­—åˆ—
 function LuaSetText(hierarchyName, text)
 	UnitySetText(hierarchyName, text)
 end
 
---ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
---ˆø”FƒIƒuƒWƒFƒNƒg–¼AƒAƒjƒ[ƒVƒ‡ƒ“–¼AƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½Œã‚ÌLua‘¤‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”–¼
+--ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿ
+--å¼•æ•°ï¼šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåã€ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åã€ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚ã‚ã£ãŸå¾Œã®Luaå´ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°å
 function LuaPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName, callbackMethodArg)
 	UnityPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName, callbackMethodArg)
 end
 
---ƒV[ƒ“ƒIƒuƒWƒFƒNƒg‚ÌØ‚è‘Ö‚¦
---ˆø”FƒV[ƒ“–¼ASetParent‚µ‚½‚¢e‚ÌƒIƒuƒWƒFƒNƒg–¼
+--ã‚·ãƒ¼ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆ‡ã‚Šæ›¿ãˆ
+--å¼•æ•°ï¼šã‚·ãƒ¼ãƒ³åã€SetParentã—ãŸã„è¦ªã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå
 function LuaChangeScene(sceneName, parentHierarchyName)
 	UnityChangeScene(sceneName, parentHierarchyName)
 end
 
---À•W‚Ìİ’è
---ˆø”Fhierarchy–¼‚ÆAx,y,z‚ÌÀ•W
+--åº§æ¨™ã®è¨­å®š
+--å¼•æ•°ï¼šhierarchyåã¨ã€x,y,zã®åº§æ¨™
 function LuaSetPosition(hierarchyName, x, y, z)
 	UnitySetPosition(hierarchyName, x, y, z)
 end
 
---ƒ[ƒe[ƒVƒ‡ƒ“‚Ìİ’è
---ˆø”Fhierarchy–¼‚ÆAx,y,z‚Ì‰ñ“]Šp“x(degree)
+--ãƒ­ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã®è¨­å®š
+--å¼•æ•°ï¼šhierarchyåã¨ã€x,y,zã®å›è»¢è§’åº¦(degree)
 function LuaSetRotate(hierarchyName, x, y, z)
 	UnitySetRotate(hierarchyName, x, y, z)
 end
 
---ƒXƒP[ƒ‹‚Ìİ’è
---ˆø”Fhierarchy–¼‚ÆAx,y,z‚ÌŠg‘å—¦
+--ã‚¹ã‚±ãƒ¼ãƒ«ã®è¨­å®š
+--å¼•æ•°ï¼šhierarchyåã¨ã€x,y,zã®æ‹¡å¤§ç‡
 function LuaSetScale(hierarchyName, x, y, z)
 	UnitySetScale(hierarchyName, x, y, z)
 end
 
---ƒAƒNƒeƒBƒu‚ÌØ‚è‘Ö‚¦
---ˆø”F
+--ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã®åˆ‡ã‚Šæ›¿ãˆ
+--å¼•æ•°ï¼š
 function LuaSetActive(hierarchyName, active)
 	UnitySetActive(hierarchyName, active)
 end
 
---ƒvƒŒƒnƒu‚ğƒ[ƒh‚·‚é‚¾‚¯
+--ãƒ—ãƒ¬ãƒãƒ–ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã ã‘
 function LuaLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
 	UnityLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
 end
 
---ƒvƒŒƒnƒu‚Ìƒ[ƒh
+--ãƒ—ãƒ¬ãƒãƒ–ã®ãƒ­ãƒ¼ãƒ‰
 function LuaLoadPrefab(prefabName)
 	UnityLoadPrefab(prefabName)
 end
 
---ƒV[ƒ“‚ÌØ‚è‘Ö‚¦
+--ã‚·ãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆ
 function LuaLoadLevel(sceneName)
 	UnityLoadLevel(sceneName)
 end
 
---‘¼‚ÌLua‚ÌŠÖ”‚ğŒÄ‚Ño‚·
+--ä»–ã®Luaã®é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 function LuaCallLuaFunction(fileName, functionName)
 	UnityCallLuaFunction(fileName, functionName)
 end
 
---Šî–{LuaŠÖ”‚ğg‚¦‚é‚æ‚¤‚É‚·‚é
+--åŸºæœ¬Luaé–¢æ•°ã‚’ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
 function LuaBindCommonFunction(fileName)
 	UnityBindCommonFunction(fileName)
 end
 
---Luaƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚ÅAƒAƒNƒZƒX‚Å‚«‚éó‘Ô‚É‚·‚é
+--Luaãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§ã€ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹çŠ¶æ…‹ã«ã™ã‚‹
 function LoadLuaFile(filename)
 	UnityLoadLuaFile(filename)
 end
 
---Unity‘¤‚©‚çŒÄ‚Ño‚³‚ê‚éBEventŒn‚ÌŠÖ”
+--Unityå´ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚Eventç³»ã®é–¢æ•°
 function EventClickButton(eventName)
 	if eventName == "TitleSceneGoHomeButton" then
 		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "TitleScene_ClickHome_Callback", "")
@@ -227,8 +227,8 @@ function EventClickButton(eventName)
 	end
 end
 
---ƒ^ƒCƒgƒ‹ƒV[ƒ“ŠÖ”
---ƒz[ƒ€‚Ös‚­
+--ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³é–¢æ•°
+--ãƒ›ãƒ¼ãƒ ã¸è¡Œã
 function TitleScene_ClickHome_Callback(arg)
 	LuaPlayAnimator("LoadingTextObject", "Play", true, false, "", "")
 	LuaChangeScene("Loading", "MainCanvas")
@@ -246,12 +246,12 @@ function TitleScene_ClickHome_Callback(arg)
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
---ƒtƒbƒ^[ƒ{ƒ^ƒ“ŠÖ”
+--ãƒ•ãƒƒã‚¿ãƒ¼ãƒœã‚¿ãƒ³é–¢æ•°
 function Footer_ClickHome_Callback(arg)
 	LuaChangeScene("Home", "MainCanvas")
 	LuaFindObject("HomeSceneTitleText")
-	--LuaSetText("HomeSceneTitleText", "‚ ‚¢‚¤‚¦‚¨")
-	LuaSetText("HomeSceneTitleText", [[‚ ‚¢‚¤‚¦‚¨]])
+	--LuaSetText("HomeSceneTitleText", "ã‚ã„ã†ãˆãŠ")
+	LuaSetText("HomeSceneTitleText", [[ã‚ã„ã†ãˆãŠ]])
 
 
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
@@ -279,7 +279,7 @@ function Footer_ClickOption_Callback(arg)
 end
 
 flag = 0
---ƒNƒGƒXƒgƒV[ƒ“ŠÖ”
+--ã‚¯ã‚¨ã‚¹ãƒˆã‚·ãƒ¼ãƒ³é–¢æ•°
 function QuestScene_ClickButton_Callback(arg)
 	LuaChangeScene("Battle", "MainCanvas")
 	PlayerManager.Instance():Initialize()
@@ -293,7 +293,7 @@ function QuestScene_ClickButton_Callback(arg)
 	local posx = ScreenWidth/2
 	local posy = ScreenHeight/2
 	
-	-- ƒLƒƒƒ‰Ø‚è‘Ö‚¦ƒeƒXƒg
+	-- ã‚­ãƒ£ãƒ©åˆ‡ã‚Šæ›¿ãˆãƒ†ã‚¹ãƒˆ
 	selectCharacter = nil
 	if flag == 0 then
 		selectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
@@ -309,7 +309,7 @@ function QuestScene_ClickButton_Callback(arg)
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
---ƒoƒgƒ‹ƒV[ƒ“ŠÖ”
+--ãƒãƒˆãƒ«ã‚·ãƒ¼ãƒ³é–¢æ•°
 function BattleScene_ClickBackButton_Callback(arg)
 	EnemyManager.Instance():Release()
 	BulletManager.Instance():Release()
@@ -330,12 +330,12 @@ function BattleOnMouseDrag(touchx, touchy)
 	PlayerManager.Instance():OnMouseDrag(touchx, touchy)
 end
 
---Unity‘¤‚©‚çŒÄ‚Î‚ê‚éAXVŠÖ”
+--Unityå´ã‹ã‚‰å‘¼ã°ã‚Œã‚‹ã€æ›´æ–°é–¢æ•°
 function BattleUpdate(deltaTime)
 	--PlayerManager.Instance():Update(deltaTime)
 	--BulletManager.Instance():Update(deltaTime)
 	--EnemyManager.Instance():Update(deltaTime)
-	-- üŒ`•âŠÔ‚ÅŒvZ‚Í‚µ‚È‚¢‚Ì‚ÅAÀÛ‚ÉŒo‰ß‚µ‚Ä‚¢‚éƒtƒŒ[ƒ€©‘Ì‚ğŒÅ’è‚É‚µ‚ÄAˆ——‚¿‘Îô‚Æ‚·‚é
+	-- ç·šå½¢è£œé–“ã§è¨ˆç®—ã¯ã—ãªã„ã®ã§ã€å®Ÿéš›ã«çµŒéã—ã¦ã„ã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ è‡ªä½“ã‚’å›ºå®šã«ã—ã¦ã€å‡¦ç†è½ã¡å¯¾ç­–ã¨ã™ã‚‹
 	PlayerManager.Instance():Update(GameManager:GetBattleDeltaTime())
 	BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
 	EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
@@ -353,15 +353,15 @@ function BattleUpdate(deltaTime)
 	--end
 end
 
---“–‚½‚è”»’è
+--å½“ãŸã‚Šåˆ¤å®š
 function CheckBump()
 	playerBulletList = BulletManager.Instance():GetPlayerBulletList()
 	enemyBulletList = BulletManager.Instance():GetEnemyBulletList()
 	enemyList = EnemyManager.Instance():GetList()
 	player = PlayerManager:GetPlayer()
 
-	-- ’e‚Æ“G‚Æ‚Ì‚ ‚½‚è”»’è
-	-- “–‚½‚Á‚½ƒIƒuƒWƒFƒNƒg‘o•û‚ÉADeadFlag‚Ìtrue‚ğ•t—^‚·‚é
+	-- å¼¾ã¨æ•µã¨ã®ã‚ãŸã‚Šåˆ¤å®š
+	-- å½“ãŸã£ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒæ–¹ã«ã€DeadFlagã®trueã‚’ä»˜ä¸ã™ã‚‹
 	for bulletIndex = 1, #playerBulletList do
 		for enemyIndex = 1, #enemyList do
 			enemy = enemyList[enemyIndex]
@@ -390,8 +390,8 @@ function CheckBump()
 		end
 	end
 	
-	-- “G‚Æ©ƒLƒƒƒ‰‚Æ‚Ì‚ ‚½‚è”»’è
-	-- “–‚½‚Á‚½‚çA“G‚Ìí•Ê‚ğ”»’è‚µ‚ÄAíœ‚·‚é“G‚¾‚Á‚½‚çADeadFlag‚Ìtrue‚ğ•t—^‚·‚é
+	-- æ•µã¨è‡ªã‚­ãƒ£ãƒ©ã¨ã®ã‚ãŸã‚Šåˆ¤å®š
+	-- å½“ãŸã£ãŸã‚‰ã€æ•µã®ç¨®åˆ¥ã‚’åˆ¤å®šã—ã¦ã€å‰Šé™¤ã™ã‚‹æ•µã ã£ãŸã‚‰ã€DeadFlagã®trueã‚’ä»˜ä¸ã™ã‚‹
 	for enemyIndex = 1, #enemyList do
 		enemy = enemyList[enemyIndex]
 
@@ -415,8 +415,8 @@ function CheckBump()
 		end
 	end
 	
-	-- “G’e‚Æ©ƒLƒƒƒ‰‚Æ‚Ì‚ ‚½‚è”»’è
-	-- “–‚½‚Á‚½‚çA“G‚Ìí•Ê‚ğ”»’è‚µ‚ÄAíœ‚·‚é“G‚¾‚Á‚½‚çADeadFlag‚Ìtrue‚ğ•t—^‚·‚é
+	-- æ•µå¼¾ã¨è‡ªã‚­ãƒ£ãƒ©ã¨ã®ã‚ãŸã‚Šåˆ¤å®š
+	-- å½“ãŸã£ãŸã‚‰ã€æ•µã®ç¨®åˆ¥ã‚’åˆ¤å®šã—ã¦ã€å‰Šé™¤ã™ã‚‹æ•µã ã£ãŸã‚‰ã€DeadFlagã®trueã‚’ä»˜ä¸ã™ã‚‹
 	for bulletIndex = 1, #enemyBulletList do
 		bullet = enemyBulletList[bulletIndex]
 
@@ -440,7 +440,7 @@ function CheckBump()
 		end
 	end
 	
-	-- “G’e‚Æ©’e‚Æ‚Ì‚ ‚½‚è”»’è
+	-- æ•µå¼¾ã¨è‡ªå¼¾ã¨ã®ã‚ãŸã‚Šåˆ¤å®š
 	for playerBulletIndex = 1, #playerBulletList do
 		for enemyBulletIndex = 1, #enemyBulletList do
 			enemyBullet = enemyBulletList[enemyBulletIndex]
@@ -469,7 +469,7 @@ function CheckBump()
 		end
 	end
 
-	-- €–Sƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é•¨‚ğíœ‚·‚é
+	-- æ­»äº¡ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹ç‰©ã‚’å‰Šé™¤ã™ã‚‹
 	EnemyManager:RemoveDeadObject()
 	BulletManager:RemoveDeadObject()
 
@@ -491,37 +491,37 @@ function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, 
 	rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
 	rightBR = {rightPosX+rightWidth/2, rightPosY-rightHeight/2}
 
-	--¶ƒIƒuƒWƒFƒNƒg‚Ì¶ã‚ªA‰EƒIƒuƒWƒFƒNƒg‚Ì”ÍˆÍ“à‚É“ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	--xÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+	--å·¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å·¦ä¸ŠãŒã€å³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¯„å›²å†…ã«å…¥ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
+	--xåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 	if (leftTL[x] >= rightTL[x] and leftTL[x] <= rightTR[x]) then
-		--yÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+		--yåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 		if (leftTL[y] <= rightTL[y] and leftTL[y] >= rightBL[y]) then
 			return true
 		end
 	end
 	
-	--¶ƒIƒuƒWƒFƒNƒg‚Ì‰Eã‚ªA‰EƒIƒuƒWƒFƒNƒg‚Ì”ÍˆÍ“à‚É“ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	--xÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+	--å·¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å³ä¸ŠãŒã€å³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¯„å›²å†…ã«å…¥ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
+	--xåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 	if (leftTR[x] >= rightTL[x] and leftTR[x] <= rightTR[x]) then
-		--yÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+		--yåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 		if (leftTR[y] <= rightTR[y] and leftTR[y] >= rightBR[y]) then
 			return true
 		end
 	end
 
-	--¶ƒIƒuƒWƒFƒNƒg‚Ì¶‰º‚ªA‰EƒIƒuƒWƒFƒNƒg‚Ì”ÍˆÍ“à‚É“ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	--xÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+	--å·¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å·¦ä¸‹ãŒã€å³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¯„å›²å†…ã«å…¥ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
+	--xåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 	if (leftBL[x] >= rightBL[x] and leftBL[x] <= rightBR[x]) then
-		--yÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+		--yåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 		if (leftBL[y] <= rightTL[y] and leftBL[y] >= rightBL[y]) then
 			return true
 		end
 	end
 	
-	--¶ƒIƒuƒWƒFƒNƒg‚Ì‰E‰º‚ªA‰EƒIƒuƒWƒFƒNƒg‚Ì”ÍˆÍ“à‚É“ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	--xÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+	--å·¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å³ä¸‹ãŒã€å³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¯„å›²å†…ã«å…¥ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
+	--xåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 	if (leftBR[x] >= rightBL[x] and leftBR[x] <= rightBR[x]) then
-		--yÀ•W‚ª”ÍˆÍ“à‚©Šm”F
+		--yåº§æ¨™ãŒç¯„å›²å†…ã‹ç¢ºèª
 		if (leftBR[y] <= rightTR[y] and leftBR[y] >= rightBR[y]) then
 			return true
 		end
@@ -534,13 +534,13 @@ function EffectAnimationEnd(arg)
 	EffectManager:EffectAnimationEnd(arg) 
 end
 
---ƒz[ƒ€ƒV[ƒ“ŠÖ”
+--ãƒ›ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³é–¢æ•°
 
-----ƒRƒ‹[ƒ`ƒ“ƒeƒXƒg
+----ã‚³ãƒ«ãƒ¼ãƒãƒ³ãƒ†ã‚¹ãƒˆ
 --function CallCoroutine()
 --	local coro = coroutine.create(LuaMainLoop)
---	coroutine.resume(coro)-- ‚±‚ê‚ÅA‰‚ß‚Äˆê‰ñÀs‚³‚ê‚é
---	coroutine.resume(coro)-- ˆÈ~Ayield‚Å~‚ß‚Ä‚¢‚½Š‚©‚çÄŠJ‚³‚ê‚é
+--	coroutine.resume(coro)-- ã“ã‚Œã§ã€åˆã‚ã¦ä¸€å›å®Ÿè¡Œã•ã‚Œã‚‹
+--	coroutine.resume(coro)-- ä»¥é™ã€yieldã§æ­¢ã‚ã¦ã„ãŸæ‰€ã‹ã‚‰å†é–‹ã•ã‚Œã‚‹
 --end
 --
 --function LuaMainLoop()

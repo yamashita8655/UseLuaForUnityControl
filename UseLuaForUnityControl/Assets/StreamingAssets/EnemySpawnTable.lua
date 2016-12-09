@@ -1,53 +1,53 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æŽ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- “GoŒ»ƒe[ƒuƒ‹BŽžŠÔ‚ÌŒo‰ß‚ÅA‚Ç‚ÌSpawnData‚ª”­¶‚·‚é‚Ì‚©ƒ`ƒFƒbƒN‚·‚é
+-- æ•µå‡ºç¾ãƒ†ãƒ¼ãƒ–ãƒ«ã€‚æ™‚é–“ã®çµŒéŽã§ã€ã©ã®SpawnDataãŒç™ºç”Ÿã™ã‚‹ã®ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 SpawnTable = {
 	--{
-	--	Time      = 2,						--oŒ»ŠJŽnŽžŠÔ
-	--	SpawnData = Spawn001_001_003,		--oŒ»î•ñ
+	--	Time      = 2,						--å‡ºç¾é–‹å§‹æ™‚é–“
+	--	SpawnData = Spawn001_001_003,		--å‡ºç¾æƒ…å ±
 	--},
 
 	{
-		Time      = 2,						--oŒ»ŠJŽnŽžŠÔ
-		SpawnData = Spawn001_001_004,		--oŒ»î•ñ
+		Time      = 2,						--å‡ºç¾é–‹å§‹æ™‚é–“
+		SpawnData = Spawn001_001_004,		--å‡ºç¾æƒ…å ±
 	},
 	{
-		Time      = 2,						--oŒ»ŠJŽnŽžŠÔ
-		SpawnData = Spawn001_001_005,		--oŒ»î•ñ
+		Time      = 2,						--å‡ºç¾é–‹å§‹æ™‚é–“
+		SpawnData = Spawn001_001_005,		--å‡ºç¾æƒ…å ±
 	},
 	{
-		Time      = 3,						--oŒ»ŠJŽnŽžŠÔ
-		SpawnData = Spawn001_001_006,		--oŒ»î•ñ
+		Time      = 3,						--å‡ºç¾é–‹å§‹æ™‚é–“
+		SpawnData = Spawn001_001_006,		--å‡ºç¾æƒ…å ±
 	},
 	
 	{
-		Time      = 3,						--oŒ»ŠJŽnŽžŠÔ
-		SpawnData = Spawn001_001_007,		--oŒ»î•ñ
+		Time      = 3,						--å‡ºç¾é–‹å§‹æ™‚é–“
+		SpawnData = Spawn001_001_007,		--å‡ºç¾æƒ…å ±
 	},
 	
 	--{
-	--	Time      = 2,						--oŒ»ŠJŽnŽžŠÔ
-	--	SpawnData = Spawn001_001_001,		--oŒ»î•ñ
+	--	Time      = 2,						--å‡ºç¾é–‹å§‹æ™‚é–“
+	--	SpawnData = Spawn001_001_001,		--å‡ºç¾æƒ…å ±
 	--},
 	--{
-	--	Time      = 5,						--oŒ»ŠJŽnŽžŠÔ
-	--	SpawnData = Spawn001_001_002,		--oŒ»î•ñ
+	--	Time      = 5,						--å‡ºç¾é–‹å§‹æ™‚é–“
+	--	SpawnData = Spawn001_001_002,		--å‡ºç¾æƒ…å ±
 	--},
 	--{
-	--	Time      = 10,						--oŒ»ŠJŽnŽžŠÔ
-	--	SpawnData = Spawn001_002_001,		--oŒ»î•ñ
+	--	Time      = 10,						--å‡ºç¾é–‹å§‹æ™‚é–“
+	--	SpawnData = Spawn001_002_001,		--å‡ºç¾æƒ…å ±
 	--},
 	--{
-	--	Time      = 15,						--oŒ»ŠJŽnŽžŠÔ
-	--	SpawnData = Spawn001_003_001,		--oŒ»î•ñ
+	--	Time      = 15,						--å‡ºç¾é–‹å§‹æ™‚é–“
+	--	SpawnData = Spawn001_003_001,		--å‡ºç¾æƒ…å ±
 	--},
 	--{
-	--	Time      = 20,						--oŒ»ŠJŽnŽžŠÔ
-	--	SpawnData = Spawn001_004_001,		--oŒ»î•ñ
+	--	Time      = 20,						--å‡ºç¾é–‹å§‹æ™‚é–“
+	--	SpawnData = Spawn001_004_001,		--å‡ºç¾æƒ…å ±
 	--},
 	--{
-	--	Time      = 25,						--oŒ»ŠJŽnŽžŠÔ
-	--	SpawnData = Spawn001_005_001,		--oŒ»î•ñ
+	--	Time      = 25,						--å‡ºç¾é–‹å§‹æ™‚é–“
+	--	SpawnData = Spawn001_005_001,		--å‡ºç¾æƒ…å ±
 	--},
 }
 

@@ -1,82 +1,82 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- “GoŒ»î•ñ
---ƒXƒe[ƒW”Ô†_ƒEƒF[ƒu_˜A”Ô†
+-- æ•µå‡ºç¾æƒ…å ±
+--ã‚¹ãƒ†ãƒ¼ã‚¸ç•ªå·_ã‚¦ã‚§ãƒ¼ãƒ–_é€£ç•ªå·
 --000_000_000
 Spawn001_001_001 = {
-	Position  = Vector2.new(500, 0),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 1,						--ŠÔŠu
-	Value     = 5,						--oŒ»‘”
+	Position  = Vector2.new(500, 0),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 1,						--é–“éš”
+	Value     = 5,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_001_002 = {
-	Position  = Vector2.new(500, 0),	--À•W
-	EnemyType = Enemy0002,				--“G‚Ìí—Ş
-	Interval  = 1,						--ŠÔŠu
-	Value     = 5,						--oŒ»‘”
+	Position  = Vector2.new(500, 0),	--åº§æ¨™
+	EnemyType = Enemy0002,				--æ•µã®ç¨®é¡
+	Interval  = 1,						--é–“éš”
+	Value     = 5,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_001_003 = {
-	Position  = Vector2.new(250, 250),	--À•W
-	EnemyType = Enemy0003,				--“G‚Ìí—Ş
-	Interval  = 1,						--ŠÔŠu
-	Value     = 1,						--oŒ»‘”
+	Position  = Vector2.new(250, 250),	--åº§æ¨™
+	EnemyType = Enemy0003,				--æ•µã®ç¨®é¡
+	Interval  = 1,						--é–“éš”
+	Value     = 1,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_001_004 = {
-	Position  = Vector2.new(500, 0),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 2,						--ŠÔŠu
-	Value     = 10,						--oŒ»‘”
+	Position  = Vector2.new(500, 0),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 2,						--é–“éš”
+	Value     = 10,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_001_005 = {
-	Position  = Vector2.new(-500, 0),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 2,						--ŠÔŠu
-	Value     = 10,						--oŒ»‘”
+	Position  = Vector2.new(-500, 0),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 2,						--é–“éš”
+	Value     = 10,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_001_006 = {
-	Position  = Vector2.new(0, 500),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 2,						--ŠÔŠu
-	Value     = 10,						--oŒ»‘”
+	Position  = Vector2.new(0, 500),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 2,						--é–“éš”
+	Value     = 10,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_001_007 = {
-	Position  = Vector2.new(0, -500),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 2,						--ŠÔŠu
-	Value     = 10,						--oŒ»‘”
+	Position  = Vector2.new(0, -500),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 2,						--é–“éš”
+	Value     = 10,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_002_001 = {
-	Position  = Vector2.new(250, 250),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 1,						--ŠÔŠu
-	Value     = 5,						--oŒ»‘”
+	Position  = Vector2.new(250, 250),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 1,						--é–“éš”
+	Value     = 5,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_003_001 = {
-	Position  = Vector2.new(0, 500),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 1,						--ŠÔŠu
-	Value     = 5,						--oŒ»‘”
+	Position  = Vector2.new(0, 500),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 1,						--é–“éš”
+	Value     = 5,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_004_001 = {
-	Position  = Vector2.new(-250, 250),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 1,						--ŠÔŠu
-	Value     = 5,						--oŒ»‘”
+	Position  = Vector2.new(-250, 250),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 1,						--é–“éš”
+	Value     = 5,						--å‡ºç¾ç·æ•°
 }
 
 Spawn001_005_001 = {
-	Position  = Vector2.new(-500, 0),	--À•W
-	EnemyType = Enemy0001,				--“G‚Ìí—Ş
-	Interval  = 1,						--ŠÔŠu
-	Value     = 5,						--oŒ»‘”
+	Position  = Vector2.new(-500, 0),	--åº§æ¨™
+	EnemyType = Enemy0001,				--æ•µã®ç¨®é¡
+	Interval  = 1,						--é–“éš”
+	Value     = 5,						--å‡ºç¾ç·æ•°
 }
 

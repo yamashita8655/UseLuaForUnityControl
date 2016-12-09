@@ -1,4 +1,4 @@
---単純なパラメータだけ渡して計算させて、計算結果を返す
+﻿--単純なパラメータだけ渡して計算させて、計算結果を返す
 --相手に与えるダメージを返す
 function CalcNormalAttackDamage(myHp, myAttack, myDefense, enemyHp, enemyAttack, enemyDefense)
 	--とりあえず、仕様的には攻撃者の攻撃力から防御者の防御力を引いた値がダメージになるとする

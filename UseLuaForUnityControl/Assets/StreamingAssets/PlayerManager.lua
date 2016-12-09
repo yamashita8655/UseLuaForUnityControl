@@ -1,27 +1,27 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 PlayerManager = {}
 
--- ƒVƒ“ƒOƒ‹ƒgƒ“—p’è‹`
+-- ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ç”¨å®šç¾©
 local _instance = nil
 function PlayerManager.Instance() 
 	if not _instance then
 		_instance = PlayerManager
 		_instance:Initialize()
-		-- ‚±‚Ìƒƒ^ƒe[ƒuƒ‹İ’è‚ğ‚·‚é‚Æ
-		-- self.PlayerCharacterInstance = nil‚Í‚¢‚¯‚é‚ª
-		-- obj = self.PlayerCharacterInstance‚ª
+		-- ã“ã®ãƒ¡ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«è¨­å®šã‚’ã™ã‚‹ã¨
+		-- self.PlayerCharacterInstance = nilã¯ã„ã‘ã‚‹ãŒ
+		-- obj = self.PlayerCharacterInstanceãŒ
 		-- loop in gettable
-		-- ‚ÆƒGƒ‰[‚É‚È‚éŒ´ˆö‚ğ‚«‚¿‚ñ‚Æ—‰ğ‚·‚é‚æ‚¤‚É‚·‚é
+		-- ã¨ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹åŸå› ã‚’ãã¡ã‚“ã¨ç†è§£ã™ã‚‹ã‚ˆã†ã«ã™ã‚‹
 		--setmetatable(_instance, { __index = PlayerManager })
 	end
 
 	return _instance
 end
 
--- ƒƒ\ƒbƒh’è‹`
---function PlayerManager.Initialize(self)‚Æ“¯‚¶ 
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+--function PlayerManager.Initialize(self)ã¨åŒã˜ 
 function PlayerManager:Initialize() 
 	self.PlayerCharacterInstance = nil
 end

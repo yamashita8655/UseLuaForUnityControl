@@ -1,9 +1,9 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 EffectManager = {}
 
--- ƒVƒ“ƒOƒ‹ƒgƒ“—p’è‹`
+-- ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ç”¨å®šç¾©
 local _instance = nil
 function EffectManager.Instance() 
 	if not _instance then
@@ -15,7 +15,7 @@ function EffectManager.Instance()
 	return _instance
 end
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 function EffectManager:Initialize() 
 	self.EffectCounter = 0
 	

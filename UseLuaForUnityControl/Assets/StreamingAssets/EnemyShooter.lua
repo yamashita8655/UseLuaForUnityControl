@@ -1,31 +1,31 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- ’e‚ğ‘Å‚ÂG‹›“IƒNƒ‰ƒX
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- å¼¾ã‚’æ‰“ã¤é›‘é­šçš„ã‚¯ãƒ©ã‚¹
 EnemyShooter = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function EnemyShooter.new(position, rotate, name, number, width, height)
 	local this = EnemyBase.new(position, rotate, name, number, width, height)
 	
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.BulletEmitterList = {}
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.EnemyBaseInitialize = this.Initialize
 	this.Initialize = function(self, nowHp, maxHp, attack)
 		this:EnemyBaseInitialize(nowHp, maxHp, attack)
 	end
 	
-	-- XV
+	-- æ›´æ–°
 	this.EnemyBaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
 		this:EnemyBaseUpdate(deltaTime)
 
-		local targetPosition = Vector2.new(0, 0)-- ƒvƒŒƒCƒ„[ƒLƒƒƒ‰‚ÌˆÊ’u
+		local targetPosition = Vector2.new(0, 0)-- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚­ãƒ£ãƒ©ã®ä½ç½®
 		local offsetx = targetPosition.x - self.Position.x
 		local offsety = targetPosition.y - self.Position.y
 		local radian = math.atan2(offsety, offsetx)
@@ -38,12 +38,12 @@ function EnemyShooter.new(position, rotate, name, number, width, height)
 		end
 	end
 	
-	-- ’e‚ª”­Ë‚³‚ê‚éƒ|ƒCƒ“ƒg‚Ì’Ç‰Á
+	-- å¼¾ãŒç™ºå°„ã•ã‚Œã‚‹ãƒã‚¤ãƒ³ãƒˆã®è¿½åŠ 
 	this.AddBulletEmitter = function(self, emitter)
 		table.insert(self.BulletEmitterList, emitter)
 	end
 	
-	-- ’e”­Ë
+	-- å¼¾ç™ºå°„
 	this.ShootBullet = function(self, degree)
 		for i = 1, #self.BulletEmitterList do
 			emitter = self.BulletEmitterList[i]

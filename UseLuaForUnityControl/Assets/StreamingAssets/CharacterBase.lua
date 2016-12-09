@@ -1,35 +1,35 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- ƒLƒƒƒ‰Šî–{ƒNƒ‰ƒX
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- ã‚­ãƒ£ãƒ©åŸºæœ¬ã‚¯ãƒ©ã‚¹
 CharacterBase = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function CharacterBase.new(position, rotate, name, number, width, height)
 	local this = ObjectBase.new(position, rotate, name, number, width, height)
 	
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
 	this.MoveSpeed = 0.0
 	this.NowHp = 0.0
 	this.MaxHp = 0.0
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.ObjectBaseInitialize = this.Initialize
 	this.Initialize = function(self, nowHp, maxHp)
 		this:ObjectBaseInitialize()
 		self.NowHp = nowHp
 		self.MaxHp = maxHp
 	end
-	-- ƒTƒ“ƒvƒ‹
+	-- ã‚µãƒ³ãƒ—ãƒ«
 	--this.Function = function(self)
 	--end
 
-	-- ƒƒ^ƒe[ƒuƒ‹ƒZƒbƒg
+	-- ãƒ¡ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚»ãƒƒãƒˆ
 	--return setmetatable(this, {__index = CharacterBase})
 	return this
 end

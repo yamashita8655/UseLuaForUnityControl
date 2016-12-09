@@ -1,9 +1,9 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 GameManager = {}
 
--- ƒVƒ“ƒOƒ‹ƒgƒ“—p’è‹`
+-- ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ç”¨å®šç¾©
 local _instance = nil
 function GameManager.Instance() 
 	if not _instance then
@@ -14,13 +14,13 @@ function GameManager.Instance()
 	return _instance
 end
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 function GameManager:Initialize() 
 	self.SelectPlayerCharacterData = nil
 	self.BattleDeltaTime = 1.0/60.0
 end
 
--- ‘I‘ğ‚µ‚Ä‚¢‚éƒLƒƒƒ‰ƒNƒ^[ƒf[ƒ^w’è
+-- é¸æŠã—ã¦ã„ã‚‹ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ‡ãƒ¼ã‚¿æŒ‡å®š
 function GameManager:SetSelectPlayerCharacterData(selectCharacterData) 
 	self.SelectPlayerCharacterData = selectCharacterData
 end
@@ -28,7 +28,7 @@ function GameManager:GetSelectPlayerCharacterData()
 	return self.SelectPlayerCharacterData
 end
 
--- ŒÄ‚Ño‚³‚ê‚é–ˆ‚É‰ÁZ‚·‚éŠÔ
+-- å‘¼ã³å‡ºã•ã‚Œã‚‹æ¯ã«åŠ ç®—ã™ã‚‹æ™‚é–“
 function GameManager:GetBattleDeltaTime() 
 	return self.BattleDeltaTime
 end

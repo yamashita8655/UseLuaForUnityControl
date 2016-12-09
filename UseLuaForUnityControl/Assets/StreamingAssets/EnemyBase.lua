@@ -1,16 +1,16 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- ’ÊíG‹›“IƒNƒ‰ƒX
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- é€šå¸¸é›‘é­šçš„ã‚¯ãƒ©ã‚¹
 EnemyBase = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function EnemyBase.new(position, rotate, name, number, width, height)
 	local this = CharacterBase.new(position, rotate, name, number, width, height)
 	
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.ExistCounter = 0.0
 	this.ExistTime = 0.0
 	this.MoveSpeed = 1.0
@@ -18,25 +18,25 @@ function EnemyBase.new(position, rotate, name, number, width, height)
 	this.MoveController = nil
 	this.BulletEmitterList = {}
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.CharacterBaseInitialize = this.Initialize
 	this.Initialize = function(self, nowHp, maxHp, attack)
 		this:CharacterBaseInitialize(nowHp, maxHp)
 		self.Attack = attack
 	end
 	
-	--ˆÚ“®ˆ—ƒNƒ‰ƒX‚Ìİ’è
+	--ç§»å‹•å‡¦ç†ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 	this.SetMoveController = function(self, controller)
 		self.MoveController = controller
 	end
 	
-	-- UŒ‚—Í‚Ìæ“¾
+	-- æ”»æ’ƒåŠ›ã®å–å¾—
 	this.GetAttack = function(self)
 		return self.Attack
 	end
 	
-	-- XV
+	-- æ›´æ–°
 	this.Update = function(self, deltaTime)
 		local addx, addy = self.MoveController:Calc(deltaTime, self.Rotate.z+90)
 		self.Position.x = self.Position.x + addx

@@ -2,21 +2,26 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\HowToUseLua.cs">
     <Files>
+      <File FileName="Assets\Script\HowToUseLua.cs" Line="279" Column="1" />
       <File FileName="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\UnityUtility.cs" Line="149" Column="40" />
+      <File FileName="Assets\Script\UnityUtility.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\ResourceManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\NativeMethods.cs" Line="163" Column="93" />
-      <File FileName="Assets\Script\HowToUseLua.cs" Line="276" Column="42" />
+      <File FileName="Assets\Script\NativeMethods.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameMain\BootScene.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\SingletonMonoBehaviourFast.cs.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameMain\Common\CutinControllerBase.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\LuaManager.cs" Line="11" Column="3" />
+      <File FileName="Assets\Script\LuaManager.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="D:\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="261" column="1" />
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="149" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="85" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="277" column="7" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="278" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="279" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="86" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -1,9 +1,9 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 EmitterBase = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function EmitterBase.new()
 	local this = {
 		Position = Vector2.new(0, 0),
@@ -14,8 +14,8 @@ function EmitterBase.new()
 		CharacterType = 0
 	}
 	
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.Initialize = function(self, position, interval, bulletConfig, parentPosition, characterType)
 		self.Position = position
 		self.ShootInterval = interval
@@ -24,12 +24,12 @@ function EmitterBase.new()
 		self.CharacterType = characterType 
 	end
 	
-	-- XV
+	-- æ›´æ–°
 	this.Update = function(self, deltaTime)
 		self.ShootCooltime = self.ShootCooltime + deltaTime
 	end
 	
-	-- ’e‚Ì”­Ë
+	-- å¼¾ã®ç™ºå°„
 	this.ShootBullet = function(self, degree)
 		local canShoot = self:CanShootBullet()
 		if canShoot then
@@ -40,7 +40,7 @@ function EmitterBase.new()
 		end
 	end
 	
-	-- ’e‚ÌƒN[ƒ‹ƒ^ƒCƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	-- å¼¾ã®ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	this.CanShootBullet = function(self)
 		local canShoot = false
 		if self.ShootCooltime > self.ShootInterval then
@@ -49,7 +49,7 @@ function EmitterBase.new()
 		return canShoot
 	end
 	
-	-- ’e‚ÌƒN[ƒ‹ƒ^ƒCƒ€ƒŠƒZƒbƒg
+	-- å¼¾ã®ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ãƒªã‚»ãƒƒãƒˆ
 	this.ResetBulletCooltime = function(self)
 		self.ShootCooltime = 0.0
 	end
@@ -57,11 +57,11 @@ function EmitterBase.new()
 	return this
 end
 
--- ƒNƒ‰ƒX’è‹`
--- ’e‚ğ”­Ë‚·‚éƒIƒuƒWƒFƒNƒgBŠT”O“I‚É‚ÍƒIƒvƒVƒ‡ƒ“‚İ‚½‚¢‚È•¨
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- å¼¾ã‚’ç™ºå°„ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚æ¦‚å¿µçš„ã«ã¯ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¿ãŸã„ãªç‰©
 BulletEmitter = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function BulletEmitter.new()
 	local this = EmitterBase.new()
 	
@@ -71,47 +71,47 @@ function BulletEmitter.new()
 	return this
 end
 
--- ƒNƒ‰ƒX’è‹`
--- ’e‚ğ”­Ë‚·‚éƒIƒuƒWƒFƒNƒgBw’è‚ÌˆÊ’u‚©‚çAw’è‚ÌˆÊ’u‚ğ’†S‚Æ‚µ‚Ä‰q¯“I‚È“®‚«‚ğ‚·‚é
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- å¼¾ã‚’ç™ºå°„ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚æŒ‡å®šã®ä½ç½®ã‹ã‚‰ã€æŒ‡å®šã®ä½ç½®ã‚’ä¸­å¿ƒã¨ã—ã¦è¡›æ˜Ÿçš„ãªå‹•ãã‚’ã™ã‚‹
 BulletEmitterSatellite = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function BulletEmitterSatellite.new()
 	local this = EmitterBase.new()
 	this.SpawnPosition = Vector2.new(0, 0)
 	this.CenterPosition = Vector2.new(0, 0)
 	
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.BaseInitialize = this.Initialize
 	this.Initialize = function(self, position, interval, bulletConfig, parentPosition, characterType, centerPosition)
 		this:BaseInitialize(position, interval, bulletConfig, parentPosition, characterType)
-		-- V‚½‚Éì¬‚µ‚È‚¢‚ÆAQÆ‚È‚Ì‚ÅAPosition‚ğ‘‚«Š·‚¦‚é‚ÆASpawnPosition‚Ì’l‚à•Ï‚í‚Á‚Ä‚µ‚Ü‚¤
+		-- æ–°ãŸã«ä½œæˆã—ãªã„ã¨ã€å‚ç…§ãªã®ã§ã€Positionã‚’æ›¸ãæ›ãˆã‚‹ã¨ã€SpawnPositionã®å€¤ã‚‚å¤‰ã‚ã£ã¦ã—ã¾ã†
 		self.SpawnPosition = Vector2.new(position.x, position.y)
 		self.CenterPosition = centerPosition
 	end
 	
-	-- XV
+	-- æ›´æ–°
 	this.BaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
 		self.BaseUpdate(this, deltaTime)
 	end
 	
-	-- ƒ^ƒbƒ`Aƒhƒ‰ƒbƒO‚ª‚ ‚Á‚½A‚»‚ÌŒü‚«‚É‚±‚ÌƒIƒuƒWƒFƒNƒg©g‚à’Ç]‚³‚¹‚é
+	-- ã‚¿ãƒƒãƒã€ãƒ‰ãƒ©ãƒƒã‚°ãŒã‚ã£ãŸæ™‚ã€ãã®å‘ãã«ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè‡ªèº«ã‚‚è¿½å¾“ã•ã›ã‚‹
 	this.UpdatePosition = function(self, radian, degree)
-		-- Šî–{‚ÌÀ•W‚ÍAƒIƒtƒZƒbƒg—Ê‚Æ‚µ‚Äg‚¤
-		-- ‚Ü‚½A‚»‚ÌÀ•WˆÊ’u‚ÍAŠî–{‰ñ“]’l‚ğ‹‚ß‚é–‚É‚àg‚¤
+		-- åŸºæœ¬ã®åº§æ¨™ã¯ã€ã‚ªãƒ•ã‚»ãƒƒãƒˆé‡ã¨ã—ã¦ä½¿ã†
+		-- ã¾ãŸã€ãã®åº§æ¨™ä½ç½®ã¯ã€åŸºæœ¬å›è»¢å€¤ã‚’æ±‚ã‚ã‚‹äº‹ã«ã‚‚ä½¿ã†
 		local spawnx = self.SpawnPosition.x
 		local spawny = self.SpawnPosition.y
 		local baseRadian = math.atan2(spawny, spawnx)
 		local basedegree = baseRadian * 180 / 3.1415
 		
-		-- ƒIƒtƒZƒbƒg‹——£‚ğ‹‚ß‚é
+		-- ã‚ªãƒ•ã‚»ãƒƒãƒˆè·é›¢ã‚’æ±‚ã‚ã‚‹
 		local xvalue = (self.SpawnPosition.x - self.CenterPosition.x)
 		local yvalue = (self.SpawnPosition.y - self.CenterPosition.y)
 		local offsetRange = math.sqrt((xvalue*xvalue) + (yvalue*yvalue))
 		
-		-- -90“x•â³‚Ì“ü‚Á‚½ƒ‰ƒWƒAƒ“‚ª—~‚µ‚¢‚Ì‚ÅAŒvZ‚·‚é
+		-- -90åº¦è£œæ­£ã®å…¥ã£ãŸãƒ©ã‚¸ã‚¢ãƒ³ãŒæ¬²ã—ã„ã®ã§ã€è¨ˆç®—ã™ã‚‹
 		local rawradian = (degree) / 180 * 3.1415
 		local addx = math.cos(rawradian+baseRadian)
 		local addy = math.sin(rawradian+baseRadian)

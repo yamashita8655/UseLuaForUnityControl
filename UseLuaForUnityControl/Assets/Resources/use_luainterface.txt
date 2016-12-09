@@ -1,4 +1,4 @@
-require 'luanet'
+﻿require 'luanet'
 
 luanet.load_assembly('System')
 

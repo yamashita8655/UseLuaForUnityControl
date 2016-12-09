@@ -1,10 +1,10 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 EmitterTypeEnum = {
 	Normal = 0,
 	Satellite = 1,
 }
 
--- ’e‚Ì”­Ë‘ä‚Ìİ’è
+-- å¼¾ã®ç™ºå°„å°ã®è¨­å®š
 Emitter001 = {}
 
 function Emitter001.new(shootInterval, position, emitterType)

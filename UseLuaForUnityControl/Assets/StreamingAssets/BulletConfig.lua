@@ -1,10 +1,10 @@
---����Unity�ɂ͓o�^���Ȃ��X�N���v�g�B������A���C�u�����������z
+﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 BulletTypeEnum = {
-	Normal = 0,--�m�[�}�����ď����Ă��邯�ǁA�e�̏�񂾂��ŏ����ł���e
-	UseTargetPosition = 1,--���̉����̍��W�l���e������e�̏��
+	Normal = 0,--ノーマルって書いてあるけど、弾の情報だけで処理できる弾
+	UseTargetPosition = 1,--他の何かの座標値が影響する弾の情報
 }
 
--- �e�̒�`
+-- 弾の定義
 Bullet0001 = {
 	PrefabName = "Prefabs/EnemyCharacterObject",
 	Name = "EnemyCharacterObject",

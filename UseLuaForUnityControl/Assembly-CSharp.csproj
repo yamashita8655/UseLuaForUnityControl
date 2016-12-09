@@ -79,6 +79,7 @@
      <None Include="Assets\Resources\use_luainterface.txt" />
      <None Include="Assets\Resources\LuaCheckConditions.txt" />
      <None Include="Assets\Resources\UnityUtilityFunction.txt" />
+     <None Include="Assets\Resources\load_lua2.txt" />
      <None Include="Assets\Resources\UnityFunction.txt" />
      <None Include="Assets\Resources\UnityBind.txt" />
  <Reference Include="UnityEngine.UI">

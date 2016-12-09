@@ -1,20 +1,20 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- “GoŒ»ŠÇ—ƒNƒ‰ƒX
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- æ•µå‡ºç¾ç®¡ç†ã‚¯ãƒ©ã‚¹
 SpawnController = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function SpawnController.new()
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	local this = {
 		SpawnDataList = {},
 	}
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.Initialize = function(self, spawnTable)
 		for i = 1, #spawnTable do
 			listData = SpawnListData.new()
@@ -23,7 +23,7 @@ function SpawnController.new()
 		end
 	end
 	
-	-- XV
+	-- æ›´æ–°
 	this.Update = function(self, deltaTime)
 		for i = 1, #self.SpawnDataList do
 			listData = self.SpawnDataList[i]
@@ -49,15 +49,15 @@ function SpawnController.new()
 	return this
 end
 
--- ƒNƒ‰ƒX’è‹`
--- “GoŒ»ŠÇ—ƒŠƒXƒgƒf[ƒ^
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- æ•µå‡ºç¾ç®¡ç†ãƒªã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
 SpawnListData = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function SpawnListData.new()
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	local this = {
 		Time = 0,
 		SpawnData = nil,
@@ -67,15 +67,15 @@ function SpawnListData.new()
 		IntervalCounter = 0,
 	}
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.Initialize = function(self, spawnTableData)
 		self.Time = spawnTableData.Time
 		self.SpawnData = spawnTableData.SpawnData
 		self.IsEnable = true
 	end
 	
-	-- —LŒøŠm”F
+	-- æœ‰åŠ¹ç¢ºèª
 	this.SetEnable = function(self, enable)
 		self.IsEnable = enable
 	end

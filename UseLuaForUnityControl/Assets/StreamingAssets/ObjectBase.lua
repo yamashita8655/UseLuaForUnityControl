@@ -1,9 +1,9 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 ObjectBase = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function ObjectBase.new(position, rotate, name, number, width, height)
 	local this = {
 		Position = position,
@@ -17,14 +17,14 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 		MaxHp = 0,
 	}
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.Initialize = function(self, nowHp, maxHp)
 		self.NowHp = nowHp
 		self.MaxHp = maxHp
 	end
 	
-	-- Œ»İHP‚Ì‰ÁŒ¸Z
+	-- ç¾åœ¨HPã®åŠ æ¸›ç®—
 	this.AddNowHp = function(self, addValue)
 		self.NowHp = self.NowHp + addValue
 		if self.NowHp < 0 then
@@ -35,7 +35,7 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 		end
 	end
 	
-	-- Œ»İHP‚Ì’¼Ú’lw’è
+	-- ç¾åœ¨HPã®ç›´æ¥å€¤æŒ‡å®š
 	this.SetNowHp = function(self, value)
 		self.NowHp = value
 		if self.NowHp < 0 then
@@ -46,7 +46,7 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 		end
 	end
 	
-	-- Å‘åHP‚Ì‰ÁŒ¸Z
+	-- æœ€å¤§HPã®åŠ æ¸›ç®—
 	this.AddMaxHp = function(self, addValue)
 		if addValue > 0 then
 			self.NowHp = self.NowHp + addValue
@@ -60,7 +60,7 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 		end
 	end
 	
-	-- Å‘åHP‚Ì’¼Ú’lw’è
+	-- æœ€å¤§HPã®ç›´æ¥å€¤æŒ‡å®š
 	this.SetMaxHp = function(self, value)
 		if value > self.MaxHp then
 			diffValue = value - self.MaxHp
@@ -75,58 +75,58 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 		end
 	end
 
-	-- À•Wæ“¾
+	-- åº§æ¨™å–å¾—
 	this.GetPosition = function(self)
 		return self.Position
 	end
-	-- À•Wİ’è
+	-- åº§æ¨™è¨­å®š
 	this.SetPosition = function(self, positionx, positiony, positionz)
 		self.Position.x = positionx
 		self.Position.y = positiony
 		self.Position.z = positionz
 	end
 
-	-- ƒTƒCƒYæ“¾
+	-- ã‚µã‚¤ã‚ºå–å¾—
 	this.GetSize = function(self) 
 		return self.Width, self.Height
 	end
-	-- ƒTƒCƒYİ’è
+	-- ã‚µã‚¤ã‚ºè¨­å®š
 	this.SetSize = function(self, width, height) 
 		self.Width = width
 		self.Height = height
 	end
 
-	-- ‰ñ“]—¦æ“¾
+	-- å›è»¢ç‡å–å¾—
 	this.GetRotate = function(self) 
 		return self.Rotate
 	end
-	-- ‰ñ“]—¦İ’è
+	-- å›è»¢ç‡è¨­å®š
 	this.SetRotate = function(self, rotatex, rotatey, rotatez) 
 		self.Rotate.x = rotatex
 		self.Rotate.y = rotatey
 		self.Rotate.z = rotatez
 	end
 
-	-- –¼‘Oæ“¾
+	-- åå‰å–å¾—
 	this.GetName = function(self) 
 		return self.Name
 	end
-	-- –¼‘Oİ’è
+	-- åå‰è¨­å®š
 	this.SetName = function(self, name) 
 		self.Name = name
 	end
 	
-	-- ¶‘¶ó‘Ô
+	-- ç”Ÿå­˜çŠ¶æ…‹
 	this.IsAlive = function(self) 
 		local isAlive = true
-		-- HP‚ª0ˆÈ‰º‚¾‚Á‚½‚çA‚¢‚é
+		-- HPãŒ0ä»¥ä¸‹ã ã£ãŸã‚‰ã€ã„ã‚‹
 		if self.NowHp <= 0 then
 			isAlive = false
 		end
 		return isAlive
 	end
 
-	-- ƒƒ^ƒe[ƒuƒ‹ƒZƒbƒg
+	-- ãƒ¡ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚»ãƒƒãƒˆ
 	--return setmetatable(this, {__index = ObjectBase})
 	return this
 end

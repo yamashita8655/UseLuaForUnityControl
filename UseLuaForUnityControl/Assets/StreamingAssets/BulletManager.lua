@@ -1,13 +1,13 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 CharacterType = {
 	Player = 0,
 	Enemy = 1,
 }
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 BulletManager = {}
 
--- ƒVƒ“ƒOƒ‹ƒgƒ“—p’è‹`
+-- ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ç”¨å®šç¾©
 local _instance = nil
 function BulletManager.Instance() 
 	if not _instance then
@@ -19,8 +19,8 @@ function BulletManager.Instance()
 	return _instance
 end
 
--- ƒƒ\ƒbƒh’è‹`
---function BulletManager.Initialize(self)‚Æ“¯‚¶ 
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+--function BulletManager.Initialize(self)ã¨åŒã˜ 
 function BulletManager:Initialize() 
 	self.BulletCounter = 0
 	self.PlayerBulletList = {}
@@ -50,7 +50,7 @@ function BulletManager:CreateBullet(posx, posy, degree, bulletConfig, characterT
 	elseif bulletConfig.MoveType:MoveType() == MoveTypeEnum.Homing then
 		moveController = MoveControllerHoming.new()
 	end
-	moveController:Initialize(bulletConfig.MoveType)--movespeedBŒã‚©‚çİ’è‚µ‚È‚¨‚·
+	moveController:Initialize(bulletConfig.MoveType)--movespeedã€‚å¾Œã‹ã‚‰è¨­å®šã—ãªãŠã™
 	
 	local bullet = nil
 	if bulletConfig.BulletType == BulletTypeEnum.Normal then
@@ -129,7 +129,7 @@ function BulletManager:SetTargetPosition(list)
 end
 
 function BulletManager:CheckBulletExist(list) 
-	--’e‚Ì¶‘¶ŠúŠÔ‚ğƒ`ƒFƒbƒN‚µ‚ÄAíœ‚·‚éŠÔ‚ª‚ ‚Á‚½‚çAUnity‘¤‚ÌƒIƒuƒWƒFƒNƒg‚ğÁ‚µ‚ÄƒŠƒXƒg‚©‚çÁ‹
+	--å¼¾ã®ç”Ÿå­˜æœŸé–“ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ã€å‰Šé™¤ã™ã‚‹æ™‚é–“ãŒã‚ã£ãŸã‚‰ã€Unityå´ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¶ˆã—ã¦ãƒªã‚¹ãƒˆã‹ã‚‰æ¶ˆå»
 	local index = 1
 	while true do
 		if index > #list then

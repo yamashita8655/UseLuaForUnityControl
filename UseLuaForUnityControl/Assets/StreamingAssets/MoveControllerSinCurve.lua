@@ -1,31 +1,31 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æŽ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 MoveControllerSinCurve = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function MoveControllerSinCurve.new()
 	local this = BaseMoveController.new()
 	
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.IsCountUp = true
 	this.SinCurveRotateValue = 0
-	this.PeriodValue = 0-- ŽüŠú
-	this.MoveSpeed = 1-- ‚±‚Á‚¿‚ªAU‚ê•
+	this.PeriodValue = 0-- å‘¨æœŸ
+	this.MoveSpeed = 1-- ã“ã£ã¡ãŒã€æŒ¯ã‚Œå¹…
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.BaseMoveControllerInitialize = this.Initialize
 	this.Initialize = function(self, moveData)
 		this.BaseMoveControllerInitialize()
 		self.SinCurveRotateValue = moveData:RotateValue()
 		self.PeriodValue = moveData:PeriodValue() 
-		self.MoveSpeed = moveData:MoveSpeed()-- ‚±‚Á‚¿‚ªAU‚ê•
+		self.MoveSpeed = moveData:MoveSpeed()-- ã“ã£ã¡ãŒã€æŒ¯ã‚Œå¹…
 	end
 
 	this.Calc = function(self, deltaTime, rotateZ)
 		if self.IsCountUp then
-			self.SinCurveRotateValue = self.SinCurveRotateValue + self.PeriodValue-- ”’l‚Ì•”•ª‚ªA‰•œ‚ÌŽüŠú‚Ì‘¬‚³
+			self.SinCurveRotateValue = self.SinCurveRotateValue + self.PeriodValue-- æ•°å€¤ã®éƒ¨åˆ†ãŒã€å¾€å¾©ã®å‘¨æœŸã®é€Ÿã•
 			if self.SinCurveRotateValue >= 180 then
 				self.SinCurveRotateValue = 180
 				self.IsCountUp = false

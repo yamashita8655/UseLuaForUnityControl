@@ -1,4 +1,4 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æŽ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 MoveTypeEnum = {
 	None = -1,
 	Straight = 0,
@@ -6,7 +6,7 @@ MoveTypeEnum = {
 	Homing = 2,
 }
 
--- ˆÚ“®•û–@‚ÌÝ’è‚ÉŽg‚¤ƒIƒuƒWƒFƒNƒgŒQ
+-- ç§»å‹•æ–¹æ³•ã®è¨­å®šã«ä½¿ã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç¾¤
 MoveStraight = {}
 
 function MoveStraight.new(moveSpeed)

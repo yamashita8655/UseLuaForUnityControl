@@ -1,28 +1,28 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 MoveControllerHoming = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function MoveControllerHoming.new()
 	local this = BaseMoveController.new()
 	
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.HomingStartTime = 0
 	this.MoveDegreeLimit = 1
-	this.MoveSpeed = 1-- ‚±‚Á‚¿‚ªAU‚ê•
+	this.MoveSpeed = 1-- ã“ã£ã¡ãŒã€æŒ¯ã‚Œå¹…
 	
 	this.HomingStartCounter = 0
 	this.Radian = 0
 
-	-- ƒƒ\ƒbƒh’è‹`
-	-- ‰Šú‰»
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- åˆæœŸåŒ–
 	this.BaseMoveControllerInitialize = this.Initialize
 	this.Initialize = function(self, moveData)
 		this:BaseMoveControllerInitialize()
 		self.HomingStartTime = moveData:HomingStartTime()
 		self.MoveDegreeLimit = moveData:MoveDegreeLimit() 
-		self.MoveSpeed = moveData:MoveSpeed()-- ‚±‚Á‚¿‚ªAU‚ê•
+		self.MoveSpeed = moveData:MoveSpeed()-- ã“ã£ã¡ãŒã€æŒ¯ã‚Œå¹…
 	end
 
 	this.Calc = function(self, deltaTime, rotateZ, basePosition, target)

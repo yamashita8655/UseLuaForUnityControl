@@ -17,12 +17,13 @@ public class HowToUseLua : MonoBehaviour {
 	void Start () {
 
 //		test1 ();
+		test1_1 ();
 //		test2 ();
 //		test3 ();
 //		test4 ();
 //		test5 ();
 //		test6 ();
-		test7 ();
+//		test7 ();
 	}
 
 	void test1()
@@ -56,6 +57,34 @@ public class HowToUseLua : MonoBehaviour {
 		string resString = Marshal.PtrToStringAnsi(res_s);
 		int res_bool = NativeMethods.lua_toboolean(luastate, 4);//true=1 false=0
 	}
+
+	void test1_1()
+	{
+		// こっちは、何らかの方法でLuaスクリプトをバッファに展開して使うタイプ
+		// これが出来たので、アセットバンドルに含めることも可能だと思う
+		IntPtr luastate = NativeMethods.luaL_newstate();
+		NativeMethods.luaL_openlibs(luastate);// これは、Lua側に必要な基本的な機能を関連付けている
+
+		// Lua読み込み
+		TextAsset file = Resources.Load<TextAsset>("load_lua2");
+		int res = NativeMethods.luaL_loadstring (luastate, file.text);
+		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
+
+		// スタック数を確認する
+		int num = NativeMethods.lua_gettop (luastate);
+
+		// Luaに定義されているグローバルの値を指定して、スタックに積む
+		NativeMethods.lua_getglobal (luastate, "windowName");
+
+		num = NativeMethods.lua_gettop (luastate);
+
+		// 実際にスタックに積まれている数値を習得する
+		printStack(luastate);
+		uint output;
+		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out output);
+		string resString = Marshal.PtrToStringAnsi(res_s);
+	}
+
 
 	void test2()
 	{

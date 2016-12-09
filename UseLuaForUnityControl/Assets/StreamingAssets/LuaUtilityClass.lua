@@ -1,27 +1,27 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- 2“_‚ğ•\‚·ƒIƒuƒWƒFƒNƒg
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- 2ç‚¹ã‚’è¡¨ã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 Vector2 = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function Vector2.new(x, y)
 	local this = {
 		x = x, 
 		y = y
 	}
 
-	-- ƒƒ\ƒbƒh’è‹`
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 	--this.Function = function()
 	--end
 
 	return this
 end
 
--- 3“_‚ğ•\‚·ƒIƒuƒWƒFƒNƒg
+-- 3ç‚¹ã‚’è¡¨ã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 Vector3 = {}
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function Vector3.new(x, y, z)
 	local this = {
 		x = x, 
@@ -29,17 +29,17 @@ function Vector3.new(x, y, z)
 		z = z
 	}
 
-	-- ƒƒ\ƒbƒh’è‹`
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 	--this.Function = function()
 	--end
 	
 	return this
 end
 
--- ƒNƒ‰ƒX’è‹`
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
 UtilityFunction = {}
 
--- ƒVƒ“ƒOƒ‹ƒgƒ“—p’è‹`
+-- ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ç”¨å®šç¾©
 local _instance = nil
 function UtilityFunction.Instance() 
 	if not _instance then
@@ -51,7 +51,7 @@ function UtilityFunction.Instance()
 	return _instance
 end
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 function UtilityFunction:Initialize() 
 end
 

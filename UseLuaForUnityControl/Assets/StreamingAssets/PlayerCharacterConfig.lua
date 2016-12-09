@@ -1,6 +1,6 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒvƒŒƒCƒ„[ƒLƒƒƒ‰ƒNƒ^[’è‹`
+-- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼å®šç¾©
 PlayerCharacter001 = {
 	PrefabName = "Prefabs/PlayerCharacterObject001",
 	Name = "PlayerCharacterObject001",
@@ -13,7 +13,7 @@ PlayerCharacter001 = {
 	},
 	EquipBulletList = {
 		BulletHomingTest,
-	},-- ¡‚ÍABulletEmitterList‚ÆEquipBulletList‚Ì”‚Í“¯‚¶‚É‚µ‚Ä‚¨‚©‚È‚¢‚Æƒ_ƒ
+	},-- ä»Šã¯ã€BulletEmitterListã¨EquipBulletListã®æ•°ã¯åŒã˜ã«ã—ã¦ãŠã‹ãªã„ã¨ãƒ€ãƒ¡
 }
 
 PlayerCharacter002 = {
@@ -29,7 +29,7 @@ PlayerCharacter002 = {
 }
 
 
--- ƒLƒƒƒ‰‘I‘ğ‰æ–Ê‚É•\¦‚·‚é•û
+-- ã‚­ãƒ£ãƒ©é¸æŠç”»é¢ã«è¡¨ç¤ºã™ã‚‹æ–¹
 PlayerSelect_PlayerCharacter001 = {
 }
 

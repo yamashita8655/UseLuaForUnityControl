@@ -1,20 +1,20 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
--- ƒNƒ‰ƒX’è‹`
--- ’eƒNƒ‰ƒX
+-- ã‚¯ãƒ©ã‚¹å®šç¾©
+-- å¼¾ã‚¯ãƒ©ã‚¹
 NormalBullet = {}
 
--- ƒƒ\ƒbƒh’è‹`
+-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
 
--- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 function NormalBullet.new(position, rotate, name, number, width, height)
 	local this = BulletBase.new(position, rotate, name, number, width, height)
 
-	-- ƒƒ“ƒo•Ï”
+	-- ãƒ¡ãƒ³ãƒå¤‰æ•°
 	this.BulletType = BulletTypeEnum.Normal
 	
-	-- ƒƒ\ƒbƒh’è‹`
-	-- XV
+	-- ãƒ¡ã‚½ãƒƒãƒ‰å®šç¾©
+	-- æ›´æ–°
 	this.BaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
 		local addx, addy = self.MoveController:Calc(deltaTime, self.Rotate.z+90)
@@ -24,7 +24,7 @@ function NormalBullet.new(position, rotate, name, number, width, height)
 		self.ExistCounter = self.ExistCounter + deltaTime
 	end
 	
-	-- ƒƒ^ƒe[ƒuƒ‹ƒZƒbƒg
+	-- ãƒ¡ã‚¿ãƒ†ãƒ¼ãƒ–ãƒ«ã‚»ãƒƒãƒˆ
 	--return setmetatable(this, {__index = NormalBullet})
 	return this
 end

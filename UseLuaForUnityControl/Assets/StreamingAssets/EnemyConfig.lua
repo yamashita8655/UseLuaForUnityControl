@@ -1,11 +1,11 @@
---’¼ÚUnity‚É‚Í“o˜^‚µ‚È‚¢ƒXƒNƒŠƒvƒgB‚¢‚í‚ä‚éAƒ‰ƒCƒuƒ‰ƒŠ‰»‚µ‚½“z
+ï»¿--ç›´æ¥Unityã«ã¯ç™»éŒ²ã—ãªã„ã‚¹ã‚¯ãƒªãƒ—ãƒˆã€‚ã„ã‚ã‚†ã‚‹ã€ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåŒ–ã—ãŸå¥´
 
 EnemyTypeEnum = {
 	Normal = 0,
 	BulletShooter = 1,
 }
 
--- “G‚Ì’è‹`
+-- æ•µã®å®šç¾©
 Enemy0001 = {
 	PrefabName = "Prefabs/EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
