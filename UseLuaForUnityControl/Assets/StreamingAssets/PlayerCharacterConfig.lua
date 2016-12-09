@@ -28,3 +28,8 @@ PlayerCharacter002 = {
 	},
 }
 
+
+-- ƒLƒƒƒ‰‘I‘ð‰æ–Ê‚É•\Ž¦‚·‚é•û
+PlayerSelect_PlayerCharacter001 = {
+}
+

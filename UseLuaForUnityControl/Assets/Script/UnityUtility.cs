@@ -83,9 +83,12 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		bool isLoop = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 3));//true=1 false=0
 		
 		bool isAutoActiveFalse = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 4));//true=1 false=0
-		
+						
 		res_s = NativeMethods.lua_tolstring(luaState, 5, out res);
 		string callbackMethodName = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 6, out res);
+		string callbackMethodArg = Marshal.PtrToStringAnsi(res_s);
 
 		CutinControllerBase contoller = retObj.GetComponent<CutinControllerBase>();
 		contoller.Play(animationName, isLoop, isAutoActiveFalse, () => {
@@ -95,6 +98,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 				data.returnValueNum = 0;
 				data.functionName = callbackMethodName;
 				ArrayList list = new ArrayList();
+				list.Add(callbackMethodArg);
 				data.argList = list;
 				ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
 			}

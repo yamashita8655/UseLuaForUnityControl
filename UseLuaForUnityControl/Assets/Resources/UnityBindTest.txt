@@ -27,6 +27,7 @@ LuaFileList = {
 	"BulletEmitter.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
+	"EffectManager.lua",
 	"ObjectBase.lua",
 	"BulletBase.lua",
 	"NormalBullet.lua",
@@ -143,8 +144,8 @@ end
 
 --アニメーション再生
 --引数：オブジェクト名、アニメーション名、アニメーションが終わった後のLua側のコールバック関数名
-function LuaPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName)
-	UnityPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName)
+function LuaPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName, callbackMethodArg)
+	UnityPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName, callbackMethodArg)
 end
 
 --シーンオブジェクトの切り替え
@@ -210,26 +211,26 @@ end
 --Unity側から呼び出される。Event系の関数
 function EventClickButton(eventName)
 	if eventName == "TitleSceneGoHomeButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "TitleScene_ClickHome_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "TitleScene_ClickHome_Callback", "")
 	elseif eventName == "HomeButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickHome_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickHome_Callback", "")
 	elseif eventName == "CustomButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickCustom_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickCustom_Callback", "")
 	elseif eventName == "QuestButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickQuest_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickQuest_Callback", "")
 	elseif eventName == "OptionButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickOption_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickOption_Callback", "")
 	elseif eventName == "QuestSelectListNode1" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "QuestScene_ClickButton_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "QuestScene_ClickButton_Callback", "")
 	elseif eventName == "BattleOptionButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "BattleScene_ClickBackButton_Callback")
+		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "BattleScene_ClickBackButton_Callback", "")
 	end
 end
 
 --タイトルシーン関数
 --ホームへ行く
-function TitleScene_ClickHome_Callback()
-	LuaPlayAnimator("LoadingTextObject", "Play", true, false, "")
+function TitleScene_ClickHome_Callback(arg)
+	LuaPlayAnimator("LoadingTextObject", "Play", true, false, "", "")
 	LuaChangeScene("Loading", "MainCanvas")
 	LuaFindObject("LoadingAllLoadingGaugeBar")
 	--LuaFindObject("LoadingCurrentLoadingGaugeBar")
@@ -238,23 +239,28 @@ function TitleScene_ClickHome_Callback()
 
 	UpdateLoadingData()
 	LoadAllLuaScript()
-
+	
 	--LuaChangeScene("Home", "MainCanvas")
 	--LuaSetActive("HeaderObject", true)
 	--LuaSetActive("FooterObject", true)
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
 --フッターボタン関数
-function Footer_ClickHome_Callback()
+function Footer_ClickHome_Callback(arg)
 	LuaChangeScene("Home", "MainCanvas")
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
+	LuaFindObject("HomeSceneTitleText")
+	--LuaSetText("HomeSceneTitleText", "あいうえお")
+	LuaSetText("HomeSceneTitleText", [[あいうえお]])
+
+
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
-function Footer_ClickCustom_Callback()
+function Footer_ClickCustom_Callback(arg)
 	LuaChangeScene("Custom", "MainCanvas")
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
-function Footer_ClickQuest_Callback()
+function Footer_ClickQuest_Callback(arg)
 	LuaChangeScene("Quest", "MainCanvas")
 	LuaFindObject("QuestScrollContent")
 	for i = 1, QuestCount do
@@ -265,20 +271,21 @@ function Footer_ClickQuest_Callback()
 		LuaLoadPrefabAfter("Prefabs/QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
 		LuaSetActive("QuestSelectListNode"..i, true)
 	end
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
-function Footer_ClickOption_Callback()
+function Footer_ClickOption_Callback(arg)
 	LuaChangeScene("Option", "MainCanvas")
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
 flag = 0
 --クエストシーン関数
-function QuestScene_ClickButton_Callback()
+function QuestScene_ClickButton_Callback(arg)
 	LuaChangeScene("Battle", "MainCanvas")
 	PlayerManager.Instance():Initialize()
 
 	BulletManager.Instance():Initialize()
+	EffectManager.Instance():Initialize()
 	
 	EnemyManager.Instance():Initialize()
 	EnemyManager:CreateSpawnController(SpawnTable) 
@@ -299,11 +306,11 @@ function QuestScene_ClickButton_Callback()
 	
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
 --バトルシーン関数
-function BattleScene_ClickBackButton_Callback()
+function BattleScene_ClickBackButton_Callback(arg)
 	EnemyManager.Instance():Release()
 	BulletManager.Instance():Release()
 	PlayerManager.Instance():Release()
@@ -312,7 +319,7 @@ function BattleScene_ClickBackButton_Callback()
 	LuaSetActive("FooterObject", true)
 	LuaFindObject("PlayerBulletRoot")
 	LuaFindObject("EnemyObjectRoot")
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "")
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
 function BattleOnMouseDown(touchx, touchy)
@@ -374,6 +381,7 @@ function CheckBump()
 				isHit = IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
 
 				if isHit == true then
+					EffectManager:SpawnEffect(enemy:GetPosition())
 					local bulletAttack = bullet:GetAttack()
 					enemy:AddNowHp(-bulletAttack)
 					bullet:AddNowHp(-1)
@@ -520,6 +528,10 @@ function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, 
 	end
 
 	return false
+end
+
+function EffectAnimationEnd(arg) 
+	EffectManager:EffectAnimationEnd(arg) 
 end
 
 --ホームシーン関数

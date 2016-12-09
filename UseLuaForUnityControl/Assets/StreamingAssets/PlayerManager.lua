@@ -58,7 +58,6 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		for i = 1, #bulletEmitterList do
 			emitter = nil
 			if bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Normal then
-				LuaUnityDebugLog("NORMAL!")
 				emitter = BulletEmitter.new()
 				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], player:GetPosition(), CharacterType.Player)
 			elseif bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Satellite then

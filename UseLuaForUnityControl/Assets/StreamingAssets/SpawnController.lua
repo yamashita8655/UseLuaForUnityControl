@@ -16,7 +16,6 @@ function SpawnController.new()
 	-- メソッド定義
 	-- 初期化
 	this.Initialize = function(self, spawnTable)
-		LuaUnityDebugLog(#spawnTable)
 		for i = 1, #spawnTable do
 			listData = SpawnListData.new()
 			listData:Initialize(spawnTable[i])

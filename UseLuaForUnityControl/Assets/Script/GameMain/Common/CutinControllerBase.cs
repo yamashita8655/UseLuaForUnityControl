@@ -55,6 +55,7 @@ public class CutinControllerBase : MonoBehaviour
 		IsStop = false;
 		IsLoop = isLoop;
 		IsAutoActiveFalse = isAutoActiveFalse;
+		PrevStateHash = Animator.StringToHash("Stop");
 		Resume();
 	}
 

@@ -32,7 +32,6 @@ function MoveControllerHoming.new()
 		local addy = 0
 		if self.HomingStartCounter > this.HomingStartTime then
 			if target == nil or target:IsAlive() == false then
-				LuaUnityDebugLog("targetNil")
 				addx = math.cos(self.Radian) * self.MoveSpeed
 				addy = math.sin(self.Radian) * self.MoveSpeed
 			else
