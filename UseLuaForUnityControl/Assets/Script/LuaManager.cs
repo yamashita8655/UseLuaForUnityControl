@@ -96,7 +96,24 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 	// LuaScriptを読み込んで、使える状態にする
 	// 基本は、呼び出し側で使いたいLuaScriptを指定するはずなので、
 	// TextAssetは呼び出し側で作って渡してもらうようにする
-	public void LoadLuaScript(TextAsset textasset)
+	public void LoadLuaScript(string fileText, string fileName)
+	{
+		IntPtr luastate = IntPtr.Zero;
+		// すでに登録されている物か、確認する
+		if(mLuaStateMap.ContainsKey(fileName) == false)
+		{
+			luastate = GetLuaState(fileName);
+		}
+		else
+		{
+			luastate = mLuaStateMap[fileName];
+		}
+
+		// Lua読み込み
+		int res = NativeMethods.luaL_loadstring (luastate, fileText);
+		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// 読んだら、一回これよばないと正常に機能しない。
+	}
+/*	public void LoadLuaScript(TextAsset textasset)
 	{
 		IntPtr luastate = IntPtr.Zero;
 		// すでに登録されている物か、確認する
@@ -112,7 +129,7 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 		// Lua読み込み
 		int res = NativeMethods.luaL_loadstring (luastate, textasset.text);
 		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// 読んだら、一回これよばないと正常に機能しない。
-	}
+	}*/
 	
 	// Luaの関数を使う場合には、引数の数と戻り値の数をこちら側から指定する必要がある
 	public ArrayList Call(string filename, FunctionData fData)
@@ -206,7 +223,7 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 	public void getStack(IntPtr luastate, ArrayList list)
 	{
 		int num = NativeMethods.lua_gettop (luastate);
-		//Debug.Log ("count = " + num);
+		Debug.Log ("count = " + num);
 		
 		if(num==0)
 		{

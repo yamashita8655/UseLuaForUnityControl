@@ -11,6 +11,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	IntPtr mLuaState;
 	GCHandle gcHandle;
+	
+	float CanvasFactor;
 
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
@@ -37,7 +39,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
 		string callbackName = Marshal.PtrToStringAnsi(res_s);
 	
-		ResourceManager.Instance.AddLoaderData(loadpath, savepath, callbackName);
+		ResourceManager.Instance.AddLoaderData(loadpath, savepath, callbackName, null);
 		return 0;
 	}
 
@@ -305,7 +307,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string luaFileName = Marshal.PtrToStringAnsi(res_s);
 		
 		TextAsset file = Resources.Load<TextAsset>(luaFileName);
-		LuaManager.Instance.LoadLuaScript (file);
+		LuaManager.Instance.LoadLuaScript (file.text, file.name);
 		
 		return 0;
 	}
@@ -418,7 +420,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	static Dictionary<string, string> mLuaCallUpdateMap = null;
 
 //	string scriptName = "UnityBind";
-	public string scriptName = "UnityBindTest";
+	//public string scriptName = "UnityBindTest";
+	public string scriptName = "LuaMain.lua";
+//	public string scriptName = "LuaMainTest.lua";
 
 	void Awake () {
 		base.Awake ();
@@ -462,46 +466,62 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 	}
-
-	public void Init()
+	
+	public IEnumerator Init(float canvasFactor)
 	{
+		CanvasFactor = canvasFactor;
+
 		mLuaCallUpdateMap = new Dictionary<string, string>();
-		
 		LuaManager.Instance.Init ();
-		TextAsset file = Resources.Load<TextAsset>(scriptName);
+
+		bool isLoaded = false;
+
+		string loadPath = "";
+#if UNITY_EDITOR
+		loadPath = "file:///" + Application.streamingAssetsPath + "/" + scriptName;
+#elif UNITY_ANDROID
+		loadPath = Application.streamingAssetsPath + "/" + scriptName;
+#endif
+
+		string savePath = Application.persistentDataPath + "/" + scriptName;
+
+		ResourceManager.Instance.AddLoaderData(loadPath, savePath, "", () => {
+			StartCoroutine(LoadLuaMainFile(savePath, () => { 
+					isLoaded = true;
+				})
+			);
+		});
+
+		while (isLoaded != true) {
+			yield return null;
+		}
+	}
+	
+	private IEnumerator LoadLuaMainFile(string filePath, Action endCallback) {
+		string loadPath = "";
+#if UNITY_EDITOR
+		loadPath = "file:///" + filePath;
+#elif UNITY_ANDROID
+		loadPath = filePath;
+#endif
+
+		WWW www = new WWW(loadPath);
+		while (www.isDone == false) {
+			yield return null;
+		}
+		
+		//			TextAsset file = Resources.Load<TextAsset>(scriptName);
+		//TextAsset file = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
 
 		// まずは、スクリプトをロードして使える状態にする
-		LuaManager.Instance.LoadLuaScript (file);
-		
+		LuaManager.Instance.LoadLuaScript(www.text, scriptName);
+
 		// Unity関数をLua側に登録する
 		BindCommonFunction (scriptName);
 
-		// LuaのCsvManager初期化処理
-/*		LuaManager.DelegateLuaBindFunction LuaUnityInitCsvManager = new LuaManager.DelegateLuaBindFunction (UnityInitCsvManager);
-		IntPtr LuaUnityInitCsvManagerIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityInitCsvManager);
-		LuaManager.Instance.AddUnityFunction(file.name, "UnityInitCsvManager", LuaUnityInitCsvManagerIntPtr, LuaUnityInitCsvManager);*/
-
-/*		mLuaState = NativeMethods.luaL_newstate();
-		NativeMethods.luaL_openlibs(mLuaState);
-
-		DelegateLuaBindFunction LuaUnityLoadLevel = new DelegateLuaBindFunction (UnityLoadLevel);
-		IntPtr LuaUnityLoadLevelIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadLevel);
-		//関数ポインタが指しているデリゲートがGCに回収されないようメモリを確保するらしい
-//		gcHandle = GCHandle.Alloc(LuaUnityLoadLevel);
-
-		// ここはアセットバンドルで読み込んだリソースを使う方向に変更する必要があると思うよ
-		TextAsset file = Resources.Load<TextAsset>("UnityBind");
-		NativeMethods.luaL_loadstring (mLuaState, file.text);
-		NativeMethods.lua_pcallk (mLuaState, 0, -1, 0);
-
-		NativeMethods.lua_pushcclosure (mLuaState, LuaUnityLoadLevelIntPtr, 0);
-		NativeMethods.lua_setglobal (mLuaState, "UnityLoadLevel");
+		// データの設定
+		SetUnityData(CanvasFactor);
 		
-		// 関数呼び出したと仮定
-		NativeMethods.lua_getglobal(mLuaState, "LuaLoadLevel");
-		NativeMethods.lua_pushstring(mLuaState, "NextScene");
-		int res = NativeMethods.lua_pcallk (mLuaState, 1, 0, 0);*/
-
 		// Lua側のメイン関数を呼び出す
 		LuaManager.FunctionData data = new LuaManager.FunctionData();
 		data.returnValueNum = 0;
@@ -510,18 +530,74 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 
-		// 仮 Androidで、StreamingAsstesの物を、アクセスできる場所にコピーする処理
-/*#if UNITY_ANDROID
-				string path = Application.streamingAssetsPath + "/LuaUtility.lua";
-				WWW www = new WWW(path);
-				while(!www.isDone){
-				}
+		IntPtr state = LuaManager.Instance.GetLuaState(scriptName);
+		LuaManager.Instance.getStack(state, new ArrayList());
 
-				string toPath = Application.persistentDataPath + "/LuaUtility.lua";
-
-				File.WriteAllBytes(toPath, www.bytes);
-#endif*/
+		if (endCallback != null) {
+			endCallback();
+		}
 	}
+
+	//public IEnumerator Init()
+	//{
+	//	mLuaCallUpdateMap = new Dictionary<string, string>();
+	//	
+	//	LuaManager.Instance.Init ();
+	//	TextAsset file = Resources.Load<TextAsset>(scriptName);
+
+	//	// まずは、スクリプトをロードして使える状態にする
+	//	LuaManager.Instance.LoadLuaScript (file);
+	//	
+	//	// Unity関数をLua側に登録する
+	//	BindCommonFunction (scriptName);
+
+	//	// LuaのCsvManager初期化処理
+/*	//	LuaManager.DelegateLuaBindFunction LuaUnityInitCsvManager = new LuaManager.DelegateLuaBindFunction (UnityInitCsvManager);
+	//	IntPtr LuaUnityInitCsvManagerIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityInitCsvManager);
+	//	LuaManager.Instance.AddUnityFunction(file.name, "UnityInitCsvManager", LuaUnityInitCsvManagerIntPtr, LuaUnityInitCsvManager);*/
+
+/*	//	mLuaState = NativeMethods.luaL_newstate();
+	//	NativeMethods.luaL_openlibs(mLuaState);
+
+	//	DelegateLuaBindFunction LuaUnityLoadLevel = new DelegateLuaBindFunction (UnityLoadLevel);
+	//	IntPtr LuaUnityLoadLevelIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadLevel);
+	//	//関数ポインタが指しているデリゲートがGCに回収されないようメモリを確保するらしい
+//	//	gcHandle = GCHandle.Alloc(LuaUnityLoadLevel);
+
+	//	// ここはアセットバンドルで読み込んだリソースを使う方向に変更する必要があると思うよ
+	//	TextAsset file = Resources.Load<TextAsset>("UnityBind");
+	//	NativeMethods.luaL_loadstring (mLuaState, file.text);
+	//	NativeMethods.lua_pcallk (mLuaState, 0, -1, 0);
+
+	//	NativeMethods.lua_pushcclosure (mLuaState, LuaUnityLoadLevelIntPtr, 0);
+	//	NativeMethods.lua_setglobal (mLuaState, "UnityLoadLevel");
+	//	
+	//	// 関数呼び出したと仮定
+	//	NativeMethods.lua_getglobal(mLuaState, "LuaLoadLevel");
+	//	NativeMethods.lua_pushstring(mLuaState, "NextScene");
+	//	int res = NativeMethods.lua_pcallk (mLuaState, 1, 0, 0);*/
+
+	//	// Lua側のメイン関数を呼び出す
+	//	LuaManager.FunctionData data = new LuaManager.FunctionData();
+	//	data.returnValueNum = 0;
+	//	data.functionName = "LuaMain";
+	//	ArrayList list = new ArrayList();
+	//	data.argList = list;
+	//	ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
+
+	//	// 仮 Androidで、StreamingAsstesの物を、アクセスできる場所にコピーする処理
+/*#i//f UNITY_ANDROID
+	//			string path = Application.streamingAssetsPath + "/LuaUtility.lua";
+	//			WWW www = new WWW(path);
+	//			while(!www.isDone){
+	//			}
+
+	//			string toPath = Application.persistentDataPath + "/LuaUtility.lua";
+
+	//			File.WriteAllBytes(toPath, www.bytes);
+#end//if*/
+	//	yield return null;
+	//}
 
 	static public void BindCommonFunction(string scriptName)
 	{

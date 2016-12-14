@@ -7,7 +7,7 @@ public class LuaCheckConditions : MonoBehaviour {
 	void Start () {
 		LuaManager.Instance.Init ();
 		TextAsset file = Resources.Load<TextAsset>("LuaCheckConditions");
-		LuaManager.Instance.LoadLuaScript (file);
+		LuaManager.Instance.LoadLuaScript (file.text, file.name);
 
 		UnityUtility.BindCommonFunction ("LuaCheckConditions");
 	}

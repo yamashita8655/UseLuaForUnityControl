@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 		public string LoadPath { get; set; }
 		public string SavePath { get; set; }
 		public string CallbackName { get; set; }
+		public Action CallbackFunction { get; set; }
 	}
 
 	bool IsLoading = false;
@@ -27,11 +29,12 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 		}
 	}
 
-	public void AddLoaderData(string loadPath, string savePath, string callbackName) {
+	public void AddLoaderData(string loadPath, string savePath, string callbackName, Action callbackFunction) {
 		LoaderData data = new LoaderData();
 		data.LoadPath = loadPath;
 		data.SavePath = savePath;
 		data.CallbackName = callbackName;
+		data.CallbackFunction = callbackFunction;
 
 		LoadDataStackList.Add(data);
 	}
@@ -51,14 +54,24 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 
 		LoadDataStackList.RemoveAt(0);
 		IsLoading = false;
+		
+		loaderData.CallbackName = loaderData.CallbackName;
+		loaderData.CallbackFunction = loaderData.CallbackFunction;
 
-		string functionName = loaderData.CallbackName;
-		LuaManager.FunctionData data = new LuaManager.FunctionData();
-		data.returnValueNum = 0;
-		data.functionName = functionName;
-		ArrayList list = new ArrayList();
-		data.argList = list;
-		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+		if (loaderData.CallbackName != "") {
+			string functionName = loaderData.CallbackName;
+			LuaManager.FunctionData data = new LuaManager.FunctionData();
+			data.returnValueNum = 0;
+			data.functionName = functionName;
+			ArrayList list = new ArrayList();
+			data.argList = list;
+			ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+		}
+		
+		if (loaderData.CallbackFunction != null) {
+			loaderData.CallbackFunction();
+		}
+
 	}
 
 	public void Init() {

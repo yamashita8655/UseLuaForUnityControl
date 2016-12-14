@@ -9,12 +9,17 @@ public class BootScene : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		StartCoroutine(CoroutineStart());
+	}
+
+	private IEnumerator CoroutineStart() {
 		GameSceneManager.Instance.Initialize();
 		GameObjectCacheManager.Instance.Initialize();
 		ResourceManager.Instance.Init();
-		UnityUtility.Instance.Init();
+		
 		float factor = MainCanvas.scaleFactor;
-		UnityUtility.Instance.SetUnityData(factor);
+		
+		yield return StartCoroutine(UnityUtility.Instance.Init(factor));
 	}
 	
 	// Update is called once per frame
