@@ -258,6 +258,9 @@ function Footer_ClickHome_Callback(arg)
 end
 function Footer_ClickCustom_Callback(arg)
 	LuaChangeScene("Custom", "MainCanvas")
+	LuaFindObject("CustomPlayerSelectContent")
+	LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode1", "CustomPlayerSelectListNode1", "CustomPlayerSelectContent")
+	LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode2", "CustomPlayerSelectListNode2", "CustomPlayerSelectContent")
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 function Footer_ClickQuest_Callback(arg)

@@ -151,6 +151,22 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 	
+	// 画像の設定
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetSprite(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string text = Marshal.PtrToStringAnsi(res_s);
+		obj.GetComponent<Text>().text = text;
+		
+		return 0;
+	}
+	
 	// ポジションを設定する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetPosition(IntPtr luaState)
