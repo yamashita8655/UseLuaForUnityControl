@@ -1,30 +1,37 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\test1-scenechange\Test1_StartUp.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\LuaManager.cs">
     <Files>
-      <File FileName="Assets\Script\GameMain\BootScene.cs" Line="20" Column="41" />
-      <File FileName="Assets\Script\ResourceManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\HowToUseLua.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\UnityUtility.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\NativeMethods.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\GameMain\BootScene.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\ResourceManager.cs" Line="68" Column="1" />
+      <File FileName="Assets\Script\HowToUseLua.cs" Line="88" Column="1" />
+      <File FileName="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" Line="55" Column="1" />
+      <File FileName="Assets\Script\UnityUtility.cs" Line="125" Column="1" />
+      <File FileName="Assets\Script\NativeMethods.cs" Line="153" Column="47" />
       <File FileName="Assets\Script\SingletonMonoBehaviourFast.cs.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameMain\Common\CutinControllerBase.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\LuaManager.cs" Line="217" Column="29" />
-      <File FileName="Assets\Script\LuaCheckConditions.cs" Line="10" Column="58" />
-      <File FileName="Assets\Script\test1-scenechange\Test1_StartUp.cs" Line="8" Column="32" />
+      <File FileName="Assets\Script\LuaManager.cs" Line="211" Column="1" />
+      <File FileName="Assets\Script\LuaCheckConditions.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\test1-scenechange\Test1_StartUp.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\GameMain\Common\GameSceneManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\GameMain\Common\ButtonEventHandler.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="D:\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="261" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="155" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="156" column="1" />
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="85" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="277" column="7" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="276" column="7" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="277" column="1" />
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="278" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="279" column="1" />
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="86" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="520" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\GameMain\Common\ButtonEventHandler.cs" line="6" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="125" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\GameMain\Common\GameObjectCacheManager.cs" line="39" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\GameMain\Common\GameObjectCacheManager.cs" line="47" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\GameMain\Common\GameObjectCacheManager.cs" line="55" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\GameMain\Common\GameObjectCacheManager.cs" line="52" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -14,6 +14,15 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
+	"SceneBase.lua",
+	"CallbackManager.lua",
+	"TitleScene.lua",
+	"HomeScene.lua",
+	"CustomScene.lua",
+	"QuestScene.lua",
+	"OptionScene.lua",
+	"BattleScene.lua",
+	"SceneManager.lua",
 	"MoveConfig.lua",
 	"BaseMoveController.lua",
 	"MoveControllerSinCurve.lua",
@@ -50,19 +59,38 @@ function LuaUnityLoadFileAsync(loadPath, savePath, callbackName)
 	UnityLoadFileAsync(loadPath, savePath, callbackName)
 end
 
+----LuaのMain関数みたいな奴
+--function LuaMain()
+--	LuaChangeScene("Title", "MainCanvas")
+--	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
+--	LuaLoadPrefabAfter("Prefabs/System/LoadingTextObject", "", "SystemCanvas")
+--	LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
+--	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
+--	LuaSetActive("FadeObject", false)
+--	LuaSetActive("HeaderObject", false)
+--	LuaSetActive("FooterObject", false)
+--	LuaSetActive("LoadingTextObject", false)
+--	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "", "SystemCanvas")
+--	LuaFindObject("DebugDisplayText")
+--end
+
 --LuaのMain関数みたいな奴
 function LuaMain()
-	LuaChangeScene("Title", "MainCanvas")
-	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
-	LuaLoadPrefabAfter("Prefabs/System/LoadingTextObject", "", "SystemCanvas")
-	LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
-	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
+	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "FadeObject", "SystemCanvas")
 	LuaSetActive("FadeObject", false)
-	LuaSetActive("HeaderObject", false)
-	LuaSetActive("FooterObject", false)
-	LuaSetActive("LoadingTextObject", false)
-	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "", "SystemCanvas")
+	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
 	LuaFindObject("DebugDisplayText")
+	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
+end
+
+function InitLoadingScene()
+	LuaChangeScene("Loading", "MainCanvas")
+	UpdateLoadingData()
+	LuaPlayAnimator("FadeObject", "FadeOut", false, false, "StartLoadLuaScript", "")
+end
+
+function StartLoadLuaScript()
+	LoadAllLuaScript()
 end
 
 --ゲームの情報
@@ -93,12 +121,11 @@ function InitGame()
 	GameManager.Instance():Initialize()
 	GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter001)
 
-	LuaChangeScene("Home", "MainCanvas")
-	LuaSetActive("HeaderObject", true)
-	LuaSetActive("FooterObject", true)
+	CallbackManager.Instance():Initialize()
 
-	--test
-	--LuaUnityDebugLog(SpawnTable[1].SpawnData)
+	SceneManager.Instance():Initialize()
+	--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
+	SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
 end
 
 --Luaの分割ファイル読み込み
@@ -209,22 +236,23 @@ function LoadLuaFile(filename)
 end
 
 --Unity側から呼び出される。Event系の関数
-function EventClickButton(eventName)
-	if eventName == "TitleSceneGoHomeButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "TitleScene_ClickHome_Callback", "")
-	elseif eventName == "HomeButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickHome_Callback", "")
-	elseif eventName == "CustomButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickCustom_Callback", "")
-	elseif eventName == "QuestButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickQuest_Callback", "")
-	elseif eventName == "OptionButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickOption_Callback", "")
-	elseif eventName == "QuestSelectListNode1" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "QuestScene_ClickButton_Callback", "")
-	elseif eventName == "BattleOptionButton" then
-		LuaPlayAnimator("FadeObject", "FadeIn", false, false, "BattleScene_ClickBackButton_Callback", "")
-	end
+function EventClickButtonFromUnity(buttonName)
+	SceneManager.Instance():OnClickButton(buttonName) 
+	--if eventName == "TitleSceneGoHomeButton" then
+	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "TitleScene_ClickHome_Callback", "")
+	--elseif eventName == "HomeButton" then
+	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickHome_Callback", "")
+	--elseif eventName == "CustomButton" then
+	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickCustom_Callback", "")
+	--elseif eventName == "QuestButton" then
+	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickQuest_Callback", "")
+	--elseif eventName == "OptionButton" then
+	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickOption_Callback", "")
+	--elseif eventName == "QuestSelectListNode1" then
+	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "QuestScene_ClickButton_Callback", "")
+	--elseif eventName == "BattleOptionButton" then
+	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "BattleScene_ClickBackButton_Callback", "")
+	--end
 end
 
 --タイトルシーン関数
@@ -325,216 +353,22 @@ function BattleScene_ClickBackButton_Callback(arg)
 	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
-function BattleOnMouseDown(touchx, touchy)
-	PlayerManager.Instance():OnMouseDown(touchx, touchy)
+function OnMouseDownFromUnity(touchx, touchy)
+	SceneManager.Instance():OnMouseDown(touchx, touchy)
 end
 
-function BattleOnMouseDrag(touchx, touchy)
-	PlayerManager.Instance():OnMouseDrag(touchx, touchy)
+function OnMouseDragFromUnity(touchx, touchy)
+	SceneManager.Instance():OnMouseDrag(touchx, touchy)
 end
 
 --Unity側から呼ばれる、更新関数
-function BattleUpdate(deltaTime)
-	--PlayerManager.Instance():Update(deltaTime)
-	--BulletManager.Instance():Update(deltaTime)
-	--EnemyManager.Instance():Update(deltaTime)
+function UpdateFromUnity(deltaTime)
 	-- 線形補間で計算はしないので、実際に経過しているフレーム自体を固定にして、処理落ち対策とする
-	PlayerManager.Instance():Update(GameManager:GetBattleDeltaTime())
-	BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
-	EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
-	CheckBump()
-
-	--local radian = (testRotate) / 180 * 3.1415
-	--testx = math.cos(radian)
-	--testy = math.sin(radian)
-
-	--LuaUnityDebugLog(testx.."/"..testy)
-
-	--testRotate = testRotate + 1
-	--if testRotate >= 360 then
-	--	testRotate = 0
-	--end
+	SceneManager.Instance():Update(GameManager:GetBattleDeltaTime())
 end
 
---当たり判定
-function CheckBump()
-	playerBulletList = BulletManager.Instance():GetPlayerBulletList()
-	enemyBulletList = BulletManager.Instance():GetEnemyBulletList()
-	enemyList = EnemyManager.Instance():GetList()
-	player = PlayerManager:GetPlayer()
-
-	-- 弾と敵とのあたり判定
-	-- 当たったオブジェクト双方に、DeadFlagのtrueを付与する
-	for bulletIndex = 1, #playerBulletList do
-		for enemyIndex = 1, #enemyList do
-			enemy = enemyList[enemyIndex]
-			bullet = playerBulletList[bulletIndex]
-
-			local enemyIsAlive = enemy:IsAlive()
-			local bulletIsAlive = bullet:IsAlive()
-
-			if (enemyIsAlive == false) or (bulletIsAlive == false) then
-			else
-				enemyPosition = enemy:GetPosition()
-				enemyWidth, enemyHeight = enemy:GetSize()
-
-				bulletPosition = bullet:GetPosition()
-				bulletWidth, bulletHeight = bullet:GetSize()
-
-				isHit = IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
-
-				if isHit == true then
-					EffectManager:SpawnEffect(enemy:GetPosition())
-					local bulletAttack = bullet:GetAttack()
-					enemy:AddNowHp(-bulletAttack)
-					bullet:AddNowHp(-1)
-				end
-			end
-		end
-	end
-	
-	-- 敵と自キャラとのあたり判定
-	-- 当たったら、敵の種別を判定して、削除する敵だったら、DeadFlagのtrueを付与する
-	for enemyIndex = 1, #enemyList do
-		enemy = enemyList[enemyIndex]
-
-		enemyIsAlive = enemy:IsAlive()
-
-		if (enemyIsAlive == false)then
-		else
-			enemyPosition = enemy:GetPosition()
-			enemyWidth, enemyHeight = enemy:GetSize()
-
-			playerPosition = player:GetPosition()
-			playerWidth, playerHeight = player:GetSize()
-
-			isHit = IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
-
-			if isHit == true then
-				local attack = enemy:GetAttack()
-				enemy:SetNowHp(0)
-				player:AddNowHp(-attack)
-			end
-		end
-	end
-	
-	-- 敵弾と自キャラとのあたり判定
-	-- 当たったら、敵の種別を判定して、削除する敵だったら、DeadFlagのtrueを付与する
-	for bulletIndex = 1, #enemyBulletList do
-		bullet = enemyBulletList[bulletIndex]
-
-		bulletIsAlive = bullet:IsAlive()
-
-		if (bulletIsAlive == false)then
-		else
-			bulletPosition = bullet:GetPosition()
-			bulletWidth, bulletHeight = bullet:GetSize()
-
-			playerPosition = player:GetPosition()
-			playerWidth, playerHeight = player:GetSize()
-
-			isHit = IsHit(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
-
-			if isHit == true then
-				local attack = bullet:GetAttack()
-				bullet:SetNowHp(0)
-				player:AddNowHp(-attack)
-			end
-		end
-	end
-	
-	-- 敵弾と自弾とのあたり判定
-	for playerBulletIndex = 1, #playerBulletList do
-		for enemyBulletIndex = 1, #enemyBulletList do
-			enemyBullet = enemyBulletList[enemyBulletIndex]
-			playerBullet = playerBulletList[playerBulletIndex]
-
-			local enemyBulletIsAlive = enemyBullet:IsAlive()
-			local playerBulletIsAlive = playerBullet:IsAlive()
-
-			if (enemyBulletIsAlive == false) or (playerBulletIsAlive == false) then
-			else
-				enemyBulletPosition = enemyBullet:GetPosition()
-				enemyBulletWidth, enemyBulletHeight = enemyBullet:GetSize()
-
-				playerBulletPosition = playerBullet:GetPosition()
-				playerBulletWidth, playerBulletHeight = playerBullet:GetSize()
-
-				isHit = IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
-
-				if isHit == true then
-					local playerBulletAttack = playerBullet:GetAttack()
-					local enemyBulletAttack = enemyBullet:GetAttack()
-					enemyBullet:AddNowHp(-playerBulletAttack)
-					playerBullet:AddNowHp(-enemyBulletAttack)
-				end
-			end
-		end
-	end
-
-	-- 死亡フラグが立っている物を削除する
-	EnemyManager:RemoveDeadObject()
-	BulletManager:RemoveDeadObject()
-
-end
-
-counter = 0
-
-function IsHit(leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, rightWidth, rightHeight)
-	x = 1
-	y = 2
-
-	leftTL = {leftPosX-leftWidth/2, leftPosY+leftHeight/2}
-	leftTR = {leftPosX+leftWidth/2, leftPosY+leftHeight/2}
-	leftBL = {leftPosX-leftWidth/2, leftPosY-leftHeight/2}
-	leftBR = {leftPosX+leftWidth/2, leftPosY-leftHeight/2}
-	
-	rightTL = {rightPosX-rightWidth/2, rightPosY+rightHeight/2}
-	rightTR = {rightPosX+rightWidth/2, rightPosY+rightHeight/2}
-	rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
-	rightBR = {rightPosX+rightWidth/2, rightPosY-rightHeight/2}
-
-	--左オブジェクトの左上が、右オブジェクトの範囲内に入っているかどうか
-	--x座標が範囲内か確認
-	if (leftTL[x] >= rightTL[x] and leftTL[x] <= rightTR[x]) then
-		--y座標が範囲内か確認
-		if (leftTL[y] <= rightTL[y] and leftTL[y] >= rightBL[y]) then
-			return true
-		end
-	end
-	
-	--左オブジェクトの右上が、右オブジェクトの範囲内に入っているかどうか
-	--x座標が範囲内か確認
-	if (leftTR[x] >= rightTL[x] and leftTR[x] <= rightTR[x]) then
-		--y座標が範囲内か確認
-		if (leftTR[y] <= rightTR[y] and leftTR[y] >= rightBR[y]) then
-			return true
-		end
-	end
-
-	--左オブジェクトの左下が、右オブジェクトの範囲内に入っているかどうか
-	--x座標が範囲内か確認
-	if (leftBL[x] >= rightBL[x] and leftBL[x] <= rightBR[x]) then
-		--y座標が範囲内か確認
-		if (leftBL[y] <= rightTL[y] and leftBL[y] >= rightBL[y]) then
-			return true
-		end
-	end
-	
-	--左オブジェクトの右下が、右オブジェクトの範囲内に入っているかどうか
-	--x座標が範囲内か確認
-	if (leftBR[x] >= rightBL[x] and leftBR[x] <= rightBR[x]) then
-		--y座標が範囲内か確認
-		if (leftBR[y] <= rightTR[y] and leftBR[y] >= rightBR[y]) then
-			return true
-		end
-	end
-
-	return false
-end
-
-function EffectAnimationEnd(arg) 
-	EffectManager:EffectAnimationEnd(arg) 
+function LuaCallback(callbackName) 
+	CallbackManager.Instance():ExecuteCallback(callbackName)
 end
 
 --ホームシーン関数

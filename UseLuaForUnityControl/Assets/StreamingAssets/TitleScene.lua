@@ -14,6 +14,7 @@ function TitleScene.new()
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
 		this:SceneBaseInitialize()
+		LuaChangeScene("Title", "MainCanvas")
 	end
 	
 	-- 更新
@@ -33,6 +34,15 @@ function TitleScene.new()
 		return self.IsActive
 	end
 	
+	-- コールバック
+	this.OnClickButton = function(self, buttonName)
+		if buttonName == "TitleSceneGoHomeButton" then
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+		end
+	end
+
+	
 	return this
+	--return setmetatable(this, {__index = TitleScene})
 end
 

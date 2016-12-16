@@ -8,7 +8,7 @@ local _instance = nil
 function EffectManager.Instance() 
 	if not _instance then
 		_instance = EffectManager
-		_instance:Initialize()
+		--_instance:Initialize()
 		--setmetatable(_instance, { __index = EffectManager })
 	end
 
@@ -26,11 +26,15 @@ end
 function EffectManager:SpawnEffect(position) 
 	LuaLoadPrefabAfter("Prefabs/System/HitEffect1", "HitEffect1_"..self.EffectCounter, "EffectRoot")
 	LuaSetPosition("HitEffect1_"..self.EffectCounter, position.x, position.y, position.z)
-	LuaPlayAnimator("HitEffect1_"..self.EffectCounter, "Play", false, false, "EffectAnimationEnd", "HitEffect1_"..self.EffectCounter)
+	callbackTag = "EffectManager_CallbackEffectAnimationEnd"..self.EffectCounter
+	CallbackManager.Instance():AddCallback(callbackTag, {self, "HitEffect1_"..self.EffectCounter}, self.EffectAnimationEnd)
+	LuaPlayAnimator("HitEffect1_"..self.EffectCounter, "Play", false, false, "LuaCallback", callbackTag)
 	self.EffectCounter = self.EffectCounter + 1
 
 end
 
-function EffectManager:EffectAnimationEnd(arg) 
-	LuaDestroyObject(arg)
+function EffectManager.EffectAnimationEnd(argList) 
+	local self = argList[1]
+	local prefabName = argList[2]
+	LuaDestroyObject(prefabName)
 end

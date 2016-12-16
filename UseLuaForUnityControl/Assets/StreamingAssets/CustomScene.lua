@@ -14,6 +14,10 @@ function CustomScene.new()
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
 		this:SceneBaseInitialize()
+		
+		LuaChangeScene("Custom", "MainCanvas")
+		LuaSetActive("HeaderObject", true)
+		LuaSetActive("FooterObject", true)
 	end
 	
 	-- 更新

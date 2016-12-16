@@ -84,8 +84,7 @@ public class HowToUseLua : MonoBehaviour {
 		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out output);
 		string resString = Marshal.PtrToStringAnsi(res_s);
 	}
-
-
+	
 	void test2()
 	{
 		// こっちは、何らかの方法でLuaスクリプトをバッファに展開して使うタイプ

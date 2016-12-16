@@ -14,6 +14,10 @@ function OptionScene.new()
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
 		this:SceneBaseInitialize()
+		
+		LuaChangeScene("Option", "MainCanvas")
+		LuaSetActive("HeaderObject", true)
+		LuaSetActive("FooterObject", true)
 	end
 	
 	-- 更新

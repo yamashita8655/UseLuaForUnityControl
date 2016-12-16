@@ -21,8 +21,4 @@ public class BootScene : MonoBehaviour {
 		
 		yield return StartCoroutine(UnityUtility.Instance.Init(factor));
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
 }

@@ -8,7 +8,7 @@ local _instance = nil
 function EnemyManager.Instance() 
 	if not _instance then
 		_instance = EnemyManager
-		_instance:Initialize()
+		--_instance:Initialize()
 		--setmetatable(_instance, { __index = EnemyManager })
 	end
 

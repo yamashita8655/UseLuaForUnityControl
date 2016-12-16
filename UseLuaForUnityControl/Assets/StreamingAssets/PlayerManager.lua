@@ -8,7 +8,7 @@ local _instance = nil
 function PlayerManager.Instance() 
 	if not _instance then
 		_instance = PlayerManager
-		_instance:Initialize()
+		--_instance:Initialize()
 		-- このメタテーブル設定をすると
 		-- self.PlayerCharacterInstance = nilはいけるが
 		-- obj = self.PlayerCharacterInstanceが

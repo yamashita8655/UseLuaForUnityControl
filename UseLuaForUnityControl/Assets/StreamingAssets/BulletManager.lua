@@ -12,7 +12,7 @@ local _instance = nil
 function BulletManager.Instance() 
 	if not _instance then
 		_instance = BulletManager
-		_instance:Initialize()
+		--_instance:Initialize()
 		--setmetatable(_instance, { __index = BulletManager })
 	end
 
@@ -174,7 +174,7 @@ function BulletManager:Release()
 	self.LocalRelease(self.EnemyBulletList)
 end
 
-function BulletManager:LocalRelease(list)
+function BulletManager.LocalRelease(list)
 	local index = 1
 	while true do
 		if index <= #list then

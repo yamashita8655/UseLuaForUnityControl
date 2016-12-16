@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\GameMain\BootScene.cs" />
-     <Compile Include="Assets\Script\GameMain\Common\BattleInputEventHandler.cs" />
+     <Compile Include="Assets\Script\GameMain\Common\ButtonEventHandler.cs" />
      <Compile Include="Assets\Script\GameMain\Common\CutinControllerBase.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameSceneManager.cs" />
@@ -54,6 +54,7 @@
      <Compile Include="Assets\Script\GameMain\Common\SceneBase.cs" />
      <Compile Include="Assets\Script\GameMain\Common\SingletonTemplate.cs" />
      <Compile Include="Assets\Script\GameMain\Common\SubSceneBase.cs" />
+     <Compile Include="Assets\Script\GameMain\Common\UpdateEventHandler.cs" />
      <Compile Include="Assets\Script\HowToUseLua.cs" />
      <Compile Include="Assets\Script\LuaCheckConditions.cs" />
      <Compile Include="Assets\Script\LuaManager.cs" />

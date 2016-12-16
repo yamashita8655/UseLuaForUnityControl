@@ -122,6 +122,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
+		Debug.Log (objectName);
 		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path, objectName);
 		//retObj.SetActive(false);
 		
@@ -402,7 +403,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		mLuaCallUpdateMap.Add(csvname, csvname);
 		return 0;
 	}
-	
+
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityBindCommonFunction(IntPtr luastate)
 	{
@@ -500,21 +501,24 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	private IEnumerator LoadLuaMainFile(string filePath, Action endCallback) {
 		string loadPath = "";
 #if UNITY_EDITOR
-		loadPath = "file:///" + filePath;
+		//loadPath = "file:///" + filePath;
+		loadPath = filePath;
 #elif UNITY_ANDROID
+		//loadPath = "jar:file://" + filePath;
 		loadPath = filePath;
 #endif
-
-		WWW www = new WWW(loadPath);
+/*		WWW www = new WWW(loadPath);
 		while (www.isDone == false) {
 			yield return null;
-		}
-		
+		}*/
+
+		string output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+
 		//			TextAsset file = Resources.Load<TextAsset>(scriptName);
 		//TextAsset file = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
 
 		// まずは、スクリプトをロードして使える状態にする
-		LuaManager.Instance.LoadLuaScript(www.text, scriptName);
+		LuaManager.Instance.LoadLuaScript(output, scriptName);
 
 		// Unity関数をLua側に登録する
 		BindCommonFunction (scriptName);
@@ -536,6 +540,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		if (endCallback != null) {
 			endCallback();
 		}
+		
+		yield return null;
 	}
 
 	//public IEnumerator Init()

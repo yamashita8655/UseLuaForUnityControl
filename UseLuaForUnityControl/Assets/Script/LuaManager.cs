@@ -90,9 +90,6 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 		mDelegateAddressMap = null;
 	}
 
-	void Update () {
-	}
-
 	// LuaScriptを読み込んで、使える状態にする
 	// 基本は、呼び出し側で使いたいLuaScriptを指定するはずなので、
 	// TextAssetは呼び出し側で作って渡してもらうようにする

@@ -8,7 +8,7 @@ local _instance = nil
 function GameManager.Instance() 
 	if not _instance then
 		_instance = GameManager
-		_instance:Initialize()
+		--_instance:Initialize()
 	end
 
 	return _instance
@@ -18,6 +18,7 @@ end
 function GameManager:Initialize() 
 	self.SelectPlayerCharacterData = nil
 	self.BattleDeltaTime = 1.0/60.0
+	self.SelectQuestId = 0
 end
 
 -- 選択しているキャラクターデータ指定
@@ -31,6 +32,14 @@ end
 -- 呼び出される毎に加算する時間
 function GameManager:GetBattleDeltaTime() 
 	return self.BattleDeltaTime
+end
+
+-- 選択されたクエストID
+function GameManager:SetSelectQuestId(id) 
+	self.SelectQuestId = id
+end
+function GameManager:GetSelectQuestId() 
+	return self.SelectQuestId
 end
 
 function GameManager:Update(deltaTime) 

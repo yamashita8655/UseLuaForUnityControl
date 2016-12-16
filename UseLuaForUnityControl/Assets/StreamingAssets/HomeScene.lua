@@ -14,6 +14,10 @@ function HomeScene.new()
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
 		this:SceneBaseInitialize()
+		
+		LuaChangeScene("Home", "MainCanvas")
+		LuaSetActive("HeaderObject", true)
+		LuaSetActive("FooterObject", true)
 	end
 	
 	-- 更新
