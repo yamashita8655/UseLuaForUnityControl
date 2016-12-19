@@ -16,7 +16,9 @@ function QuestScene.new()
 		this:SceneBaseInitialize()
 
 		-- クエストデータ作らなきゃね
-		self.questCount = 5
+		--self.questCount = 5
+		self.questCount = #QuestConfig
+
 		
 		LuaChangeScene("Quest", "MainCanvas")
 		LuaSetActive("HeaderObject", true)

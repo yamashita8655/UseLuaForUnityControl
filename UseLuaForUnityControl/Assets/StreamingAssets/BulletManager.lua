@@ -96,34 +96,36 @@ end
 function BulletManager:SetTargetPosition(list) 
 	for i = 1, #list do
 		bullet = list[i]
-		if bullet:GetTarget() == nil or bullet:GetTarget():IsAlive() == false then
-			if bullet:GetBulletType() == BulletTypeEnum.UseTargetPosition then
-				bulletPosition = bullet:GetPosition()
-				enemyList = EnemyManager:GetList()
-				if #enemyList == 0 then
-				else
-					enemy = enemyList[1]
-					enemyPosition = enemy:GetPosition()
-					posx = enemyPosition.x - bulletPosition.x
-					posy = enemyPosition.y - bulletPosition.y
-					length = math.sqrt((posx*posx)+(posy*posy))
-					nearLength = length
-					nearEnemy = enemy
-					for j = 2, #enemyList do
-						enemy = enemyList[j]
+		if bullet:GetBulletType() == BulletTypeEnum.UseTargetPosition then
+			if bullet:GetTarget() == nil or bullet:GetTarget():IsAlive() == false then
+				if bullet:GetBulletType() == BulletTypeEnum.UseTargetPosition then
+					bulletPosition = bullet:GetPosition()
+					enemyList = EnemyManager:GetList()
+					if #enemyList == 0 then
+					else
+						enemy = enemyList[1]
 						enemyPosition = enemy:GetPosition()
 						posx = enemyPosition.x - bulletPosition.x
 						posy = enemyPosition.y - bulletPosition.y
 						length = math.sqrt((posx*posx)+(posy*posy))
-						if length < nearLength then
-							nearLength = length
-							nearEnemy = enemy
+						nearLength = length
+						nearEnemy = enemy
+						for j = 2, #enemyList do
+							enemy = enemyList[j]
+							enemyPosition = enemy:GetPosition()
+							posx = enemyPosition.x - bulletPosition.x
+							posy = enemyPosition.y - bulletPosition.y
+							length = math.sqrt((posx*posx)+(posy*posy))
+							if length < nearLength then
+								nearLength = length
+								nearEnemy = enemy
+							end
 						end
+						bullet:SetTarget(nearEnemy)
 					end
-					bullet:SetTarget(nearEnemy)
 				end
+			else
 			end
-		else
 		end
 	end
 end

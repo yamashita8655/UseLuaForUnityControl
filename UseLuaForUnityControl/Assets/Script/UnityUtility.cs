@@ -122,7 +122,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
-		Debug.Log (objectName);
 		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path, objectName);
 		//retObj.SetActive(false);
 		

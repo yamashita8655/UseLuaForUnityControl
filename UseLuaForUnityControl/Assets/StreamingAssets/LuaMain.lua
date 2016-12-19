@@ -51,6 +51,7 @@ LuaFileList = {
 	"GameManager.lua",
 	"EnemySpawnData.lua",
 	"EnemySpawnTable.lua",
+	"QuestDataConfig.lua",
 }
 LuaFileLoadedCount = 0
 

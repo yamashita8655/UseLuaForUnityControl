@@ -6,7 +6,22 @@ EnemyTypeEnum = {
 }
 
 -- 敵の定義
-Enemy0001 = {
+--ステージ番号_連番号
+--000_000
+--ステージ1
+Enemy001_001 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 32,
+	Height = 32,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	MoveType = MoveStraight.new(1),
+	EnemyType = EnemyTypeEnum.Normal,
+}
+
+Enemy001_002 = {
 	PrefabName = "Prefabs/EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
@@ -17,8 +32,10 @@ Enemy0001 = {
 	MoveType = MoveStraight.new(5),
 	EnemyType = EnemyTypeEnum.Normal,
 }
+--!ステージ1
 
-Enemy0002 = {
+--ステージ2
+Enemy002_001 = {
 	PrefabName = "Prefabs/EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
@@ -26,11 +43,11 @@ Enemy0002 = {
 	NowHp = 1,
 	MaxHp = 1,
 	Attack = 1,
-	MoveType = MoveSinCurve.new(1, 1, 1),
+	MoveType = MoveSinCurve.new(0, 1.5, 3),
 	EnemyType = EnemyTypeEnum.Normal,
 }
 
-Enemy0003 = {
+Enemy002_002 = {
 	PrefabName = "Prefabs/EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
@@ -38,7 +55,44 @@ Enemy0003 = {
 	NowHp = 1,
 	MaxHp = 1,
 	Attack = 1,
-	MoveType = MoveSinCurve.new(2, 2, 2),
+	MoveType = MoveSinCurve.new(180, 1.5, 3),
+	EnemyType = EnemyTypeEnum.Normal,
+}
+--!ステージ2
+
+--ステージ3
+Enemy003_001 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 32,
+	Height = 32,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	MoveType = MoveStraight.new(1),
 	EnemyType = EnemyTypeEnum.BulletShooter,
 }
 
+Enemy003_002 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 32,
+	Height = 32,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	MoveType = MoveSinCurve.new(0, 1.5, 3),
+	EnemyType = EnemyTypeEnum.BulletShooter,
+}
+
+Enemy003_003 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 32,
+	Height = 32,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	MoveType = MoveSinCurve.new(180, 1.5, 3),
+	EnemyType = EnemyTypeEnum.BulletShooter,
+}
