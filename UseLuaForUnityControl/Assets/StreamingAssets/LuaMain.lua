@@ -125,7 +125,7 @@ function InitGame()
 
 	SceneManager.Instance():Initialize()
 	--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
-	SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
+	SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
 end
 
 --Luaの分割ファイル読み込み
