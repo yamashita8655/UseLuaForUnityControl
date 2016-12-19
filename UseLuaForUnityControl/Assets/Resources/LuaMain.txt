@@ -1,4 +1,4 @@
-function GetFirstFunction()
+﻿function GetFirstFunction()
 	retValue = {}
 	retValue["length"] = 1
 	retValue["0"] = {Key = "CallFunction", Value = {FileName = "LuaMain", FunctionName = "LuaMain", Arg = {length = 0}, ReturnValue = 0}}

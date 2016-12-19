@@ -50,4 +50,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
 		nextSceneObject.SetActive(true);
 		CurrentSceneObject = nextSceneObject;
 	}
+
+	public void Update() {
+	}
 }

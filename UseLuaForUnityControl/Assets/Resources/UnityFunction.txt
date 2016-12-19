@@ -1,4 +1,4 @@
-function CallUnityDebugLog()
+﻿function CallUnityDebugLog()
 	res = UnityDebugLog("teststring")
 	UnityDebugLog(res)
 end

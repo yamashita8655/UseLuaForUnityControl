@@ -133,8 +133,8 @@ namespace LuaDLLTest
 		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_pcallk")]
 		internal static extern int lua_pcallk (IntPtr luaState, int nArgs, int nResults, int errfunc);
 
-		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_tocfunction")]
-		//internal static extern IntPtr LuaToCFunction (IntPtr luaState, int index);
+		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_tocfunction")]
+		internal static extern IntPtr lua_tocfunction (IntPtr luaState, int index);
 
 		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_tonumberx")]
 		internal static extern double lua_tonumberx (IntPtr luaState, int index, int num);
@@ -145,6 +145,7 @@ namespace LuaDLLTest
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_atpanic")]
 		//internal static extern void LuaAtPanic (IntPtr luaState, IntPtr panicf);
 		//
+		// IOS側でビルドエラーが出て使えなかったので、いったんコメントアウト
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_pushstdcallcfunction")]
 		//internal static extern void lua_pushstdcallcfunction (IntPtr luaState, IntPtr function);
 

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\GameMain\BootScene.cs" />
+     <Compile Include="Assets\Script\GameMain\Common\ButtonEventHandler.cs" />
      <Compile Include="Assets\Script\GameMain\Common\CutinControllerBase.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameSceneManager.cs" />
@@ -53,10 +54,12 @@
      <Compile Include="Assets\Script\GameMain\Common\SceneBase.cs" />
      <Compile Include="Assets\Script\GameMain\Common\SingletonTemplate.cs" />
      <Compile Include="Assets\Script\GameMain\Common\SubSceneBase.cs" />
+     <Compile Include="Assets\Script\GameMain\Common\UpdateEventHandler.cs" />
      <Compile Include="Assets\Script\HowToUseLua.cs" />
      <Compile Include="Assets\Script\LuaCheckConditions.cs" />
      <Compile Include="Assets\Script\LuaManager.cs" />
      <Compile Include="Assets\Script\NativeMethods.cs" />
+     <Compile Include="Assets\Script\ResourceManager.cs" />
      <Compile Include="Assets\Script\SingletonMonoBehaviourFast.cs.cs" />
      <Compile Include="Assets\Script\UnityUtility.cs" />
      <Compile Include="Assets\Script\test1-scenechange\Test1_Next.cs" />
@@ -66,15 +69,18 @@
      <None Include="Assets\Resources\ShopBillingPoint.txt" />
      <None Include="Assets\Resources\LuaMain.txt" />
      <None Include="Assets\Resources\UnityBindTest.txt" />
+     <None Include="Assets\Resources\LuaTestCaller.txt" />
      <None Include="Assets\Resources\TitleScene.txt" />
      <None Include="Assets\Resources\function_lua.txt" />
      <None Include="Assets\Resources\load_lua.txt" />
      <None Include="Assets\Resources\ShopScene.txt" />
      <None Include="Assets\Resources\main.txt" />
+     <None Include="Assets\StreamingAssets\LuaUtility2.txt" />
      <None Include="Assets\Resources\coroutine.txt" />
      <None Include="Assets\Resources\use_luainterface.txt" />
      <None Include="Assets\Resources\LuaCheckConditions.txt" />
      <None Include="Assets\Resources\UnityUtilityFunction.txt" />
+     <None Include="Assets\Resources\load_lua2.txt" />
      <None Include="Assets\Resources\UnityFunction.txt" />
      <None Include="Assets\Resources\UnityBind.txt" />
  <Reference Include="UnityEngine.UI">

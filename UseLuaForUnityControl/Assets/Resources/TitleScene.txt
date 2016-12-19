@@ -1,4 +1,4 @@
---Unity側から呼ばれ、Unity側の処理を呼び出す
+﻿--Unity側から呼ばれ、Unity側の処理を呼び出す
 --Unity～というのは、Unity側から関数の登録がされていないと使えない（というか、処理がない）
 
 ControlEventData = {

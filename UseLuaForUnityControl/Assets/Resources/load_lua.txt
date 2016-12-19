@@ -1,4 +1,4 @@
-windowWidth = 640;
+﻿windowWidth = 640;
 windowHeight = 480;
 windowName = "testwindow";
 testboolean = false;

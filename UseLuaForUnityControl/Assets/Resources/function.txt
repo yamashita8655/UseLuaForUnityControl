@@ -1,4 +1,4 @@
-function FunctionDebugLog()
+﻿function FunctionDebugLog()
 	res = MainDebugLog()
 	return res
 end
