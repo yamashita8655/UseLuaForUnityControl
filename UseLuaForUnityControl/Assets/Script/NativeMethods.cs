@@ -145,8 +145,8 @@ namespace LuaDLLTest
 		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_atpanic")]
 		//internal static extern void LuaAtPanic (IntPtr luaState, IntPtr panicf);
 		//
-		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_pushstdcallcfunction")]
-		internal static extern void lua_pushstdcallcfunction (IntPtr luaState, IntPtr function);
+		//[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_pushstdcallcfunction")]
+		//internal static extern void lua_pushstdcallcfunction (IntPtr luaState, IntPtr function);
 
 		[DllImport (LIBNAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "lua_pushcclosure")]
 		internal static extern void lua_pushcclosure (IntPtr luaState, IntPtr function, int num);

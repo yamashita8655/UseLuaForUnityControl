@@ -154,7 +154,7 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 			}
 			else if(val is IntPtr)
 			{
-				NativeMethods.lua_pushstdcallcfunction(luastate, (IntPtr)val);
+//				NativeMethods.lua_pushstdcallcfunction(luastate, (IntPtr)val);
 			}
 			else if(val is double)
 			{
