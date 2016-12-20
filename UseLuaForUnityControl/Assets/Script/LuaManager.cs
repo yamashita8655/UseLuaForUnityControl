@@ -143,7 +143,7 @@ public class LuaManager : SingletonMonoBehaviour<LuaManager>{
 		}
 
 		// スタックの初期化のやり方を一応メモしておく
-		//NativeMethods.lua_settop (luastate, 0);
+		NativeMethods.lua_settop (luastate, 0);
 
 		// stateにスタックを積んでいく
 		// 関数Add

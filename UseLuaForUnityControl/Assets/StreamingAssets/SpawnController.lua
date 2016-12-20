@@ -16,9 +16,9 @@ function SpawnController.new()
 	-- メソッド定義
 	-- 初期化
 	this.Initialize = function(self, spawnTable)
-		for i = 1, #spawnTable do
+		for i = 1, #spawnTable.Table do
 			listData = SpawnListData.new()
-			listData:Initialize(spawnTable[i])
+			listData:Initialize(spawnTable.Table[i])
 			table.insert(self.SpawnDataList, listData)
 		end
 	end

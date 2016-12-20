@@ -7,7 +7,11 @@ BattleScene = {}
 function BattleScene.new()
 	local this = SceneBase.new()
 
-	--this.Test = 0
+	this.EndTime = 0
+	this.EndTimeCounter = 0
+	
+	this.EndCheckInterval = 5
+	this.EndCheckIntervalCounter = 0
 
 	-- メソッド定義
 	-- 初期化
@@ -25,7 +29,10 @@ function BattleScene.new()
 		selectQuestId = GameManager.Instance():GetSelectQuestId()
 		enemySpawntTable = QuestConfig[selectQuestId].EnemySpawnTable
 
-		EnemyManager:CreateSpawnController(enemySpawntTable) 
+		EnemyManager:CreateSpawnController(enemySpawntTable)
+		self.EndTime = enemySpawntTable.EndTime
+		self.EndTimeCounter = 0
+		self.EndCheckIntervalCounter = 0
 		
 		local posx = ScreenWidth/2
 		local posy = ScreenHeight/2
@@ -44,6 +51,18 @@ function BattleScene.new()
 	this.Update = function(self, deltaTime)
 		this:SceneBaseUpdate(deltaTime)
 	
+		self.EndTimeCounter = self.EndTimeCounter + deltaTime
+		if self.EndTimeCounter > self.EndTime then
+			self.EndCheckIntervalCounter = self.EndCheckIntervalCounter + deltaTime
+			if self.EndCheckIntervalCounter > self.EndCheckInterval then
+				isEnd = self.CheckBattleEnd()
+				if isEnd == true then
+					SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+				end
+				self.EndCheckIntervalCounter = 0
+			end
+		end
+	
 		PlayerManager.Instance():Update(GameManager:GetBattleDeltaTime())
 		BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
 		EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
@@ -58,6 +77,16 @@ function BattleScene.new()
 		EnemyManager.Instance():Release()
 		BulletManager.Instance():Release()
 		PlayerManager.Instance():Release()
+	end
+	
+	-- バトルが終わったかどうか
+	this.CheckBattleEnd = function(self)
+		isEnd = false
+		enemyCount = #EnemyManager:GetList() 
+		if enemyCount == 0 then
+			isEnd = true
+		end
+		return isEnd
 	end
 	
 	-- 有効かどうか

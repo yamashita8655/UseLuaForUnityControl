@@ -25,11 +25,11 @@ function CallbackManager:AddCallback(name, arg, callback)
 	table.insert(self.CallbackTable, callbackData)
 end
 
-function CallbackManager:ExecuteCallback(functionName) 
+function CallbackManager:ExecuteCallback(functionName, unityArg) 
 	for i = 1, #self.CallbackTable do
 		callbackData = self.CallbackTable[i]
 		if callbackData.FunctionName == functionName then
-			callbackData.FunctionObject(callbackData.FunctionArg)
+			callbackData.FunctionObject(callbackData.FunctionArg, unityArg)
 			table.remove(self.CallbackTable, i)
 			break;
 		end

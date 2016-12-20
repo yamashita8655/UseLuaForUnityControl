@@ -25,6 +25,42 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
 	
+	// 文字列をファイルにして保存
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySaveFile(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string savePath = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string saveString = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
+		string callbackArg = Marshal.PtrToStringAnsi(res_s);
+
+		string success = "";
+		try {
+			File.WriteAllText(savePath, saveString, System.Text.Encoding.GetEncoding("utf-8"));
+		} catch (IOException e) {
+			success = e.ToString();
+		}
+		
+		// Lua側のメイン関数を呼び出す
+		LuaManager.FunctionData data = new LuaManager.FunctionData();
+		data.returnValueNum = 0;
+		data.functionName = callbackName;
+		ArrayList list = new ArrayList();
+		list.Add(callbackArg);
+		list.Add(success);
+		data.argList = list;
+		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+		return 0;
+	}
+	
 	// データを非同期で読み込む
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadFileAsync(IntPtr luaState)
@@ -312,79 +348,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 	
-	// Lua側のCavManagerの初期化
-	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
-	public static int UnityInitCsvManager(IntPtr luaState)
-	{
-		uint res;
-		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
-		string luaFileName = Marshal.PtrToStringAnsi(res_s);
-		
-		// Unity関数をLua側に登録する
-		BindCommonFunction ("CsvManager");
-		
-		LuaManager.DelegateLuaBindFunction LuaUnityLoadCsv = new LuaManager.DelegateLuaBindFunction (UnityLoadCsv);
-		IntPtr LuaUnityLoadCsvIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadCsv);
-		LuaManager.Instance.AddUnityFunction(luaFileName, "UnityLoadCsv", LuaUnityLoadCsvIntPtr, LuaUnityLoadCsv);
-		
-		// LuaのCsvManagerの初期化処理を呼び出す
-		LuaManager.FunctionData datacsv = new LuaManager.FunctionData();
-		datacsv.returnValueNum = 0;
-		datacsv.functionName = "LoadCsv";
-		ArrayList listcsv = new ArrayList();
-		datacsv.argList = listcsv;
-		ArrayList returnListcsv = LuaManager.Instance.Call("CsvManager", datacsv);
-		
-		return 0;
-	}
-	
-	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
-	public static int UnityLoadCsv(IntPtr luastate)
-	{
-		uint res;
-		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out res);
-		string csvname = Marshal.PtrToStringAnsi(res_s);
-		string ext = Path.GetExtension(csvname);
-		TextAsset csvloadscript = Resources.Load<TextAsset>(csvname.Substring(0, csvname.Length - ext.Length));
-		
-		// CSVロード関数を呼び出す
-		LuaManager.FunctionData data = new LuaManager.FunctionData();
-		data.returnValueNum = 0;
-		data.functionName = "ParseCsvResource";
-		ArrayList list = new ArrayList();
-		list.Add (csvloadscript.name);
-		list.Add (csvloadscript.text);
-		data.argList = list;
-		ArrayList returnList = LuaManager.Instance.Call("CsvManager", data);
-		return 0;
-	}
-	
-	// LuaScriptの関数を呼び出す
-	// 主に、別ファイル間で関数を呼び出したい時に使う
-	// 引数対応は、今度する（テーブル渡せば可変で渡せる）
-	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
-	public static int UnityCallLuaFunction(IntPtr luastate)
-	{
-		uint res;
-		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out res);
-		string csvname = Marshal.PtrToStringAnsi(res_s);
-		string ext = Path.GetExtension(csvname);
-		csvname = csvname.Substring(0, csvname.Length - ext.Length);
-		
-		res_s = NativeMethods.lua_tolstring(luastate, 2, out res);
-		string functionName = Marshal.PtrToStringAnsi(res_s);
-		
-		
-		// 関数を呼び出す
-		LuaManager.FunctionData data = new LuaManager.FunctionData();
-		data.returnValueNum = 0;
-		data.functionName = functionName;
-		ArrayList list = new ArrayList();
-		data.argList = list;
-		ArrayList returnList = LuaManager.Instance.Call(csvname, data);
-		return 0;
-	}
-	
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityAddCallUpdateScript(IntPtr luastate)
 	{
@@ -628,6 +591,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityDebugLog = new LuaManager.DelegateLuaBindFunction (UnityDebugLog);
 		IntPtr LuaUnityDebugLogIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityDebugLog);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityDebugLog", LuaUnityDebugLogIntPtr, LuaUnityDebugLog);
+
+		// 非同期ファイル読み込み
+		LuaManager.DelegateLuaBindFunction LuaUnitySaveFile = new LuaManager.DelegateLuaBindFunction (UnitySaveFile);
+		IntPtr LuaUnitySaveFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySaveFile);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySaveFile", LuaUnitySaveFileIntPtr, LuaUnitySaveFile);
 		
 		// 非同期ファイル読み込み
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadFileAsync = new LuaManager.DelegateLuaBindFunction (UnityLoadFileAsync);
@@ -698,11 +666,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityAddCallUpdateScript = new LuaManager.DelegateLuaBindFunction (UnityAddCallUpdateScript);
 		IntPtr LuaUnityAddCallUpdateScriptIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityAddCallUpdateScript);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityAddCallUpdateScript", LuaUnityAddCallUpdateScriptIntPtr, LuaUnityAddCallUpdateScript);
-		
-		// 関数呼び出し
-		LuaManager.DelegateLuaBindFunction LuaUnityCallLuaFunction = new LuaManager.DelegateLuaBindFunction (UnityCallLuaFunction);
-		IntPtr LuaUnityCallLuaFunctionIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityCallLuaFunction);
-		LuaManager.Instance.AddUnityFunction(scriptName, "UnityCallLuaFunction", LuaUnityCallLuaFunctionIntPtr, LuaUnityCallLuaFunction);
 		
 		// コモン関数の登録
 		LuaManager.DelegateLuaBindFunction LuaUnityBindCommonFunction = new LuaManager.DelegateLuaBindFunction (UnityBindCommonFunction);

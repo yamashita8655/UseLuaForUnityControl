@@ -50,7 +50,7 @@ function SceneManager:ChangeScene(sceneNameEnum)
 end
 
 -- フェード後コールバック
-function SceneManager.CallbackFadeIn(argList) 
+function SceneManager.CallbackFadeIn(argList, unityArg) 
 	self			= argList[1]
 	sceneNameEnum	= argList[2]
 	

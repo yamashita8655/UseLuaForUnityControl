@@ -1,13 +1,10 @@
 --Unity側から呼ばれ、Unity側の処理を呼び出す--Unity～というのは、Unity側から関数の登録がされていないと使えない（というか、処理がない）
 
-QuestCount = 5
 ScreenWidth = ""
 ScreenHeight = ""
 StreamingDataPath = ""
 PersistentDataPath = ""
 CanvasFactor = 0.0
-
-IsLoading = false
 
 --StreamingAssets内にある、Lua用分割スクリプト。最終的には、ここはアセットバンドルから読み込むことになるはず
 LuaFileList = {
@@ -52,6 +49,7 @@ LuaFileList = {
 	"EnemySpawnData.lua",
 	"EnemySpawnTable.lua",
 	"QuestDataConfig.lua",
+	"FileIOManager.lua",
 }
 LuaFileLoadedCount = 0
 
@@ -108,9 +106,9 @@ end
 function LoadAllLuaScript()
 	local fileCount = #LuaFileList
 	if LuaFileLoadedCount < fileCount then
-		index = LuaFileLoadedCount + 1
-		loadPath = StreamingDataPath.."/"..LuaFileList[index]
-		savePath = PersistentDataPath.."/"..LuaFileList[index]
+		local index = LuaFileLoadedCount + 1
+		local loadPath = StreamingDataPath.."/"..LuaFileList[index]
+		local savePath = PersistentDataPath.."/"..LuaFileList[index]
 		LuaUnityLoadFileAsync(loadPath, savePath, "LoadAllLuaScriptCallback")
 	else
 		InitGame()
@@ -124,6 +122,13 @@ function InitGame()
 	GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter001)
 
 	CallbackManager.Instance():Initialize()
+	
+	FileIOManager.Instance():Initialize()
+	--FileIOManager.Instance():DebugDeleteSaveFile()
+	--FileIOManager.Instance():Save()
+	FileIOManager.Instance():Load()
+	--LuaUnityDebugLog(SaveObject.SelectCharacterIndex)
+
 
 	SceneManager.Instance():Initialize()
 	--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
@@ -132,8 +137,7 @@ end
 
 --Luaの分割ファイル読み込み
 function LoadAllLuaScriptCallback()
-	
-	index = LuaFileLoadedCount+1
+	local index = LuaFileLoadedCount+1
 	dofile(PersistentDataPath.."/"..LuaFileList[index])
 	LuaFileLoadedCount = LuaFileLoadedCount + 1
 	UpdateLoadingData()
@@ -141,7 +145,7 @@ function LoadAllLuaScriptCallback()
 end
 
 function UpdateLoadingData()
-	barRate = LuaFileLoadedCount / #LuaFileList
+	local barRate = LuaFileLoadedCount / #LuaFileList
 	LuaSetScale("LoadingAllLoadingGaugeBar", barRate, 1.0, 1.0)
 	--LuaSetScale("LoadingCurrentLoadingGaugeBar", 0.0, 1.0, 1.0)
 	LuaSetText("LoadingLoadedValueText", LuaFileLoadedCount)
@@ -150,6 +154,14 @@ end
 
 function LuaUnityDebugLog(log)
 	UnityDebugLog(log)
+end
+
+function LuaUnitySaveFile(fileName, saveString, callbackName, callbackTag)
+	UnitySaveFile(fileName, saveString, callbackName, callbackTag)
+end
+
+function LuaUnityLoadFile(fileName, saveString, callbackName, callbackTag)
+	UnitySaveFile(fileName, saveString, callbackName, callbackTag)
 end
 
 --オブジェクト破棄
@@ -223,11 +235,6 @@ function LuaLoadLevel(sceneName)
 	UnityLoadLevel(sceneName)
 end
 
---他のLuaの関数を呼び出す
-function LuaCallLuaFunction(fileName, functionName)
-	UnityCallLuaFunction(fileName, functionName)
-end
-
 --基本Lua関数を使えるようにする
 function LuaBindCommonFunction(fileName)
 	UnityBindCommonFunction(fileName)
@@ -241,119 +248,6 @@ end
 --Unity側から呼び出される。Event系の関数
 function EventClickButtonFromUnity(buttonName)
 	SceneManager.Instance():OnClickButton(buttonName) 
-	--if eventName == "TitleSceneGoHomeButton" then
-	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "TitleScene_ClickHome_Callback", "")
-	--elseif eventName == "HomeButton" then
-	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickHome_Callback", "")
-	--elseif eventName == "CustomButton" then
-	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickCustom_Callback", "")
-	--elseif eventName == "QuestButton" then
-	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickQuest_Callback", "")
-	--elseif eventName == "OptionButton" then
-	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "Footer_ClickOption_Callback", "")
-	--elseif eventName == "QuestSelectListNode1" then
-	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "QuestScene_ClickButton_Callback", "")
-	--elseif eventName == "BattleOptionButton" then
-	--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "BattleScene_ClickBackButton_Callback", "")
-	--end
-end
-
---タイトルシーン関数
---ホームへ行く
-function TitleScene_ClickHome_Callback(arg)
-	LuaPlayAnimator("LoadingTextObject", "Play", true, false, "", "")
-	LuaChangeScene("Loading", "MainCanvas")
-	LuaFindObject("LoadingAllLoadingGaugeBar")
-	--LuaFindObject("LoadingCurrentLoadingGaugeBar")
-	LuaFindObject("LoadingLoadedValueText")
-	LuaFindObject("LoadingMaxValueText")
-
-	UpdateLoadingData()
-	LoadAllLuaScript()
-	
-	--LuaChangeScene("Home", "MainCanvas")
-	--LuaSetActive("HeaderObject", true)
-	--LuaSetActive("FooterObject", true)
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
-end
-
---フッターボタン関数
-function Footer_ClickHome_Callback(arg)
-	LuaChangeScene("Home", "MainCanvas")
-	LuaFindObject("HomeSceneTitleText")
-	--LuaSetText("HomeSceneTitleText", "あいうえお")
-	LuaSetText("HomeSceneTitleText", [[あいうえお]])
-
-
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
-end
-function Footer_ClickCustom_Callback(arg)
-	LuaChangeScene("Custom", "MainCanvas")
-	LuaFindObject("CustomPlayerSelectContent")
-	LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode1", "CustomPlayerSelectListNode1", "CustomPlayerSelectContent")
-	LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode2", "CustomPlayerSelectListNode2", "CustomPlayerSelectContent")
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
-end
-function Footer_ClickQuest_Callback(arg)
-	LuaChangeScene("Quest", "MainCanvas")
-	LuaFindObject("QuestScrollContent")
-	for i = 1, QuestCount do
-		LuaDestroyObject("QuestSelectListNode"..i, "QuestScrollContent")
-	end
-
-	for i = 1, QuestCount do
-		LuaLoadPrefabAfter("Prefabs/QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
-		LuaSetActive("QuestSelectListNode"..i, true)
-	end
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
-end
-function Footer_ClickOption_Callback(arg)
-	LuaChangeScene("Option", "MainCanvas")
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
-end
-
-flag = 0
---クエストシーン関数
-function QuestScene_ClickButton_Callback(arg)
-	LuaChangeScene("Battle", "MainCanvas")
-	PlayerManager.Instance():Initialize()
-
-	BulletManager.Instance():Initialize()
-	EffectManager.Instance():Initialize()
-	
-	EnemyManager.Instance():Initialize()
-	EnemyManager:CreateSpawnController(SpawnTable) 
-	
-	local posx = ScreenWidth/2
-	local posy = ScreenHeight/2
-	
-	-- キャラ切り替えテスト
-	selectCharacter = nil
-	if flag == 0 then
-		selectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
-		flag = 1
-	else
-		selectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
-	end
-
-	PlayerManager.Instance():CreatePlayer(selectCharacter, posx, posy, 0)
-	
-	LuaSetActive("HeaderObject", false)
-	LuaSetActive("FooterObject", false)
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
-end
-
---バトルシーン関数
-function BattleScene_ClickBackButton_Callback(arg)
-	EnemyManager.Instance():Release()
-	BulletManager.Instance():Release()
-	PlayerManager.Instance():Release()
-	LuaChangeScene("Home", "MainCanvas")
-	LuaSetActive("HeaderObject", true)
-	LuaSetActive("FooterObject", true)
-	LuaFindObject("PlayerBulletRoot")
-	LuaFindObject("EnemyObjectRoot")
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
 end
 
 function OnMouseDownFromUnity(touchx, touchy)
@@ -370,8 +264,8 @@ function UpdateFromUnity(deltaTime)
 	SceneManager.Instance():Update(GameManager:GetBattleDeltaTime())
 end
 
-function LuaCallback(callbackName) 
-	CallbackManager.Instance():ExecuteCallback(callbackName)
+function LuaCallback(callbackName, unityArg) 
+	CallbackManager.Instance():ExecuteCallback(callbackName, unityArg)
 end
 
 --ホームシーン関数

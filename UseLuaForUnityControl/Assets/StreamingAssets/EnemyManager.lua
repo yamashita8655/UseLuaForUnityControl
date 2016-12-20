@@ -110,3 +110,4 @@ function EnemyManager:Release()
 		end
 	end
 end
+
