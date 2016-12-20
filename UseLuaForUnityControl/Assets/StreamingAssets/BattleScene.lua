@@ -21,7 +21,11 @@ function BattleScene.new()
 		BulletManager.Instance():Initialize()
 		EffectManager.Instance():Initialize()
 		EnemyManager.Instance():Initialize()
-		EnemyManager:CreateSpawnController(SpawnTable) 
+
+		selectQuestId = GameManager.Instance():GetSelectQuestId()
+		enemySpawntTable = QuestConfig[selectQuestId].EnemySpawnTable
+
+		EnemyManager:CreateSpawnController(enemySpawntTable) 
 		
 		local posx = ScreenWidth/2
 		local posy = ScreenHeight/2
@@ -184,6 +188,7 @@ function BattleScene.new()
 					isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
 	
 					if isHit == true then
+						EffectManager:SpawnEffect(enemyBullet:GetPosition())
 						local playerBulletAttack = playerBullet:GetAttack()
 						local enemyBulletAttack = enemyBullet:GetAttack()
 						enemyBullet:AddNowHp(-playerBulletAttack)

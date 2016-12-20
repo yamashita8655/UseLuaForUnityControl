@@ -13,23 +13,26 @@ function CustomScene.new()
 	-- 初期化
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
-		this:SceneBaseInitialize()
 		
 		LuaChangeScene("Custom", "MainCanvas")
 		LuaSetActive("HeaderObject", true)
 		LuaSetActive("FooterObject", true)
 	
-		LuaFindObject("CustomPlayerSelectContent")
-		LuaFindObject("DetailText")
-		
-		LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode1", "CustomPlayerSelectListNode1", "CustomPlayerSelectContent")
-		LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode2", "CustomPlayerSelectListNode2", "CustomPlayerSelectContent")
-		LuaFindObject("CustomPlayerSelectImage1")
-		LuaFindObject("CustomPlayerSelectImage2")
+		if self.IsInitialized == false then
+			LuaFindObject("CustomPlayerSelectContent")
+			LuaFindObject("DetailText")
+			
+			LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode1", "CustomPlayerSelectListNode1", "CustomPlayerSelectContent")
+			LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode2", "CustomPlayerSelectListNode2", "CustomPlayerSelectContent")
+			LuaFindObject("CustomPlayerSelectImage1")
+			LuaFindObject("CustomPlayerSelectImage2")
+		end
 
 		currentPlayerCharater = GameManager.Instance():GetSelectPlayerCharacterData()
 		self:ToggleSelectImage(currentPlayerCharater)
 		self:ToggleSelectDetailText(currentPlayerCharater)
+		
+		this:SceneBaseInitialize()
 	end
 	
 	-- 更新

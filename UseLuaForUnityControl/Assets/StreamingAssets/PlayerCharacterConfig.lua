@@ -26,9 +26,13 @@ PlayerCharacter002 = {
 	MaxHp = 100,
 	BulletEmitterList = {
 		Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
 	},
 	EquipBulletList = {
-		BulletHomingTest,
+		Bullet0002,
+		Bullet0001,
+		Bullet0002,
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 	DetailText = "PlayerCharacter002の特徴です\n\n改行コード見れるのかな",
 }

@@ -31,8 +31,8 @@ LuaFileList = {
 	"SpawnController.lua",
 	"EnemyBase.lua",
 	"EmitterConfig.lua",
-	"EnemyConfig.lua",
 	"BulletConfig.lua",
+	"EnemyConfig.lua",
 	"BulletEmitter.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
@@ -51,6 +51,7 @@ LuaFileList = {
 	"GameManager.lua",
 	"EnemySpawnData.lua",
 	"EnemySpawnTable.lua",
+	"QuestDataConfig.lua",
 }
 LuaFileLoadedCount = 0
 
@@ -118,6 +119,7 @@ end
 
 function InitGame()
 	-- とりあえず、ゲーム開始時の初期設定をする
+	UtilityFunction.Instance():Initialize()
 	GameManager.Instance():Initialize()
 	GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter001)
 
@@ -125,7 +127,7 @@ function InitGame()
 
 	SceneManager.Instance():Initialize()
 	--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
-	SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
+	SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
 end
 
 --Luaの分割ファイル読み込み

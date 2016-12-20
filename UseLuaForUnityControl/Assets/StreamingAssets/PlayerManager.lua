@@ -54,18 +54,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		LuaSetRotate(name, 0, 0, degree)
 		local player = PlayerCharacter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), name, width, height)
 		player:Initialize(nowHp, maxHp)
-
-		for i = 1, #bulletEmitterList do
-			emitter = nil
-			if bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Normal then
-				emitter = BulletEmitter.new()
-				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], player:GetPosition(), CharacterType.Player)
-			elseif bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Satellite then
-				emitter = BulletEmitterSatellite.new()
-				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], player:GetPosition(), CharacterType.Player, Vector2.new(0, 0))
-			end
-			player:AddBulletEmitter(emitter)
-		end
+		player = UtilityFunction.Instance().SetEmitter(player, bulletEmitterList, equipBulletList, CharacterType.Player)
 
 		self.PlayerCharacterInstance = player
 		LuaSetPosition(player.Name, player.Position.x, player.Position.y, player.Position.z)

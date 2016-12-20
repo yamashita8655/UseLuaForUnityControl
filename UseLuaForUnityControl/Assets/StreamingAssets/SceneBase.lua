@@ -7,11 +7,13 @@ SceneBase = {}
 function SceneBase.new()
 	local this = {
 		IsActive = false,
+		IsInitialized = false,
 	}
 
 	-- メソッド定義
 	-- 初期化
 	this.Initialize = function(self)
+		self.IsInitialized = true;
 	end
 	
 	-- 更新

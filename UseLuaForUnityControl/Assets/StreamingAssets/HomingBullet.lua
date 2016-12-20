@@ -34,6 +34,11 @@ function HomingBullet.new(position, rotate, name, number, width, height)
 		return self.Target
 	end
 	
+	-- 弾タイプの取得
+	this.GetBulletType = function(self)
+		return self.BulletType
+	end
+	
 	return this
 end
 
