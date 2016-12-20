@@ -3,6 +3,15 @@
 -- 敵出現情報
 --ステージ番号_ウェーブ_連番号
 --000_000_000
+--検証
+SpawnTest = {
+	Position  = Vector2.new(400, 0),	--座標
+	EnemyType = EnemyTestBullet,		--敵の種類
+	Interval  = 1,						--間隔
+	Value     = 1,						--出現総数
+}
+--!検証
+
 --ステージ1
 Spawn001_001_001 = {
 	Position  = Vector2.new(0, 500),	--座標

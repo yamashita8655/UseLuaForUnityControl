@@ -3,6 +3,10 @@
 -- クエスト定義
 QuestConfig = {
 	{
+		QuestName = "テスト",
+		EnemySpawnTable = SpawnTableTest,
+	},
+	{
 		QuestName = "初級",
 		EnemySpawnTable = SpawnTable_001,
 	},

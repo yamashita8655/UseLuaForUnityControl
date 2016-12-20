@@ -39,8 +39,10 @@ function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig)
 	local enemyName = enemyConfig.Name..self.EnemyCounter
 	
 	LuaLoadPrefabAfter(enemyConfig.PrefabName, enemyName, "EnemyCharacterRoot")
-	local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
-	local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
+	--local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
+	--local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
+	local offsetx = (posx - (ScreenWidth/2))
+	local offsety = (posy - (ScreenHeight/2))
 	LuaFindObject(enemyName)
 	LuaSetRotate(enemyName, 0, 0, degree)
 
@@ -60,17 +62,11 @@ function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig)
 	elseif enemyConfig.EnemyType == EnemyTypeEnum.BulletShooter then
 		enemy = EnemyShooter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
 		enemy:Initialize(enemyConfig.NowHp, enemyConfig.MaxHp, enemyConfig.Attack)
-		emitter = BulletEmitter.new()
-		emitter:Initialize(Vector2.new(0, 0), 0.25, Bullet0002, enemy:GetPosition(), CharacterType.Enemy)
-		enemy:AddBulletEmitter(emitter)
+		enemy = UtilityFunction.Instance().SetEmitter(enemy, enemyConfig.BulletEmitterList, enemyConfig.EquipBulletList, CharacterType.Enemy)
 	end
 
 	enemy:SetMoveController(moveController)
 		
-	--emitter = BulletEmitter.new()
-	--emitter:Initialize(Vector2.new(offsetx, offsety), 0.25, Vector2.new(0, 0))
-	--enemy:AddBulletEmitter(emitter)
-
 	self.EnemyCounter = self.EnemyCounter + 1
 	table.insert(self.EnemyList, enemy)
 	LuaSetPosition(enemy.Name, enemy.Position.x, enemy.Position.y, enemy.Position.z)

@@ -1,6 +1,13 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 
 -- 敵出現テーブル。時間の経過で、どのSpawnDataが発生するのかチェックする
+SpawnTableTest = {
+	{
+		Time      = 3,						--出現開始時間
+		SpawnData = SpawnTest,				--出現情報
+	},
+}
+
 SpawnTable_001 = {
 	{
 		Time      = 5,						--出現開始時間
