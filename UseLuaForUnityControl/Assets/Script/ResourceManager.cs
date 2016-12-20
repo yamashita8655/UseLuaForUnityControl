@@ -41,17 +41,35 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 
 	// ※本来は、これ、アセットバンドル化した物を読み込んでやることだからね！
 	private IEnumerator ResourceLoad(LoaderData loaderData) {
+#if UNITY_IPHONE
+		//string path = Application.streamingAssetsPath + "/" + "Utility.lua";
+		string path = loaderData.LoadPath;
+		
+		StreamReader sr = new StreamReader(path, System.Text.Encoding.GetEncoding("utf-8"));
+		
+		// 内容をすべて読み込む
+		string text = sr.ReadToEnd();
+
+		// 閉じる
+		sr.Close();
+
+		string toPath = loaderData.SavePath;
+		File.WriteAllText(toPath, text, System.Text.Encoding.GetEncoding("utf-8"));
+
+#else
 		//string path = Application.streamingAssetsPath + "/" + "Utility.lua";
 		string path = loaderData.LoadPath;
 		WWW www = new WWW(path);
 		while(!www.isDone){
 			yield return null;
 		}
-				
+		
 		//string toPath = Application.persistentDataPath + "/LuaUtility.lua";
 		string toPath = loaderData.SavePath;
-		File.WriteAllBytes(toPath, www.bytes);
-
+		
+#endif
+		yield return null;
+		
 		LoadDataStackList.RemoveAt(0);
 		IsLoading = false;
 		
@@ -71,7 +89,6 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 		if (loaderData.CallbackFunction != null) {
 			loaderData.CallbackFunction();
 		}
-
 	}
 
 	public void Init() {

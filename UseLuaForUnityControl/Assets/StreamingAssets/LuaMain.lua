@@ -130,6 +130,7 @@ end
 
 --Luaの分割ファイル読み込み
 function LoadAllLuaScriptCallback()
+	
 	index = LuaFileLoadedCount+1
 	dofile(PersistentDataPath.."/"..LuaFileList[index])
 	LuaFileLoadedCount = LuaFileLoadedCount + 1

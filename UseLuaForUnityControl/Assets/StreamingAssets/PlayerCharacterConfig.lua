@@ -14,9 +14,7 @@ PlayerCharacter001 = {
 	EquipBulletList = {
 		BulletHomingTest,
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
-	DetailText = {
-		"PlayerCharacter001の特徴です\n改行コード見れるのかな"
-	},
+	DetailText = "PlayerCharacter001の特徴です\n改行コード見れるのかな",
 }
 
 PlayerCharacter002 = {
@@ -32,9 +30,7 @@ PlayerCharacter002 = {
 	EquipBulletList = {
 		BulletHomingTest,
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
-	DetailText = {
-		"PlayerCharacter002の特徴です\n\n改行コード見れるのかな"
-	},
+	DetailText = "PlayerCharacter002の特徴です\n\n改行コード見れるのかな",
 }
 
 

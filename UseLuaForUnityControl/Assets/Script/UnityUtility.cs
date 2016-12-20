@@ -29,6 +29,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadFileAsync(IntPtr luaState)
 	{
+		Debug.Log("Unity_UnityLoadFileAsync");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string loadpath = Marshal.PtrToStringAnsi(res_s);
@@ -461,6 +462,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		streamingAssetsPath = "file:///" + Application.streamingAssetsPath;
 #elif UNITY_ANDROID
 		streamingAssetsPath = Application.streamingAssetsPath;
+#elif UNITY_IPHONE
+		streamingAssetsPath = Application.streamingAssetsPath;
 #endif
 		list.Add(streamingAssetsPath);
 		list.Add(Application.persistentDataPath);
@@ -482,8 +485,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		loadPath = "file:///" + Application.streamingAssetsPath + "/" + scriptName;
 #elif UNITY_ANDROID
 		loadPath = Application.streamingAssetsPath + "/" + scriptName;
+#elif UNITY_IPHONE
+		loadPath = Application.streamingAssetsPath + "/" + scriptName;
 #endif
-
 		string savePath = Application.persistentDataPath + "/" + scriptName;
 
 		ResourceManager.Instance.AddLoaderData(loadPath, savePath, "", () => {
@@ -504,6 +508,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		//loadPath = "file:///" + filePath;
 		loadPath = filePath;
 #elif UNITY_ANDROID
+		//loadPath = "jar:file://" + filePath;
+		loadPath = filePath;
+#elif UNITY_IPHONE
 		//loadPath = "jar:file://" + filePath;
 		loadPath = filePath;
 #endif
