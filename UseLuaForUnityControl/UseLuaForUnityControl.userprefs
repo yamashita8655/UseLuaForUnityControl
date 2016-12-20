@@ -1,12 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\GameMain\Common\GameObjectCacheManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\GameMain\BootScene.cs">
     <Files>
-      <File FileName="Assets\Script\ResourceManager.cs" Line="28" Column="5" />
-      <File FileName="Assets\Script\GameMain\BootScene.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\GameMain\Common\ButtonEventHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\ResourceManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\GameMain\BootScene.cs" Line="12" Column="1" />
       <File FileName="Assets\Script\HowToUseLua.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" Line="48" Column="26" />
-      <File FileName="Assets\Script\UnityUtility.cs" Line="125" Column="1" />
+      <File FileName="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\UnityUtility.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\NativeMethods.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\SingletonMonoBehaviourFast.cs.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameMain\Common\CutinControllerBase.cs" Line="1" Column="1" />
@@ -14,7 +15,6 @@
       <File FileName="Assets\Script\LuaCheckConditions.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\test1-scenechange\Test1_StartUp.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\GameMain\Common\GameSceneManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\GameMain\Common\ButtonEventHandler.cs" Line="6" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

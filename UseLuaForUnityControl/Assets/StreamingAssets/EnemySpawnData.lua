@@ -107,42 +107,49 @@ Spawn003_001_001 = {
 	Interval  = 1,						--間隔
 	Value     = 5,						--出現総数
 }
+
 Spawn003_001_002 = {
 	Position  = Vector2.new(500, 0),	--座標
 	EnemyType = Enemy003_001,			--敵の種類
 	Interval  = 1,						--間隔
 	Value     = 5,						--出現総数
 }
+
 Spawn003_001_003 = {
 	Position  = Vector2.new(0, 500),	--座標
 	EnemyType = Enemy003_001,			--敵の種類
 	Interval  = 1,						--間隔
 	Value     = 5,						--出現総数
 }
+
 Spawn003_001_004 = {
 	Position  = Vector2.new(0, -500),	--座標
 	EnemyType = Enemy003_001,			--敵の種類
 	Interval  = 1,						--間隔
 	Value     = 5,						--出現総数
 }
+
 Spawn003_001_005 = {
 	Position  = Vector2.new(500, 500),	--座標
 	EnemyType = Enemy003_002,			--敵の種類
 	Interval  = 1,						--間隔
 	Value     = 5,						--出現総数
 }
+
 Spawn003_001_006 = {
 	Position  = Vector2.new(-500, 500),	--座標
 	EnemyType = Enemy003_002,			--敵の種類
 	Interval  = 1,						--間隔
 	Value     = 5,						--出現総数
 }
+
 Spawn003_001_007 = {
 	Position  = Vector2.new(500, -500),	--座標
 	EnemyType = Enemy003_003,			--敵の種類
 	Interval  = 1,						--間隔
 	Value     = 5,						--出現総数
 }
+
 Spawn003_001_008 = {
 	Position  = Vector2.new(-500, -500),--座標
 	EnemyType = Enemy003_003,			--敵の種類

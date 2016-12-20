@@ -55,6 +55,7 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 
 		string toPath = loaderData.SavePath;
 		File.WriteAllText(toPath, text, System.Text.Encoding.GetEncoding("utf-8"));
+		yield return null;
 
 #else
 		//string path = Application.streamingAssetsPath + "/" + "Utility.lua";
@@ -66,10 +67,8 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 		
 		//string toPath = Application.persistentDataPath + "/LuaUtility.lua";
 		string toPath = loaderData.SavePath;
-		
+		File.WriteAllBytes(toPath, www.bytes);
 #endif
-		yield return null;
-		
 		LoadDataStackList.RemoveAt(0);
 		IsLoading = false;
 		

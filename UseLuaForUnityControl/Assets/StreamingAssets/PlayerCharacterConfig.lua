@@ -9,10 +9,14 @@ PlayerCharacter001 = {
 	NowHp = 100,
 	MaxHp = 100,
 	BulletEmitterList = {
-		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Satellite),
+		Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Satellite),
 	},
 	EquipBulletList = {
-		BulletHomingTest,
+		BulletStrong,
+		Bullet0002,
+		Bullet0002,
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 	DetailText = "PlayerCharacter001の特徴です\n改行コード見れるのかな",
 }

@@ -56,3 +56,16 @@ BulletHomingTest = {
 	MoveType = MoveHoming.new(0.25, 0, 10),
 	BulletType = BulletTypeEnum.UseTargetPosition,
 }
+
+BulletStrong = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 64,
+	Height = 64,
+	NowHp = 10,
+	MaxHp = 10,
+	Attack = 1,
+	ExistTime = 5,
+	MoveType = MoveSinCurve.new(180, 10, 10),
+	BulletType = BulletTypeEnum.Normal,
+}

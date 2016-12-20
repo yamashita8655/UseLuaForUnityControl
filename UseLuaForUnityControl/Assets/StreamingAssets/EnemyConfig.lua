@@ -102,6 +102,12 @@ Enemy003_001 = {
 	Attack = 1,
 	MoveType = MoveStraight.new(1),
 	EnemyType = EnemyTypeEnum.BulletShooter,
+	BulletEmitterList = {
+		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+	},
+	EquipBulletList = {
+		Bullet0002,
+	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
 
 Enemy003_002 = {
@@ -114,6 +120,12 @@ Enemy003_002 = {
 	Attack = 1,
 	MoveType = MoveSinCurve.new(0, 1.5, 3),
 	EnemyType = EnemyTypeEnum.BulletShooter,
+	BulletEmitterList = {
+		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+	},
+	EquipBulletList = {
+		Bullet0002,
+	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
 
 Enemy003_003 = {
@@ -126,5 +138,11 @@ Enemy003_003 = {
 	Attack = 1,
 	MoveType = MoveSinCurve.new(180, 1.5, 3),
 	EnemyType = EnemyTypeEnum.BulletShooter,
+	BulletEmitterList = {
+		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+	},
+	EquipBulletList = {
+		Bullet0002,
+	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
 --!敵情報3

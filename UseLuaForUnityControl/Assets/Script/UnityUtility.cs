@@ -29,7 +29,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadFileAsync(IntPtr luaState)
 	{
-		Debug.Log("Unity_UnityLoadFileAsync");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string loadpath = Marshal.PtrToStringAnsi(res_s);
