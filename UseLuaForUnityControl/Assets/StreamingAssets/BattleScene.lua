@@ -12,6 +12,9 @@ function BattleScene.new()
 	
 	this.EndCheckInterval = 5
 	this.EndCheckIntervalCounter = 0
+	
+	this.AlignScale		= Vector3.new(1.0, 1.0, 1.0)-- 画面表示の拡縮調整
+	this.AlignPosition	= Vector3.new(0.0, 0.0, 0.0)-- 画面表示のポジション調整
 
 	-- メソッド定義
 	-- 初期化
@@ -37,10 +40,16 @@ function BattleScene.new()
 		local posx = ScreenWidth/2
 		local posy = ScreenHeight/2
 	
-		-- キャラ切り替えテスト
 		selectCharacter = nil
 		selectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
 		PlayerManager.Instance():CreatePlayer(selectCharacter, posx, posy, 0)
+
+		LuaFindObject("BattleObjectRoot")
+		--LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
+		self.AlignPosition.x = -200
+		self.AlignPosition.y = -200
+		self.AlignPosition.z = 0
+		LuaSetPosition("BattleObjectRoot", self.AlignPosition.x, self.AlignPosition.y, self.AlignPosition.z)
 		
 		LuaSetActive("HeaderObject", false)
 		LuaSetActive("FooterObject", false)
@@ -77,6 +86,8 @@ function BattleScene.new()
 		EnemyManager.Instance():Release()
 		BulletManager.Instance():Release()
 		PlayerManager.Instance():Release()
+			
+		FileIOManager.Instance():Save()
 	end
 	
 	-- バトルが終わったかどうか
@@ -103,11 +114,18 @@ function BattleScene.new()
 	
 	-- 画面タッチ判定
 	this.OnMouseDown = function(self, touchx, touchy)
+		local calcTouchX = touchx - self.AlignPosition.x
+		local calcTouchY = touchy - self.AlignPosition.y
+		PlayerManager.Instance():OnMouseDrag(calcTouchX, calcTouchY)
+		touchx = touchx + self.AlignPosition.x
+		touchy = touchy - self.AlignPosition.y
 		PlayerManager.Instance():OnMouseDown(touchx, touchy)
 	end
 	
 	this.OnMouseDrag = function(self, touchx, touchy)
-		PlayerManager.Instance():OnMouseDrag(touchx, touchy)
+		local calcTouchX = touchx - self.AlignPosition.x
+		local calcTouchY = touchy - self.AlignPosition.y
+		PlayerManager.Instance():OnMouseDrag(calcTouchX, calcTouchY)
 	end
 
 	--当たり判定

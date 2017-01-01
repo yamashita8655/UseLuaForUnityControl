@@ -45,6 +45,8 @@ function CustomScene.new()
 	this.SceneBaseEnd = this.End
 	this.End = function(self)
 		this:SceneBaseEnd()
+		
+		FileIOManager.Instance():Save()
 	end
 	
 	-- 有効かどうか
@@ -54,10 +56,12 @@ function CustomScene.new()
 	
 	-- 選択画像の切り替え
 	this.ToggleSelectImage = function(self, playerCharacter)
-		if playerCharacter == PlayerCharacter001 then
+		if playerCharacter == PlayerCharacterConfig[1] then
+			SaveObject.CustomScene_SelectIndex = 1
 			LuaSetActive("CustomPlayerSelectImage1", true)
 			LuaSetActive("CustomPlayerSelectImage2", false)
-		elseif playerCharacter == PlayerCharacter002 then
+		elseif playerCharacter == PlayerCharacterConfig[2] then
+			SaveObject.CustomScene_SelectIndex = 2
 			LuaSetActive("CustomPlayerSelectImage1", false)
 			LuaSetActive("CustomPlayerSelectImage2", true)
 		end
@@ -71,9 +75,9 @@ function CustomScene.new()
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "CustomPlayerSelectListNode1" then
-			GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter001)
+			GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacterConfig[1])
 		elseif buttonName == "CustomPlayerSelectListNode2" then
-			GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter002)
+			GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacterConfig[2])
 		end
 
 		selectPlayerCharater = GameManager.Instance():GetSelectPlayerCharacterData()

@@ -1,13 +1,14 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 
 SceneNameEnum = {
-	Title   = 1,
-	--Loading = 2,
-	Home    = 2,
-	Custom  = 3,
-	Quest   = 4,
-	Option  = 5,
-	Battle  = 6,
+	Boot	= 1,
+	Title   = 2,
+	--Loading = 3,
+	Home    = 3,
+	Custom  = 4,
+	Quest   = 5,
+	Option  = 6,
+	Battle  = 7,
 }
 
 -- クラス定義
@@ -28,6 +29,7 @@ end
 function SceneManager:Initialize() 
 	self.CurrentScene = nil
 	self.SceneCacheTable = {
+		BootScene.new(),
 		TitleScene.new(),
 		--LoadingScene.new(),
 		HomeScene.new(),
@@ -51,18 +53,29 @@ end
 
 -- フェード後コールバック
 function SceneManager.CallbackFadeIn(argList, unityArg) 
-	self			= argList[1]
-	sceneNameEnum	= argList[2]
+	local self			= argList[1]
+	local sceneNameEnum	= argList[2]
 	
 	if self.CurrentScene == nil then
 	else
 		self.CurrentScene:End()
 	end
 		
-	scene = self.SceneCacheTable[sceneNameEnum]
-	scene:Initialize()
+	local scene = self.SceneCacheTable[sceneNameEnum]
 	self.CurrentScene = scene
-	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "", "")
+	scene:Initialize()
+	
+	CallbackManager.Instance():AddCallback("SceneManager_AfterInitialize", {self, sceneNameEnum}, self.AfterInitialize)
+	LuaPlayAnimator("FadeObject", "FadeOut", false, true, "LuaCallback", "SceneManager_AfterInitialize")
+end
+
+-- フェードあけた後の、初期化
+function SceneManager.AfterInitialize(argList, unityArg) 
+	local self			= argList[1]
+	local sceneNameEnum	= argList[2]
+	
+	local scene = self.SceneCacheTable[sceneNameEnum]
+	scene:AfterInitialize()
 end
 
 -- ボタンイベント検知
@@ -78,6 +91,11 @@ function SceneManager:OnClickButton(buttonName)
 	else
 		self.CurrentScene:OnClickButton(buttonName)
 	end
+end
+
+-- スライダーイベント検知
+function SceneManager:OnChangeSliderValue(sliderName, value) 
+	self.CurrentScene:OnChangeSliderValue(sliderName, value)
 end
 
 -- 更新

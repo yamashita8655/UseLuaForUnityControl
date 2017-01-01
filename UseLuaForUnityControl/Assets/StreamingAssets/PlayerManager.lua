@@ -66,8 +66,10 @@ function PlayerManager:Update(deltaTime)
 end
 
 function PlayerManager:OnMouseDown(touchx, touchy) 
-	local offsetx = touchx - (ScreenWidth/2)
-	local offsety = touchy - (ScreenHeight/2)
+	--local offsetx = touchx - (ScreenWidth/2)
+	--local offsety = touchy - (ScreenHeight/2)
+	local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
+	local offsety = (touchy - (ScreenHeight/2)) / CanvasFactor
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
 	
@@ -77,10 +79,16 @@ function PlayerManager:OnMouseDown(touchx, touchy)
 end
 
 function PlayerManager:OnMouseDrag(touchx, touchy) 
-	local offsetx = touchx - (ScreenWidth/2)
-	local offsety = touchy - (ScreenHeight/2)
+	--local offsetx = touchx - (ScreenWidth/2)
+	--local offsety = touchy - (ScreenHeight/2)
+	local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
+	local offsety = (touchy - (ScreenHeight/2)) / CanvasFactor
+	--local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
+	--local offsety = (touchy - (ScreenHeight/2+200)) / CanvasFactor
+	LuaUnityDebugLog("touchx:"..offsetx.."touchy:"..offsety)
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
+
 	
 	self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
 	PlayerManager.Instance():SetRotate(0, 0, degree-90)

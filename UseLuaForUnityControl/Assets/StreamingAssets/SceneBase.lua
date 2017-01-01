@@ -16,6 +16,10 @@ function SceneBase.new()
 		self.IsInitialized = true;
 	end
 	
+	-- フェード後初期化
+	this.AfterInitialize = function(self)
+	end
+	
 	-- 更新
 	this.Update = function(self, deltaTime)
 	end

@@ -9,6 +9,8 @@ public class InputEventHandler : MonoBehaviour {
 		//取得したscreenPointの値を変数に格納
 		float x = Input.mousePosition.x;
 		float y = Input.mousePosition.y;
+		
+		Debug.Log ("x:"+x+" y:"+y);
 
 		// Lua側にイベント名を渡して、処理する関数を呼び出す
 		ArrayList list = new ArrayList();

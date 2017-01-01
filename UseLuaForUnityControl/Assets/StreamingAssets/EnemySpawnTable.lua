@@ -8,7 +8,7 @@ SpawnTableTest = {
 			SpawnData = SpawnTest,				--出現情報
 		},
 	},
-	EndTime = 10,	-- この秒数が経過してら、バトル終了チェックを周期的に開始する
+	EndTime = 999,	-- この秒数が経過してら、バトル終了チェックを周期的に開始する
 }
 
 SpawnTable_001 = {

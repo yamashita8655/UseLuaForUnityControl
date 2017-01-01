@@ -17,7 +17,10 @@ public class HowToUseLua : MonoBehaviour {
 	void Start () {
 
 //		test1 ();
-		test1_1 ();
+//		StartCoroutine(test1_1());
+//		test1_2();
+		test1_3();
+		test1_4();
 //		test2 ();
 //		test3 ();
 //		test4 ();
@@ -58,31 +61,46 @@ public class HowToUseLua : MonoBehaviour {
 		int res_bool = NativeMethods.lua_toboolean(luastate, 4);//true=1 false=0
 	}
 
-	void test1_1()
+	public IEnumerator test1_1()
 	{
-		// こっちは、何らかの方法でLuaスクリプトをバッファに展開して使うタイプ
-		// これが出来たので、アセットバンドルに含めることも可能だと思う
-		IntPtr luastate = NativeMethods.luaL_newstate();
-		NativeMethods.luaL_openlibs(luastate);// これは、Lua側に必要な基本的な機能を関連付けている
+		WWW www = new WWW("http://natural-nail-eye.sakura.ne.jp/BaseMoveController.lua");
+		while (www.isDone == false) {
+			yield return null;
+		}
+		text.text = www.text;
+	}
 
-		// Lua読み込み
-		TextAsset file = Resources.Load<TextAsset>("load_lua2");
-		int res = NativeMethods.luaL_loadstring (luastate, file.text);
-		res = NativeMethods.lua_pcallk (luastate, 0, -1, 0);// これで、LuaStateにLuaScriptの関連付けが終わる
+	public void test1_2() {
+	}
 
-		// スタック数を確認する
-		int num = NativeMethods.lua_gettop (luastate);
+	public void test1_3()
+	{
+		RijindaelManager.Instance.Init();
+		
+		string output = RijindaelManager.Instance.CreateEncryptorString("あいうえおaiueo\naaa");
 
-		// Luaに定義されているグローバルの値を指定して、スタックに積む
-		NativeMethods.lua_getglobal (luastate, "windowName");
+		FileStream fs = new FileStream ("C:/Users/tyamashita/AppData/LocalLow/DefaultCompany/UseLuaForUnityControl/sample.dat", FileMode.Create);
+		BinaryWriter bw = new BinaryWriter (fs);
+		bw.Write (output);
+		bw.Close ();
+		fs.Close ();
 
-		num = NativeMethods.lua_gettop (luastate);
 
-		// 実際にスタックに積まれている数値を習得する
-		printStack(luastate);
-		uint output;
-		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 1, out output);
-		string resString = Marshal.PtrToStringAnsi(res_s);
+	}
+
+	void test1_4()
+	{
+		FileStream fs = new FileStream("C:/Users/tyamashita/AppData/LocalLow/DefaultCompany/UseLuaForUnityControl/sample.dat", FileMode.Open);
+    	BinaryReader br = new BinaryReader(fs);
+    	string str = br.ReadString();
+    	
+    	br.Close();
+    	fs.Close();
+
+		string output = RijindaelManager.Instance.CreateDecryptorString(str);
+
+		Debug.Log(output);
+
 	}
 	
 	void test2()

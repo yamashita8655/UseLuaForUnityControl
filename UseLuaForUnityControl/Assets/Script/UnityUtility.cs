@@ -13,7 +13,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	GCHandle gcHandle;
 	
 	float CanvasFactor;
-
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
 
@@ -25,7 +24,62 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
 	
-	// 文字列をファイルにして保存
+	// セーブファイルを読み込み、DoFileできる形式にして保存しなおし、DoFileし終わったら削除する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityLoadSaveFile(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string path = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string oneTimeFileName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
+		string callbackArg = Marshal.PtrToStringAnsi(res_s);
+    	
+		string success = "";
+		string str = "";
+		
+		try {
+			FileStream fs = new FileStream(path, FileMode.Open);
+    		BinaryReader br = new BinaryReader(fs);
+			str = br.ReadString();
+    		br.Close();
+    		fs.Close();
+		} catch (IOException e) {
+			success += e.ToString();
+		}
+		
+		string output = RijindaelManager.Instance.CreateDecryptorString(str);
+		
+		try {
+			FileStream stream = new FileStream(oneTimeFileName, FileMode.Create);
+			StreamWriter writer = new StreamWriter(stream, System.Text.Encoding.UTF8);
+			writer.Write(output);
+			
+			writer.Close();
+			stream.Close();
+		} catch (IOException e) {
+			success += e.ToString();
+		}
+		
+		// Lua側のメイン関数を呼び出す
+		LuaManager.FunctionData data = new LuaManager.FunctionData();
+		data.returnValueNum = 0;
+		data.functionName = callbackName;
+		ArrayList list = new ArrayList();
+		list.Add(callbackArg);
+		list.Add(success);
+		data.argList = list;
+		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+		return 0;
+	}
+
+	// セーブファイルを暗号化して保存
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySaveFile(IntPtr luaState)
 	{
@@ -42,9 +96,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
 		string callbackArg = Marshal.PtrToStringAnsi(res_s);
 
+		string output = RijindaelManager.Instance.CreateEncryptorString(saveString);
+
 		string success = "";
 		try {
-			File.WriteAllText(savePath, saveString, System.Text.Encoding.GetEncoding("utf-8"));
+			FileStream fs = new FileStream (savePath, FileMode.Create);
+			BinaryWriter bw = new BinaryWriter (fs);
+			bw.Write (output);
+			bw.Close ();
+			fs.Close ();
+			//File.WriteAllText(savePath, output, System.Text.Encoding.GetEncoding("utf-8"));
 		} catch (IOException e) {
 			success = e.ToString();
 		}
@@ -76,6 +137,41 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string callbackName = Marshal.PtrToStringAnsi(res_s);
 	
 		ResourceManager.Instance.AddLoaderData(loadpath, savepath, callbackName, null);
+		return 0;
+	}
+	
+	// ファイルを削除する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityDeleteFile(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string path = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string callbackArg = Marshal.PtrToStringAnsi(res_s);
+
+		string success = "";
+		
+		try {
+			File.Delete(path);
+		} catch (IOException e) {
+			success += e.ToString();
+		}
+		
+		// Lua側のメイン関数を呼び出す
+		LuaManager.FunctionData data = new LuaManager.FunctionData();
+		data.returnValueNum = 0;
+		data.functionName = callbackName;
+		ArrayList list = new ArrayList();
+		list.Add(callbackArg);
+		list.Add(success);
+		data.argList = list;
+		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+	
 		return 0;
 	}
 
@@ -273,6 +369,21 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		bool res_bool = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 2));//true=1 false=0
 		retObj.SetActive(res_bool);
+		
+		return 0;
+	}
+	
+	// スライダーの値を設定する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetSliderValue(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		
+		float value = (float)NativeMethods.lua_tonumberx(luaState, 2, 0);
+		obj.GetComponent<Slider>().value = value;
 		
 		return 0;
 	}
@@ -587,6 +698,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		// これは、ガベコレタイミングを遅らせるだけらしいので、解決にはならんから使わない
 		//GC.KeepAlive (LuaUnityLoadLevel);
 		//GC.KeepAlive (LuaUnityLoadLevelIntPtr);
+		// ファイル削除
+		LuaManager.DelegateLuaBindFunction LuaUnityDeleteFile = new LuaManager.DelegateLuaBindFunction (UnityDeleteFile);
+		IntPtr LuaUnityDeleteFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityDeleteFile);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityDeleteFile", LuaUnityDeleteFileIntPtr, LuaUnityDeleteFile);
+
+		// セーブファイル読み込み
+		LuaManager.DelegateLuaBindFunction LuaUnityLoadSaveFile = new LuaManager.DelegateLuaBindFunction (UnityLoadSaveFile);
+		IntPtr LuaUnityLoadSaveFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadSaveFile);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadSaveFile", LuaUnityLoadSaveFileIntPtr, LuaUnityLoadSaveFile);
+
 		// デバッグログ
 		LuaManager.DelegateLuaBindFunction LuaUnityDebugLog = new LuaManager.DelegateLuaBindFunction (UnityDebugLog);
 		IntPtr LuaUnityDebugLogIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityDebugLog);
@@ -641,6 +762,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnitySetActive = new LuaManager.DelegateLuaBindFunction (UnitySetActive);
 		IntPtr LuaUnitySetActiveIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetActive);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetActive", LuaUnitySetActiveIntPtr, LuaUnitySetActive);
+		
+		// スライダーの量
+		LuaManager.DelegateLuaBindFunction LuaUnitySetSliderValue = new LuaManager.DelegateLuaBindFunction (UnitySetSliderValue);
+		IntPtr LuaUnitySetSliderValueIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetSliderValue);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetSliderValue", LuaUnitySetSliderValueIntPtr, LuaUnitySetSliderValue);
 
 		// シーン(と呼んでる、オブジェクト)の切り替え
 		LuaManager.DelegateLuaBindFunction LuaUnityChangeScene = new LuaManager.DelegateLuaBindFunction (UnityChangeScene);
@@ -672,6 +798,32 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		IntPtr LuaUnityBindCommonFunctionIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityBindCommonFunction);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityBindCommonFunction", LuaUnityBindCommonFunctionIntPtr, LuaUnityBindCommonFunction);
 	}
-
+	
+	/// <summary>
+	/// パスワードから共有キーと初期化ベクタを生成する
+	/// </summary>
+	/// <param name="password">基になるパスワード</param>
+	/// <param name="keySize">共有キーのサイズ（ビット）</param>
+	/// <param name="key">作成された共有キー</param>
+	/// <param name="blockSize">初期化ベクタのサイズ（ビット）</param>
+	/// <param name="iv">作成された初期化ベクタ</param>
+	private void GenerateKeyFromPassword(string password, int keySize, out byte[] key, int blockSize, out byte[] iv) {
+	    //パスワードから共有キーと初期化ベクタを作成する
+	    //saltを決める
+		// saltは必ず8バイト以上らしい
+	    byte[] salt = System.Text.Encoding.UTF8.GetBytes("abcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxyabcdefghijklmn");
+	    //Rfc2898DeriveBytesオブジェクトを作成する
+	    System.Security.Cryptography.Rfc2898DeriveBytes deriveBytes =
+	        new System.Security.Cryptography.Rfc2898DeriveBytes(password, salt);
+	    //.NET Framework 1.1以下の時は、PasswordDeriveBytesを使用する
+	    //System.Security.Cryptography.PasswordDeriveBytes deriveBytes =
+	    //    new System.Security.Cryptography.PasswordDeriveBytes(password, salt);
+	    //反復処理回数を指定する デフォルトで1000回
+	    deriveBytes.IterationCount = 1000;
+	
+	    //共有キーと初期化ベクタを生成する
+	    key = deriveBytes.GetBytes(keySize / 8);
+	    iv = deriveBytes.GetBytes(blockSize / 8);
+	}
 }
 

@@ -7,7 +7,8 @@ OptionScene = {}
 function OptionScene.new()
 	local this = SceneBase.new()
 
-	--this.Test = 0
+	this.SEValue = 0
+	this.BGMValue = 0
 
 	-- メソッド定義
 	-- 初期化
@@ -18,6 +19,14 @@ function OptionScene.new()
 		LuaChangeScene("Option", "MainCanvas")
 		LuaSetActive("HeaderObject", true)
 		LuaSetActive("FooterObject", true)
+
+		LuaFindObject("SESlider")
+		LuaFindObject("BGMSlider")
+		
+		self.SEValue = SaveObject.OptionScene_SEVolumeRate
+		self.BGMValue = SaveObject.OptionScene_BGMVolumeRate
+		LuaSetSliderValue("SESlider", self.SEValue)
+		LuaSetSliderValue("BGMSlider", self.BGMValue)
 	end
 	
 	-- 更新
@@ -30,11 +39,24 @@ function OptionScene.new()
 	this.SceneBaseEnd = this.End
 	this.End = function(self)
 		this:SceneBaseEnd()
+		
+		SaveObject.OptionScene_SEVolumeRate = self.SEValue
+		SaveObject.OptionScene_BGMVolumeRate = self.BGMValue
+		FileIOManager.Instance():Save()
 	end
 	
 	-- 有効かどうか
 	this.IsActive = function(self)
 		return self.IsActive
+	end
+	
+	-- スライダーイベント
+	this.OnChangeSliderValue = function(self, sliderName, value)
+		if sliderName == "SESlider" then
+			self.SEValue = value
+		elseif sliderName == "BGMSlider" then
+			self.BGMValue = value
+		end
 	end
 	
 	return this

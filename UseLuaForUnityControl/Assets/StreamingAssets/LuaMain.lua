@@ -13,6 +13,8 @@ LuaFileList = {
 	"LuaUtilityClass.lua",
 	"SceneBase.lua",
 	"CallbackManager.lua",
+	"TimerCallbackManager.lua",
+	"BootScene.lua",
 	"TitleScene.lua",
 	"HomeScene.lua",
 	"CustomScene.lua",
@@ -119,20 +121,19 @@ function InitGame()
 	-- とりあえず、ゲーム開始時の初期設定をする
 	UtilityFunction.Instance():Initialize()
 	GameManager.Instance():Initialize()
-	GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacter001)
-
 	CallbackManager.Instance():Initialize()
-	
+	TimerCallbackManager.Instance():Initialize()
 	FileIOManager.Instance():Initialize()
+	SceneManager.Instance():Initialize()
+	
 	--FileIOManager.Instance():DebugDeleteSaveFile()
 	--FileIOManager.Instance():Save()
-	FileIOManager.Instance():Load()
-	--LuaUnityDebugLog(SaveObject.SelectCharacterIndex)
-
-
-	SceneManager.Instance():Initialize()
-	--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
-	SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
+	SceneManager.Instance():ChangeScene(SceneNameEnum.Boot)
+	
+	--customSelectIndex = SaveObject.CustomScene_SelectIndex
+	--GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacterConfig[customSelectIndex])
+	----SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
+	--SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
 end
 
 --Luaの分割ファイル読み込み
@@ -150,6 +151,14 @@ function UpdateLoadingData()
 	--LuaSetScale("LoadingCurrentLoadingGaugeBar", 0.0, 1.0, 1.0)
 	LuaSetText("LoadingLoadedValueText", LuaFileLoadedCount)
 	LuaSetText("LoadingMaxValueText", #LuaFileList)
+end
+
+function LuaUnityLoadSaveFile(path, oneTimeFileName, callbackName, callbackArg)
+	UnityLoadSaveFile(path, oneTimeFileName, callbackName, callbackArg)
+end
+
+function LuaUnityDeleteFile(path, callbackName, callbackArg)
+	UnityDeleteFile(path, callbackName, callbackArg)
 end
 
 function LuaUnityDebugLog(log)
@@ -182,6 +191,12 @@ end
 --引数：ヒエラルキに登録しているオブジェクト名と、設定する文字列
 function LuaSetText(hierarchyName, text)
 	UnitySetText(hierarchyName, text)
+end
+
+--スライダー量設定
+--引数：ヒエラルキに登録しているオブジェクト名と、量
+function LuaSetSliderValue(hierarchyName, value)
+	UnitySetSliderValue(hierarchyName, value)
 end
 
 --アニメーション再生
@@ -250,6 +265,10 @@ function EventClickButtonFromUnity(buttonName)
 	SceneManager.Instance():OnClickButton(buttonName) 
 end
 
+function EventSliderFromUnity(sliderName, value)
+	SceneManager.Instance():OnChangeSliderValue(sliderName, value) 
+end
+
 function OnMouseDownFromUnity(touchx, touchy)
 	SceneManager.Instance():OnMouseDown(touchx, touchy)
 end
@@ -262,6 +281,7 @@ end
 function UpdateFromUnity(deltaTime)
 	-- 線形補間で計算はしないので、実際に経過しているフレーム自体を固定にして、処理落ち対策とする
 	SceneManager.Instance():Update(GameManager:GetBattleDeltaTime())
+	TimerCallbackManager.Instance():Update(GameManager:GetBattleDeltaTime())
 end
 
 function LuaCallback(callbackName, unityArg) 

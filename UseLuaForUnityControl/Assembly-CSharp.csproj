@@ -53,6 +53,7 @@
      <Compile Include="Assets\Script\GameMain\Common\InputEventHandler.cs" />
      <Compile Include="Assets\Script\GameMain\Common\SceneBase.cs" />
      <Compile Include="Assets\Script\GameMain\Common\SingletonTemplate.cs" />
+     <Compile Include="Assets\Script\GameMain\Common\SliderEventHandler.cs" />
      <Compile Include="Assets\Script\GameMain\Common\SubSceneBase.cs" />
      <Compile Include="Assets\Script\GameMain\Common\UpdateEventHandler.cs" />
      <Compile Include="Assets\Script\HowToUseLua.cs" />
@@ -60,6 +61,7 @@
      <Compile Include="Assets\Script\LuaManager.cs" />
      <Compile Include="Assets\Script\NativeMethods.cs" />
      <Compile Include="Assets\Script\ResourceManager.cs" />
+     <Compile Include="Assets\Script\RijindaelManager.cs" />
      <Compile Include="Assets\Script\SingletonMonoBehaviourFast.cs.cs" />
      <Compile Include="Assets\Script\UnityUtility.cs" />
      <Compile Include="Assets\Script\test1-scenechange\Test1_Next.cs" />
