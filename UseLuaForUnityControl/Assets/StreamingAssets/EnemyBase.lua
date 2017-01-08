@@ -17,6 +17,7 @@ function EnemyBase.new(position, rotate, name, number, width, height)
 	this.Attack = 0
 	this.MoveController = nil
 	this.BulletEmitterList = {}
+	this.EXP = 0
 
 	-- メソッド定義
 	-- 初期化
@@ -34,6 +35,16 @@ function EnemyBase.new(position, rotate, name, number, width, height)
 	-- 攻撃力の取得
 	this.GetAttack = function(self)
 		return self.Attack
+	end
+	
+	-- 経験値の操作
+	this.SetEXP = function(self, exp)
+		self.EXP = self.EXP + exp
+	end
+	this.GetEXP = function(self)
+		LuaUnityDebugLog("GetEXP")
+		LuaUnityDebugLog(self.EXP)
+		return self.EXP
 	end
 	
 	-- 更新

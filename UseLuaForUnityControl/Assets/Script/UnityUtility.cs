@@ -225,18 +225,36 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string callbackMethodArg = Marshal.PtrToStringAnsi(res_s);
 
 		CutinControllerBase contoller = retObj.GetComponent<CutinControllerBase>();
-		contoller.Play(animationName, isLoop, isAutoActiveFalse, () => {
-			if (callbackMethodName != "") {
-				// Lua側のメイン関数を呼び出す
-				LuaManager.FunctionData data = new LuaManager.FunctionData();
-				data.returnValueNum = 0;
-				data.functionName = callbackMethodName;
-				ArrayList list = new ArrayList();
-				list.Add(callbackMethodArg);
-				data.argList = list;
-				ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
-			}
-		});
+		if (contoller != null) {
+			contoller.Play(animationName, isLoop, isAutoActiveFalse, () => {
+				if (callbackMethodName != "") {
+					// Lua側のメイン関数を呼び出す
+					LuaManager.FunctionData data = new LuaManager.FunctionData();
+					data.returnValueNum = 0;
+					data.functionName = callbackMethodName;
+					ArrayList list = new ArrayList();
+					list.Add(callbackMethodArg);
+					data.argList = list;
+					ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+				}
+			});
+		}
+		
+		CutinControllerBase2 contoller2 = retObj.GetComponent<CutinControllerBase2>();
+		if (contoller2 != null) {
+			contoller2.Play(animationName, () => {
+				if (callbackMethodName != "") {
+					// Lua側のメイン関数を呼び出す
+					LuaManager.FunctionData data = new LuaManager.FunctionData();
+					data.returnValueNum = 0;
+					data.functionName = callbackMethodName;
+					ArrayList list = new ArrayList();
+					list.Add(callbackMethodArg);
+					data.argList = list;
+					ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+				}
+			});
+		}
 		
 		return 0;
 	}

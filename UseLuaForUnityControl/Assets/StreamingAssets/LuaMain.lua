@@ -11,6 +11,7 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
+	"SkillConfig.lua",
 	"SceneBase.lua",
 	"CallbackManager.lua",
 	"TimerCallbackManager.lua",
@@ -22,6 +23,7 @@ LuaFileList = {
 	"OptionScene.lua",
 	"BattleScene.lua",
 	"SceneManager.lua",
+	"DialogManager.lua",
 	"MoveConfig.lua",
 	"BaseMoveController.lua",
 	"MoveControllerSinCurve.lua",
@@ -125,6 +127,7 @@ function InitGame()
 	TimerCallbackManager.Instance():Initialize()
 	FileIOManager.Instance():Initialize()
 	SceneManager.Instance():Initialize()
+	DialogManager.Instance():Initialize()
 	
 	--FileIOManager.Instance():DebugDeleteSaveFile()
 	--FileIOManager.Instance():Save()
@@ -263,6 +266,7 @@ end
 --Unity側から呼び出される。Event系の関数
 function EventClickButtonFromUnity(buttonName)
 	SceneManager.Instance():OnClickButton(buttonName) 
+	DialogManager.Instance():OnClickButton(buttonName) 
 end
 
 function EventSliderFromUnity(sliderName, value)

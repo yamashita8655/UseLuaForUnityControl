@@ -82,7 +82,7 @@ end
 -- ロード
 function FileIOManager.LoadCallback(argList, unityArg)
 	self = argList[1]
-	TimerCallbackManager:AddCallback({self}, self.LoadTimerCallback, 3) 
+	TimerCallbackManager:AddCallback({self}, self.LoadTimerCallback, 1) 
 end
 
 function FileIOManager.LoadTimerCallback(argList)

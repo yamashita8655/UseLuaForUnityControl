@@ -76,6 +76,7 @@ function SceneManager.AfterInitialize(argList, unityArg)
 	
 	local scene = self.SceneCacheTable[sceneNameEnum]
 	scene:AfterInitialize()
+	LuaSetActive("FadeObject", false)
 end
 
 -- ボタンイベント検知

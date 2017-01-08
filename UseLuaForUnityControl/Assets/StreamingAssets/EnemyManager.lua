@@ -59,9 +59,11 @@ function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig)
 	if enemyConfig.EnemyType == EnemyTypeEnum.Normal then
 		enemy = NormalEnemyCharacter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
 		enemy:Initialize(enemyConfig.NowHp, enemyConfig.MaxHp, enemyConfig.Attack)
+		enemy:SetEXP(enemyConfig.EXP)
 	elseif enemyConfig.EnemyType == EnemyTypeEnum.BulletShooter then
 		enemy = EnemyShooter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), enemyName, self.EnemyCounter, enemyConfig.Width, enemyConfig.Height)
 		enemy:Initialize(enemyConfig.NowHp, enemyConfig.MaxHp, enemyConfig.Attack)
+		enemy:SetEXP(enemyConfig.EXP)
 		enemy = UtilityFunction.Instance().SetEmitter(enemy, enemyConfig.BulletEmitterList, enemyConfig.EquipBulletList, CharacterType.Enemy)
 	end
 

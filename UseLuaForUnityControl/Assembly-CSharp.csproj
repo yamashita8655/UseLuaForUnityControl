@@ -48,6 +48,7 @@
      <Compile Include="Assets\Script\GameMain\BootScene.cs" />
      <Compile Include="Assets\Script\GameMain\Common\ButtonEventHandler.cs" />
      <Compile Include="Assets\Script\GameMain\Common\CutinControllerBase.cs" />
+     <Compile Include="Assets\Script\GameMain\Common\CutinControllerBase2.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" />
      <Compile Include="Assets\Script\GameMain\Common\GameSceneManager.cs" />
      <Compile Include="Assets\Script\GameMain\Common\InputEventHandler.cs" />

@@ -46,6 +46,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local maxHp = playerDataConfig.MaxHp
 		local bulletEmitterList = playerDataConfig.BulletEmitterList
 		local equipBulletList = playerDataConfig.EquipBulletList
+		local skillConfig = playerDataConfig.SkillConfig
 
 		LuaLoadPrefabAfter(prefabName, name, "PlayerCharacterRoot")
 		local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
@@ -54,6 +55,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		LuaSetRotate(name, 0, 0, degree)
 		local player = PlayerCharacter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), name, width, height)
 		player:Initialize(nowHp, maxHp)
+		player:SetSkillConfig(skillConfig)
 		player = UtilityFunction.Instance().SetEmitter(player, bulletEmitterList, equipBulletList, CharacterType.Player)
 
 		self.PlayerCharacterInstance = player
@@ -76,6 +78,23 @@ function PlayerManager:OnMouseDown(touchx, touchy)
 	self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
 	PlayerManager.Instance():SetRotate(0, 0, degree-90)
 	self.PlayerCharacterInstance:ShootBullet(degree-90)
+
+	-- TODO:test
+	local skillData = self.PlayerCharacterInstance:GetSkillConfig()
+	
+	local emitterLevel = skillData:GetSkillLevel(SkillTypeEnum.Emitter)
+	local emitterMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Emitter)
+	local emitterNext = skillData:GetNextExp(SkillTypeEnum.Emitter)
+	LuaUnityDebugLog("emitterLevel:"..emitterLevel)
+	LuaUnityDebugLog("emitterMaxLevel:"..emitterMaxLevel)
+	LuaUnityDebugLog("emitterNext:"..emitterNext)
+	
+	local bulletLevel = skillData:GetSkillLevel(SkillTypeEnum.Bullet)
+	local bulletMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Bullet)
+	local bulletNext = skillData:GetNextExp(SkillTypeEnum.Bullet)
+	LuaUnityDebugLog("bulletLevel:"..bulletLevel)
+	LuaUnityDebugLog("bulletMaxLevel:"..bulletMaxLevel)
+	LuaUnityDebugLog("bulletNext:"..bulletNext)
 end
 
 function PlayerManager:OnMouseDrag(touchx, touchy) 
@@ -85,7 +104,6 @@ function PlayerManager:OnMouseDrag(touchx, touchy)
 	local offsety = (touchy - (ScreenHeight/2)) / CanvasFactor
 	--local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
 	--local offsety = (touchy - (ScreenHeight/2+200)) / CanvasFactor
-	LuaUnityDebugLog("touchx:"..offsetx.."touchy:"..offsety)
 	local radian = math.atan2(offsety, offsetx)
 	local degree = radian * 180 / 3.1415
 

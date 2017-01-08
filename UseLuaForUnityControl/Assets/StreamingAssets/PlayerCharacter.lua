@@ -15,6 +15,8 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	this.ExistTime = 0.0
 	this.MoveSpeed = 1.0
 	this.BulletEmitterList = {}
+	this.EXP = 0
+	this.SkillConfig = {}
 
 	-- メソッド定義
 	-- 初期化
@@ -87,6 +89,24 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 			emitter = self.BulletEmitterList[i]
 			emitter:UpdatePosition(radian, degree)
 		end
+	end
+	
+	-- 経験値増減
+	this.AddEXP = function(self, value)
+		self.EXP = self.EXP + value
+	end
+	
+	-- 経験値取得
+	this.GetEXP = function(self)
+		return self.EXP
+	end
+
+	-- スキルレベルデータ操作
+	this.SetSkillConfig = function(self, skillConfig)
+		self.SkillConfig = skillConfig
+	end
+	this.GetSkillConfig = function(self)
+		return self.SkillConfig
 	end
 	
 	-- メタテーブルセット

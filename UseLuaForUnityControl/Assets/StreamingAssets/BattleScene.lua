@@ -45,6 +45,8 @@ function BattleScene.new()
 		PlayerManager.Instance():CreatePlayer(selectCharacter, posx, posy, 0)
 
 		LuaFindObject("BattleObjectRoot")
+		LuaFindObject("ExpText")
+		
 		--LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
 		self.AlignPosition.x = -200
 		self.AlignPosition.y = -200
@@ -76,6 +78,10 @@ function BattleScene.new()
 		BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
 		EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
 		self:CheckBump()
+
+		player = PlayerManager.Instance():GetPlayer()
+		exp = player:GetEXP()
+		LuaSetText("ExpText", exp)
 	end
 	
 	-- 終了
@@ -116,10 +122,7 @@ function BattleScene.new()
 	this.OnMouseDown = function(self, touchx, touchy)
 		local calcTouchX = touchx - self.AlignPosition.x
 		local calcTouchY = touchy - self.AlignPosition.y
-		PlayerManager.Instance():OnMouseDrag(calcTouchX, calcTouchY)
-		touchx = touchx + self.AlignPosition.x
-		touchy = touchy - self.AlignPosition.y
-		PlayerManager.Instance():OnMouseDown(touchx, touchy)
+		PlayerManager.Instance():OnMouseDown(calcTouchX, calcTouchY)
 	end
 	
 	this.OnMouseDrag = function(self, touchx, touchy)
@@ -159,6 +162,12 @@ function BattleScene.new()
 						EffectManager:SpawnEffect(enemy:GetPosition())
 						local bulletAttack = bullet:GetAttack()
 						enemy:AddNowHp(-bulletAttack)
+						if enemy:IsAlive() == false then
+							local exp = enemy:GetEXP()
+							LuaUnityDebugLog("EXP:"..exp)
+							player:AddEXP(exp)
+							LuaUnityDebugLog("EXP:"..player:GetEXP())
+						end
 						bullet:AddNowHp(-1)
 					end
 				end

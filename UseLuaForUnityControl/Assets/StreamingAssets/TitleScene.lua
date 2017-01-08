@@ -14,6 +14,7 @@ function TitleScene.new()
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
 		this:SceneBaseInitialize()
+		LuaSetActive("OkCancelDialog", false)
 		LuaChangeScene("Title", "MainCanvas")
 	end
 	
@@ -37,10 +38,18 @@ function TitleScene.new()
 	-- コールバック
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "TitleSceneGoHomeButton" then
-			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			DialogManager.Instance():OpenDialog(
+				function()
+					LuaUnityDebugLog("clickOk")
+				end
+				,
+				function()
+					LuaUnityDebugLog("clickCancel")
+				end
+			)
 		end
 	end
-
 	
 	return this
 	--return setmetatable(this, {__index = TitleScene})
