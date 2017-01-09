@@ -224,22 +224,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		res_s = NativeMethods.lua_tolstring(luaState, 6, out res);
 		string callbackMethodArg = Marshal.PtrToStringAnsi(res_s);
 
-		CutinControllerBase contoller = retObj.GetComponent<CutinControllerBase>();
-		if (contoller != null) {
-			contoller.Play(animationName, isLoop, isAutoActiveFalse, () => {
-				if (callbackMethodName != "") {
-					// Lua側のメイン関数を呼び出す
-					LuaManager.FunctionData data = new LuaManager.FunctionData();
-					data.returnValueNum = 0;
-					data.functionName = callbackMethodName;
-					ArrayList list = new ArrayList();
-					list.Add(callbackMethodArg);
-					data.argList = list;
-					ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
-				}
-			});
-		}
-		
 		CutinControllerBase2 contoller2 = retObj.GetComponent<CutinControllerBase2>();
 		if (contoller2 != null) {
 			contoller2.Play(animationName, () => {
@@ -254,6 +238,40 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 					ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
 				}
 			});
+		}
+		
+		return 0;
+	}
+	
+	// Animationを一時停止する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityPauseAnimator(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string prefabname = Marshal.PtrToStringAnsi(res_s);
+		GameObject retObj = GameObjectCacheManager.Instance.FindGameObject(prefabname);
+
+		CutinControllerBase2 contoller2 = retObj.GetComponent<CutinControllerBase2>();
+		if (contoller2 != null) {
+			contoller2.Pause();
+		}
+		
+		return 0;
+	}
+	
+	// Animationの一時停止を解除する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityResumeAnimator(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string prefabname = Marshal.PtrToStringAnsi(res_s);
+		GameObject retObj = GameObjectCacheManager.Instance.FindGameObject(prefabname);
+
+		CutinControllerBase2 contoller2 = retObj.GetComponent<CutinControllerBase2>();
+		if (contoller2 != null) {
+			contoller2.Resume();
 		}
 		
 		return 0;
@@ -795,6 +813,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityPlayAnimator = new LuaManager.DelegateLuaBindFunction (UnityPlayAnimator);
 		IntPtr LuaUnityPlayAnimatorIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityPlayAnimator);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityPlayAnimator", LuaUnityPlayAnimatorIntPtr, LuaUnityPlayAnimator);
+		
+		// アニメーションを一時停止する
+		LuaManager.DelegateLuaBindFunction LuaUnityPauseAnimator = new LuaManager.DelegateLuaBindFunction (UnityPauseAnimator);
+		IntPtr LuaUnityPauseAnimatorIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityPauseAnimator);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityPauseAnimator", LuaUnityPauseAnimatorIntPtr, LuaUnityPauseAnimator);
+		
+		// アニメーションの一時停止を解除する
+		LuaManager.DelegateLuaBindFunction LuaUnityResumeAnimator = new LuaManager.DelegateLuaBindFunction (UnityResumeAnimator);
+		IntPtr LuaUnityResumeAnimatorIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityResumeAnimator);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityResumeAnimator", LuaUnityResumeAnimatorIntPtr, LuaUnityResumeAnimator);
 
 		// プレハブだけの読み込み処理
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadPrefabAfter = new LuaManager.DelegateLuaBindFunction (UnityLoadPrefabAfter);

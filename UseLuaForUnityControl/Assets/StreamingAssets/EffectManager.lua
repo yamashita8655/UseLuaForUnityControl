@@ -18,6 +18,7 @@ end
 -- メソッド定義
 function EffectManager:Initialize() 
 	self.EffectCounter = 0
+	self.EffectList = {}
 	
 	LuaFindObject("EffectRoot")
 	LuaFindObject("HitEffect1")
@@ -25,6 +26,7 @@ end
 
 function EffectManager:SpawnEffect(position) 
 	LuaLoadPrefabAfter("Prefabs/System/HitEffect1", "HitEffect1_"..self.EffectCounter, "EffectRoot")
+	table.insert(self.EffectList, "HitEffect1_"..self.EffectCounter)
 	LuaSetPosition("HitEffect1_"..self.EffectCounter, position.x, position.y, position.z)
 	callbackTag = "EffectManager_CallbackEffectAnimationEnd"..self.EffectCounter
 	CallbackManager.Instance():AddCallback(callbackTag, {self, "HitEffect1_"..self.EffectCounter}, self.EffectAnimationEnd)
@@ -33,8 +35,25 @@ function EffectManager:SpawnEffect(position)
 
 end
 
+function EffectManager:PauseEffect() 
+	for i = 1, #self.EffectList do
+		LuaPauseAnimator(self.EffectList[i])
+	end
+end
+
+function EffectManager:ResumeEffect() 
+	for i = 1, #self.EffectList do
+		LuaResumeAnimator(self.EffectList[i])
+	end
+end
+
 function EffectManager.EffectAnimationEnd(argList) 
 	local self = argList[1]
 	local prefabName = argList[2]
+	for i = 1, #self.EffectList do
+		if self.EffectList[i] == prefabName then
+			table.remove(self.EffectList, i)
+		end
+	end
 	LuaDestroyObject(prefabName)
 end

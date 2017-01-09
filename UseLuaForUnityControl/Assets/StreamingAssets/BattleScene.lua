@@ -15,11 +15,17 @@ function BattleScene.new()
 	
 	this.AlignScale		= Vector3.new(1.0, 1.0, 1.0)-- 画面表示の拡縮調整
 	this.AlignPosition	= Vector3.new(0.0, 0.0, 0.0)-- 画面表示のポジション調整
+	
+	this.IsGamePause = false
 
 	-- メソッド定義
 	-- 初期化
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
+		if self.IsInitialized == false then
+			SkillLevelUpDialog.Instance():Initialize()
+		end
+		
 		this:SceneBaseInitialize()
 
 		LuaChangeScene("Battle", "MainCanvas")
@@ -29,6 +35,8 @@ function BattleScene.new()
 		EffectManager.Instance():Initialize()
 		EnemyManager.Instance():Initialize()
 
+		this.IsGamePause = false
+		
 		selectQuestId = GameManager.Instance():GetSelectQuestId()
 		enemySpawntTable = QuestConfig[selectQuestId].EnemySpawnTable
 
@@ -61,27 +69,29 @@ function BattleScene.new()
 	this.SceneBaseUpdate = this.Update
 	this.Update = function(self, deltaTime)
 		this:SceneBaseUpdate(deltaTime)
-	
-		self.EndTimeCounter = self.EndTimeCounter + deltaTime
-		if self.EndTimeCounter > self.EndTime then
-			self.EndCheckIntervalCounter = self.EndCheckIntervalCounter + deltaTime
-			if self.EndCheckIntervalCounter > self.EndCheckInterval then
-				isEnd = self.CheckBattleEnd()
-				if isEnd == true then
-					SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+		
+		if self.IsGamePause == false then
+			self.EndTimeCounter = self.EndTimeCounter + deltaTime
+			if self.EndTimeCounter > self.EndTime then
+				self.EndCheckIntervalCounter = self.EndCheckIntervalCounter + deltaTime
+				if self.EndCheckIntervalCounter > self.EndCheckInterval then
+					isEnd = self.CheckBattleEnd()
+					if isEnd == true then
+						SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+					end
+					self.EndCheckIntervalCounter = 0
 				end
-				self.EndCheckIntervalCounter = 0
 			end
-		end
 	
-		PlayerManager.Instance():Update(GameManager:GetBattleDeltaTime())
-		BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
-		EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
-		self:CheckBump()
+			PlayerManager.Instance():Update(GameManager:GetBattleDeltaTime())
+			BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
+			EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
+			self:CheckBump()
 
-		player = PlayerManager.Instance():GetPlayer()
-		exp = player:GetEXP()
-		LuaSetText("ExpText", exp)
+			player = PlayerManager.Instance():GetPlayer()
+			exp = player:GetEXP()
+			LuaSetText("ExpText", exp)
+		end
 	end
 	
 	-- 終了
@@ -114,21 +124,34 @@ function BattleScene.new()
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "BattleOptionButton" then
-			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			self.IsGamePause = true
+			EffectManager.Instance():PauseEffect()
+			SkillLevelUpDialog.Instance():OpenDialog(
+				function()
+					self.IsGamePause = false
+					EffectManager.Instance():ResumeEffect()
+				end
+			)
 		end
+		SkillLevelUpDialog.Instance():OnClickButton(buttonName)
 	end
 	
 	-- 画面タッチ判定
 	this.OnMouseDown = function(self, touchx, touchy)
-		local calcTouchX = touchx - self.AlignPosition.x
-		local calcTouchY = touchy - self.AlignPosition.y
-		PlayerManager.Instance():OnMouseDown(calcTouchX, calcTouchY)
+		if self.IsGamePause == false then
+			local calcTouchX = touchx - self.AlignPosition.x
+			local calcTouchY = touchy - self.AlignPosition.y
+			PlayerManager.Instance():OnMouseDown(calcTouchX, calcTouchY)
+		end
 	end
 	
 	this.OnMouseDrag = function(self, touchx, touchy)
-		local calcTouchX = touchx - self.AlignPosition.x
-		local calcTouchY = touchy - self.AlignPosition.y
-		PlayerManager.Instance():OnMouseDrag(calcTouchX, calcTouchY)
+		if self.IsGamePause == false then
+			local calcTouchX = touchx - self.AlignPosition.x
+			local calcTouchY = touchy - self.AlignPosition.y
+			PlayerManager.Instance():OnMouseDown(calcTouchX, calcTouchY)
+		end
 	end
 
 	--当たり判定
@@ -159,14 +182,12 @@ function BattleScene.new()
 					isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
 	
 					if isHit == true then
-						EffectManager:SpawnEffect(enemy:GetPosition())
+						EffectManager.Instance():SpawnEffect(enemy:GetPosition())
 						local bulletAttack = bullet:GetAttack()
 						enemy:AddNowHp(-bulletAttack)
 						if enemy:IsAlive() == false then
 							local exp = enemy:GetEXP()
-							LuaUnityDebugLog("EXP:"..exp)
 							player:AddEXP(exp)
-							LuaUnityDebugLog("EXP:"..player:GetEXP())
 						end
 						bullet:AddNowHp(-1)
 					end
@@ -244,7 +265,7 @@ function BattleScene.new()
 					isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
 	
 					if isHit == true then
-						EffectManager:SpawnEffect(enemyBullet:GetPosition())
+						EffectManager.Instance():SpawnEffect(enemyBullet:GetPosition())
 						local playerBulletAttack = playerBullet:GetAttack()
 						local enemyBulletAttack = enemyBullet:GetAttack()
 						enemyBullet:AddNowHp(-playerBulletAttack)

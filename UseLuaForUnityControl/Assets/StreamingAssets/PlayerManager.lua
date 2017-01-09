@@ -80,21 +80,15 @@ function PlayerManager:OnMouseDown(touchx, touchy)
 	self.PlayerCharacterInstance:ShootBullet(degree-90)
 
 	-- TODO:test
-	local skillData = self.PlayerCharacterInstance:GetSkillConfig()
-	
-	local emitterLevel = skillData:GetSkillLevel(SkillTypeEnum.Emitter)
-	local emitterMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Emitter)
-	local emitterNext = skillData:GetNextExp(SkillTypeEnum.Emitter)
-	LuaUnityDebugLog("emitterLevel:"..emitterLevel)
-	LuaUnityDebugLog("emitterMaxLevel:"..emitterMaxLevel)
-	LuaUnityDebugLog("emitterNext:"..emitterNext)
-	
-	local bulletLevel = skillData:GetSkillLevel(SkillTypeEnum.Bullet)
-	local bulletMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Bullet)
-	local bulletNext = skillData:GetNextExp(SkillTypeEnum.Bullet)
-	LuaUnityDebugLog("bulletLevel:"..bulletLevel)
-	LuaUnityDebugLog("bulletMaxLevel:"..bulletMaxLevel)
-	LuaUnityDebugLog("bulletNext:"..bulletNext)
+	--local skillData = self.PlayerCharacterInstance:GetSkillConfig()
+	--
+	--local emitterLevel = skillData:GetSkillLevel(SkillTypeEnum.Emitter)
+	--local emitterMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Emitter)
+	--local emitterNext = skillData:GetNextExp(SkillTypeEnum.Emitter)
+	--
+	--local bulletLevel = skillData:GetSkillLevel(SkillTypeEnum.Bullet)
+	--local bulletMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Bullet)
+	--local bulletNext = skillData:GetNextExp(SkillTypeEnum.Bullet)
 end
 
 function PlayerManager:OnMouseDrag(touchx, touchy) 

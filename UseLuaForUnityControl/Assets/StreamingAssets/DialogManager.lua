@@ -29,7 +29,6 @@ function DialogManager:OpenDialog(okCallback, cancelCallback)
 	self.CancelCallback = cancelCallback
 	
 	if self.IsDialogActive == false then
-		LuaUnityDebugLog("Open!!!!")
 		self.IsDialogActive = true
 		CallbackManager.Instance():AddCallback("DialogManager_OpenCallback", {self}, self.DialogOpenCallback)
 		LuaPlayAnimator("OkCancelDialog", "Open", false, false, "LuaCallback", "DialogManager_OpenCallback")
@@ -44,12 +43,10 @@ function DialogManager:CloseDialog()
 end
 
 function DialogManager.DialogOpenCallback(arg, unityArg) 
-	LuaUnityDebugLog("OpenEnd!")
 end
 
 function DialogManager.DialogCloseCallback(arg, unityArg) 
 	local self =  arg[1]
-	LuaUnityDebugLog("CloseEnd!")
 	self.IsDialogActive = false
 	LuaSetActive("OkCancelDialog", false)
 end

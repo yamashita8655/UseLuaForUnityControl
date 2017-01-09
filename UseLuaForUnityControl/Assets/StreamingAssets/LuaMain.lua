@@ -24,6 +24,7 @@ LuaFileList = {
 	"BattleScene.lua",
 	"SceneManager.lua",
 	"DialogManager.lua",
+	"SkillLevelUpDialog.lua",
 	"MoveConfig.lua",
 	"BaseMoveController.lua",
 	"MoveControllerSinCurve.lua",
@@ -206,6 +207,18 @@ end
 --引数：オブジェクト名、アニメーション名、アニメーションが終わった後のLua側のコールバック関数名
 function LuaPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName, callbackMethodArg)
 	UnityPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName, callbackMethodArg)
+end
+
+--アニメーション一時停止
+--引数：オブジェクト名
+function LuaPauseAnimator(hierarchyName)
+	UnityPauseAnimator(hierarchyName)
+end
+
+--アニメーション一時停止の解除
+--引数：オブジェクト名
+function LuaResumeAnimator(hierarchyName)
+	UnityResumeAnimator(hierarchyName)
 end
 
 --シーンオブジェクトの切り替え

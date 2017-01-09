@@ -38,16 +38,16 @@ function TitleScene.new()
 	-- コールバック
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "TitleSceneGoHomeButton" then
-			--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
-			DialogManager.Instance():OpenDialog(
-				function()
-					LuaUnityDebugLog("clickOk")
-				end
-				,
-				function()
-					LuaUnityDebugLog("clickCancel")
-				end
-			)
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			--DialogManager.Instance():OpenDialog(
+			--	function()
+			--		LuaUnityDebugLog("clickOk")
+			--	end
+			--	,
+			--	function()
+			--		LuaUnityDebugLog("clickCancel")
+			--	end
+			--)
 		end
 	end
 	

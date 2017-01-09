@@ -42,8 +42,6 @@ function EnemyBase.new(position, rotate, name, number, width, height)
 		self.EXP = self.EXP + exp
 	end
 	this.GetEXP = function(self)
-		LuaUnityDebugLog("GetEXP")
-		LuaUnityDebugLog(self.EXP)
 		return self.EXP
 	end
 	
