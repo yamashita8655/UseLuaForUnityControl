@@ -17,7 +17,7 @@ function EmitterBase.new()
 	-- メソッド定義
 	-- 初期化
 	this.Initialize = function(self, position, interval, bulletConfig, parentPosition, characterType)
-		self.Position = position
+		self.Position = Vector2.new(position.x, position.y)
 		self.ShootInterval = interval
 		self.BulletConfig = bulletConfig
 		self.ParentPosition = parentPosition 

@@ -30,6 +30,8 @@ function SkillLevelUpDialog:Initialize()
 	LuaFindObject("SkillSelectFilter1")
 	LuaFindObject("SkillSelectFilter2")
 	LuaFindObject("SkillSelectFilter3")
+	LuaFindObject("SkillDetailText")
+	LuaFindObject("SkillHaveExpText")
 
 	LuaSetActive("SkillUpDialog", false)
 end
@@ -42,14 +44,27 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 		LuaSetActive("SkillSelectFilter1", false)
 		LuaSetActive("SkillSelectFilter2", false)
 		LuaSetActive("SkillSelectFilter3", false)
+
+		local player = PlayerManager.Instance():GetPlayer() 
+		local skillData = player:GetSkillConfig()
+		local skillDetailData = player:GetSkillDetailText()
 		
-		LuaSetText("SkillNowLevelText1", "1")
-		LuaSetText("SkillNowLevelText2", "1")
+		local emitterNowLevel = skillData:GetSkillLevel(SkillTypeEnum.Emitter)
+		local emitterMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Emitter)
+		
+		local bulletNowLevel = skillData:GetSkillLevel(SkillTypeEnum.Bullet)
+		local bulletMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Bullet)
+		
+		LuaSetText("SkillNowLevelText1", emitterNowLevel)
+		LuaSetText("SkillMaxLevelText1", emitterMaxLevel)
+		
+		LuaSetText("SkillNowLevelText2", bulletNowLevel)
+		LuaSetText("SkillMaxLevelText2", bulletMaxLevel)
+		
 		LuaSetText("SkillNowLevelText3", "1")
-		
-		LuaSetText("SkillMaxLevelText1", "1")
-		LuaSetText("SkillMaxLevelText2", "1")
 		LuaSetText("SkillMaxLevelText3", "1")
+	
+		LuaSetText("SkillHaveExpText", player:GetEXP())
 
 		self.IsActive = true
 		CallbackManager.Instance():AddCallback("SkillLevelUpDialogManager_OpenCallback", {self}, self.DialogOpenCallback)
@@ -100,15 +115,20 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 end
 
 function SkillLevelUpDialog:ToggleSkillSelectFilter(selectIndex) 
+	local player = PlayerManager.Instance():GetPlayer() 
+	local skillDetailData = player:GetSkillDetailText()
 	if selectIndex == 1 then
+		LuaSetText("SkillDetailText", skillDetailData[1])
 		LuaSetActive("SkillSelectFilter1", true)
 		LuaSetActive("SkillSelectFilter2", false)
 		LuaSetActive("SkillSelectFilter3", false)
 	elseif selectIndex == 2 then
+		LuaSetText("SkillDetailText", skillDetailData[2])
 		LuaSetActive("SkillSelectFilter1", false)
 		LuaSetActive("SkillSelectFilter2", true)
 		LuaSetActive("SkillSelectFilter3", false)
 	elseif selectIndex == 3 then
+		LuaSetText("SkillDetailText", skillDetailData[3])
 		LuaSetActive("SkillSelectFilter1", false)
 		LuaSetActive("SkillSelectFilter2", false)
 		LuaSetActive("SkillSelectFilter3", true)

@@ -102,6 +102,7 @@ function BattleScene.new()
 		EnemyManager.Instance():Release()
 		BulletManager.Instance():Release()
 		PlayerManager.Instance():Release()
+		EffectManager.Instance():Release()
 			
 		FileIOManager.Instance():Save()
 	end
@@ -124,15 +125,15 @@ function BattleScene.new()
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "BattleOptionButton" then
-			--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
-			self.IsGamePause = true
-			EffectManager.Instance():PauseEffect()
-			SkillLevelUpDialog.Instance():OpenDialog(
-				function()
-					self.IsGamePause = false
-					EffectManager.Instance():ResumeEffect()
-				end
-			)
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			--self.IsGamePause = true
+			--EffectManager.Instance():PauseEffect()
+			--SkillLevelUpDialog.Instance():OpenDialog(
+			--	function()
+			--		self.IsGamePause = false
+			--		EffectManager.Instance():ResumeEffect()
+			--	end
+			--)
 		end
 		SkillLevelUpDialog.Instance():OnClickButton(buttonName)
 	end

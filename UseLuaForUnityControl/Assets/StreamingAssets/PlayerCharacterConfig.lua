@@ -21,6 +21,7 @@ PlayerCharacterConfig = {
 		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 		DetailText = "PlayerCharacter001の特徴です\n改行コード見れるのかな",
 		SkillConfig = SkillData.new(SkillTable_001),
+		SkillDetailText = SkillDetailText001,
 	},
 	{
 		PrefabName = "Prefabs/PlayerCharacterObject002",
@@ -41,6 +42,7 @@ PlayerCharacterConfig = {
 		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 		DetailText = "PlayerCharacter002の特徴です\n\n改行コード見れるのかな",
 		SkillConfig = SkillData.new(SkillTable_001),
+		SkillDetailText = SkillDetailText001,
 	},
 }
 

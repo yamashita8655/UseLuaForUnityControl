@@ -57,3 +57,11 @@ function EffectManager.EffectAnimationEnd(argList)
 	end
 	LuaDestroyObject(prefabName)
 end
+
+function EffectManager:Release() 
+	for i = 1, #self.EffectList do
+		LuaDestroyObject(self.EffectList[i])
+	end
+
+	self.EffectList = {}
+end

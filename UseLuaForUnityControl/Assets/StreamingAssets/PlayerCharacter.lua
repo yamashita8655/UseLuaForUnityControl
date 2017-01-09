@@ -17,6 +17,7 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	this.BulletEmitterList = {}
 	this.EXP = 0
 	this.SkillConfig = {}
+	this.SkillDetailText = {}
 
 	-- メソッド定義
 	-- 初期化
@@ -107,6 +108,14 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	end
 	this.GetSkillConfig = function(self)
 		return self.SkillConfig
+	end
+	
+	-- スキルテキスト
+	this.SetSkillDetailText = function(self, skillDetailText)
+		self.SkillDetailText = skillDetailText
+	end
+	this.GetSkillDetailText = function(self)
+		return self.SkillDetailText
 	end
 	
 	-- メタテーブルセット

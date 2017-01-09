@@ -38,6 +38,7 @@ end
 function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree) 
 	if (self.PlayerCharacterInstance) then
 	else
+		LuaUnityDebugLog("charaCreate")
 		local prefabName = playerDataConfig.PrefabName
 		local name = playerDataConfig.Name
 		local width = playerDataConfig.Width
@@ -47,6 +48,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local bulletEmitterList = playerDataConfig.BulletEmitterList
 		local equipBulletList = playerDataConfig.EquipBulletList
 		local skillConfig = playerDataConfig.SkillConfig
+		local skillDetailText = playerDataConfig.SkillDetailText
 
 		LuaLoadPrefabAfter(prefabName, name, "PlayerCharacterRoot")
 		local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
@@ -56,6 +58,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local player = PlayerCharacter.new(Vector3.new(offsetx, offsety, 0), Vector3.new(0, 0, degree), name, width, height)
 		player:Initialize(nowHp, maxHp)
 		player:SetSkillConfig(skillConfig)
+		player:SetSkillDetailText(skillDetailText)
 		player = UtilityFunction.Instance().SetEmitter(player, bulletEmitterList, equipBulletList, CharacterType.Player)
 
 		self.PlayerCharacterInstance = player

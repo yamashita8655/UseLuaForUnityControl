@@ -13,6 +13,7 @@ function SkillData.new(skillTable)
 		SkillLevelList = {},
 		SkillMaxLevelList = {},
 		SkillNextExpList = {},
+		SkillDetailTextList = {},
 	}
 
 	for i = 1, #skillTable do
@@ -28,6 +29,10 @@ function SkillData.new(skillTable)
 	for i = 1, #skillTable do
 		table.insert(this.SkillNextExpList, skillTable[i])
 	end
+	
+	--for i = 1, #skillTable do
+	--	table.insert(this.SkillDetailTextList, skillTable[i])
+	--end
 
 	this.GetSkillLevel = function(self, skillType)
 		return self.SkillLevelList[skillType]
@@ -83,5 +88,14 @@ SkillTable_001 = {
 		{50},
 		{1000},
 	},
+}
+
+SkillDetailText001 = {
+	-- EmitterDetail
+	"弾の出現数が変化する\nみたいです。\nみたいだな。",
+	-- BulletDetail
+	"弾が強くなる\nみたいです。\nみたいだな。",
+	-- Test
+	"多分パッシブ\nHPとか。\nそのへん。",
 }
 
