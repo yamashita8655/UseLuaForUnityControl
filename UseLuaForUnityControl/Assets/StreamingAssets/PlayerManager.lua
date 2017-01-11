@@ -59,7 +59,9 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		player:Initialize(nowHp, maxHp)
 		player:SetSkillConfig(skillConfig)
 		player:SetSkillDetailText(skillDetailText)
-		player = UtilityFunction.Instance().SetEmitter(player, bulletEmitterList, equipBulletList, CharacterType.Player)
+		--player = UtilityFunction.Instance().SetEmitter(player, bulletEmitterList, equipBulletList, CharacterType.Player)
+		local skillTable = skillConfig:GetSkillTable()
+		player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][1].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][1].EquipBulletList, CharacterType.Player)
 
 		self.PlayerCharacterInstance = player
 		LuaSetPosition(player.Name, player.Position.x, player.Position.y, player.Position.z)

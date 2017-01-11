@@ -13,7 +13,7 @@ function SkillData.new(skillTable)
 		SkillLevelList = {},
 		SkillMaxLevelList = {},
 		SkillNextExpList = {},
-		SkillDetailTextList = {},
+		SkillTable = {},
 	}
 
 	for i = 1, #skillTable do
@@ -29,11 +29,9 @@ function SkillData.new(skillTable)
 	for i = 1, #skillTable do
 		table.insert(this.SkillNextExpList, skillTable[i])
 	end
-	
-	--for i = 1, #skillTable do
-	--	table.insert(this.SkillDetailTextList, skillTable[i])
-	--end
 
+	this.SkillTable = skillTable
+	
 	this.GetSkillLevel = function(self, skillType)
 		return self.SkillLevelList[skillType]
 	end
@@ -59,6 +57,10 @@ function SkillData.new(skillTable)
 		return exp
 	end
 	
+	this.GetSkillTable = function(self)
+		return self.SkillTable
+	end
+	
 	return this
 end
 
@@ -78,23 +80,53 @@ end
 SkillTable_001 = {
 	-- Emitter
 	{
-		{0},
-		{100},
+		{
+			0, 
+			BulletEmitterList = {
+				Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+			},
+		},
+		
+		{
+			1,
+			BulletEmitterList = {
+				Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+				Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Normal),
+				Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Normal),
+			}
+		},
 	},
 	
 	-- Bullet
 	{
-		{0},
-		{50},
-		{1000},
+		{
+			0,	
+			EquipBulletList = {
+				Character1_Bullet0001,
+			},
+		},
+		
+		{
+			1,
+			EquipBulletList = {
+				Character1_Bullet0002,
+			},
+		},
+		
+		{	
+			2,
+			EquipBulletList = {
+				Character1_Bullet0003,
+			},
+		},
 	},
 }
 
 SkillDetailText001 = {
 	-- EmitterDetail
-	"弾の出現数が変化する\nみたいです。\nみたいだな。",
+	"レベルが上がると、弾の発射口が増える\n1⇒3⇒5⇒？⇒？\n",
 	-- BulletDetail
-	"弾が強くなる\nみたいです。\nみたいだな。",
+	"レベルが上がると、弾の攻撃力が上がる\n地味だけど重要\n体感はしづらいかもしれない",
 	-- Test
 	"多分パッシブ\nHPとか。\nそのへん。",
 }

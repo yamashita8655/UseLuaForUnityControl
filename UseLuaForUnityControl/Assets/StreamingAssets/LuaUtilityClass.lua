@@ -61,10 +61,12 @@ function UtilityFunction.SetEmitter(character, bulletEmitterList, equipBulletLis
 		emitter = nil
 		if bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Normal then
 			emitter = BulletEmitter.new()
-			emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], character:GetPosition(), characterType)
+			--emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], character:GetPosition(), characterType)
+			emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[1], character:GetPosition(), characterType)
 		elseif bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Satellite then
 			emitter = BulletEmitterSatellite.new()
-			emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], character:GetPosition(), characterType, Vector2.new(0, 0))
+			--emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], character:GetPosition(), characterType, Vector2.new(0, 0))
+			emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[1], character:GetPosition(), characterType, Vector2.new(0, 0))
 		end
 		character:AddBulletEmitter(emitter)
 	end

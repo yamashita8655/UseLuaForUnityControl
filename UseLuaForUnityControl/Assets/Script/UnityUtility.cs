@@ -305,6 +305,44 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 	
+	// ボタンのインタラクティブの設定
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetButtonInteractable(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+
+		bool res_bool = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 2));//true=1 false=0
+		
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		Button btn = obj.GetComponent<Button>();
+
+		btn.interactable = res_bool;
+
+		return 0;
+	}
+	
+	// 親の設定
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetParent(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_objectName = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_objectName);
+
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string parentObjectName = Marshal.PtrToStringAnsi(res_s);
+		
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		GameObject parent = GameObjectCacheManager.Instance.FindGameObject(parentObjectName);
+		obj.transform.SetParent(parent.transform);
+		obj.GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
+		obj.transform.localScale = Vector3.one;
+
+		return 0;
+	}
+	
 	// テキストの設定
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySetText(IntPtr luaState)
@@ -823,6 +861,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityResumeAnimator = new LuaManager.DelegateLuaBindFunction (UnityResumeAnimator);
 		IntPtr LuaUnityResumeAnimatorIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityResumeAnimator);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityResumeAnimator", LuaUnityResumeAnimatorIntPtr, LuaUnityResumeAnimator);
+		
+		// ボタンのインタラクティブ設定
+		LuaManager.DelegateLuaBindFunction LuaUnitySetButtonInteractable = new LuaManager.DelegateLuaBindFunction (UnitySetButtonInteractable);
+		IntPtr LuaUnitySetButtonInteractableIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetButtonInteractable);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetButtonInteractable", LuaUnitySetButtonInteractableIntPtr, LuaUnitySetButtonInteractable);
+		
+		// 親の設定
+		LuaManager.DelegateLuaBindFunction LuaUnitySetParent = new LuaManager.DelegateLuaBindFunction (UnitySetParent);
+		IntPtr LuaUnitySetParentIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetParent);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetParent", LuaUnitySetParentIntPtr, LuaUnitySetParent);
 
 		// プレハブだけの読み込み処理
 		LuaManager.DelegateLuaBindFunction LuaUnityLoadPrefabAfter = new LuaManager.DelegateLuaBindFunction (UnityLoadPrefabAfter);

@@ -22,12 +22,6 @@ function BattleScene.new()
 	-- 初期化
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
-		if self.IsInitialized == false then
-			SkillLevelUpDialog.Instance():Initialize()
-		end
-		
-		this:SceneBaseInitialize()
-
 		LuaChangeScene("Battle", "MainCanvas")
 		
 		PlayerManager.Instance():Initialize()
@@ -54,6 +48,7 @@ function BattleScene.new()
 
 		LuaFindObject("BattleObjectRoot")
 		LuaFindObject("ExpText")
+		LuaFindObject("DialogRoot")
 		
 		--LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
 		self.AlignPosition.x = -200
@@ -63,6 +58,14 @@ function BattleScene.new()
 		
 		LuaSetActive("HeaderObject", false)
 		LuaSetActive("FooterObject", false)
+		
+		if self.IsInitialized == false then
+			SkillLevelUpDialog.Instance():Initialize()
+			SkillLevelUpDialog.Instance():SetParent("DialogRoot") 
+		end
+		
+		this:SceneBaseInitialize()
+
 	end
 	
 	-- 更新
@@ -125,15 +128,16 @@ function BattleScene.new()
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "BattleOptionButton" then
-			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
-			--self.IsGamePause = true
-			--EffectManager.Instance():PauseEffect()
-			--SkillLevelUpDialog.Instance():OpenDialog(
-			--	function()
-			--		self.IsGamePause = false
-			--		EffectManager.Instance():ResumeEffect()
-			--	end
-			--)
+			--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+
+			self.IsGamePause = true
+			EffectManager.Instance():PauseEffect()
+			SkillLevelUpDialog.Instance():OpenDialog(
+				function()
+					self.IsGamePause = false
+					EffectManager.Instance():ResumeEffect()
+				end
+			)
 		end
 		SkillLevelUpDialog.Instance():OnClickButton(buttonName)
 	end

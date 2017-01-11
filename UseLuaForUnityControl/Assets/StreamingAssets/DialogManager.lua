@@ -21,12 +21,15 @@ function DialogManager:Initialize()
 	self.CancelCallback = nil
 
 	LuaLoadPrefabAfter("Prefabs/System/OkCancelDialog", "OkCancelDialog", "SystemCanvas")
+	LuaFindObject("OkCancelDialogDetailText")
 	LuaSetActive("OkCancelDialog", false)
+
 end
 
-function DialogManager:OpenDialog(okCallback, cancelCallback) 
+function DialogManager:OpenDialog(detailText, okCallback, cancelCallback) 
 	self.OkCallback =  okCallback
 	self.CancelCallback = cancelCallback
+	LuaSetText("OkCancelDialogDetailText", detailText)
 	
 	if self.IsDialogActive == false then
 		self.IsDialogActive = true

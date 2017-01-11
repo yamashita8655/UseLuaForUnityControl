@@ -11,7 +11,6 @@ LuaFileList = {
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
-	"SkillConfig.lua",
 	"SceneBase.lua",
 	"CallbackManager.lua",
 	"TimerCallbackManager.lua",
@@ -36,6 +35,7 @@ LuaFileList = {
 	"BulletConfig.lua",
 	"EnemyConfig.lua",
 	"BulletEmitter.lua",
+	"SkillConfig.lua",
 	"BulletManager.lua",
 	"EnemyManager.lua",
 	"EffectManager.lua",
@@ -254,6 +254,16 @@ end
 --プレハブをロードするだけ
 function LuaLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
 	UnityLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
+end
+
+--親の設定
+function LuaSetParent(hierarchyName, parentHierarchyName)
+	UnitySetParent(hierarchyName, parentHierarchyName)
+end
+
+--ボタンのインタラクティブ設定
+function LuaSetButtonInteractable(hierarchyName, interactable)
+	UnitySetButtonInteractable(hierarchyName, interactable)
 end
 
 --プレハブのロード

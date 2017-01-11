@@ -5,6 +5,45 @@ BulletTypeEnum = {
 }
 
 -- 弾の定義
+Character1_Bullet0001 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 64,
+	Height = 64,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 3,
+	MoveType = MoveStraight.new(15),
+	BulletType = BulletTypeEnum.Normal,
+}
+
+Character1_Bullet0002 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 64,
+	Height = 64,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1.5,
+	ExistTime = 3,
+	MoveType = MoveStraight.new(15),
+	BulletType = BulletTypeEnum.Normal,
+}
+
+Character1_Bullet0003 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 64,
+	Height = 64,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 2,
+	ExistTime = 3,
+	MoveType = MoveStraight.new(15),
+	BulletType = BulletTypeEnum.Normal,
+}
+
 Bullet0001 = {
 	PrefabName = "Prefabs/EnemyCharacterObject",
 	Name = "EnemyCharacterObject",

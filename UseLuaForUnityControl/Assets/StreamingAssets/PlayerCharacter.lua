@@ -76,6 +76,11 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 		table.insert(self.BulletEmitterList, emitter)
 	end
 	
+	-- 弾発射ポイントの初期化
+	this.ClearBulletEmitter = function(self, emitter)
+		self.BulletEmitterList = {}
+	end
+	
 	-- 弾のクールタイムが終わっているかどうか
 	this.ShootBullet = function(self, degree)
 		for i = 1, #self.BulletEmitterList do

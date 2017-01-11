@@ -40,6 +40,7 @@ function TitleScene.new()
 		if buttonName == "TitleSceneGoHomeButton" then
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 			--DialogManager.Instance():OpenDialog(
+			--	"text",
 			--	function()
 			--		LuaUnityDebugLog("clickOk")
 			--	end
