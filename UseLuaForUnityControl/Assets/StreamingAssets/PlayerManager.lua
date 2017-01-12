@@ -47,7 +47,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local maxHp = playerDataConfig.MaxHp
 		local bulletEmitterList = playerDataConfig.BulletEmitterList
 		local equipBulletList = playerDataConfig.EquipBulletList
-		local skillConfig = playerDataConfig.SkillConfig
+		local skillConfig = SkillData.new(playerDataConfig.SkillConfig:GetSkillTable())
 		local skillDetailText = playerDataConfig.SkillDetailText
 
 		LuaLoadPrefabAfter(prefabName, name, "PlayerCharacterRoot")

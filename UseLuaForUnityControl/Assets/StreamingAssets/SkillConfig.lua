@@ -29,6 +29,8 @@ function SkillData.new(skillTable)
 	for i = 1, #skillTable do
 		table.insert(this.SkillNextExpList, skillTable[i])
 	end
+	
+
 
 	this.SkillTable = skillTable
 	

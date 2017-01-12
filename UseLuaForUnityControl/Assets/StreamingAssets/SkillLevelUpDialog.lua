@@ -59,49 +59,13 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 		local skillData = player:GetSkillConfig()
 		local skillDetailData = player:GetSkillDetailText()
 		
-		local emitterNowLevel = skillData:GetSkillLevel(SkillTypeEnum.Emitter)
-		local emitterMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Emitter)
-		
-		local bulletNowLevel = skillData:GetSkillLevel(SkillTypeEnum.Bullet)
-		local bulletMaxLevel = skillData:GetMaxSkillLevel(SkillTypeEnum.Bullet)
+		self:UpdateHaveExpText()
+		self:UpdateSkillText(SkillTypeEnum.Emitter) 
+		self:UpdateSkillText(SkillTypeEnum.Bullet) 
 
-		local playerExp = player:GetEXP()
-		
-		LuaSetText("SkillNowLevelText1", emitterNowLevel)
-		LuaSetText("SkillMaxLevelText1", emitterMaxLevel)
-		
-		LuaSetText("SkillNowLevelText2", bulletNowLevel)
-		LuaSetText("SkillMaxLevelText2", bulletMaxLevel)
 		
 		LuaSetText("SkillNowLevelText3", "1")
 		LuaSetText("SkillMaxLevelText3", "1")
-	
-		LuaSetText("SkillHaveExpText", playerExp)
-
-		local emitterNextExp = skillData:GetNextExp(SkillTypeEnum.Emitter)
-		if emitterNextExp == "MAX" then
-			LuaSetButtonInteractable("SkillUpButton1", false)
-		else
-			if emitterNextExp > playerExp then
-				LuaSetButtonInteractable("SkillUpButton1", false)
-			else
-				LuaSetButtonInteractable("SkillUpButton1", true)
-			end
-		end
-		LuaSetText("SkillNeedExpText1", emitterNextExp)
-		
-		local bulletNextExp = skillData:GetNextExp(SkillTypeEnum.Bullet)
-		if bulletNextExp == "MAX" then
-			LuaSetButtonInteractable("SkillUpButton2", false)
-		else
-			if bulletNextExp > playerExp then
-				LuaSetButtonInteractable("SkillUpButton2", false)
-			else
-				LuaSetButtonInteractable("SkillUpButton2", true)
-			end
-		end
-		LuaSetText("SkillNeedExpText2", bulletNextExp)
-		
 		LuaSetButtonInteractable("SkillUpButton3", false)
 		LuaSetText("SkillNeedExpText3", "empty")
 
@@ -109,6 +73,43 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 		CallbackManager.Instance():AddCallback("SkillLevelUpDialogManager_OpenCallback", {self}, self.DialogOpenCallback)
 		LuaPlayAnimator("SkillUpDialog", "Open", false, false, "LuaCallback", "SkillLevelUpDialogManager_OpenCallback")
 	end
+end
+
+function SkillLevelUpDialog:UpdateSkillText(skillType) 
+	local objectIndex = 0
+	if skillType == SkillTypeEnum.Emitter then
+		objectIndex = 1
+	elseif skillType == SkillTypeEnum.Bullet then
+		objectIndex = 2
+	end
+		
+	local player = PlayerManager.Instance():GetPlayer() 
+	local skillData = player:GetSkillConfig()
+		
+	local nowLevel = skillData:GetSkillLevel(skillType)
+	local maxLevel = skillData:GetMaxSkillLevel(skillType)
+
+	LuaSetText("SkillNowLevelText"..objectIndex, nowLevel)
+	LuaSetText("SkillMaxLevelText"..objectIndex, maxLevel)
+		
+	local nextExp = skillData:GetNextExp(skillType)
+	local playerExp = player:GetEXP()
+	if nextExp == "MAX" then
+		LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
+	else
+		if nextExp > playerExp then
+			LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
+		else
+			LuaSetButtonInteractable("SkillUpButton"..objectIndex, true)
+		end
+	end
+	LuaSetText("SkillNeedExpText"..objectIndex, nextExp)
+end
+
+function SkillLevelUpDialog:UpdateHaveExpText() 
+	local player = PlayerManager.Instance():GetPlayer() 
+	local playerExp = player:GetEXP()
+	LuaSetText("SkillHaveExpText", playerExp)
 end
 
 function SkillLevelUpDialog:CloseDialog() 
@@ -128,6 +129,26 @@ function SkillLevelUpDialog.DialogCloseCallback(arg, unityArg)
 	if self.CloseCallback ~= nil then
 		self.CloseCallback()
 	end
+end
+
+function SkillLevelUpDialog:UpdateSkillLevel(skillType) 
+	local player = PlayerManager.Instance():GetPlayer()
+	local skillConfig = player:GetSkillConfig()
+	local nextExp = skillConfig:GetNextExp(skillType)
+	skillConfig:AddSkillLevel(skillType)
+	
+	local emitterNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+	local bulletNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+	local skillTable = skillConfig:GetSkillTable()
+	local playerExp = player:GetEXP()
+	
+	player:ClearBulletEmitter()
+	player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][emitterNowLevel].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][bulletNowLevel].EquipBulletList, CharacterType.Player)
+
+	player:AddEXP(-nextExp)
+	
+	self:UpdateHaveExpText()
+	self:UpdateSkillText(skillType) 
 end
 
 function SkillLevelUpDialog:OnClickButton(buttonName) 
@@ -150,14 +171,22 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 			DialogManager.Instance():OpenDialog(
 				"スキルのレベルを上げていいですか？",
 				function()
-					LuaUnityDebugLog("clickOk")
+					self:UpdateSkillLevel(SkillTypeEnum.Emitter)
 				end
 				,
 				function()
-					LuaUnityDebugLog("clickCancel")
 				end
 			)
 		elseif buttonName == "SkillUpButton2" then
+			DialogManager.Instance():OpenDialog(
+				"スキルのレベルを上げていいですか？",
+				function()
+					self:UpdateSkillLevel(SkillTypeEnum.Bullet)
+				end
+				,
+				function()
+				end
+			)
 		elseif buttonName == "SkillUpButton3" then
 		end
 	end
