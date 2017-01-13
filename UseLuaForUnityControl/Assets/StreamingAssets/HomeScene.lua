@@ -16,8 +16,10 @@ function HomeScene.new()
 		this:SceneBaseInitialize()
 		
 		LuaChangeScene("Home", "MainCanvas")
-		LuaSetActive("HeaderObject", true)
-		LuaSetActive("FooterObject", true)
+		LuaSetActive("HeaderObject", false)
+		LuaSetActive("FooterObject", false)
+		LuaFindObject("HomeButtonHint")
+		LuaSetButtonInteractable("HomeButtonHint", false)
 	end
 	
 	-- 更新
@@ -35,6 +37,18 @@ function HomeScene.new()
 	-- 有効かどうか
 	this.IsActive = function(self)
 		return self.IsActive
+	end
+	
+	-- ボタン
+	this.OnClickButton = function(self, buttonName)
+		if buttonName == "HomeButtonPlay" then
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
+		elseif buttonName == "HomeButtonFriend" then
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
+		elseif buttonName == "HomeButtonOption" then
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Option)
+		elseif buttonName == "HomeButtonHint" then
+		end
 	end
 	
 	return this

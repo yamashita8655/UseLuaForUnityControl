@@ -19,6 +19,7 @@ function GameManager:Initialize()
 	self.SelectPlayerCharacterData = nil
 	self.BattleDeltaTime = 1.0/60.0
 	self.SelectQuestId = 0
+	self.HaveKarikariValue = 0
 end
 
 -- 選択しているキャラクターデータ指定
@@ -40,6 +41,17 @@ function GameManager:SetSelectQuestId(id)
 end
 function GameManager:GetSelectQuestId() 
 	return self.SelectQuestId
+end
+
+-- 持っているカリカリの量
+function GameManager:SetKarikariValue(value) 
+	self.HaveKarikariValue = value
+end
+function GameManager:GetKarikariValue() 
+	return self.HaveKarikariValue
+end
+function GameManager:AddKarikariValue(value) 
+	self.HaveKarikariValue = self.HaveKarikariValue + value
 end
 
 function GameManager:Update(deltaTime) 

@@ -17,8 +17,8 @@ function OptionScene.new()
 		this:SceneBaseInitialize()
 		
 		LuaChangeScene("Option", "MainCanvas")
-		LuaSetActive("HeaderObject", true)
-		LuaSetActive("FooterObject", true)
+		LuaSetActive("HeaderObject", false)
+		LuaSetActive("FooterObject", false)
 
 		LuaFindObject("SESlider")
 		LuaFindObject("BGMSlider")
@@ -48,6 +48,13 @@ function OptionScene.new()
 	-- 有効かどうか
 	this.IsActive = function(self)
 		return self.IsActive
+	end
+	
+	-- ボタン
+	this.OnClickButton = function(self, buttonName)
+		if buttonName == "OptionBackButton" then
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+		end
 	end
 	
 	-- スライダーイベント

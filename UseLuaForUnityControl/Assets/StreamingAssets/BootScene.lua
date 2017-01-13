@@ -45,8 +45,12 @@ function BootScene.new()
 	this.EndSaveFileLoadCallback = function()
 		customSelectIndex = SaveObject.CustomScene_SelectIndex
 		GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacterConfig[customSelectIndex])
-		SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
-		--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
+
+		GameManager:SetKarikariValue(SaveObject.CustomScene_HaveKarikariValue) 
+		--GameManager:SetKarikariValue(1000) 
+
+		--SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
+		SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
 	end
 	
 	return this

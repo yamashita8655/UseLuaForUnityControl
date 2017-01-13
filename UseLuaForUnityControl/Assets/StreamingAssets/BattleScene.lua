@@ -106,6 +106,9 @@ function BattleScene.new()
 		BulletManager.Instance():Release()
 		PlayerManager.Instance():Release()
 		EffectManager.Instance():Release()
+
+		GameManager.Instance():AddKarikariValue(0)
+		SaveObject.CustomScene_HaveKarikariValue = GameManager.Instance():GetKarikariValue()
 			
 		FileIOManager.Instance():Save()
 	end

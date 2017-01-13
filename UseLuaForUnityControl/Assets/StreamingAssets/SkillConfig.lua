@@ -85,16 +85,16 @@ SkillTable_001 = {
 		{
 			0, 
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+				Emitter001.new(0.25, Vector2.new(0, 50), EmitterTypeEnum.Satellite),
 			},
 		},
 		
 		{
 			1,
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-				Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Normal),
-				Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Normal),
+				Emitter001.new(0.25, Vector2.new(0, 50), EmitterTypeEnum.Satellite),
+				Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Satellite),
+				Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Satellite),
 			}
 		},
 	},

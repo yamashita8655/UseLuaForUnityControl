@@ -40,6 +40,16 @@ function FileIOManager:Save()
 	saveString = saveString.."CustomScene_SelectIndex = "..SaveObject.CustomScene_SelectIndex..",\r\n"
 	saveString = saveString.."OptionScene_SEVolumeRate = "..SaveObject.OptionScene_SEVolumeRate..",\r\n"
 	saveString = saveString.."OptionScene_BGMVolumeRate = "..SaveObject.OptionScene_BGMVolumeRate..",\r\n"
+	saveString = saveString.."CustomScene_CharacterUnlockList = {"
+	for i = 1, #SaveObject.CustomScene_CharacterUnlockList do
+		if i ~= 1 then
+			saveString = saveString..","
+		end
+		saveString = saveString..SaveObject.CustomScene_CharacterUnlockList[i]
+	end
+	saveString = saveString.."},\r\n"
+
+	saveString = saveString.."CustomScene_HaveKarikariValue = "..SaveObject.CustomScene_HaveKarikariValue..",\r\n"
 	
 	saveString = saveString.."}\r\n"
 	
@@ -61,6 +71,8 @@ function FileIOManager:CreateDefaultSaveObject()
 		CustomScene_SelectIndex = 1,
 		OptionScene_SEVolumeRate = 100,
 		OptionScene_BGMVolumeRate = 100,
+		CustomScene_CharacterUnlockList = {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		CustomScene_HaveKarikariValue = 0,
 	}
 end
 
@@ -88,7 +100,26 @@ end
 function FileIOManager.LoadTimerCallback(argList)
 	self = argList[1]
 	dofile(self.OneTimeLoadFileName)
+	self:CheckSaveFile()
 	CallbackManager.Instance():AddCallback("FileIOManager_DeleteCallback", {self}, self.EndCallback)
 	LuaUnityDeleteFile(self.OneTimeLoadFileName, "LuaCallback", "FileIOManager_DeleteCallback")
+end
+
+function FileIOManager:CheckSaveFile()
+	if SaveObject.CustomScene_SelectIndex == nil then
+		SaveObject.CustomScene_SelectIndex = 1
+	end
+	if SaveObject.OptionScene_SEVolumeRate == nil then
+		SaveObject.OptionScene_SEVolumeRate = 100
+	end
+	if SaveObject.OptionScene_BGMVolumeRate == nil then
+		SaveObject.OptionScene_BGMVolumeRate = 100
+	end
+	if SaveObject.CustomScene_CharacterUnlockList == nil then
+		SaveObject.CustomScene_CharacterUnlockList = {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+	end
+	if SaveObject.CustomScene_HaveKarikariValue == nil then
+		SaveObject.CustomScene_HaveKarikariValue = 0
+	end
 end
 
