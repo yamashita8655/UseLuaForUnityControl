@@ -32,8 +32,12 @@ function QuestScene.new()
 		LuaFindObject("QuestClickFilter")
 		LuaFindObject("QuestPanelContainer")
 		LuaSetActive("QuestClickFilter", false)
-			
-		LuaSetPosition("QuestPanelContainer", 0, 0, 0)
+		
+		TimerCallbackManager:AddCallback(
+			{self}, 
+			self.TimerResetControlPanelPosition,
+			0.1
+		) 
 
 		for i = 1, self.questCount do
 			LuaDestroyObject("QuestSelectListNode"..i, "QuestScrollContent")
@@ -97,6 +101,10 @@ function QuestScene.new()
 	this.S2FCallback = function(arg, unityArg)
 		local self =  arg[1]
 		LuaSetActive("QuestClickFilter", false)
+	end
+	
+	this.TimerResetControlPanelPosition = function(arg)
+		LuaSetPosition("QuestPanelContainer", 0, 0, 0)
 	end
 	
 	return this

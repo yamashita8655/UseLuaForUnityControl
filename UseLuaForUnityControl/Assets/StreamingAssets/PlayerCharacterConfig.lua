@@ -27,8 +27,8 @@ PlayerCharacterConfig = {
 	{
 		PrefabName = "Prefabs/PlayerCharacterObject002",
 		Name = "PlayerCharacterObject002",
-		Width = 64,
-		Height = 64,
+		Width = 128,
+		Height = 128,
 		NowHp = 50,
 		MaxHp = 100,
 		BulletEmitterList = {
@@ -47,10 +47,10 @@ PlayerCharacterConfig = {
 		UnlockNeedValue = 0,
 	},
 	{
-		PrefabName = "Prefabs/PlayerCharacterObject002",
-		Name = "PlayerCharacterObject002",
-		Width = 64,
-		Height = 64,
+		PrefabName = "Prefabs/PlayerCharacterObject003",
+		Name = "PlayerCharacterObject003",
+		Width = 128,
+		Height = 128,
 		NowHp = 50,
 		MaxHp = 100,
 		BulletEmitterList = {
