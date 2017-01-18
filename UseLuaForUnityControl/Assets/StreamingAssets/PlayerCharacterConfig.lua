@@ -23,6 +23,8 @@ PlayerCharacterConfig = {
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
 		UnlockNeedValue = 0,
+		HomePlayerPrefabName = "Prefabs/HomeCharacter1",
+		HomePlayerName = "HomeCharacter1",
 	},
 	{
 		PrefabName = "Prefabs/PlayerCharacterObject002",
@@ -45,6 +47,8 @@ PlayerCharacterConfig = {
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
 		UnlockNeedValue = 0,
+		HomePlayerPrefabName = "Prefabs/HomeCharacter2",
+		HomePlayerName = "HomeCharacter2",
 	},
 	{
 		PrefabName = "Prefabs/PlayerCharacterObject003",
@@ -67,6 +71,8 @@ PlayerCharacterConfig = {
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
 		UnlockNeedValue = 500,
+		HomePlayerPrefabName = "Prefabs/HomeCharacter3",
+		HomePlayerName = "HomeCharacter3",
 	},
 }
 

@@ -43,14 +43,17 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 			obj = Resources.Load<GameObject>(loadPath);
 			RowGameObjectCacheDict.Add(loadPath, obj);
 		}
-		
-		output = UnityEngine.Object.Instantiate(obj) as GameObject;
-		if (objectName != "") {
-			output.name = objectName;
+
+		if (InstantiateGameObjectCacheDict.TryGetValue(objectName, out output)) {
 		} else {
-			output.name = output.name.Replace("(Clone)", "");
+			output = UnityEngine.Object.Instantiate(obj) as GameObject;
+			if (objectName != "") {
+				output.name = objectName;
+			} else {
+				output.name = output.name.Replace("(Clone)", "");
+			}
+			InstantiateGameObjectCacheDict.Add(output.name, output);
 		}
-		InstantiateGameObjectCacheDict.Add(output.name, output);
 		
 		return output;
 	}

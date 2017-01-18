@@ -7,7 +7,7 @@ HomeScene = {}
 function HomeScene.new()
 	local this = SceneBase.new()
 
-	this.Flag = 0
+	this.CurrentCharacterObjectName = ""
 
 	-- メソッド定義
 	-- 初期化
@@ -21,20 +21,22 @@ function HomeScene.new()
 		LuaFindObject("HomeCharacterMoveRoot")
 		LuaSetButtonInteractable("HomeButtonHint", false)
 		
-		if self.IsInitialized ~= true then
-			LuaLoadPrefabAfter("Prefabs/HomeCharacter1", "HomeCharacter1", "HomeCharacterMoveRoot")
+		if self.CurrentCharacterObjectName ~= "" then
+			LuaDestroyObject(self.CurrentCharacterObjectName)
 		end
 
-		
-		LuaSetPosition("HomeCharacter1", 0, 0, 0)
-		LuaSetRotate("HomeCharacter1", 0, 0, 0)
-		
-		--LuaSetActive("HomeCharacter1", false)
-		--TimerCallbackManager:AddCallback(
-		--	{self}, 
-		--	self.TimerStartCharacterMove,
-		--	0.1
-		--) 
+		local player = GameManager.Instance():GetSelectPlayerCharacterData()
+		LuaUnityDebugLog(player.HomePlayerName)
+		LuaUnityDebugLog(player.HomePlayerPrefabName)
+		self.CurrentCharacterObjectName = player.HomePlayerName
+		LuaLoadPrefabAfter(player.HomePlayerPrefabName, player.HomePlayerName, "HomeCharacterMoveRoot")
+		LuaSetActive(player.HomePlayerName, false)
+
+		TimerCallbackManager:AddCallback(
+			{self}, 
+			self.TimerStartCharacterMove,
+			0.1
+		) 
 		
 		this:SceneBaseInitialize()
 	end
@@ -74,15 +76,16 @@ function HomeScene.new()
 	
 	this.TimerStartCharacterMove = function(arg)
 		self = arg[1]
-		LuaSetActive("HomeCharacter1", true)
+		local number = math.random(2)
+		LuaSetActive(this.CurrentCharacterObjectName, true)
 		CallbackManager.Instance():AddCallback("HomeScene_CharacterMoveAnimationCallback", {self}, self.CharacterMoveAnimationCallback)
-		if self.Flag == 0 then
+		if number == 1 then
 			LuaUnityDebugLog("Gorogoro")
-			LuaPlayAnimator("HomeCharacter1", "Gorogoro", false, false, "LuaCallback", "HomeScene_CharacterMoveAnimationCallback")
+			LuaPlayAnimator(this.CurrentCharacterObjectName, "Gorogoro", false, false, "LuaCallback", "HomeScene_CharacterMoveAnimationCallback")
 			self.Flag = 1
-		else
+		elseif number == 2 then
 			LuaUnityDebugLog("Dorodoro")
-			LuaPlayAnimator("HomeCharacter1", "Dorodoro", false, false, "LuaCallback", "HomeScene_CharacterMoveAnimationCallback")
+			LuaPlayAnimator(this.CurrentCharacterObjectName, "Dorodoro", false, false, "LuaCallback", "HomeScene_CharacterMoveAnimationCallback")
 		end
 	end
 	
