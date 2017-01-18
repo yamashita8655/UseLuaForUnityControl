@@ -10,10 +10,10 @@ EnemyTypeEnum = {
 --000_000
 --検証
 EnemyTest = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "Prefabs/EnemyCharacterObject2",
 	Name = "EnemyCharacterObject",
-	Width = 32,
-	Height = 32,
+	Width = 48,
+	Height = 48,
 	NowHp = 1,
 	MaxHp = 1,
 	Attack = 1,
@@ -22,10 +22,10 @@ EnemyTest = {
 	EnemyType = EnemyTypeEnum.Normal,
 }
 EnemyTestBullet = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "Prefabs/EnemyCharacterObject2",
 	Name = "EnemyCharacterObject",
-	Width = 32,
-	Height = 32,
+	Width = 48,
+	Height = 48,
 	NowHp = 1,
 	MaxHp = 1,
 	Attack = 1,
@@ -36,7 +36,7 @@ EnemyTestBullet = {
 		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
 	},
 	EquipBulletList = {
-		Bullet0001,
+		EnemyBullet0001,
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
 --"検証
@@ -71,8 +71,8 @@ Enemy001_002 = {
 
 --敵情報2
 Enemy002_001 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
-	Name = "EnemyCharacterObject",
+	PrefabName = "Prefabs/EnemyCharacterObject3",
+	Name = "EnemyCharacterObject3",
 	Width = 32,
 	Height = 32,
 	NowHp = 1,
@@ -84,8 +84,8 @@ Enemy002_001 = {
 }
 
 Enemy002_002 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
-	Name = "EnemyCharacterObject",
+	PrefabName = "Prefabs/EnemyCharacterObject3",
+	Name = "EnemyCharacterObject3",
 	Width = 32,
 	Height = 32,
 	NowHp = 1,

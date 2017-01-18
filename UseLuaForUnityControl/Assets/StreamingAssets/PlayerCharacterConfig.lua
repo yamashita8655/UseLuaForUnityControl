@@ -67,12 +67,37 @@ PlayerCharacterConfig = {
 			Bullet0001,
 			Bullet0002,
 		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
-		DetailText = "名前はぶち\nところどころ黒い。かわいい。\n\n攻撃方法は変則的に曲がる弾を撃つ。",
+		DetailText = "名前はぶち\nところどころぶち。かわいい。\n\n攻撃方法は変則的に曲がる弾を撃つ。",
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
 		UnlockNeedValue = 500,
 		HomePlayerPrefabName = "Prefabs/HomeCharacter3",
 		HomePlayerName = "HomeCharacter3",
+	},
+	{
+		PrefabName = "Prefabs/PlayerCharacterObject004",
+		Name = "PlayerCharacterObject004",
+		Width = 128,
+		Height = 128,
+		NowHp = 50,
+		MaxHp = 100,
+		BulletEmitterList = {
+			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+			Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		},
+		EquipBulletList = {
+			Bullet0002,
+			Bullet0001,
+			Bullet0002,
+		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
+		DetailText = "名前はさくら\nほっぺがチャームポイント。かわいい。\n\n攻撃方法は未定。",
+		SkillConfig = SkillData.new(SkillTable_001),
+		SkillDetailText = SkillDetailText001,
+		--UnlockNeedValue = 500,
+		UnlockNeedValue = 0,
+		HomePlayerPrefabName = "Prefabs/HomeCharacter4",
+		HomePlayerName = "HomeCharacter4",
 	},
 }
 
