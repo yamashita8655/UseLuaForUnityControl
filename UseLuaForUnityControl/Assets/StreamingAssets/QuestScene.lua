@@ -18,27 +18,25 @@ function QuestScene.new()
 	-- 初期化
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
-		this:SceneBaseInitialize()
 
 		-- クエストデータ作らなきゃね
 		--self.questCount = #QuestConfig
 		self.questCount = #self.QuestList
 
-		
-		LuaChangeScene("Quest", "MainCanvas")
+		if self.IsInitialized == true then
+			LuaSetPosition("QuestPanelContainer", 0, 0, 0)
+			LuaChangeScene("Quest", "MainCanvas")
+		else
+			LuaChangeScene("Quest", "MainCanvas")
+			LuaFindObject("QuestPanelContainer")
+			LuaSetPosition("QuestPanelContainer", 0, 0, 0)
+		end
 		LuaSetActive("HeaderObject", false)
 		LuaSetActive("FooterObject", false)
 		
 		LuaFindObject("QuestClickFilter")
-		LuaFindObject("QuestPanelContainer")
 		LuaSetActive("QuestClickFilter", false)
 		
-		TimerCallbackManager:AddCallback(
-			{self}, 
-			self.TimerResetControlPanelPosition,
-			0.1
-		) 
-
 		for i = 1, self.questCount do
 			LuaDestroyObject("QuestSelectListNode"..i, "QuestScrollContent")
 		end
@@ -47,6 +45,8 @@ function QuestScene.new()
 			LuaLoadPrefabAfter("Prefabs/QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
 			LuaSetActive("QuestSelectListNode"..i, true)
 		end
+		
+		this:SceneBaseInitialize()
 	end
 	
 	-- 更新
@@ -101,10 +101,6 @@ function QuestScene.new()
 	this.S2FCallback = function(arg, unityArg)
 		local self =  arg[1]
 		LuaSetActive("QuestClickFilter", false)
-	end
-	
-	this.TimerResetControlPanelPosition = function(arg)
-		LuaSetPosition("QuestPanelContainer", 0, 0, 0)
 	end
 	
 	return this

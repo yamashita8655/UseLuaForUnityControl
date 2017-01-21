@@ -147,18 +147,25 @@ function BattleScene.new()
 	
 	-- 画面タッチ判定
 	this.OnMouseDown = function(self, touchx, touchy)
+		LuaUnityDebugLog("Factor"..CanvasFactor)
 		if self.IsGamePause == false then
-			local calcTouchX = touchx - self.AlignPosition.x
-			local calcTouchY = touchy - self.AlignPosition.y
+			--local calcTouchX = touchx - self.AlignPosition.x
+			--local calcTouchY = touchy - self.AlignPosition.y
+			local calcTouchX = touchx - (self.AlignPosition.x*CanvasFactor)
+			local calcTouchY = touchy - (self.AlignPosition.y*CanvasFactor)
+			LuaUnityDebugLog("Calc touch x:"..calcTouchX)
+			LuaUnityDebugLog("Calc touch y:"..calcTouchY)
 			PlayerManager.Instance():OnMouseDown(calcTouchX, calcTouchY)
 		end
 	end
 	
 	this.OnMouseDrag = function(self, touchx, touchy)
 		if self.IsGamePause == false then
-			local calcTouchX = touchx - self.AlignPosition.x
-			local calcTouchY = touchy - self.AlignPosition.y
-			PlayerManager.Instance():OnMouseDown(calcTouchX, calcTouchY)
+			--local calcTouchX = touchx - self.AlignPosition.x
+			--local calcTouchY = touchy - self.AlignPosition.y
+			local calcTouchX = touchx - (self.AlignPosition.x*CanvasFactor)
+			local calcTouchY = touchy - (self.AlignPosition.y*CanvasFactor)
+			PlayerManager.Instance():OnMouseDrag(calcTouchX, calcTouchY)
 		end
 	end
 
