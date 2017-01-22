@@ -85,16 +85,61 @@ SkillTable_001 = {
 		{
 			0, 
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 50), EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 			},
 		},
 		
 		{
-			1,
+			0,
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 50), EmitterTypeEnum.Satellite),
-				Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Satellite),
-				Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(100, 0), 0, EmitterTypeEnum.Satellite),
+			}
+		},
+		
+		{
+			0,
+			BulletEmitterList = {
+				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(100, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), 20, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), -20, EmitterTypeEnum.Satellite),
+			}
+		},
+		
+		{
+			0,
+			BulletEmitterList = {
+				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(100, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), 20, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), -20, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, -50), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, -50), 200, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, -50), 160, EmitterTypeEnum.Satellite),
+			}
+		},
+		
+		{
+			0,
+			BulletEmitterList = {
+				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(100, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), 20, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, 50), -20, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, -50), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, -50), 200, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(0, -50), 160, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(-50, 0), 90, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(-50, 0), 70, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(-50, 0), 110, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(50, 0), 270, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(50, 0), 290, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.125, Vector2.new(50, 0), 250, EmitterTypeEnum.Satellite),
 			}
 		},
 	},

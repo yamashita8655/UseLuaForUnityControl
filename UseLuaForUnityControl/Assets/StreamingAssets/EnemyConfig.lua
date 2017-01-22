@@ -33,7 +33,7 @@ EnemyTestBullet = {
 	MoveType = MoveStraight.new(0),
 	EnemyType = EnemyTypeEnum.BulletShooter,
 	BulletEmitterList = {
-		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.5, Vector2.new(0, 0), 0, EmitterTypeEnum.Normal),
 	},
 	EquipBulletList = {
 		EnemyBullet0001,
@@ -110,7 +110,7 @@ Enemy003_001 = {
 	MoveType = MoveStraight.new(1),
 	EnemyType = EnemyTypeEnum.BulletShooter,
 	BulletEmitterList = {
-		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.5, Vector2.new(0, 0), 0, EmitterTypeEnum.Normal),
 	},
 	EquipBulletList = {
 		Bullet0002,
@@ -129,7 +129,7 @@ Enemy003_002 = {
 	MoveType = MoveSinCurve.new(0, 1.5, 3),
 	EnemyType = EnemyTypeEnum.BulletShooter,
 	BulletEmitterList = {
-		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.5, Vector2.new(0, 0), 0, EmitterTypeEnum.Normal),
 	},
 	EquipBulletList = {
 		Bullet0002,
@@ -148,7 +148,7 @@ Enemy003_003 = {
 	MoveType = MoveSinCurve.new(180, 1.5, 3),
 	EnemyType = EnemyTypeEnum.BulletShooter,
 	BulletEmitterList = {
-		Emitter001.new(0.5, Vector2.new(0, 0), EmitterTypeEnum.Normal),
+		Emitter001.new(0.5, Vector2.new(0, 0), 0, EmitterTypeEnum.Normal),
 	},
 	EquipBulletList = {
 		Bullet0002,

@@ -9,16 +9,6 @@ PlayerCharacterConfig = {
 		Height = 128,
 		NowHp = 100,
 		MaxHp = 100,
-		BulletEmitterList = {
-			Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-			Emitter001.new(0.25, Vector2.new(100, 0), EmitterTypeEnum.Satellite),
-			Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Satellite),
-		},
-		EquipBulletList = {
-			BulletStrong,
-			Bullet0002,
-			Bullet0002,
-		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 		DetailText = "名前はもち\n白くてもちもちしている。かわいい。\n\n攻撃方法は連射速度の速い直線の弾を撃つ。",
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
@@ -33,16 +23,6 @@ PlayerCharacterConfig = {
 		Height = 128,
 		NowHp = 50,
 		MaxHp = 100,
-		BulletEmitterList = {
-			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-			Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-		},
-		EquipBulletList = {
-			Bullet0002,
-			Bullet0001,
-			Bullet0002,
-		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 		DetailText = "名前はとら\nおでこの縦しまが3本。イノシシではない。かわいい。\n\n攻撃方法は貫通力のある直線の弾を撃つ。",
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
@@ -57,16 +37,6 @@ PlayerCharacterConfig = {
 		Height = 128,
 		NowHp = 50,
 		MaxHp = 100,
-		BulletEmitterList = {
-			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-			Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-		},
-		EquipBulletList = {
-			Bullet0002,
-			Bullet0001,
-			Bullet0002,
-		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 		DetailText = "名前はぶち\nところどころぶち。かわいい。\n\n攻撃方法は変則的に曲がる弾を撃つ。",
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
@@ -81,16 +51,6 @@ PlayerCharacterConfig = {
 		Height = 128,
 		NowHp = 50,
 		MaxHp = 100,
-		BulletEmitterList = {
-			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-			Emitter001.new(1.0, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-			Emitter001.new(0.25, Vector2.new(0, 0), EmitterTypeEnum.Normal),
-		},
-		EquipBulletList = {
-			Bullet0002,
-			Bullet0001,
-			Bullet0002,
-		},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 		DetailText = "名前はさくら\nほっぺがチャームポイント。かわいい。\n\n攻撃方法は未定。",
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,

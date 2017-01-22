@@ -9,6 +9,7 @@ function EmitterBase.new()
 		Position = Vector2.new(0, 0),
 		ShootCooltime = 0.0,
 		ShootInterval = 0.25,
+		RotateOffset = 0,
 		BulletConfig = {},
 		ParentPosition = {},
 		CharacterType = 0
@@ -16,9 +17,10 @@ function EmitterBase.new()
 	
 	-- メソッド定義
 	-- 初期化
-	this.Initialize = function(self, position, interval, bulletConfig, parentPosition, characterType)
+	this.Initialize = function(self, position, interval, rotateOffset, bulletConfig, parentPosition, characterType)
 		self.Position = Vector2.new(position.x, position.y)
 		self.ShootInterval = interval
+		self.RotateOffset = rotateOffset
 		self.BulletConfig = bulletConfig
 		self.ParentPosition = parentPosition 
 		self.CharacterType = characterType 
@@ -35,7 +37,7 @@ function EmitterBase.new()
 		if canShoot then
 			--BulletManager.Instance():CreateNormalBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree, self.BulletConfig, self.CharacterType);
 			--self:ResetBulletCooltime()
-			BulletManager.Instance():CreateBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree, self.BulletConfig, self.CharacterType);
+			BulletManager.Instance():CreateBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree+self.RotateOffset, self.BulletConfig, self.CharacterType);
 			self:ResetBulletCooltime()
 		end
 	end
@@ -64,7 +66,8 @@ BulletEmitter = {}
 -- コンストラクタ
 function BulletEmitter.new()
 	local this = EmitterBase.new()
-	
+	this.OffsetRotate = offsetRotate
+
 	this.UpdatePosition = function(self, radian, degree)
 	end
 	
@@ -84,8 +87,8 @@ function BulletEmitterSatellite.new()
 	-- メソッド定義
 	-- 初期化
 	this.BaseInitialize = this.Initialize
-	this.Initialize = function(self, position, interval, bulletConfig, parentPosition, characterType, centerPosition)
-		this:BaseInitialize(position, interval, bulletConfig, parentPosition, characterType)
+	this.Initialize = function(self, position, interval, rotateOffset, bulletConfig, parentPosition, characterType, centerPosition)
+		this:BaseInitialize(position, interval, rotateOffset, bulletConfig, parentPosition, characterType)
 		-- 新たに作成しないと、参照なので、Positionを書き換えると、SpawnPositionの値も変わってしまう
 		self.SpawnPosition = Vector2.new(position.x, position.y)
 		self.CenterPosition = centerPosition
