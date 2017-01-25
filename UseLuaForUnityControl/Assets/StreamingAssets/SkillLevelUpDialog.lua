@@ -156,8 +156,6 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 		return
 	end
 
-	LuaUnityDebugLog(buttonName)
-
 	if buttonName == "SkillUpCloseButton" then
 		self:CloseDialog()
 	else

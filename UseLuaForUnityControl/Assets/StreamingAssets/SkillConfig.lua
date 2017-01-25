@@ -154,14 +154,14 @@ SkillTable_001 = {
 		},
 		
 		{
-			1,
+			0,
 			EquipBulletList = {
 				Character1_Bullet0002,
 			},
 		},
 		
 		{	
-			2,
+			0,
 			EquipBulletList = {
 				Character1_Bullet0003,
 			},

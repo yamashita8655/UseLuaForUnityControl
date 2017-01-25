@@ -35,9 +35,8 @@ function EmitterBase.new()
 	this.ShootBullet = function(self, degree)
 		local canShoot = self:CanShootBullet()
 		if canShoot then
-			--BulletManager.Instance():CreateNormalBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree, self.BulletConfig, self.CharacterType);
-			--self:ResetBulletCooltime()
-			BulletManager.Instance():CreateBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree+self.RotateOffset, self.BulletConfig, self.CharacterType);
+			--BulletManager.Instance():CreateBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree+self.RotateOffset, self.BulletConfig, self.CharacterType);
+			BulletManager.Instance():ShootBulletTest(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree+self.RotateOffset, self.BulletConfig, self.CharacterType);
 			self:ResetBulletCooltime()
 		end
 	end

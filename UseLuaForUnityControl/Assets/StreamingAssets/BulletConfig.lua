@@ -32,7 +32,7 @@ Character1_Bullet0002 = {
 }
 
 Character1_Bullet0003 = {
-	PrefabName = "Prefabs/BulletObjectNormal",
+	PrefabName = "Prefabs/BulletObjectEnemyTooth1",
 	Name = "EnemyCharacterObject",
 	Width = 64,
 	Height = 64,

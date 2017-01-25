@@ -17,14 +17,16 @@ function BulletBase.new(position, rotate, name, number, width, height)
 	this.MoveSpeed = 0.0
 	this.Attack = 0
 	this.MoveController = nil
+	this.BulletConfig = nil
 
 	-- メソッド定義
 	-- 初期化
 	this.ObjectBaseInitialize = this.Initialize
-	this.Initialize = function(self, nowHp, maxHp, attack, existTime)
+	this.Initialize = function(self, nowHp, maxHp, attack, existTime, bulletConfig)
 		this:ObjectBaseInitialize(nowHp, maxHp)
 		self.Attack = attack
 		self.ExistTime = existTime
+		self.BulletConfig = bulletConfig
 	end
 	
 	--移動処理クラスの設定
@@ -61,6 +63,11 @@ function BulletBase.new(position, rotate, name, number, width, height)
 	-- 弾種別
 	this.GetBulletType = function(self)
 		return self.BulletType
+	end
+	
+	-- 弾情報
+	this.GetBulletConfig = function(self)
+		return self.BulletConfig
 	end
 
 	-- メタテーブルセット

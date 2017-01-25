@@ -38,7 +38,6 @@ end
 function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree) 
 	if (self.PlayerCharacterInstance) then
 	else
-		LuaUnityDebugLog("charaCreate")
 		local prefabName = playerDataConfig.PrefabName
 		local name = playerDataConfig.Name
 		local width = playerDataConfig.Width
@@ -73,13 +72,8 @@ function PlayerManager:Update(deltaTime)
 end
 
 function PlayerManager:OnMouseDown(touchx, touchy) 
-	LuaUnityDebugLog("ScreenWidth:"..ScreenWidth)
-	LuaUnityDebugLog("ScreenHeight:"..ScreenHeight)
-	
 	local offsetx = touchx - (ScreenWidth/2)
 	local offsety = touchy - (ScreenHeight/2)
-	LuaUnityDebugLog("Lua offsetx:"..offsetx)
-	LuaUnityDebugLog("Lua offsety:"..offsety)
 	--local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
 	--local offsety = (touchy - (ScreenHeight/2)) / CanvasFactor
 	local radian = math.atan2(offsety, offsetx)
