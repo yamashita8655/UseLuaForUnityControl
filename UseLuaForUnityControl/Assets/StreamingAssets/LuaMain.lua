@@ -14,6 +14,7 @@ LuaFileList = {
 	"SceneBase.lua",
 	"CallbackManager.lua",
 	"TimerCallbackManager.lua",
+	"AreaCellManager.lua",
 	"BootScene.lua",
 	"TitleScene.lua",
 	"HomeScene.lua",

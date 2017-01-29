@@ -121,3 +121,29 @@ EnemyBullet0001 = {
 	MoveType = MoveStraight.new(10),
 	BulletType = BulletTypeEnum.Normal,
 }
+
+EnemyBullet0002 = {
+	PrefabName = "Prefabs/EnemyCharacterObject",
+	Name = "EnemyCharacterObject",
+	Width = 64,
+	Height = 64,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 3,
+	MoveType = MoveStraight.new(10),
+	BulletType = BulletTypeEnum.Normal,
+}
+
+EnemyBullet0003 = {
+	PrefabName = "Prefabs/BulletObjectNormal",
+	Name = "BulletObjectNormal",
+	Width = 64,
+	Height = 64,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 3,
+	MoveType = MoveStraight.new(10),
+	BulletType = BulletTypeEnum.Normal,
+}

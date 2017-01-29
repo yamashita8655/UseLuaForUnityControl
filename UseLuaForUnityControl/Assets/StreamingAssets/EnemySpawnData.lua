@@ -10,6 +10,25 @@ SpawnTest = {
 	Interval  = 1,						--間隔
 	Value     = 1,						--出現総数
 }
+
+SpawnTest1 = {
+	Position  = Vector2.new(400, 0),	--座標
+	EnemyType = EnemyTestBullet1,		--敵の種類
+	Interval  = 1,						--間隔
+	Value     = 1,						--出現総数
+}
+SpawnTest2 = {
+	Position  = Vector2.new(-400, 0),	--座標
+	EnemyType = EnemyTestBullet2,		--敵の種類
+	Interval  = 1,						--間隔
+	Value     = 1,						--出現総数
+}
+SpawnTest3 = {
+	Position  = Vector2.new(0, 400),	--座標
+	EnemyType = EnemyTestBullet3,		--敵の種類
+	Interval  = 1,						--間隔
+	Value     = 1,						--出現総数
+}
 --!検証
 
 --ステージ1

@@ -74,3 +74,17 @@ function UtilityFunction.SetEmitter(character, bulletEmitterList, equipBulletLis
 	return character
 end
 
+-- listから、被ってる要素を削除して返す
+function UtilityFunction.ListUniq(list) 
+	local dup ={};
+	local outputList = {};  
+	for i,v in pairs(list) do
+		if(outputList[v] ~= nil) then
+			table.insert(dup, v);
+		end
+		outputList[v] = i;
+	end
+
+	return outputList, dupList
+end
+

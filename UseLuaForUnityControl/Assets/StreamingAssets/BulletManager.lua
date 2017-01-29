@@ -28,6 +28,9 @@ function BulletManager:Initialize()
 	
 	self.PlayerBulletCanShootList = {}
 	self.PlayerBulletNowShooting = {}
+	
+	self.EnemyBulletCanShootList = {}
+	self.EnemyBulletNowShooting = {}
 end
 
 function BulletManager:GetPlayerBulletList() 
@@ -38,48 +41,75 @@ function BulletManager:GetEnemyBulletList()
 	return self.EnemyBulletList
 end
 
-function BulletManager:CreateBulletTest(skillTable, characterType)
-	local prefabNameList = {}
-	local bulletList = skillTable[SkillTypeEnum.Bullet]
+--function BulletManager:CreateBulletTest(skillTable, characterType)
+--	local prefabNameList = {}
+--	local bulletList = skillTable[SkillTypeEnum.Bullet]
+--
+--	for i = 1, #bulletList do
+--		local bulletData = bulletList[i]
+--		local bulletConfigList = bulletData.EquipBulletList
+--		local bulletConfig = bulletConfigList[1]
+--		local prefabName = bulletConfig.PrefabName
+--		table.insert(prefabNameList, prefabName)
+--	end
+--	
+--	local dup ={};
+--	local outputList = {};  
+--	for i,v in pairs(prefabNameList) do
+--		if(outputList[v] ~= nil) then
+--			table.insert(dup, v);
+--		end
+--		outputList[v] = i;
+--	end
+--	
+--	
+--	for i,v in pairs(outputList) do
+--		local prefabName = i
+--		LuaUnityDebugLog(prefabName)
+--		self.PlayerBulletCanShootList[prefabName] = {}
+--		self.PlayerBulletNowShooting[prefabName] = {}
+--	end
+--
+--
+--	for i,v in pairs(outputList) do
+--		local prefabName = i
+--		--for j = 1, 500 do
+--		for j = 1, 10 do
+--			local name = "BulletObject"..self.BulletCounter
+--			LuaLoadPrefabAfter(prefabName, name, "PlayerBulletRoot")
+--			LuaSetActive(name, false)
+--			self.BulletCounter = self.BulletCounter + 1
+--			table.insert(self.PlayerBulletCanShootList[prefabName], name);
+--		end
+--	end
+--	
+--end
 
-	for i = 1, #bulletList do
-		local bulletData = bulletList[i]
-		local bulletConfigList = bulletData.EquipBulletList
-		local bulletConfig = bulletConfigList[1]
-		local prefabName = bulletConfig.PrefabName
-		table.insert(prefabNameList, prefabName)
-	end
-	
-	local dup ={};
-	local outputList = {};  
-	for i,v in pairs(prefabNameList) do
-		if(outputList[v] ~= nil) then
-			table.insert(dup, v);
-		end
-		outputList[v] = i;
-	end
-	
-	
-	for i,v in pairs(outputList) do
-		local prefabName = i
-		LuaUnityDebugLog(prefabName)
+function BulletManager:CreateBulletTest(prefabName, characterType)
+	if characterType == CharacterType.Player then
 		self.PlayerBulletCanShootList[prefabName] = {}
 		self.PlayerBulletNowShooting[prefabName] = {}
-	end
-
-
-	for i,v in pairs(outputList) do
-		local prefabName = i
-		--for j = 1, 500 do
-		for j = 1, 10 do
+	
+		for j = 1, 500 do
 			local name = "BulletObject"..self.BulletCounter
 			LuaLoadPrefabAfter(prefabName, name, "PlayerBulletRoot")
 			LuaSetActive(name, false)
 			self.BulletCounter = self.BulletCounter + 1
 			table.insert(self.PlayerBulletCanShootList[prefabName], name);
 		end
+	elseif characterType == CharacterType.Enemy then
+		self.EnemyBulletCanShootList[prefabName] = {}
+		self.EnemyBulletNowShooting[prefabName] = {}
+
+		for j = 1, 100 do
+			local name = "BulletObject"..self.BulletCounter
+			LuaLoadPrefabAfter(prefabName, name, "PlayerBulletRoot")
+			LuaSetActive(name, false)
+			self.BulletCounter = self.BulletCounter + 1
+			table.insert(self.EnemyBulletCanShootList[prefabName], name);
+		end
 	end
-	
+
 end
 
 --・おｋ、定義をはっきりさせる
@@ -100,16 +130,27 @@ end
 --	・オブジェクトを
 
 function BulletManager:ShootBulletTest(posx, posy, degree, bulletConfig, characterType)
+	local canList = nil
+	local nowList = nil
+	if characterType == CharacterType.Player then
+		canList = self.PlayerBulletCanShootList
+		nowList = self.PlayerBulletNowShooting
+	elseif characterType == CharacterType.Enemy then
+		canList = self.EnemyBulletCanShootList
+		nowList = self.EnemyBulletNowShooting
+	end
+		
+	self:LocalShootBulletTest(posx, posy, degree, bulletConfig, characterType, canList, nowList)
+end
+
+function BulletManager:LocalShootBulletTest(posx, posy, degree, bulletConfig, characterType, canShootingList, nowShootingList)
 	local prefabName = bulletConfig.PrefabName
-	if #self.PlayerBulletCanShootList[prefabName] == 0 then
-		LuaUnityDebugLog("bullet empty")
+	if #canShootingList[prefabName] == 0 then
 		return
 	end
 
-	local name = table.remove(self.PlayerBulletCanShootList[prefabName], 1)
-	table.insert(self.PlayerBulletNowShooting[prefabName], name)
-
-	LuaSetActive(name, true)
+	local name = table.remove(canShootingList[prefabName], 1)
+	table.insert(nowShootingList[prefabName], name)
 
 	local moveController = nil
 	if bulletConfig.MoveType:MoveType() == MoveTypeEnum.Straight then
@@ -132,6 +173,12 @@ function BulletManager:ShootBulletTest(posx, posy, degree, bulletConfig, charact
 
 	bullet:SetMoveController(moveController)
 	self:AddBulletList(bullet, characterType) 
+
+	--一瞬、前の弾が消えた所に表示されるので、座標をリセットする
+	--ここでやるのが正しいのか若干疑問が残る
+	LuaSetPosition(name, posx, posy, 0)
+	LuaSetRotate(name, 0, 0, degree)
+	LuaSetActive(name, true)
 end
 
 
@@ -187,8 +234,8 @@ function BulletManager:Update(deltaTime)
 		self.EnemyBulletList[i]:Update(deltaTime)
 	end
 	
-	self:CheckBulletExist(self.PlayerBulletList) 
-	self:CheckBulletExist(self.EnemyBulletList) 
+	self:CheckBulletExist(self.PlayerBulletList, self.PlayerBulletNowShooting, self.PlayerBulletCanShootList)
+	self:CheckBulletExist(self.EnemyBulletList, self.EnemyBulletNowShooting, self.EnemyBulletCanShootList)
 	
 	self:SetTargetPosition(self.PlayerBulletList) 
 	self:SetTargetPosition(self.EnemyBulletList) 
@@ -231,24 +278,8 @@ function BulletManager:SetTargetPosition(list)
 	end
 end
 
-function BulletManager:CheckBulletExist(list) 
+function BulletManager:CheckBulletExist(list, nowShootingList, canShootingList) 
 	--弾の生存期間をチェックして、削除する時間があったら、Unity側のオブジェクトを消してリストから消去
-	--local index = 1
-	--while true do
-	--	if index > #list then
-	--		break
-	--	end
-
-	--	local bullet = list[index]
-	--	local IsAlive = bullet:IsAlive()
-	--	if IsAlive then
-	--		index = index + 1
-	--	else
-	--		LuaDestroyObject(bullet:GetName())
-	--		table.remove(list, index)
-	--	end
-	--end
-	
 	local index = 1
 	while true do
 		if index > #list then
@@ -262,43 +293,28 @@ function BulletManager:CheckBulletExist(list)
 		else
 			LuaSetActive(bullet:GetName(), false)
 			local bulletConfig = bullet:GetBulletConfig()
-			local name = table.remove(self.PlayerBulletNowShooting[bulletConfig.PrefabName], 1)
-			table.insert(self.PlayerBulletCanShootList[bulletConfig.PrefabName], name)
+			local name = table.remove(nowShootingList[bulletConfig.PrefabName], 1)
+			table.insert(canShootingList[bulletConfig.PrefabName], name)
 			table.remove(list, index)
 		end
 	end
 end
 
 function BulletManager:RemoveDeadObject()
-	self:LocalRemoveDeadObject(self.PlayerBulletList)
-	self:LocalRemoveDeadObject(self.EnemyBulletList)
+	self:LocalRemoveDeadObject(self.PlayerBulletList, self.PlayerBulletNowShooting, self.PlayerBulletCanShootList)
+	self:LocalRemoveDeadObject(self.EnemyBulletList, self.EnemyBulletNowShooting, self.EnemyBulletCanShootList)
 end
 
-function BulletManager:LocalRemoveDeadObject(list)
-	--local index = 1
-	--while true do
-	--	if index <= #list then
-	--		local obj = list[index]
-	--		if obj:IsAlive() == false then
-	--			LuaDestroyObject(obj:GetName())
-	--			table.remove(list, index)
-	--		else
-	--			index = index + 1
-	--		end
-	--	else
-	--		break
-	--	end
-	--end
-	
+function BulletManager:LocalRemoveDeadObject(list, nowShootingList, canShootingList)
 	local index = 1
 	while true do
 		if index <= #list then
 			local obj = list[index]
 			if obj:IsAlive() == false then
-				LuaSetActive(bullet:GetName(), false)
+				LuaSetActive(obj:GetName(), false)
 				local bulletConfig = obj:GetBulletConfig()
-				local name = table.remove(self.PlayerBulletNowShooting[bulletConfig.PrefabName], 1)
-				table.insert(self.PlayerBulletCanShootList[bulletConfig.PrefabName], name)
+				local name = table.remove(nowShootingList[bulletConfig.PrefabName], 1)
+				table.insert(canShootingList[bulletConfig.PrefabName], name)
 				table.remove(list, index)
 			else
 				index = index + 1

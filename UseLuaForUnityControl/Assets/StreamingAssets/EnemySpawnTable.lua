@@ -5,7 +5,15 @@ SpawnTableTest = {
 	Table = {
 		{
 			Time      = 3,						--出現開始時間
-			SpawnData = SpawnTest,				--出現情報
+			SpawnData = SpawnTest1,				--出現情報
+		},
+		{
+			Time      = 3,						--出現開始時間
+			SpawnData = SpawnTest2,				--出現情報
+		},
+		{
+			Time      = 3,						--出現開始時間
+			SpawnData = SpawnTest3,				--出現情報
 		},
 	},
 	EndTime = 999,	-- この秒数が経過してら、バトル終了チェックを周期的に開始する

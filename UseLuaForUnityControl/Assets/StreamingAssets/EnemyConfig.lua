@@ -39,6 +39,60 @@ EnemyTestBullet = {
 		EnemyBullet0001,
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
+EnemyTestBullet1 = {
+	PrefabName = "Prefabs/EnemyCharacterObject2",
+	Name = "EnemyCharacterObject",
+	Width = 48,
+	Height = 48,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	EXP = 1,
+	MoveType = MoveStraight.new(0),
+	EnemyType = EnemyTypeEnum.BulletShooter,
+	BulletEmitterList = {
+		Emitter001.new(0.5, Vector2.new(0, 0), 0, EmitterTypeEnum.Normal),
+	},
+	EquipBulletList = {
+		EnemyBullet0001,
+	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
+}
+EnemyTestBullet2 = {
+	PrefabName = "Prefabs/EnemyCharacterObject2",
+	Name = "EnemyCharacterObject",
+	Width = 48,
+	Height = 48,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	EXP = 1,
+	MoveType = MoveStraight.new(0),
+	EnemyType = EnemyTypeEnum.BulletShooter,
+	BulletEmitterList = {
+		Emitter001.new(0.5, Vector2.new(0, 0), 0, EmitterTypeEnum.Normal),
+	},
+	EquipBulletList = {
+		EnemyBullet0002,
+	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
+}
+EnemyTestBullet3 = {
+	PrefabName = "Prefabs/EnemyCharacterObject2",
+	Name = "EnemyCharacterObject",
+	Width = 48,
+	Height = 48,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	EXP = 1,
+	MoveType = MoveStraight.new(0),
+	EnemyType = EnemyTypeEnum.BulletShooter,
+	BulletEmitterList = {
+		Emitter001.new(0.5, Vector2.new(0, 0), 0, EmitterTypeEnum.Normal),
+	},
+	EquipBulletList = {
+		EnemyBullet0003,
+	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
+}
 --"検証
 
 --敵情報1
