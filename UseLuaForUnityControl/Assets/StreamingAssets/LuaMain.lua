@@ -25,6 +25,7 @@ LuaFileList = {
 	"SceneManager.lua",
 	"DialogManager.lua",
 	"SkillLevelUpDialog.lua",
+	"ResultDialog.lua",
 	"MoveConfig.lua",
 	"BaseMoveController.lua",
 	"MoveControllerSinCurve.lua",

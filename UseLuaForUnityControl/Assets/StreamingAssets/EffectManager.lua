@@ -21,16 +21,16 @@ function EffectManager:Initialize()
 	self.EffectList = {}
 	
 	LuaFindObject("EffectRoot")
-	LuaFindObject("HitEffect1")
+	LuaFindObject("HitEffect2")
 end
 
 function EffectManager:SpawnEffect(position) 
-	LuaLoadPrefabAfter("Prefabs/System/HitEffect1", "HitEffect1_"..self.EffectCounter, "EffectRoot")
+	LuaLoadPrefabAfter("Prefabs/System/HitEffect2", "HitEffect2_"..self.EffectCounter, "EffectRoot")
 	table.insert(self.EffectList, "HitEffect1_"..self.EffectCounter)
-	LuaSetPosition("HitEffect1_"..self.EffectCounter, position.x, position.y, position.z)
+	LuaSetPosition("HitEffect2_"..self.EffectCounter, position.x, position.y, position.z)
 	callbackTag = "EffectManager_CallbackEffectAnimationEnd"..self.EffectCounter
-	CallbackManager.Instance():AddCallback(callbackTag, {self, "HitEffect1_"..self.EffectCounter}, self.EffectAnimationEnd)
-	LuaPlayAnimator("HitEffect1_"..self.EffectCounter, "Play", false, false, "LuaCallback", callbackTag)
+	CallbackManager.Instance():AddCallback(callbackTag, {self, "HitEffect2_"..self.EffectCounter}, self.EffectAnimationEnd)
+	LuaPlayAnimator("HitEffect2_"..self.EffectCounter, "Play", false, false, "LuaCallback", callbackTag)
 	self.EffectCounter = self.EffectCounter + 1
 
 end

@@ -29,6 +29,9 @@ function BattleScene.new()
 		EffectManager.Instance():Initialize()
 		EnemyManager.Instance():Initialize()
 		AreaCellManager.Instance():Initialize()
+		
+		LuaLoadPrefabAfter("Prefabs/System/LoseEffect", "LoseEffect", "DialogRoot")
+		LuaSetActive("LoseEffect", false)
 
 		this.IsGamePause = false
 		
@@ -105,6 +108,9 @@ function BattleScene.new()
 		if self.IsInitialized == false then
 			SkillLevelUpDialog.Instance():Initialize()
 			SkillLevelUpDialog.Instance():SetParent("DialogRoot") 
+			
+			ResultDialog.Instance():Initialize()
+			ResultDialog.Instance():SetParent("DialogRoot") 
 		end
 		
 		this:SceneBaseInitialize()
@@ -135,10 +141,33 @@ function BattleScene.new()
 			--self:CheckBump()
 			self:CheckBumpTest()
 
-			player = PlayerManager.Instance():GetPlayer()
-			exp = player:GetEXP()
+			local player = PlayerManager.Instance():GetPlayer()
+			local exp = player:GetEXP()
 			LuaSetText("ExpText", exp)
+			
+			if player:IsAlive() == false then
+				self.IsGamePause = true
+				self:LoseSequence()
+			end
 		end
+	end
+	
+	-- 負けエフェクト
+	this.LoseSequence = function(self)
+		CallbackManager.Instance():AddCallback("Battle_LoseSequence", {self}, self.LoseSequenceCallback)
+		LuaPlayAnimator("LoseEffect", "Play", false, true, "LuaCallback", "Battle_LoseSequence")
+	end
+	
+	this.LoseSequenceCallback = function(arg, unityArg)
+		local self = arg[1]
+		LuaUnityDebugLog("callback!!!!")
+		LuaSetActive("LoseEffect", false)
+		
+		ResultDialog.Instance():OpenDialog(
+			function()
+				SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			end
+		)
 	end
 	
 	-- 終了
@@ -187,6 +216,7 @@ function BattleScene.new()
 			)
 		end
 		SkillLevelUpDialog.Instance():OnClickButton(buttonName)
+		ResultDialog.Instance():OnClickButton(buttonName)
 	end
 	
 	-- 画面タッチ判定

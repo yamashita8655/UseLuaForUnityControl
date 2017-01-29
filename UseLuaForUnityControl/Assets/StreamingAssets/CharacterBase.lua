@@ -25,6 +25,7 @@ function CharacterBase.new(position, rotate, name, number, width, height)
 		self.NowHp = nowHp
 		self.MaxHp = maxHp
 	end
+	
 	-- サンプル
 	--this.Function = function(self)
 	--end
