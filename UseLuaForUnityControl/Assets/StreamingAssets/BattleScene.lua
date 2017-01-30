@@ -32,6 +32,9 @@ function BattleScene.new()
 		
 		LuaLoadPrefabAfter("Prefabs/System/LoseEffect", "LoseEffect", "DialogRoot")
 		LuaSetActive("LoseEffect", false)
+		
+		LuaLoadPrefabAfter("Prefabs/System/WinEffect", "WinEffect", "DialogRoot")
+		LuaSetActive("WinEffect", false)
 
 		this.IsGamePause = false
 		
@@ -129,7 +132,9 @@ function BattleScene.new()
 				if self.EndCheckIntervalCounter > self.EndCheckInterval then
 					isEnd = self.CheckBattleEnd()
 					if isEnd == true then
-						SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+						--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+						self.IsGamePause = true
+						self:WinSequence()
 					end
 					self.EndCheckIntervalCounter = 0
 				end
@@ -150,6 +155,24 @@ function BattleScene.new()
 				self:LoseSequence()
 			end
 		end
+	end
+	
+	-- 勝ちエフェクト
+	this.WinSequence = function(self)
+		CallbackManager.Instance():AddCallback("Battle_WinSequence", {self}, self.WinSequenceCallback)
+		LuaPlayAnimator("WinEffect", "Play", false, true, "LuaCallback", "Battle_WinSequence")
+	end
+	
+	this.WinSequenceCallback = function(arg, unityArg)
+		local self = arg[1]
+		LuaUnityDebugLog("callback!!!!")
+		LuaSetActive("WinEffect", false)
+		
+		ResultDialog.Instance():OpenDialog(
+			function()
+				SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			end
+		)
 	end
 	
 	-- 負けエフェクト
@@ -204,14 +227,28 @@ function BattleScene.new()
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "BattleOptionButton" then
-			--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
-
 			self.IsGamePause = true
 			EffectManager.Instance():PauseEffect()
 			SkillLevelUpDialog.Instance():OpenDialog(
 				function()
 					self.IsGamePause = false
 					EffectManager.Instance():ResumeEffect()
+				end
+			)
+		end
+		if buttonName == "BattleExitButton" then
+			self.IsGamePause = true
+			DialogManager.Instance():OpenDialog(
+				"ねずみ退治をやめますか？\n※獲得したポイント等は破棄されます",
+				function()
+				end,
+				function()
+				end,
+				function()
+					SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+				end,
+				function()
+					self.IsGamePause = false
 				end
 			)
 		end

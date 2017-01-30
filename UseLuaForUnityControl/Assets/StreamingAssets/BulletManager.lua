@@ -326,19 +326,35 @@ function BulletManager:LocalRemoveDeadObject(list, nowShootingList, canShootingL
 end
 
 function BulletManager:Release()
-	self.LocalRelease(self.PlayerBulletList)
-	self.LocalRelease(self.EnemyBulletList)
+	--self.LocalRelease(self.PlayerBulletList)
+	--self.LocalRelease(self.EnemyBulletList)
+	for i,list in pairs(self.PlayerBulletNowShooting) do
+		self.LocalRelease(list)
+	end
+	for i,list in pairs(self.PlayerBulletCanShootList) do
+		self.LocalRelease(list)
+	end
+	for i,list in pairs(self.EnemyBulletNowShooting) do
+		self.LocalRelease(list)
+	end
+	for i,list in pairs(self.EnemyBulletCanShootList) do
+		self.LocalRelease(list)
+	end
 end
 
 function BulletManager.LocalRelease(list)
-	local index = 1
-	while true do
-		if index <= #list then
-			local obj = list[index]
-			LuaDestroyObject(obj:GetName())
-			table.remove(list, index)
-		else
-			break
-		end
+	--local index = 1
+	--while true do
+	--	if index <= #list then
+	--		local obj = list[index]
+	--		LuaUnityDebugLog("Destroy:"..obj:GetName())
+	--		LuaDestroyObject(obj:GetName())
+	--		table.remove(list, index)
+	--	else
+	--		break
+	--	end
+	--end
+	for i = 1, #list do
+		LuaDestroyObject(list[i])
 	end
 end

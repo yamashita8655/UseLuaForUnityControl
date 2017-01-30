@@ -18,7 +18,9 @@ end
 function DialogManager:Initialize() 
 	self.IsDialogActive = false
 	self.OkCallback = nil 
+	self.OkAfterCloseCallback = nil 
 	self.CancelCallback = nil
+	self.CancelAfterCloseCallback = nil
 
 	LuaLoadPrefabAfter("Prefabs/System/OkCancelDialog", "OkCancelDialog", "SystemCanvas")
 	LuaFindObject("OkCancelDialogDetailText")
@@ -26,9 +28,11 @@ function DialogManager:Initialize()
 
 end
 
-function DialogManager:OpenDialog(detailText, okCallback, cancelCallback) 
+function DialogManager:OpenDialog(detailText, okCallback, cancelCallback, okCloseCallback, cancelCloseCallback) 
 	self.OkCallback =  okCallback
 	self.CancelCallback = cancelCallback
+	self.OkCloseCallback =  okCloseCallback
+	self.CancelCloseCallback = cancelCloseCallback
 	LuaSetText("OkCancelDialogDetailText", detailText)
 	
 	if self.IsDialogActive == false then
@@ -38,18 +42,33 @@ function DialogManager:OpenDialog(detailText, okCallback, cancelCallback)
 	end
 end
 
-function DialogManager:CloseDialog() 
+function DialogManager:OkCloseDialog() 
 	if self.IsDialogActive == true then
-		CallbackManager.Instance():AddCallback("DialogManager_CloseCallback", {self}, self.DialogCloseCallback)
-		LuaPlayAnimator("OkCancelDialog", "Close", false, true, "LuaCallback", "DialogManager_CloseCallback")
+		CallbackManager.Instance():AddCallback("DialogManager_OkCloseCallback", {self}, self.DialogOkCloseCallback)
+		LuaPlayAnimator("OkCancelDialog", "Close", false, true, "LuaCallback", "DialogManager_OkCloseCallback")
+	end
+end
+
+function DialogManager:CancelCloseDialog() 
+	if self.IsDialogActive == true then
+		CallbackManager.Instance():AddCallback("DialogManager_CancelCloseCallback", {self}, self.DialogCancelCloseCallback)
+		LuaPlayAnimator("OkCancelDialog", "Close", false, true, "LuaCallback", "DialogManager_CancelCloseCallback")
 	end
 end
 
 function DialogManager.DialogOpenCallback(arg, unityArg) 
 end
 
-function DialogManager.DialogCloseCallback(arg, unityArg) 
+function DialogManager.DialogOkCloseCallback(arg, unityArg) 
 	local self =  arg[1]
+	self.OkCloseCallback()
+	self.IsDialogActive = false
+	LuaSetActive("OkCancelDialog", false)
+end
+
+function DialogManager.DialogCancelCloseCallback(arg, unityArg) 
+	local self =  arg[1]
+	self.CancelCloseCallback()
 	self.IsDialogActive = false
 	LuaSetActive("OkCancelDialog", false)
 end
@@ -63,12 +82,12 @@ function DialogManager:OnClickButton(buttonName)
 		if self.OkCallback ~= nil then
 			self.OkCallback()
 		end
-		self:CloseDialog()
+		self:OkCloseDialog()
 	elseif buttonName == "OkCancelDialogCancelButton" then
 		if self.CancelCallback ~= nil then
 			self.CancelCallback()
 		end
-		self:CloseDialog()
+		self:CancelCloseDialog()
 	end
 end
 
