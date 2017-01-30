@@ -26,7 +26,7 @@ end
 
 function EffectManager:SpawnEffect(position) 
 	LuaLoadPrefabAfter("Prefabs/System/HitEffect2", "HitEffect2_"..self.EffectCounter, "EffectRoot")
-	table.insert(self.EffectList, "HitEffect1_"..self.EffectCounter)
+	table.insert(self.EffectList, "HitEffect2_"..self.EffectCounter)
 	LuaSetPosition("HitEffect2_"..self.EffectCounter, position.x, position.y, position.z)
 	callbackTag = "EffectManager_CallbackEffectAnimationEnd"..self.EffectCounter
 	CallbackManager.Instance():AddCallback(callbackTag, {self, "HitEffect2_"..self.EffectCounter}, self.EffectAnimationEnd)

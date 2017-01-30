@@ -99,7 +99,7 @@ function BattleScene.new()
 		LuaFindObject("ExpText")
 		LuaFindObject("DialogRoot")
 		
-		LuaSetScale("BattleObjectRoot", 0.5, 0.5, 0.5)
+		LuaSetScale("BattleObjectRoot", 1.0, 1.0, 1.0)
 		--self.AlignPosition.x = -200
 		--self.AlignPosition.y = -200
 		--self.AlignPosition.z = 0
