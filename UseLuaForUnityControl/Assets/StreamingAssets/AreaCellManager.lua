@@ -38,7 +38,6 @@ function AreaCellManager:Initialize()
 end
 
 function AreaCellManager:Clear() 
-	LuaUnityDebugLog("BumpList"..#self.CheckBumpList)
 	for i = 1, #self.CheckBumpList do
 		self.CheckBumpList[i]:Clear()
 	end

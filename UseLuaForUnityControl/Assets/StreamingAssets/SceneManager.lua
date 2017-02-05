@@ -9,6 +9,7 @@ SceneNameEnum = {
 	Quest   = 5,
 	Option  = 6,
 	Battle  = 7,
+	Gacha	= 8,
 }
 
 -- クラス定義
@@ -37,6 +38,7 @@ function SceneManager:Initialize()
 		QuestScene.new(),
 		OptionScene.new(),
 		BattleScene.new(),
+		GachaScene.new(),
 	}
 
 	LuaLoadPrefabAfter("Prefabs/HeaderObject", "HeaderObject", "HeaderFooterCanvas")
@@ -111,4 +113,8 @@ end
 
 function SceneManager:OnMouseDrag(touchx, touchy) 
 	self.CurrentScene:OnMouseDrag(touchx, touchy)
+end
+
+function SceneManager:OnMouseUp(touchx, touchy) 
+	self.CurrentScene:OnMouseUp(touchx, touchy)
 end

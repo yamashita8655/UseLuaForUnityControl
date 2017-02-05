@@ -24,6 +24,9 @@ end
 --function PlayerManager.Initialize(self)と同じ 
 function PlayerManager:Initialize() 
 	self.PlayerCharacterInstance = nil
+	self.StartTouchPosition = Vector2.new(0.0, 0.0)
+	self.IsDown = false
+	
 end
 
 function PlayerManager:SetRotate(rotatex, rotatey, rotatez) 
@@ -72,6 +75,10 @@ function PlayerManager:Update(deltaTime)
 end
 
 function PlayerManager:OnMouseDown(touchx, touchy) 
+	--self.StartTouchPosition.x = touchx
+	--self.StartTouchPosition.y = touchy
+	--self.IsDown = true
+
 	local offsetx = touchx - (ScreenWidth/2)
 	local offsety = touchy - (ScreenHeight/2)
 	--local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
@@ -96,6 +103,22 @@ function PlayerManager:OnMouseDown(touchx, touchy)
 end
 
 function PlayerManager:OnMouseDrag(touchx, touchy) 
+	--if self.IsDown == false then
+	--	self:OnMouseDown(touchx, touchy)
+	--end
+	--local offsetx = touchx - self.StartTouchPosition.x
+	--local offsety = touchy - self.StartTouchPosition.y
+	----local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
+	----local offsety = (touchy - (ScreenHeight/2)) / CanvasFactor
+	--local radian = math.atan2(offsety, offsetx)
+	--local degree = radian * 180.0 / 3.1415
+	--
+	--self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
+	--PlayerManager.Instance():SetRotate(0, 0, degree-90)
+	--self.PlayerCharacterInstance:ShootBullet(degree-90)
+
+
+
 	local offsetx = touchx - (ScreenWidth/2)
 	local offsety = touchy - (ScreenHeight/2)
 	--local offsetx = (touchx - (ScreenWidth/2)) / CanvasFactor
@@ -106,6 +129,10 @@ function PlayerManager:OnMouseDrag(touchx, touchy)
 	self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
 	PlayerManager.Instance():SetRotate(0, 0, degree-90)
 	self.PlayerCharacterInstance:ShootBullet(degree-90)
+end
+
+function PlayerManager:OnMouseUp(touchx, touchy) 
+	self.IsDown = false
 end
 
 function PlayerManager:Release() 

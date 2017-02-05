@@ -147,3 +147,16 @@ EnemyBullet0003 = {
 	MoveType = MoveStraight.new(10),
 	BulletType = BulletTypeEnum.Normal,
 }
+
+EnemyBullet_Middle1_10 = {
+	PrefabName = "Prefabs/BulletObjectEnemyTooth1",
+	Name = "EnemyBulletTooth1",
+	Width = 24,
+	Height = 24,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 10,
+	MoveType = MoveStraight.new(3),
+	BulletType = BulletTypeEnum.Normal,
+}

@@ -22,6 +22,7 @@ LuaFileList = {
 	"QuestScene.lua",
 	"OptionScene.lua",
 	"BattleScene.lua",
+	"GachaScene.lua",
 	"SceneManager.lua",
 	"DialogManager.lua",
 	"SkillLevelUpDialog.lua",
@@ -31,6 +32,7 @@ LuaFileList = {
 	"MoveControllerSinCurve.lua",
 	"MoveControllerStraight.lua",
 	"MoveControllerHoming.lua",
+	"MoveControllerCircle.lua",
 	"SpawnController.lua",
 	"EnemyBase.lua",
 	"EmitterConfig.lua",
@@ -304,6 +306,10 @@ end
 
 function OnMouseDragFromUnity(touchx, touchy)
 	SceneManager.Instance():OnMouseDrag(touchx, touchy)
+end
+
+function OnMouseUpFromUnity(touchx, touchy)
+	SceneManager.Instance():OnMouseUp(touchx, touchy)
 end
 
 --Unity側から呼ばれる、更新関数

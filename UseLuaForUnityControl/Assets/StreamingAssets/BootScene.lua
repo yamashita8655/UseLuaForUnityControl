@@ -48,9 +48,11 @@ function BootScene.new()
 
 		GameManager:SetKarikariValue(SaveObject.CustomScene_HaveKarikariValue) 
 		--GameManager:SetKarikariValue(1000) 
+		
+		GameManager:SetMochiPointValue(SaveObject.HaveMochiPointValue) 
 
-		--SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
-		SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
+		SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
+		--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
 	end
 	
 	return this

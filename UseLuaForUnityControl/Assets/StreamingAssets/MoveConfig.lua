@@ -4,6 +4,7 @@ MoveTypeEnum = {
 	Straight = 0,
 	SinCurve = 1,
 	Homing = 2,
+	Circle = 3,
 }
 
 -- 移動方法の設定に使うオブジェクト群
@@ -84,3 +85,31 @@ function MoveHoming.new(homingStartTime, moveDegreeLimit, moveSpeed)
 	return this
 end
 
+MoveCircle = {}
+
+function MoveCircle.new(rotateValue, periodValue, moveSpeed)
+	local this = {
+		LocalMoveType = MoveTypeEnum.Circle,
+		LocalRotateValue = rotateValue,
+		LocalPeriodValue = periodValue,
+		LocalMoveSpeed = moveSpeed,
+	}
+	
+	this.MoveType = function(self)
+		return self.LocalMoveType
+	end
+
+	this.MoveSpeed = function(self)
+		return self.LocalMoveSpeed
+	end
+	
+	this.RotateValue = function(self)
+		return self.LocalRotateValue
+	end
+	
+	this.PeriodValue = function(self)
+		return self.LocalPeriodValue
+	end
+	
+	return this
+end

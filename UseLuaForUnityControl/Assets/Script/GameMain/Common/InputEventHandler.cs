@@ -38,5 +38,21 @@ public class InputEventHandler : MonoBehaviour {
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
 	}
+	
+	void OnMouseUp() {
+		//取得したscreenPointの値を変数に格納
+		float x = Input.mousePosition.x;
+		float y = Input.mousePosition.y;
+
+		// Lua側にイベント名を渡して、処理する関数を呼び出す
+		ArrayList list = new ArrayList();
+		LuaManager.FunctionData data = new LuaManager.FunctionData();
+		data.returnValueNum = 0;
+		data.functionName = "OnMouseUpFromUnity";
+		list.Add(x);
+		list.Add(y);
+		data.argList = list;
+		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+	}
 }
 

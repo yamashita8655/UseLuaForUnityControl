@@ -183,8 +183,11 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 				"スキルのレベルを上げていいですか？",
 				function()
 					self:UpdateSkillLevel(SkillTypeEnum.Bullet)
-				end
-				,
+				end,
+				function()
+				end,
+				function()
+				end,
 				function()
 				end
 			)

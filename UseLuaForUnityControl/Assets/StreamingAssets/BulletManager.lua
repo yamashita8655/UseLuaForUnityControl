@@ -159,6 +159,8 @@ function BulletManager:LocalShootBulletTest(posx, posy, degree, bulletConfig, ch
 		moveController = MoveControllerSinCurve.new()
 	elseif bulletConfig.MoveType:MoveType() == MoveTypeEnum.Homing then
 		moveController = MoveControllerHoming.new()
+	elseif bulletConfig.MoveType:MoveType() == MoveTypeEnum.Circle then
+		moveController = MoveControllerCircle.new()
 	end
 	moveController:Initialize(bulletConfig.MoveType)--movespeed。後から設定しなおす
 	

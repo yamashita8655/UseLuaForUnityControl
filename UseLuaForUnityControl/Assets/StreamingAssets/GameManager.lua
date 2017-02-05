@@ -20,6 +20,7 @@ function GameManager:Initialize()
 	self.BattleDeltaTime = 1.0/60.0
 	self.SelectQuestId = 0
 	self.HaveKarikariValue = 0
+	self.HaveMochiPointValue = 0
 end
 
 -- 選択しているキャラクターデータ指定
@@ -52,6 +53,17 @@ function GameManager:GetKarikariValue()
 end
 function GameManager:AddKarikariValue(value) 
 	self.HaveKarikariValue = self.HaveKarikariValue + value
+end
+
+-- 持っているもちポイントの量
+function GameManager:SetMochiPointValue(value) 
+	self.HaveMochiPointValue = value
+end
+function GameManager:GetMochiPointValue() 
+	return self.HaveMochiPointValue
+end
+function GameManager:AddMochiPointValue(value) 
+	self.HaveMochiPointValue = self.HaveMochiPointValue + value
 end
 
 function GameManager:Update(deltaTime) 

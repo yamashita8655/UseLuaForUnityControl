@@ -19,7 +19,7 @@ function HomeScene.new()
 		LuaSetActive("FooterObject", false)
 		LuaFindObject("HomeButtonHint")
 		LuaFindObject("HomeCharacterMoveRoot")
-		LuaSetButtonInteractable("HomeButtonHint", false)
+		--LuaSetButtonInteractable("HomeButtonHint", false)
 		
 		if self.CurrentCharacterObjectName ~= "" then
 			LuaDestroyObject(self.CurrentCharacterObjectName)
@@ -65,6 +65,7 @@ function HomeScene.new()
 		elseif buttonName == "HomeButtonOption" then
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Option)
 		elseif buttonName == "HomeButtonHint" then
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
 		end
 	end
 	

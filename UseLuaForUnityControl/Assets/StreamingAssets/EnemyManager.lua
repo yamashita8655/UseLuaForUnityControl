@@ -51,6 +51,8 @@ function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig)
 		moveController = MoveControllerStraight.new()
 	elseif enemyConfig.MoveType:MoveType() == MoveTypeEnum.SinCurve then
 		moveController = MoveControllerSinCurve.new()
+	elseif enemyConfig.MoveType:MoveType() == MoveTypeEnum.Circle then
+		moveController = MoveControllerCircle.new()
 	end
 	moveController:Initialize(enemyConfig.MoveType)
 

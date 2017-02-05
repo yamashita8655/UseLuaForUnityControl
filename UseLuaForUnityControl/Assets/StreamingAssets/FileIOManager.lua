@@ -51,6 +51,8 @@ function FileIOManager:Save()
 
 	saveString = saveString.."CustomScene_HaveKarikariValue = "..SaveObject.CustomScene_HaveKarikariValue..",\r\n"
 	
+	saveString = saveString.."HaveMochiPointValue = "..SaveObject.HaveMochiPointValue..",\r\n"
+	
 	saveString = saveString.."}\r\n"
 	
 	CallbackManager.Instance():AddCallback("FileIOManager_SaveCallback", {self}, self.SaveCallback)
@@ -73,6 +75,7 @@ function FileIOManager:CreateDefaultSaveObject()
 		OptionScene_BGMVolumeRate = 100,
 		CustomScene_CharacterUnlockList = {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		CustomScene_HaveKarikariValue = 0,
+		HaveMochiPointValue = 0,
 	}
 end
 
@@ -120,6 +123,9 @@ function FileIOManager:CheckSaveFile()
 	end
 	if SaveObject.CustomScene_HaveKarikariValue == nil then
 		SaveObject.CustomScene_HaveKarikariValue = 0
+	end
+	if SaveObject.HaveMochiPointValue == nil then
+		SaveObject.HaveMochiPointValue = 0
 	end
 end
 

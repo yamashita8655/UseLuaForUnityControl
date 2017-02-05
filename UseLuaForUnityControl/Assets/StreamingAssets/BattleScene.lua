@@ -17,6 +17,7 @@ function BattleScene.new()
 	this.AlignPosition	= Vector3.new(0.0, 0.0, 0.0)-- 画面表示のポジション調整
 	
 	this.IsGamePause = false
+	this.ComboCount = 0
 	
 	-- メソッド定義
 	-- 初期化
@@ -36,7 +37,16 @@ function BattleScene.new()
 		LuaLoadPrefabAfter("Prefabs/System/WinEffect", "WinEffect", "DialogRoot")
 		LuaSetActive("WinEffect", false)
 
-		this.IsGamePause = false
+		LuaLoadPrefabAfter("Prefabs/System/BattleStartEffect", "BattleStartEffect", "DialogRoot")
+		LuaSetActive("BattleStartEffect", false)
+		
+		LuaFindObject("BattleComboLabel")
+		LuaFindObject("BattleComboCounterText")
+		LuaSetActive("BattleComboLabel", false)
+		LuaSetActive("BattleComboCounterText", false)
+		
+		this.IsGamePause = true
+		this.ComboCount = 0
 		
 		selectQuestId = GameManager.Instance():GetSelectQuestId()
 		enemySpawnTable = QuestConfig[selectQuestId].EnemySpawnTable
@@ -99,7 +109,8 @@ function BattleScene.new()
 		LuaFindObject("ExpText")
 		LuaFindObject("DialogRoot")
 		
-		LuaSetScale("BattleObjectRoot", 1.0, 1.0, 1.0)
+		--LuaSetScale("BattleObjectRoot", 1.0, 1.0, 1.0)
+		LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
 		--self.AlignPosition.x = -200
 		--self.AlignPosition.y = -200
 		--self.AlignPosition.z = 0
@@ -118,6 +129,14 @@ function BattleScene.new()
 		
 		this:SceneBaseInitialize()
 
+	end
+
+
+	-- フェード後初期化
+	this.SceneBaseAfterInitialize = this.AfterInitialize
+	this.AfterInitialize = function(self)
+		this:SceneBaseAfterInitialize()
+		self:BattleStartSequence()
 	end
 	
 	-- 更新
@@ -155,6 +174,19 @@ function BattleScene.new()
 				self:LoseSequence()
 			end
 		end
+	end
+	
+	-- バトル開始エフェクト
+	this.BattleStartSequence = function(self)
+		CallbackManager.Instance():AddCallback("Battle_BattleStartSequence", {self}, self.BattleStartSequenceCallback)
+		LuaPlayAnimator("BattleStartEffect", "Play", false, true, "LuaCallback", "Battle_BattleStartSequence")
+	end
+	
+	this.BattleStartSequenceCallback = function(arg, unityArg)
+		local self = arg[1]
+		LuaUnityDebugLog("callback!!!!")
+		LuaSetActive("BattleStartEffect", false)
+		self.IsGamePause = false
 	end
 	
 	-- 勝ちエフェクト
@@ -197,6 +229,11 @@ function BattleScene.new()
 	this.SceneBaseEnd = this.End
 	this.End = function(self)
 		this:SceneBaseEnd()
+		
+		local player = PlayerManager.Instance():GetPlayer()
+		local exp = player:GetEXP()
+		GameManager.Instance():AddMochiPointValue(exp)
+		SaveObject.HaveMochiPointValue = GameManager.Instance():GetMochiPointValue()
 	
 		EnemyManager.Instance():Release()
 		BulletManager.Instance():Release()
@@ -205,8 +242,8 @@ function BattleScene.new()
 
 		GameManager.Instance():AddKarikariValue(0)
 		SaveObject.CustomScene_HaveKarikariValue = GameManager.Instance():GetKarikariValue()
-			
 		FileIOManager.Instance():Save()
+
 	end
 	
 	-- バトルが終わったかどうか
@@ -274,6 +311,14 @@ function BattleScene.new()
 			local calcTouchX = touchx - (self.AlignPosition.x*CanvasFactor)
 			local calcTouchY = touchy - (self.AlignPosition.y*CanvasFactor)
 			PlayerManager.Instance():OnMouseDrag(calcTouchX, calcTouchY)
+		end
+	end
+	
+	this.OnMouseUp = function(self, touchx, touchy)
+		if self.IsGamePause == false then
+			local calcTouchX = touchx - (self.AlignPosition.x*CanvasFactor)
+			local calcTouchY = touchy - (self.AlignPosition.y*CanvasFactor)
+			PlayerManager.Instance():OnMouseUp(calcTouchX, calcTouchY)
 		end
 	end
 
@@ -359,6 +404,9 @@ function BattleScene.new()
 		enemyBulletList = checkBumpObject:GetEnemyBullet()
 		enemyList = checkBumpObject:GetEnemy()
 		player = PlayerManager:GetPlayer()
+
+		local comboAddCounter = 0
+		local takeDamage = false
 	
 		-- 弾と敵とのあたり判定
 		-- 当たったオブジェクト双方に、DeadFlagのtrueを付与する
@@ -388,6 +436,7 @@ function BattleScene.new()
 							if enemy:IsAlive() == false then
 								local exp = enemy:GetEXP()
 								player:AddEXP(exp)
+								comboAddCounter = comboAddCounter + 1
 							end
 							bullet:AddNowHp(-1)
 						end
@@ -418,6 +467,7 @@ function BattleScene.new()
 					local attack = enemy:GetAttack()
 					enemy:SetNowHp(0)
 					player:AddNowHp(-attack)
+					takeDamage = true
 				end
 			end
 			LoopCounter = LoopCounter + 1
@@ -444,6 +494,7 @@ function BattleScene.new()
 					local attack = bullet:GetAttack()
 					bullet:SetNowHp(0)
 					player:AddNowHp(-attack)
+					takeDamage = true
 				end
 			end
 			LoopCounter = LoopCounter + 1
@@ -481,6 +532,26 @@ function BattleScene.new()
 				end
 			end
 		end
+		
+		if takeDamage == true then
+			self.ComboCount = 0
+			LuaSetActive("BattleComboLabel", false)
+			LuaSetActive("BattleComboCounterText", false)
+		else
+			if comboAddCounter > 0 then
+				self.ComboCount = self.ComboCount + comboAddCounter
+				if self.ComboCount > 999 then
+					self.ComboCount = 999
+				end
+				LuaSetActive("BattleComboLabel", true)
+				LuaSetActive("BattleComboCounterText", true)
+				LuaSetText("BattleComboCounterText", self.ComboCount)
+				--CallbackManager.Instance():AddCallback("BattleComboCounter", {self}, function() end)
+				LuaPlayAnimator("BattleComboCounterText", "Play", false, true, "LuaCallback", "BattleComboCounter")
+				LuaPlayAnimator("BattleComboCounterText", "Play2", false, true, "LuaCallback", "BattleComboCounter")
+			end
+		end
+
 
 		return LoopCounter
 	end
@@ -493,6 +564,8 @@ function BattleScene.new()
 		player = PlayerManager:GetPlayer()
 
 		local LoopCounter = 0
+		
+		local comboAddCounter = 0
 	
 		-- 弾と敵とのあたり判定
 		-- 当たったオブジェクト双方に、DeadFlagのtrueを付与する
@@ -615,6 +688,11 @@ function BattleScene.new()
 				end
 				LoopCounter = LoopCounter + 1
 			end
+		end
+
+
+		if comboAddCounter > 0 then
+			self.ComboCount = self.ComboCount + comboAddCounter
 		end
 	
 		-- 死亡フラグが立っている物を削除する

@@ -3,6 +3,7 @@
 SkillTypeEnum = {
 	Emitter = 1,
 	Bullet = 2,
+	ExpTable = 3,
 }
 
 -- 弾の発射台の設定
@@ -166,6 +167,16 @@ SkillTable_001 = {
 				Character1_Bullet0003,
 			},
 		},
+	},
+	
+	-- ExpTable
+	{
+		100,
+		300,
+		1000,
+		2500,
+		5000,
+		10000,
 	},
 }
 
