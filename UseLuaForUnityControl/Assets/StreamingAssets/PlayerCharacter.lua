@@ -18,6 +18,8 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	this.EXP = 0
 	this.SkillConfig = {}
 	this.SkillDetailText = {}
+	this.SkillLevel = 1
+	this.HaveSkillPoint = 0
 
 	-- メソッド定義
 	-- 初期化
@@ -25,6 +27,8 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	this.Initialize = function(self, nowHp, maxHp)
 		this:CharacterBaseInitialize(nowHp, maxHp)
 		LuaFindObject("PlayerHPGaugeBar")
+		self.SkillLevel = 1
+		self.HaveSkillPoint = 0
 		self:UpdateHpGauge()
 	end
 	
@@ -100,11 +104,36 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	-- 経験値増減
 	this.AddEXP = function(self, value)
 		self.EXP = self.EXP + value
+		local skillConfig = self.SkillConfig
+		local skillTable = skillConfig:GetSkillTable()
+		local skillExp = skillTable[SkillTypeEnum.ExpTable][self.SkillLevel]
+
+		if skillExp == -1 then
+			--カンスト
+		else
+			if self.EXP >= skillExp then
+				self.SkillLevel = self.SkillLevel + 1
+				self.HaveSkillPoint = self.HaveSkillPoint + 1
+			end
+		end
 	end
 	
 	-- 経験値取得
 	this.GetEXP = function(self)
 		return self.EXP
+	end
+
+	-- 
+	this.GetSkillLevel = function(self)
+		return self.SkillLevel
+	end
+
+	this.GetHaveSkillPoint = function(self)
+		return self.HaveSkillPoint
+	end
+	
+	this.AddHaveSkillPoint = function(self, value)
+		self.HaveSkillPoint = self.HaveSkillPoint + value
 	end
 
 	-- スキルレベルデータ操作

@@ -21,6 +21,7 @@ function GameManager:Initialize()
 	self.SelectQuestId = 0
 	self.HaveKarikariValue = 0
 	self.HaveMochiPointValue = 0
+	self.KarikariSpawnRate = 1000--1%扱い。乱数は1000で割る為。
 end
 
 -- 選択しているキャラクターデータ指定
@@ -64,6 +65,11 @@ function GameManager:GetMochiPointValue()
 end
 function GameManager:AddMochiPointValue(value) 
 	self.HaveMochiPointValue = self.HaveMochiPointValue + value
+end
+
+-- カリカリポイント出現レート
+function GameManager:GetKarikariRate() 
+	return self.KarikariSpawnRate
 end
 
 function GameManager:Update(deltaTime) 

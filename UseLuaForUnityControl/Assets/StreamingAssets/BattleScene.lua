@@ -18,6 +18,7 @@ function BattleScene.new()
 	
 	this.IsGamePause = false
 	this.ComboCount = 0
+	this.GetKarikari = 0
 	
 	-- メソッド定義
 	-- 初期化
@@ -47,6 +48,7 @@ function BattleScene.new()
 		
 		this.IsGamePause = true
 		this.ComboCount = 0
+		this.GetKarikari = 0
 		
 		selectQuestId = GameManager.Instance():GetSelectQuestId()
 		enemySpawnTable = QuestConfig[selectQuestId].EnemySpawnTable
@@ -107,7 +109,11 @@ function BattleScene.new()
 		
 		LuaFindObject("BattleObjectRoot")
 		LuaFindObject("ExpText")
+		LuaFindObject("BattleKarikariText")
 		LuaFindObject("DialogRoot")
+
+		LuaSetText("ExpText", 0)
+		LuaSetText("BattleKarikariText", 0)
 		
 		--LuaSetScale("BattleObjectRoot", 1.0, 1.0, 1.0)
 		LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
@@ -167,7 +173,10 @@ function BattleScene.new()
 
 			local player = PlayerManager.Instance():GetPlayer()
 			local exp = player:GetEXP()
+			exp = math.floor(exp)
 			LuaSetText("ExpText", exp)
+			
+			LuaSetText("BattleKarikariText", self.GetKarikari)
 			
 			if player:IsAlive() == false then
 				self.IsGamePause = true
@@ -240,7 +249,7 @@ function BattleScene.new()
 		PlayerManager.Instance():Release()
 		EffectManager.Instance():Release()
 
-		GameManager.Instance():AddKarikariValue(0)
+		GameManager.Instance():AddKarikariValue(self.GetKarikari)
 		SaveObject.CustomScene_HaveKarikariValue = GameManager.Instance():GetKarikariValue()
 		FileIOManager.Instance():Save()
 
@@ -430,13 +439,19 @@ function BattleScene.new()
 						isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
 	
 						if isHit == true then
-							EffectManager.Instance():SpawnEffect(enemy:GetPosition())
+							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemy:GetPosition())
 							local bulletAttack = bullet:GetAttack()
 							enemy:AddNowHp(-bulletAttack)
 							if enemy:IsAlive() == false then
 								local exp = enemy:GetEXP()
+								exp = exp * (1 + (self.ComboCount/1000))
 								player:AddEXP(exp)
 								comboAddCounter = comboAddCounter + 1
+								local karikari = self:LotKarikari()
+								if karikari == true then
+									EffectManager.Instance():SpawnEffect(EffectNameEnum.KarikariEffect, enemy:GetPosition())
+									self.GetKarikari = self.GetKarikari + 1
+								end
 							end
 							bullet:AddNowHp(-1)
 						end
@@ -521,7 +536,7 @@ function BattleScene.new()
 						isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
 	
 						if isHit == true then
-							EffectManager.Instance():SpawnEffect(enemyBullet:GetPosition())
+							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemyBullet:GetPosition())
 							local playerBulletAttack = playerBullet:GetAttack()
 							local enemyBulletAttack = enemyBullet:GetAttack()
 							enemyBullet:AddNowHp(-playerBulletAttack)
@@ -589,11 +604,12 @@ function BattleScene.new()
 						isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
 	
 						if isHit == true then
-							EffectManager.Instance():SpawnEffect(enemy:GetPosition())
+							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemy:GetPosition())
 							local bulletAttack = bullet:GetAttack()
 							enemy:AddNowHp(-bulletAttack)
 							if enemy:IsAlive() == false then
 								local exp = enemy:GetEXP()
+								exp = exp * (1 + (self.ComboCount/1000))
 								player:AddEXP(exp)
 							end
 							bullet:AddNowHp(-1)
@@ -678,7 +694,7 @@ function BattleScene.new()
 						isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
 	
 						if isHit == true then
-							EffectManager.Instance():SpawnEffect(enemyBullet:GetPosition())
+							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemyBullet:GetPosition())
 							local playerBulletAttack = playerBullet:GetAttack()
 							local enemyBulletAttack = enemyBullet:GetAttack()
 							enemyBullet:AddNowHp(-playerBulletAttack)
@@ -751,6 +767,20 @@ function BattleScene.new()
 		end
 	
 		return false
+	end
+	
+	this.LotKarikari = function(self)
+		local bool isSpawn = false
+		local rate = GameManager.Instance():GetKarikariRate()
+		local number = math.random(1000)
+		if number <= rate then
+			isSpawn = true
+		end
+
+		return isSpawn
+	end
+	
+	this.SpawnKarikari = function(self, position)
 	end
 	
 	return this

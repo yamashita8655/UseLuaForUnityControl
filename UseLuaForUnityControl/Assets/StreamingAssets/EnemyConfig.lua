@@ -218,7 +218,8 @@ EnemyMiniMouseStraight1_10 = {
 	NowHp = 1,
 	MaxHp = 1,
 	Attack = 1,
-	EXP = 1,
+	--EXP = 1,
+	EXP = 100,
 	MoveType = MoveStraight.new(1),
 	EnemyType = EnemyTypeEnum.Normal,
 }

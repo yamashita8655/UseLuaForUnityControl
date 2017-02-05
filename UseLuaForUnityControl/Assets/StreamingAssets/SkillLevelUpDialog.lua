@@ -59,7 +59,7 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 		local skillData = player:GetSkillConfig()
 		local skillDetailData = player:GetSkillDetailText()
 		
-		self:UpdateHaveExpText()
+		self:UpdateSkillPointText()
 		self:UpdateSkillText(SkillTypeEnum.Emitter) 
 		self:UpdateSkillText(SkillTypeEnum.Bullet) 
 
@@ -76,6 +76,35 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 end
 
 function SkillLevelUpDialog:UpdateSkillText(skillType) 
+	--local objectIndex = 0
+	--if skillType == SkillTypeEnum.Emitter then
+	--	objectIndex = 1
+	--elseif skillType == SkillTypeEnum.Bullet then
+	--	objectIndex = 2
+	--end
+	--	
+	--local player = PlayerManager.Instance():GetPlayer() 
+	--local skillData = player:GetSkillConfig()
+	--	
+	--local nowLevel = skillData:GetSkillLevel(skillType)
+	--local maxLevel = skillData:GetMaxSkillLevel(skillType)
+
+	--LuaSetText("SkillNowLevelText"..objectIndex, nowLevel)
+	--LuaSetText("SkillMaxLevelText"..objectIndex, maxLevel)
+	--	
+	--local nextExp = skillData:GetNextExp(skillType)
+	--local playerExp = player:GetEXP()
+	--if nextExp == "MAX" then
+	--	LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
+	--else
+	--	if nextExp > playerExp then
+	--		LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
+	--	else
+	--		LuaSetButtonInteractable("SkillUpButton"..objectIndex, true)
+	--	end
+	--end
+	--LuaSetText("SkillNeedExpText"..objectIndex, nextExp)
+	
 	local objectIndex = 0
 	if skillType == SkillTypeEnum.Emitter then
 		objectIndex = 1
@@ -92,24 +121,24 @@ function SkillLevelUpDialog:UpdateSkillText(skillType)
 	LuaSetText("SkillNowLevelText"..objectIndex, nowLevel)
 	LuaSetText("SkillMaxLevelText"..objectIndex, maxLevel)
 		
-	local nextExp = skillData:GetNextExp(skillType)
-	local playerExp = player:GetEXP()
-	if nextExp == "MAX" then
+	local playerSkillPoint = player:GetHaveSkillPoint()
+	LuaUnityDebugLog("point"..playerSkillPoint)
+	if nowLevel == maxLevel then
 		LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
 	else
-		if nextExp > playerExp then
-			LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
-		else
+		if playerSkillPoint > 0 then
 			LuaSetButtonInteractable("SkillUpButton"..objectIndex, true)
+		else
+			LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
 		end
 	end
 	LuaSetText("SkillNeedExpText"..objectIndex, nextExp)
 end
 
-function SkillLevelUpDialog:UpdateHaveExpText() 
+function SkillLevelUpDialog:UpdateSkillPointText() 
 	local player = PlayerManager.Instance():GetPlayer() 
-	local playerExp = player:GetEXP()
-	LuaSetText("SkillHaveExpText", playerExp)
+	local playerSkillPoint = player:GetHaveSkillPoint()
+	LuaSetText("SkillHaveExpText", playerSkillPoint)
 end
 
 function SkillLevelUpDialog:CloseDialog() 
@@ -140,14 +169,13 @@ function SkillLevelUpDialog:UpdateSkillLevel(skillType)
 	local emitterNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
 	local bulletNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
 	local skillTable = skillConfig:GetSkillTable()
-	local playerExp = player:GetEXP()
 	
 	player:ClearBulletEmitter()
 	player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][emitterNowLevel].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][bulletNowLevel].EquipBulletList, CharacterType.Player)
 
-	player:AddEXP(-nextExp)
+	player:AddHaveSkillPoint(-1)
 	
-	self:UpdateHaveExpText()
+	self:UpdateSkillPointText()
 	self:UpdateSkillText(skillType) 
 end
 
@@ -170,6 +198,7 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 				"スキルのレベルを上げていいですか？",
 				function()
 					self:UpdateSkillLevel(SkillTypeEnum.Emitter)
+					self:UpdateSkillText(SkillTypeEnum.Bullet) 
 				end ,
 				function()
 				end,
@@ -183,6 +212,7 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 				"スキルのレベルを上げていいですか？",
 				function()
 					self:UpdateSkillLevel(SkillTypeEnum.Bullet)
+					self:UpdateSkillText(SkillTypeEnum.Emitter) 
 				end,
 				function()
 				end,

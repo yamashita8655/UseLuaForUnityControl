@@ -1,5 +1,10 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 
+EffectNameEnum = {
+	HitEffect		= "HitEffect2",
+	KarikariEffect	= "KarikariEffect",
+}
+
 -- クラス定義
 EffectManager = {}
 
@@ -21,18 +26,16 @@ function EffectManager:Initialize()
 	self.EffectList = {}
 	
 	LuaFindObject("EffectRoot")
-	LuaFindObject("HitEffect2")
 end
 
-function EffectManager:SpawnEffect(position) 
-	LuaLoadPrefabAfter("Prefabs/System/HitEffect2", "HitEffect2_"..self.EffectCounter, "EffectRoot")
-	table.insert(self.EffectList, "HitEffect2_"..self.EffectCounter)
-	LuaSetPosition("HitEffect2_"..self.EffectCounter, position.x, position.y, position.z)
+function EffectManager:SpawnEffect(name, position) 
+	LuaLoadPrefabAfter("Prefabs/System/"..name, name.."_"..self.EffectCounter, "EffectRoot")
+	table.insert(self.EffectList, name.."_"..self.EffectCounter)
+	LuaSetPosition(name.."_"..self.EffectCounter, position.x, position.y, position.z)
 	callbackTag = "EffectManager_CallbackEffectAnimationEnd"..self.EffectCounter
-	CallbackManager.Instance():AddCallback(callbackTag, {self, "HitEffect2_"..self.EffectCounter}, self.EffectAnimationEnd)
-	LuaPlayAnimator("HitEffect2_"..self.EffectCounter, "Play", false, false, "LuaCallback", callbackTag)
+	CallbackManager.Instance():AddCallback(callbackTag, {self, name.."_"..self.EffectCounter}, self.EffectAnimationEnd)
+	LuaPlayAnimator(name.."_"..self.EffectCounter, "Play", false, false, "LuaCallback", callbackTag)
 	self.EffectCounter = self.EffectCounter + 1
-
 end
 
 function EffectManager:PauseEffect() 
