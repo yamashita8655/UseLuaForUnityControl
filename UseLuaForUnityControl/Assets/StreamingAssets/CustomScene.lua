@@ -17,6 +17,8 @@ function CustomScene.new()
 		LuaChangeScene("Custom", "MainCanvas")
 		LuaSetActive("HeaderObject", false)
 		LuaSetActive("FooterObject", false)
+		
+		LuaFindObject("CustomSceneDialogRoot")
 	
 		if self.IsInitialized == false then
 			LuaFindObject("CustomPlayerSelectContent")
@@ -33,15 +35,11 @@ function CustomScene.new()
 			end
 			LuaFindObject("CustomKalikaliPointText")
 			
-			--LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode1", "CustomPlayerSelectListNode1", "CustomPlayerSelectContent")
-			--LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode2", "CustomPlayerSelectListNode2", "CustomPlayerSelectContent")
-			--LuaFindObject("CustomPlayerSelectImage1")
-			--LuaFindObject("CustomPlayerSelectImage2")
+			CharacterDetailDialog.Instance():Initialize()
+			CharacterDetailDialog.Instance():SetParent("CustomSceneDialogRoot") 
 		end
 
-
-
-		currentPlayerCharater = GameManager.Instance():GetSelectPlayerCharacterData()
+		local currentPlayerCharater = GameManager.Instance():GetSelectPlayerCharacterData()
 		self:ToggleSelectImage(currentPlayerCharater)
 		self:ToggleSelectDetailText(currentPlayerCharater)
 		self:UpdateLockState()
@@ -125,12 +123,20 @@ function CustomScene.new()
 
 			if buttonName == "CustomDetailButton"..i then
 				self:ToggleSelectDetailText(PlayerCharacterConfig[i])
+
+				CharacterDetailDialog.Instance():OpenDialog(
+					function()
+					end,
+					PlayerCharacterConfig[i]
+				)
 			end
 		end
 		
 		if buttonName == "CustomBackButton" then
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 		end
+
+		CharacterDetailDialog.Instance():OnClickButton(buttonName)
 
 		--selectPlayerCharater = GameManager.Instance():GetSelectPlayerCharacterData()
 	end

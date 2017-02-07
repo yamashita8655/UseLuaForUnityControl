@@ -49,6 +49,7 @@ end
 
 -- シーンの切り替え
 function SceneManager:ChangeScene(sceneNameEnum) 
+	LuaUnityDebugLog("ChangeScene"..sceneNameEnum)
 	CallbackManager.Instance():AddCallback("SceneManager_CallbackStartFade", {self, sceneNameEnum}, self.CallbackFadeIn)
 	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "LuaCallback", "SceneManager_CallbackStartFade")
 end
@@ -57,6 +58,8 @@ end
 function SceneManager.CallbackFadeIn(argList, unityArg) 
 	local self			= argList[1]
 	local sceneNameEnum	= argList[2]
+	
+	LuaUnityDebugLog("CallbackFadeIn"..sceneNameEnum)
 	
 	if self.CurrentScene == nil then
 	else

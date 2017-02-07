@@ -15,6 +15,13 @@ PlayerCharacterConfig = {
 		UnlockNeedValue = 0,
 		HomePlayerPrefabName = "Prefabs/HomeCharacter1",
 		HomePlayerName = "HomeCharacter1",
+		BaseParameter = CharacterParameter.new(100, 1, 1, 0),
+		AddParameter = CharacterParameter.new(0, 0, 0, 0),
+		GrowType = {
+			Hp = 3,
+			Attack = 3,
+			Deffense = 3,
+		},
 	},
 	{
 		PrefabName = "Prefabs/PlayerCharacterObject002",
@@ -29,6 +36,13 @@ PlayerCharacterConfig = {
 		UnlockNeedValue = 0,
 		HomePlayerPrefabName = "Prefabs/HomeCharacter2",
 		HomePlayerName = "HomeCharacter2",
+		BaseParameter = CharacterParameter.new(100, 2, 2, 0),
+		AddParameter = CharacterParameter.new(0, 0, 0, 0),
+		GrowType = {
+			Hp = 4,
+			Attack = 4,
+			Deffense = 1,
+		},
 	},
 	{
 		PrefabName = "Prefabs/PlayerCharacterObject003",
@@ -43,6 +57,13 @@ PlayerCharacterConfig = {
 		UnlockNeedValue = 500,
 		HomePlayerPrefabName = "Prefabs/HomeCharacter3",
 		HomePlayerName = "HomeCharacter3",
+		BaseParameter = CharacterParameter.new(100, 3, 3, 0),
+		AddParameter = CharacterParameter.new(0, 0, 0, 0),
+		GrowType = {
+			Hp = 2,
+			Attack = 2,
+			Deffense = 5,
+		},
 	},
 	{
 		PrefabName = "Prefabs/PlayerCharacterObject004",
@@ -58,6 +79,14 @@ PlayerCharacterConfig = {
 		UnlockNeedValue = 0,
 		HomePlayerPrefabName = "Prefabs/HomeCharacter4",
 		HomePlayerName = "HomeCharacter4",
+		BaseParameter = CharacterParameter.new(100, 4, 4, 0),
+		AddParameter = CharacterParameter.new(0, 0, 0, 0),
+		GrowType = {
+			Hp = 3,
+			Attack = 3,
+			Deffense = 3,
+		},
 	},
 }
+
 

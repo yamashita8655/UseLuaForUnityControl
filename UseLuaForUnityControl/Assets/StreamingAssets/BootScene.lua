@@ -43,6 +43,7 @@ function BootScene.new()
 	
 	-- セーブファイル読み込み終了時コールバック処理
 	this.EndSaveFileLoadCallback = function()
+		LuaUnityDebugLog("EndSaveFileLoadCallback")
 		customSelectIndex = SaveObject.CustomScene_SelectIndex
 		GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacterConfig[customSelectIndex])
 
@@ -50,9 +51,12 @@ function BootScene.new()
 		--GameManager:SetKarikariValue(1000) 
 		
 		GameManager:SetMochiPointValue(SaveObject.HaveMochiPointValue) 
+		
+		LuaUnityDebugLog("ChangeSceneBefore")
 
-		SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
+		--SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
+		SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
 	end
 	
 	return this

@@ -84,8 +84,10 @@ function FileIOManager:Load(endCallback)
 	LuaUnityDebugLog("StartLoad")
 	local f = io.open(self.FileName, "r")
 	if f == nil then
+		--self:CreateDefaultSaveObject()
+		--endCallback()	
 		self:CreateDefaultSaveObject()
-		endCallback()	
+		TimerCallbackManager:AddCallback({}, endCallback, 1) 
 	else
 		--dofile(self.FileName)
 		self.EndCallback = endCallback
