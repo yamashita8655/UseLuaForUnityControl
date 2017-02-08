@@ -156,6 +156,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		string success = "";
 		
+		// aaa.luaファイルを見たかったら、これコメントアウトするといいよ
 		try {
 			File.Delete(path);
 		} catch (IOException e) {

@@ -28,6 +28,10 @@ function CharacterDetailDialog:Initialize()
 	LuaFindObject("CharacterDetailAddAttackText")
 	LuaFindObject("CharacterDetailBaseDeffenseText")
 	LuaFindObject("CharacterDetailAddDeffenseText")
+	LuaFindObject("CharacterDetailFriendSlider")
+	LuaFindObject("CharacterDetailRemailParameterUpCountText")
+
+
 
 	for i = 1, 5 do
 		LuaFindObject("HpMeter"..i)
@@ -49,12 +53,12 @@ function CharacterDetailDialog:OpenDialog(closeCallback, characterData)
 		self.CharacterData = characterData
 
 		LuaSetText("CharacterDetailBaseHpText", self.CharacterData.BaseParameter:MaxHp())
-		LuaSetText("CharacterDetailAddHpText", self.CharacterData.AddParameter:MaxHp())
 		LuaSetText("CharacterDetailBaseAttackText", self.CharacterData.BaseParameter:Attack())
-		LuaSetText("CharacterDetailAddAttackText", self.CharacterData.AddParameter:Attack())
 		LuaSetText("CharacterDetailBaseDeffenseText", self.CharacterData.BaseParameter:Deffense())
-		LuaSetText("CharacterDetailAddDeffenseText", self.CharacterData.AddParameter:Deffense())
 
+		self:UpdateAddParameter()
+
+		LuaSetSliderValue("CharacterDetailFriendSlider", 30)
 
 		self:UpdateGrowMeter(characterData) 
 		
@@ -90,6 +94,25 @@ function CharacterDetailDialog:OnClickButton(buttonName)
 
 	if buttonName == "CharacterDetailCloseButton" then
 		self:CloseDialog()
+	elseif buttonName == "CharacterDetailStatusResetButton" then
+		DialogManager.Instance():OpenDialog(
+			"本当にスキルをリセットしていいですか？",
+			function()
+				local characterAddParameter = SaveObject.CharacterList[self.CharacterData.IdIndex]
+				characterAddParameter[CharacterParameterEnum.RemainParameterPoint] = 100
+				characterAddParameter[CharacterParameterEnum.AddHp] = 0
+				characterAddParameter[CharacterParameterEnum.AddAttack] = 0
+				characterAddParameter[CharacterParameterEnum.AddDeffense] = 0
+				FileIOManager.Instance():Save()
+				self:UpdateAddParameter()
+			end ,
+			function()
+			end,
+			function()
+			end,
+			function()
+			end
+		)
 	end
 end
 
@@ -112,5 +135,13 @@ function CharacterDetailDialog:UpdateGrowMeter(characterConfig)
 		LuaSetActive("DeffenseMeter"..i, true)
 	end
 
+end
+
+function CharacterDetailDialog:UpdateAddParameter() 
+	local characterAddParameter = SaveObject.CharacterList[self.CharacterData.IdIndex]
+	LuaSetText("CharacterDetailRemailParameterUpCountText", characterAddParameter[CharacterParameterEnum.RemainParameterPoint])
+	LuaSetText("CharacterDetailAddHpText", characterAddParameter[CharacterParameterEnum.AddHp])
+	LuaSetText("CharacterDetailAddAttackText", characterAddParameter[CharacterParameterEnum.AddAttack])
+	LuaSetText("CharacterDetailAddDeffenseText", characterAddParameter[CharacterParameterEnum.AddDeffense])
 end
 

@@ -3,6 +3,7 @@
 -- プレイヤーキャラクター定義
 PlayerCharacterConfig = {
 	{
+		IdIndex = 1,
 		PrefabName = "Prefabs/PlayerCharacterObject001",
 		Name = "PlayerCharacterObject001",
 		Width = 128,
@@ -24,6 +25,7 @@ PlayerCharacterConfig = {
 		},
 	},
 	{
+		IdIndex = 2,
 		PrefabName = "Prefabs/PlayerCharacterObject002",
 		Name = "PlayerCharacterObject002",
 		Width = 128,
@@ -45,6 +47,7 @@ PlayerCharacterConfig = {
 		},
 	},
 	{
+		IdIndex = 3,
 		PrefabName = "Prefabs/PlayerCharacterObject003",
 		Name = "PlayerCharacterObject003",
 		Width = 128,
@@ -66,6 +69,7 @@ PlayerCharacterConfig = {
 		},
 	},
 	{
+		IdIndex = 4,
 		PrefabName = "Prefabs/PlayerCharacterObject004",
 		Name = "PlayerCharacterObject004",
 		Width = 128,
