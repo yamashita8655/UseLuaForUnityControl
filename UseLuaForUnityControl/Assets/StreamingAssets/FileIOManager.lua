@@ -3,13 +3,13 @@
 --FIleIOって書いてあるけど、実質セーブデータ単体の為の機能
 --今度リネームしないとね…
 
-CharacterParameterEnum = {
-	AddHp = 1,
-	AddAttack = 2,
-	AddDeffense = 3,
-	FriendPoint = 4,
-	RemainParameterPoint = 5,
-}
+--CharacterParameterEnum = {
+--	AddHp = 1,
+--	AddAttack = 2,
+--	AddDeffense = 3,
+--	FriendPoint = 4,
+--	RemainParameterPoint = 5,
+--}
 
 -- クラス定義
 FileIOManager = {}

@@ -1,8 +1,8 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
-BulletTypeEnum = {
-	Normal = 0,--ノーマルって書いてあるけど、弾の情報だけで処理できる弾
-	UseTargetPosition = 1,--他の何かの座標値が影響する弾の情報
-}
+--BulletTypeEnum = {
+--	Normal = 0,--ノーマルって書いてあるけど、弾の情報だけで処理できる弾
+--	UseTargetPosition = 1,--他の何かの座標値が影響する弾の情報
+--}
 
 -- 弾の定義
 Character1_Bullet0001 = {

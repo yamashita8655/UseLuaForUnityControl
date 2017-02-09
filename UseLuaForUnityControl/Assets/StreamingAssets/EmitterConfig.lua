@@ -1,8 +1,8 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
-EmitterTypeEnum = {
-	Normal = 0,
-	Satellite = 1,
-}
+--EmitterTypeEnum = {
+--	Normal = 0,
+--	Satellite = 1,
+--}
 
 -- 弾の発射台の設定
 Emitter001 = {}

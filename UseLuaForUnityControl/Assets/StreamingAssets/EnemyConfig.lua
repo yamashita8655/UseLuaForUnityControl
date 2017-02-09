@@ -1,9 +1,9 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 
-EnemyTypeEnum = {
-	Normal = 0,
-	BulletShooter = 1,
-}
+--EnemyTypeEnum = {
+--	Normal = 0,
+--	BulletShooter = 1,
+--}
 
 -- 敵の定義
 --ステージ番号_連番号

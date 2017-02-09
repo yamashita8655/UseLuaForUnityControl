@@ -1,9 +1,9 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 
-EffectNameEnum = {
-	HitEffect		= "HitEffect2",
-	KarikariEffect	= "KarikariEffect",
-}
+--EffectNameEnum = {
+--	HitEffect		= "HitEffect2",
+--	KarikariEffect	= "KarikariEffect",
+--}
 
 -- クラス定義
 EffectManager = {}

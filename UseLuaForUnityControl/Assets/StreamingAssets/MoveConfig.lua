@@ -1,11 +1,11 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
-MoveTypeEnum = {
-	None = -1,
-	Straight = 0,
-	SinCurve = 1,
-	Homing = 2,
-	Circle = 3,
-}
+--MoveTypeEnum = {
+--	None = -1,
+--	Straight = 0,
+--	SinCurve = 1,
+--	Homing = 2,
+--	Circle = 3,
+--}
 
 -- 移動方法の設定に使うオブジェクト群
 MoveStraight = {}

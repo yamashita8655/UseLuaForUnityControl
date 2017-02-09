@@ -89,6 +89,35 @@ function GachaScene.new()
 			characterAddParameter[CharacterParameterEnum.RemainParameterPoint] = characterAddParameter[CharacterParameterEnum.RemainParameterPoint] - 1
 			FileIOManager.Instance():Save()
 		end
+		
+		if buttonName == "GachaScene_GachaWood" then
+			self:RollGachaDebug(Gacha_Wood.GachaData)
+		elseif buttonName == "GachaScene_GachaBronze" then
+			self:RollGachaDebug(Gacha_Bronze.GachaData)
+		elseif buttonName == "GachaScene_GachaSilver" then
+			self:RollGachaDebug(Gacha_Silver.GachaData)
+		elseif buttonName == "GachaScene_GachaGold" then
+			self:RollGachaDebug(Gacha_Gold.GachaData)
+		end
+	end
+
+	this.RollGachaDebug = function(self, gachaData)
+		local getItemList = gachaData:RollGacha(100)
+		local hpCount = 0
+		local attackCount = 0
+		local deffenseCount = 0
+		for i = 1, #getItemList do
+			local item = getItemList[i]
+			local parameterType = item:GetParameterType()
+			if parameterType == ParameterType.AddHp then
+				hpCount = hpCount + 1
+			elseif parameterType == ParameterType.AddAttack then
+				attackCount = attackCount + 1
+			elseif parameterType == ParameterType.AddDeffense then
+				deffenseCount = deffenseCount + 1
+			end
+		end
+		LuaUnityDebugLog(hpCount.."/"..attackCount.."/"..deffenseCount)
 	end
 	
 	return this

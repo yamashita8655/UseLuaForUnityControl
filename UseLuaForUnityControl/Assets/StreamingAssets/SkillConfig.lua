@@ -1,10 +1,10 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 
-SkillTypeEnum = {
-	Emitter = 1,
-	Bullet = 2,
-	ExpTable = 3,
-}
+--SkillTypeEnum = {
+--	Emitter = 1,
+--	Bullet = 2,
+--	ExpTable = 3,
+--}
 
 -- 弾の発射台の設定
 SkillData = {}

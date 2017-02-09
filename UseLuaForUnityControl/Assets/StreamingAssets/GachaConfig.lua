@@ -11,7 +11,7 @@ Gacha_Wood = {
 	PrefabName = "Prefabs/",
 	Price = 10,
 	MoneyType = GachaMoneyType.ExpPoint,
-	GachaData = nil,
+	GachaData = GachaExecuteObject.new(GachaTableWood),
 }
 
 Gacha_Bronze = {
@@ -20,7 +20,7 @@ Gacha_Bronze = {
 	PrefabName = "Prefabs/",
 	Price = 100,
 	MoneyType = GachaMoneyType.ExpPoint,
-	GachaData = nil,
+	GachaData = GachaExecuteObject.new(GachaTableBronze),
 }
 
 Gacha_Silver = {
@@ -29,7 +29,7 @@ Gacha_Silver = {
 	PrefabName = "Prefabs/",
 	Price = 1000,
 	MoneyType = GachaMoneyType.ExpPoint,
-	GachaData = nil,
+	GachaData = GachaExecuteObject.new(GachaTableSilver),
 }
 
 Gacha_Gold = {
@@ -38,7 +38,25 @@ Gacha_Gold = {
 	PrefabName = "Prefabs/",
 	Price = 10000,
 	MoneyType = GachaMoneyType.ExpPoint,
-	GachaData = nil,
+	GachaData = GachaExecuteObject.new(GachaTableGold),
 }
 
 --------
+--〇ガチャ情報
+--・ガチャ名
+--・ガチャ排出テーブルデータ
+--・使用するポイント
+--・一回で使用するポイント
+--・ガチャ詳細説明文
+--
+--〇ガチャ排出テーブルデータのデータ一つ
+--・アイテム情報
+--・排出確率
+--
+--〇アイテム情報
+--・アイテム名
+--・アイテムタイプ
+--・アイテム効果
+--・レアリティ
+
+

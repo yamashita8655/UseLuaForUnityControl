@@ -8,6 +8,10 @@ CanvasFactor = 0.0
 
 --StreamingAssets内にある、Lua用分割スクリプト。最終的には、ここはアセットバンドルから読み込むことになるはず
 LuaFileList = {
+	"DefineEnum.lua",
+	"GachaItemConfig.lua",
+	"GachaTable.lua",
+	"GachaConfig.lua",
 	"LuaUtility.lua",
 	"LuaUtility2.txt",
 	"LuaUtilityClass.lua",

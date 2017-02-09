@@ -1,16 +1,16 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
 
-SceneNameEnum = {
-	Boot	= 1,
-	Title   = 2,
-	--Loading = 3,
-	Home    = 3,
-	Custom  = 4,
-	Quest   = 5,
-	Option  = 6,
-	Battle  = 7,
-	Gacha	= 8,
-}
+--SceneNameEnum = {
+--	Boot	= 1,
+--	Title   = 2,
+--	--Loading = 3,
+--	Home    = 3,
+--	Custom  = 4,
+--	Quest   = 5,
+--	Option  = 6,
+--	Battle  = 7,
+--	Gacha	= 8,
+--}
 
 -- クラス定義
 SceneManager = {}
