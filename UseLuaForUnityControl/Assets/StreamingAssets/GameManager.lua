@@ -22,6 +22,7 @@ function GameManager:Initialize()
 	self.HaveKarikariValue = 0
 	self.HaveMochiPointValue = 0
 	self.KarikariSpawnRate = 1000--1%扱い。乱数は1000で割る為。
+	self.GachaItemList = {}
 end
 
 -- 選択しているキャラクターデータ指定
@@ -70,6 +71,14 @@ end
 -- カリカリポイント出現レート
 function GameManager:GetKarikariRate() 
 	return self.KarikariSpawnRate
+end
+
+-- ガチャで引いた結果
+function GameManager:SetGachaItemList(list) 
+	self.GachaItemList = list
+end
+function GameManager:GetGachaItemList() 
+	return self.GachaItemList
 end
 
 function GameManager:Update(deltaTime) 

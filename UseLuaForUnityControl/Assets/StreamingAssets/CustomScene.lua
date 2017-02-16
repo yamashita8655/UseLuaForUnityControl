@@ -38,7 +38,7 @@ function CustomScene.new()
 			CharacterDetailDialog.Instance():Initialize()
 			CharacterDetailDialog.Instance():SetParent("CustomSceneDialogRoot") 
 		end
-
+			
 		local currentPlayerCharater = GameManager.Instance():GetSelectPlayerCharacterData()
 		self:ToggleSelectImage(currentPlayerCharater)
 		self:ToggleSelectDetailText(currentPlayerCharater)

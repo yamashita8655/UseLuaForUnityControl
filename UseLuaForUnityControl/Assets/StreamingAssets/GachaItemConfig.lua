@@ -24,11 +24,11 @@ end
 
 -- ガチャから排出されるアイテムの定義
 GachaItemTable = {
-	ParameterUpHp1_001 = ParameterItemData.new(1, ParameterType.AddHp, 0.1),
+	ParameterUpHp1_001 = ParameterItemData.new(RarityType.Normal, ParameterType.AddHp, 0.1),
 	
-	ParameterUpAttack1_001 = ParameterItemData.new(1, ParameterType.AddAttack, 0.1),
+	ParameterUpAttack1_001 = ParameterItemData.new(RarityType.Normal, ParameterType.AddAttack, 0.1),
 	
-	ParameterUpDeffense1_001 = ParameterItemData.new(1, ParameterType.AddDeffense, 0.1)
+	ParameterUpDeffense1_001 = ParameterItemData.new(RarityType.Normal, ParameterType.AddDeffense, 0.1)
 }
 
 

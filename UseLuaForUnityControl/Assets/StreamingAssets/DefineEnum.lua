@@ -37,15 +37,16 @@ MoveTypeEnum = {
 }
 
 SceneNameEnum = {
-	Boot	= 1,
-	Title   = 2,
+	Boot		= 1,
+	Title   	= 2,
 	--Loading = 3,
-	Home    = 3,
-	Custom  = 4,
-	Quest   = 5,
-	Option  = 6,
-	Battle  = 7,
-	Gacha	= 8,
+	Home		= 3,
+	Custom  	= 4,
+	Quest   	= 5,
+	Option  	= 6,
+	Battle  	= 7,
+	Gacha		= 8,
+	GachaEffect	= 9,
 }
 
 SkillTypeEnum = {
@@ -61,4 +62,9 @@ ParameterType = {
 	AddFriend = 4,
 }
 
+RarityType = {
+	Normal = 1,
+	Rare = 2,
+	SuperRare = 3,
+}
 

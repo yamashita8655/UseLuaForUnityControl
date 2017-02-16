@@ -39,6 +39,7 @@ function SceneManager:Initialize()
 		OptionScene.new(),
 		BattleScene.new(),
 		GachaScene.new(),
+		GachaEffectScene.new(),
 	}
 
 	LuaLoadPrefabAfter("Prefabs/HeaderObject", "HeaderObject", "HeaderFooterCanvas")

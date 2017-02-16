@@ -20,6 +20,11 @@ function GachaScene.new()
 		local mochiPoint = GameManager.Instance():GetMochiPointValue()
 		LuaSetText("GachaScene_MochiPointText", mochiPoint)
 		
+		if self.IsInitialized == false then
+			GachaRollDialog.Instance():Initialize()
+			GachaRollDialog.Instance():SetParent("DialogRoot") 
+		end
+		
 		this:SceneBaseInitialize()
 	end
 
@@ -91,18 +96,45 @@ function GachaScene.new()
 		end
 		
 		if buttonName == "GachaScene_GachaWood" then
-			self:RollGachaDebug(Gacha_Wood.GachaData)
+			local mochiPoint = GameManager.Instance():GetMochiPointValue()
+			GachaRollDialog.Instance():OpenDialog(
+				function(count)
+					LuaUnityDebugLog(count)
+					local list = self:RollGachaDebug(Gacha_Wood, count)
+					GameManager.Instance():SetGachaItemList(list)
+					SceneManager.Instance():ChangeScene(SceneNameEnum.GachaEffect)
+				end,
+				Gacha_Wood.Price,
+				mochiPoint
+			)
+			--self:RollGachaDebug(Gacha_Wood, 100)
 		elseif buttonName == "GachaScene_GachaBronze" then
-			self:RollGachaDebug(Gacha_Bronze.GachaData)
+			self:RollGachaDebug(Gacha_Bronze, 100)
 		elseif buttonName == "GachaScene_GachaSilver" then
-			self:RollGachaDebug(Gacha_Silver.GachaData)
+			self:RollGachaDebug(Gacha_Silver, 100)
 		elseif buttonName == "GachaScene_GachaGold" then
-			self:RollGachaDebug(Gacha_Gold.GachaData)
+			self:RollGachaDebug(Gacha_Gold, 100)
 		end
+		
+		if buttonName == "GachaDebugAddMoneyButton" then
+			-- とりあえず、デバッグでポイントをマイナス分減らす(つまり、増やす)
+			self:UpdateMochiPoint(-1000000, GachaMoneyType.ExpPoint)
+		end
+
+		GachaRollDialog.Instance():OnClickButton(buttonName)
 	end
 
-	this.RollGachaDebug = function(self, gachaData)
-		local getItemList = gachaData:RollGacha(100)
+	this.RollGachaDebug = function(self, gachaConfig, rollCount)
+		local usePrice = gachaConfig.Price * rollCount
+		local moneyType = gachaConfig.MoneyType
+
+		-- エラーチェックしないとね！
+		local point = GameManager.Instance():GetMochiPointValue()
+		if point < usePrice then
+			return {}
+		end
+		
+		local getItemList = gachaConfig.GachaData:RollGacha(rollCount)
 		local hpCount = 0
 		local attackCount = 0
 		local deffenseCount = 0
@@ -118,6 +150,18 @@ function GachaScene.new()
 			end
 		end
 		LuaUnityDebugLog(hpCount.."/"..attackCount.."/"..deffenseCount)
+
+		self:UpdateMochiPoint(usePrice, moneyType)
+
+		return getItemList
+	end
+	
+	this.UpdateMochiPoint = function(self, usePriceValue, moneyType)
+		GameManager.Instance():AddMochiPointValue(-usePriceValue)
+		mochiPoint = GameManager.Instance():GetMochiPointValue()
+		SaveObject.HaveMochiPointValue = GameManager.Instance():GetMochiPointValue()
+		FileIOManager.Instance():Save()
+		LuaSetText("GachaScene_MochiPointText", mochiPoint)
 	end
 	
 	return this

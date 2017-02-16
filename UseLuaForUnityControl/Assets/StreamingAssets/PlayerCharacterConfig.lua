@@ -4,7 +4,7 @@
 PlayerCharacterConfig = {
 	{
 		IdIndex = 1,
-		PrefabName = "Prefabs/PlayerCharacterObject001",
+		PrefabName = "Prefabs/CommonCharacterIcon1",
 		Name = "PlayerCharacterObject001",
 		Width = 128,
 		Height = 128,
@@ -14,7 +14,6 @@ PlayerCharacterConfig = {
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
 		UnlockNeedValue = 0,
-		HomePlayerPrefabName = "Prefabs/HomeCharacter1",
 		HomePlayerName = "HomeCharacter1",
 		BaseParameter = CharacterParameter.new(100, 1, 1, 0),
 		AddParameter = CharacterParameter.new(0, 0, 0, 0),
@@ -26,7 +25,7 @@ PlayerCharacterConfig = {
 	},
 	{
 		IdIndex = 2,
-		PrefabName = "Prefabs/PlayerCharacterObject002",
+		PrefabName = "Prefabs/CommonCharacterIcon2",
 		Name = "PlayerCharacterObject002",
 		Width = 128,
 		Height = 128,
@@ -36,7 +35,6 @@ PlayerCharacterConfig = {
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
 		UnlockNeedValue = 0,
-		HomePlayerPrefabName = "Prefabs/HomeCharacter2",
 		HomePlayerName = "HomeCharacter2",
 		BaseParameter = CharacterParameter.new(100, 2, 2, 0),
 		AddParameter = CharacterParameter.new(0, 0, 0, 0),
@@ -48,7 +46,7 @@ PlayerCharacterConfig = {
 	},
 	{
 		IdIndex = 3,
-		PrefabName = "Prefabs/PlayerCharacterObject003",
+		PrefabName = "Prefabs/CommonCharacterIcon3",
 		Name = "PlayerCharacterObject003",
 		Width = 128,
 		Height = 128,
@@ -58,7 +56,6 @@ PlayerCharacterConfig = {
 		SkillConfig = SkillData.new(SkillTable_001),
 		SkillDetailText = SkillDetailText001,
 		UnlockNeedValue = 500,
-		HomePlayerPrefabName = "Prefabs/HomeCharacter3",
 		HomePlayerName = "HomeCharacter3",
 		BaseParameter = CharacterParameter.new(100, 3, 3, 0),
 		AddParameter = CharacterParameter.new(0, 0, 0, 0),
@@ -70,7 +67,7 @@ PlayerCharacterConfig = {
 	},
 	{
 		IdIndex = 4,
-		PrefabName = "Prefabs/PlayerCharacterObject004",
+		PrefabName = "Prefabs/CommonCharacterIcon4",
 		Name = "PlayerCharacterObject004",
 		Width = 128,
 		Height = 128,
@@ -81,7 +78,6 @@ PlayerCharacterConfig = {
 		SkillDetailText = SkillDetailText001,
 		--UnlockNeedValue = 500,
 		UnlockNeedValue = 0,
-		HomePlayerPrefabName = "Prefabs/HomeCharacter4",
 		HomePlayerName = "HomeCharacter4",
 		BaseParameter = CharacterParameter.new(100, 4, 4, 0),
 		AddParameter = CharacterParameter.new(0, 0, 0, 0),

@@ -57,6 +57,8 @@ function BootScene.new()
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
 		SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
+		--SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
+		--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 	end
 	
 	return this
