@@ -33,7 +33,7 @@ function CharacterParameter.new(maxHp, attack, deffense, friendPoint)
 	end
 	-- 信頼度
 	this.FriendPoint = function(self)
-		return self.LocalFriendPointFriendPoint
+		return self.LocalFriendPoint
 	end
 
 	return this

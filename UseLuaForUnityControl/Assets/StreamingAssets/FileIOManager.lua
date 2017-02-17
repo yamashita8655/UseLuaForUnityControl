@@ -61,6 +61,8 @@ function FileIOManager:Save()
 	
 	saveString = saveString.."HaveMochiPointValue = "..SaveObject.HaveMochiPointValue..",\r\n"
 	
+	saveString = saveString.."HaveBillingPointValue = "..SaveObject.HaveBillingPointValue..",\r\n"
+	
 	saveString = saveString.."CharacterList = {\r\n"
 	for i = 1, #SaveObject.CharacterList do
 		saveString = saveString.."{"
@@ -75,8 +77,6 @@ function FileIOManager:Save()
 	end
 	saveString = saveString.."},\r\n"
 
-	saveString = saveString.."HaveMochiPointValue = "..SaveObject.HaveMochiPointValue..",\r\n"
-	
 	saveString = saveString.."}\r\n"
 	
 	CallbackManager.Instance():AddCallback("FileIOManager_SaveCallback", {self}, self.SaveCallback)
@@ -100,6 +100,7 @@ function FileIOManager:CreateDefaultSaveObject()
 		CustomScene_CharacterUnlockList = {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		CustomScene_HaveKarikariValue = 0,
 		HaveMochiPointValue = 0,
+		HaveBillingPointValue = 0,
 		CharacterList = {
 			{0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -184,6 +185,9 @@ function FileIOManager:CheckSaveFile()
 	end
 	if SaveObject.HaveMochiPointValue == nil then
 		SaveObject.HaveMochiPointValue = 0
+	end
+	if SaveObject.HaveBillingPointValue == nil then
+		SaveObject.HaveBillingPointValue = 0
 	end
 	
 	if SaveObject.CharacterList == nil then

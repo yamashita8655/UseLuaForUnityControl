@@ -28,6 +28,14 @@ CharacterParameterEnum = {
 	RemainParameterPoint = 5,
 }
 
+CharacterTypeEnum = {
+	Mochi = 1,
+	Tora = 2,
+	Buchi = 3,
+	Sakura = 4,
+	Max = 4,
+}
+
 MoveTypeEnum = {
 	None = -1,
 	Straight = 0,
@@ -47,6 +55,7 @@ SceneNameEnum = {
 	Battle  	= 7,
 	Gacha		= 8,
 	GachaEffect	= 9,
+	GachaResult	= 10,
 }
 
 SkillTypeEnum = {
@@ -55,11 +64,17 @@ SkillTypeEnum = {
 	ExpTable = 3,
 }
 
+ItemType = {
+	ParameterUp = 1,
+	PointUp = 2,
+}
+
 ParameterType = {
 	AddHp = 1,
 	AddAttack = 2,
 	AddDeffense = 3,
 	AddFriend = 4,
+	AddMoney = 5,
 }
 
 RarityType = {

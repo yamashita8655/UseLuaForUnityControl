@@ -17,8 +17,13 @@ function GachaScene.new()
 		LuaSetActive("FooterObject", false)
 	
 		LuaFindObject("GachaScene_MochiPointText")
+		LuaFindObject("GachaScene_BillingPointText")
+
 		local mochiPoint = GameManager.Instance():GetMochiPointValue()
 		LuaSetText("GachaScene_MochiPointText", mochiPoint)
+		
+		local billingPoint = GameManager.Instance():GetBillingPointValue()
+		LuaSetText("GachaScene_BillingPointText", billingPoint)
 		
 		if self.IsInitialized == false then
 			GachaRollDialog.Instance():Initialize()
@@ -119,6 +124,7 @@ function GachaScene.new()
 		if buttonName == "GachaDebugAddMoneyButton" then
 			-- とりあえず、デバッグでポイントをマイナス分減らす(つまり、増やす)
 			self:UpdateMochiPoint(-1000000, GachaMoneyType.ExpPoint)
+			self:DebugBillingPointAdd()
 		end
 
 		GachaRollDialog.Instance():OnClickButton(buttonName)
@@ -135,22 +141,7 @@ function GachaScene.new()
 		end
 		
 		local getItemList = gachaConfig.GachaData:RollGacha(rollCount)
-		local hpCount = 0
-		local attackCount = 0
-		local deffenseCount = 0
-		for i = 1, #getItemList do
-			local item = getItemList[i]
-			local parameterType = item:GetParameterType()
-			if parameterType == ParameterType.AddHp then
-				hpCount = hpCount + 1
-			elseif parameterType == ParameterType.AddAttack then
-				attackCount = attackCount + 1
-			elseif parameterType == ParameterType.AddDeffense then
-				deffenseCount = deffenseCount + 1
-			end
-		end
-		LuaUnityDebugLog(hpCount.."/"..attackCount.."/"..deffenseCount)
-
+		self:UpdateCharacterParameter(getItemList)
 		self:UpdateMochiPoint(usePrice, moneyType)
 
 		return getItemList
@@ -158,10 +149,88 @@ function GachaScene.new()
 	
 	this.UpdateMochiPoint = function(self, usePriceValue, moneyType)
 		GameManager.Instance():AddMochiPointValue(-usePriceValue)
-		mochiPoint = GameManager.Instance():GetMochiPointValue()
+		local mochiPoint = GameManager.Instance():GetMochiPointValue()
 		SaveObject.HaveMochiPointValue = GameManager.Instance():GetMochiPointValue()
 		FileIOManager.Instance():Save()
 		LuaSetText("GachaScene_MochiPointText", mochiPoint)
+	end
+	
+	this.DebugBillingPointAdd = function(self)
+		GameManager.Instance():AddBillingPointValue(9999)
+		local point = GameManager.Instance():GetBillingPointValue()
+		SaveObject.HaveBillingPointValue = GameManager.Instance():GetBillingPointValue()
+		FileIOManager.Instance():Save()
+		LuaSetText("GachaScene_BillingPointText", point)
+	end
+	
+	this.UpdateCharacterParameter = function(self, itemList)
+		local currentPlayerCharater = GameManager.Instance():GetSelectPlayerCharacterData()
+		local characterAddParameter = SaveObject.CharacterList[currentPlayerCharater.IdIndex]
+
+		local characterTypeList = {}
+		for i = 1, CharacterTypeEnum.Max do
+			table.insert(characterTypeList, {})
+		end
+		
+		for i = 1, #itemList do
+			if itemList[i]:GetItemType() == ItemType.ParameterUp then
+				table.insert(characterTypeList[itemList[i]:GetKindType()], itemList[i])
+			end
+		end  
+
+		local canNotAddParameterItemList = {}
+		local addParameterList = {}
+
+		for i = 1, #characterTypeList do
+			local addHp = 0
+			local addAttack = 0
+			local addDeffense = 0
+			local addFriendPoint = 0
+
+			local playerCharacter = PlayerCharacterConfig[i]
+			local characterAddParameter = SaveObject.CharacterList[playerCharacter.IdIndex]
+			local remainPoint = characterAddParameter[CharacterParameterEnum.RemainParameterPoint]
+
+			for j = 1, #characterTypeList[i] do
+				local item = characterTypeList[i][j]
+				if remainPoint <= 0 then
+					table.insert(canNotAddParameterItemList, item)
+				else
+					if item:GetParameterType() == ParameterType.AddHp then
+						addHp = addHp + item:GetAddValue()
+					elseif item:GetParameterType() == ParameterType.AddAttack then
+						addAttack = addAttack + item:GetAddValue()
+					elseif item:GetParameterType() == ParameterType.AddDeffense then
+						addDeffense = addDeffense + item:GetAddValue()
+					elseif item:GetParameterType() == ParameterType.AddFriend then
+						addFriendPoint = addFriendPoint + item:GetAddValue()
+					end
+					remainPoint = remainPoint - 1
+				end
+			end
+		
+			local characterParameter = CharacterParameter.new(addHp, addAttack, addDeffense, addFriendPoint)
+
+			local data = {
+				CharacterType = 0,
+				Parameter = {},
+			}
+
+			data.CharacterType = i
+			data.Parameter = characterParameter
+			table.insert(addParameterList, data)
+			
+			characterAddParameter[CharacterParameterEnum.RemainParameterPoint] = remainPoint
+		
+			characterAddParameter[CharacterParameterEnum.AddHp] = characterAddParameter[CharacterParameterEnum.AddHp] + addHp
+			characterAddParameter[CharacterParameterEnum.AddAttack] = characterAddParameter[CharacterParameterEnum.AddAttack] + addAttack
+			characterAddParameter[CharacterParameterEnum.AddDeffense] = characterAddParameter[CharacterParameterEnum.AddDeffense] + addDeffense
+			characterAddParameter[CharacterParameterEnum.FriendPoint] = characterAddParameter[CharacterParameterEnum.FriendPoint] + addFriendPoint
+		end
+		FileIOManager.Instance():Save()
+
+		GameManager.Instance():SetGachaItemAddParameterList(addParameterList)
+		GameManager.Instance():SetGachaItemCanNotAddParameterList(canNotAddParameterItemList)
 	end
 	
 	return this

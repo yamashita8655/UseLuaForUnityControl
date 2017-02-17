@@ -3,7 +3,7 @@
 -- プレイヤーキャラクター定義
 PlayerCharacterConfig = {
 	{
-		IdIndex = 1,
+		IdIndex = CharacterTypeEnum.Mochi,
 		PrefabName = "Prefabs/CommonCharacterIcon1",
 		Name = "PlayerCharacterObject001",
 		Width = 128,
@@ -24,7 +24,7 @@ PlayerCharacterConfig = {
 		},
 	},
 	{
-		IdIndex = 2,
+		IdIndex = CharacterTypeEnum.Tora,
 		PrefabName = "Prefabs/CommonCharacterIcon2",
 		Name = "PlayerCharacterObject002",
 		Width = 128,
@@ -45,7 +45,7 @@ PlayerCharacterConfig = {
 		},
 	},
 	{
-		IdIndex = 3,
+		IdIndex = CharacterTypeEnum.Buchi,
 		PrefabName = "Prefabs/CommonCharacterIcon3",
 		Name = "PlayerCharacterObject003",
 		Width = 128,
@@ -66,7 +66,7 @@ PlayerCharacterConfig = {
 		},
 	},
 	{
-		IdIndex = 4,
+		IdIndex = CharacterTypeEnum.Sakura,
 		PrefabName = "Prefabs/CommonCharacterIcon4",
 		Name = "PlayerCharacterObject004",
 		Width = 128,

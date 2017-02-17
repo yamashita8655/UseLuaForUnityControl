@@ -47,17 +47,18 @@ function BootScene.new()
 		customSelectIndex = SaveObject.CustomScene_SelectIndex
 		GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacterConfig[customSelectIndex])
 
-		GameManager:SetKarikariValue(SaveObject.CustomScene_HaveKarikariValue) 
-		--GameManager:SetKarikariValue(1000) 
+		GameManager:SetKarikariValue(SaveObject.CustomScene_HaveKarikariValue)
+		--GameManager:SetKarikariValue(1000)
 		
-		GameManager:SetMochiPointValue(SaveObject.HaveMochiPointValue) 
+		GameManager:SetMochiPointValue(SaveObject.HaveMochiPointValue)
+		GameManager:SetBillingPointValue(SaveObject.HaveBillingPointValue)
 		
 		LuaUnityDebugLog("ChangeSceneBefore")
 
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
-		SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
-		--SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
+		--SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
+		SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 	end
 	

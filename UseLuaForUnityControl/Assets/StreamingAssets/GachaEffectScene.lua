@@ -6,6 +6,8 @@ GachaEffectScene = {}
 -- コンストラクタ
 function GachaEffectScene.new()
 	local this = SceneBase.new()
+	
+	this.SpawnItemList = {}
 
 	-- メソッド定義
 	-- 初期化
@@ -20,13 +22,10 @@ function GachaEffectScene.new()
 
 		for i = 1, 10 do
 			LuaFindObject("GachaEffectSpawnMochiRoot"..i)
-			LuaFindObject("GachaEffectMochiNormalImage"..i)
-			LuaFindObject("GachaEffectMochiSilverImage"..i)
-			LuaFindObject("GachaEffectMochiGoldImage"..i)
 		end
 
 
-		self:ResetActiveMochiImage()
+		--self:ResetActiveMochiImage()
 
 		local list = GameManager.Instance():GetGachaItemList()
 		
@@ -68,13 +67,15 @@ function GachaEffectScene.new()
 			end
 			
 			for i = 1, #rarityList do
-				self:SetActiveMochiImage(i, rarityList[i]:GetRarity())
+				self:SetParentMochiImage(i, rarityList[i]:GetPrefabName())
 			end
+			self.SpawnItemList = rarityList
 
 		else
 			for i = 1, #list do
-				self:SetActiveMochiImage(i, list[i]:GetRarity())
+				self:SetParentMochiImage(i, list[i]:GetPrefabName())
 			end
+			self.SpawnItemList = list
 		end
 
 		this:SceneBaseInitialize()
@@ -91,7 +92,7 @@ function GachaEffectScene.new()
 	-- 更新
 	this.GachaEffectCallback = function(arg, unityArg)
 		local self = arg[1]
-		SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
+		SceneManager.Instance():ChangeScene(SceneNameEnum.GachaResult)
 	end
 
 
@@ -104,6 +105,9 @@ function GachaEffectScene.new()
 	-- 終了
 	this.SceneBaseEnd = this.End
 	this.End = function(self)
+		for i = 1, #self.SpawnItemList do
+			LuaDestroyObject(self.SpawnItemList[i]:GetPrefabName()..i)
+		end
 		this:SceneBaseEnd()
 	end
 	
@@ -120,20 +124,21 @@ function GachaEffectScene.new()
 	end
 	
 	-- 
-	this.SetActiveMochiImage = function(self, index, rarity)
-		if rarity == RarityType.Normal then
-			LuaSetActive("GachaEffectMochiNormalImage"..index, true)
-			LuaSetActive("GachaEffectMochiSilverImage"..index, false)
-			LuaSetActive("GachaEffectMochiGoldImage"..index, false)
-		elseif rarity == RarityType.Rare then
-			LuaSetActive("GachaEffectMochiNormalImage"..index, false)
-			LuaSetActive("GachaEffectMochiSilverImage"..index, true)
-			LuaSetActive("GachaEffectMochiGoldImage"..index, false)
-		elseif rarity == RarityType.SuperRare then
-			LuaSetActive("GachaEffectMochiNormalImage"..index, false)
-			LuaSetActive("GachaEffectMochiSilverImage"..index, false)
-			LuaSetActive("GachaEffectMochiGoldImage"..index, true)
-		end
+	this.SetParentMochiImage = function(self, index, prefabName)
+		--if rarity == RarityType.Normal then
+		--	LuaSetActive("GachaEffectMochiNormalImage"..index, true)
+		--	LuaSetActive("GachaEffectMochiSilverImage"..index, false)
+		--	LuaSetActive("GachaEffectMochiGoldImage"..index, false)
+		--elseif rarity == RarityType.Rare then
+		--	LuaSetActive("GachaEffectMochiNormalImage"..index, false)
+		--	LuaSetActive("GachaEffectMochiSilverImage"..index, true)
+		--	LuaSetActive("GachaEffectMochiGoldImage"..index, false)
+		--elseif rarity == RarityType.SuperRare then
+		--	LuaSetActive("GachaEffectMochiNormalImage"..index, false)
+		--	LuaSetActive("GachaEffectMochiSilverImage"..index, false)
+		--	LuaSetActive("GachaEffectMochiGoldImage"..index, true)
+		--end
+		LuaLoadPrefabAfter(prefabName, prefabName..index, "GachaEffectSpawnMochiRoot"..index)
 	end
 	
 	this.ResetActiveMochiImage = function(self)

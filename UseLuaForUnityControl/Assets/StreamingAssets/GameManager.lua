@@ -21,8 +21,11 @@ function GameManager:Initialize()
 	self.SelectQuestId = 0
 	self.HaveKarikariValue = 0
 	self.HaveMochiPointValue = 0
+	self.HaveBillingPointValue = 0
 	self.KarikariSpawnRate = 1000--1%扱い。乱数は1000で割る為。
 	self.GachaItemList = {}
+	self.GachaItemAddParameterList = {}
+	self.GachaItemCanNotAddParameterList = {}
 end
 
 -- 選択しているキャラクターデータ指定
@@ -68,6 +71,17 @@ function GameManager:AddMochiPointValue(value)
 	self.HaveMochiPointValue = self.HaveMochiPointValue + value
 end
 
+-- 持っている課金ポイントの量
+function GameManager:SetBillingPointValue(value) 
+	self.HaveBillingPointValue = value
+end
+function GameManager:GetBillingPointValue() 
+	return self.HaveBillingPointValue
+end
+function GameManager:AddBillingPointValue(value) 
+	self.HaveBillingPointValue = self.HaveBillingPointValue + value
+end
+
 -- カリカリポイント出現レート
 function GameManager:GetKarikariRate() 
 	return self.KarikariSpawnRate
@@ -80,6 +94,21 @@ end
 function GameManager:GetGachaItemList() 
 	return self.GachaItemList
 end
+-- ガチャで引いた結果、キャラ毎の加算値計算後の値のリスト
+function GameManager:SetGachaItemAddParameterList(list) 
+	self.GachaItemAddParameterList = list
+end
+function GameManager:GetGachaItemAddParameterList() 
+	return self.GachaItemAddParameterList
+end
+-- パラメータアップ数上限に引っかかったアイテムリスト
+function GameManager:SetGachaItemCanNotAddParameterList(list) 
+	self.GachaItemCanNotAddParameterList = list
+end
+function GameManager:GetGachaItemCanNotAddParameterList() 
+	return self.GachaItemCanNotAddParameterList
+end
+
 
 function GameManager:Update(deltaTime) 
 end
