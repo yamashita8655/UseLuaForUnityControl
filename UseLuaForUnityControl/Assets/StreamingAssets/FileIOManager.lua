@@ -63,6 +63,8 @@ function FileIOManager:Save()
 	
 	saveString = saveString.."HaveBillingPointValue = "..SaveObject.HaveBillingPointValue..",\r\n"
 	
+	saveString = saveString.."HaveSpecialPointValue = "..SaveObject.HaveSpecialPointValue..",\r\n"
+	
 	saveString = saveString.."CharacterList = {\r\n"
 	for i = 1, #SaveObject.CharacterList do
 		saveString = saveString.."{"
@@ -101,6 +103,7 @@ function FileIOManager:CreateDefaultSaveObject()
 		CustomScene_HaveKarikariValue = 0,
 		HaveMochiPointValue = 0,
 		HaveBillingPointValue = 0,
+		HaveSpecialPointValue = 0,
 		CharacterList = {
 			{0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -188,6 +191,9 @@ function FileIOManager:CheckSaveFile()
 	end
 	if SaveObject.HaveBillingPointValue == nil then
 		SaveObject.HaveBillingPointValue = 0
+	end
+	if SaveObject.HaveSpecialPointValue == nil then
+		SaveObject.HaveSpecialPointValue = 0
 	end
 	
 	if SaveObject.CharacterList == nil then

@@ -20,6 +20,10 @@ function ResultDialog:Initialize()
 	self.CloseCallback = nil 
 
 	LuaLoadPrefabAfter("Prefabs/System/ResultDialog", "ResultDialog", "SystemCanvas")
+	
+	LuaFindObject("BattleResultGetExpText")
+	LuaFindObject("BattleResultFailedText")
+	LuaFindObject("BattleResultGetExpFinalText")
 
 	LuaSetActive("ResultDialog", false)
 end
@@ -28,8 +32,19 @@ function ResultDialog:SetParent(parentName)
 	LuaSetParent("ResultDialog", parentName)
 end
 
-function ResultDialog:OpenDialog(closeCallback) 
+function ResultDialog:OpenDialog(closeCallback, expPoint, isFailed)
 	if self.IsActive == false then
+
+		if isFailed == true then
+			LuaSetText("BattleResultGetExpText", expPoint)
+			LuaSetText("BattleResultFailedText", "1/10")
+			LuaSetText("BattleResultGetExpFinalText", math.floor(expPoint/10))
+		else
+			LuaSetText("BattleResultGetExpText", expPoint)
+			LuaSetText("BattleResultFailedText", "-")
+			LuaSetText("BattleResultGetExpFinalText", expPoint)
+		end
+
 		self.CloseCallback = closeCallback
 		self.IsActive = true
 		CallbackManager.Instance():AddCallback("ResultDialogManager_OpenCallback", {self}, self.DialogOpenCallback)

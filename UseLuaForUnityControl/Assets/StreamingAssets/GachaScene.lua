@@ -6,29 +6,35 @@ GachaScene = {}
 -- コンストラクタ
 function GachaScene.new()
 	local this = SceneBase.new()
+	this.GachaSelectIndex = 1
 
 	-- メソッド定義
 	-- 初期化
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
+		self.GachaSelectIndex = 1
+
 		LuaChangeScene("Gacha", "MainCanvas")
 		
 		LuaSetActive("HeaderObject", false)
 		LuaSetActive("FooterObject", false)
 	
-		LuaFindObject("GachaScene_MochiPointText")
-		LuaFindObject("GachaScene_BillingPointText")
+		LuaFindObject("GachaNekoPointText")
+		LuaFindObject("GachaBillingPointText")
+		LuaFindObject("GachaDetailText")
 
 		local mochiPoint = GameManager.Instance():GetMochiPointValue()
-		LuaSetText("GachaScene_MochiPointText", mochiPoint)
+		LuaSetText("GachaNekoPointText", mochiPoint)
 		
 		local billingPoint = GameManager.Instance():GetBillingPointValue()
-		LuaSetText("GachaScene_BillingPointText", billingPoint)
+		LuaSetText("GachaBillingPointText", billingPoint)
 		
 		if self.IsInitialized == false then
 			GachaRollDialog.Instance():Initialize()
-			GachaRollDialog.Instance():SetParent("DialogRoot") 
+			GachaRollDialog.Instance():SetParent("GachaDialogRoot") 
 		end
+
+		self:UpdateGachaDetailText()
 		
 		this:SceneBaseInitialize()
 	end
@@ -53,7 +59,7 @@ function GachaScene.new()
 	
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
-		if buttonName == "GachaBackButton" then
+		if buttonName == "GachaSceneBackButton" then
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 		end
 		if buttonName == "GachaScene_GachaButton" then
@@ -67,7 +73,7 @@ function GachaScene.new()
 			--SaveObject.HaveMochiPointValue = GameManager.Instance():GetMochiPointValue()
 			--FileIOManager.Instance():Save()
 
-			--LuaSetText("GachaScene_MochiPointText", mochiPoint)
+			--LuaSetText("GachaNekoPointText", mochiPoint)
 
 			-- 仮でパラメータアップをして保存してみる
 
@@ -100,31 +106,68 @@ function GachaScene.new()
 			FileIOManager.Instance():Save()
 		end
 		
-		if buttonName == "GachaScene_GachaWood" then
-			local mochiPoint = GameManager.Instance():GetMochiPointValue()
-			GachaRollDialog.Instance():OpenDialog(
-				function(count)
-					LuaUnityDebugLog(count)
-					local list = self:RollGachaDebug(Gacha_Wood, count)
-					GameManager.Instance():SetGachaItemList(list)
-					SceneManager.Instance():ChangeScene(SceneNameEnum.GachaEffect)
-				end,
-				Gacha_Wood.Price,
-				mochiPoint
-			)
-			--self:RollGachaDebug(Gacha_Wood, 100)
-		elseif buttonName == "GachaScene_GachaBronze" then
-			self:RollGachaDebug(Gacha_Bronze, 100)
-		elseif buttonName == "GachaScene_GachaSilver" then
-			self:RollGachaDebug(Gacha_Silver, 100)
-		elseif buttonName == "GachaScene_GachaGold" then
-			self:RollGachaDebug(Gacha_Gold, 100)
+		if buttonName == "GachaSceneFirstButton" then
+			self.GachaSelectIndex = 1
+			self:UpdateGachaDetailText()
+			--local mochiPoint = GameManager.Instance():GetMochiPointValue()
+			--GachaRollDialog.Instance():OpenDialog(
+			--	function(count)
+			--		LuaUnityDebugLog(count)
+			--		local list = self:RollGachaDebug(GachaList[1], count)
+			--		GameManager.Instance():SetGachaItemList(list)
+			--		SceneManager.Instance():ChangeScene(SceneNameEnum.GachaEffect)
+			--	end,
+			--	Gacha_Wood.Price,
+			--	mochiPoint
+			--)
+		elseif buttonName == "GachaSceneSecondButton" then
+			self.GachaSelectIndex = 2
+			self:UpdateGachaDetailText()
+			--self:RollGachaDebug(GachaList[2], 100)
+		elseif buttonName == "GachaSceneThirdButton" then
+			self.GachaSelectIndex = 3
+			self:UpdateGachaDetailText()
+			--self:RollGachaDebug(GachaList[3], 100)
+		elseif buttonName == "GachaSceneFourthButton" then
+			self.GachaSelectIndex = 4
+			self:UpdateGachaDetailText()
+			--self:RollGachaDebug(GachaList[4], 100)
 		end
 		
 		if buttonName == "GachaDebugAddMoneyButton" then
 			-- とりあえず、デバッグでポイントをマイナス分減らす(つまり、増やす)
 			self:UpdateMochiPoint(-1000000, GachaMoneyType.ExpPoint)
 			self:DebugBillingPointAdd()
+		end
+		
+		if buttonName == "GachaSceneRollButton" then
+			local mochiPoint = GameManager.Instance():GetMochiPointValue()
+			GachaRollDialog.Instance():OpenDialog(
+				function(count)
+					LuaUnityDebugLog(count)
+					local list = self:RollGachaDebug(GachaList[self.GachaSelectIndex], count)
+					GameManager.Instance():SetGachaItemList(list)
+					SceneManager.Instance():ChangeScene(SceneNameEnum.GachaEffect)
+				end,
+				GachaList[self.GachaSelectIndex].Price,
+				mochiPoint
+			)
+		end
+		
+		if buttonName == "GachaSceneItemListButton" then
+			if GachaList[self.GachaSelectIndex].MoneyType == GachaMoneyType.ExpPoint then
+				DialogManager.Instance():OpenDialog(
+					"課金ガチャじゃないので、排出内容は内緒☆",
+					function()
+					end,
+					function()
+					end,
+					function()
+					end,
+					function()
+					end
+				)
+			end
 		end
 
 		GachaRollDialog.Instance():OnClickButton(buttonName)
@@ -152,7 +195,12 @@ function GachaScene.new()
 		local mochiPoint = GameManager.Instance():GetMochiPointValue()
 		SaveObject.HaveMochiPointValue = GameManager.Instance():GetMochiPointValue()
 		FileIOManager.Instance():Save()
-		LuaSetText("GachaScene_MochiPointText", mochiPoint)
+		LuaSetText("GachaNekoPointText", mochiPoint)
+	end
+	
+	this.UpdateGachaDetailText = function(self)
+		local gachaData = GachaList[self.GachaSelectIndex]
+		LuaSetText("GachaDetailText", gachaData.Detail)
 	end
 	
 	this.DebugBillingPointAdd = function(self)
@@ -160,7 +208,7 @@ function GachaScene.new()
 		local point = GameManager.Instance():GetBillingPointValue()
 		SaveObject.HaveBillingPointValue = GameManager.Instance():GetBillingPointValue()
 		FileIOManager.Instance():Save()
-		LuaSetText("GachaScene_BillingPointText", point)
+		LuaSetText("GachaBillingPointText", point)
 	end
 	
 	this.UpdateCharacterParameter = function(self, itemList)

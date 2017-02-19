@@ -32,13 +32,13 @@ function BattleScene.new()
 		EnemyManager.Instance():Initialize()
 		AreaCellManager.Instance():Initialize()
 		
-		LuaLoadPrefabAfter("Prefabs/System/LoseEffect", "LoseEffect", "DialogRoot")
+		LuaLoadPrefabAfter("Prefabs/System/LoseEffect", "LoseEffect", "BattleDialogRoot")
 		LuaSetActive("LoseEffect", false)
 		
-		LuaLoadPrefabAfter("Prefabs/System/WinEffect", "WinEffect", "DialogRoot")
+		LuaLoadPrefabAfter("Prefabs/System/WinEffect", "WinEffect", "BattleDialogRoot")
 		LuaSetActive("WinEffect", false)
 
-		LuaLoadPrefabAfter("Prefabs/System/BattleStartEffect", "BattleStartEffect", "DialogRoot")
+		LuaLoadPrefabAfter("Prefabs/System/BattleStartEffect", "BattleStartEffect", "BattleDialogRoot")
 		LuaSetActive("BattleStartEffect", false)
 		
 		LuaFindObject("BattleComboLabel")
@@ -110,7 +110,7 @@ function BattleScene.new()
 		LuaFindObject("BattleObjectRoot")
 		LuaFindObject("ExpText")
 		LuaFindObject("BattleKarikariText")
-		LuaFindObject("DialogRoot")
+		LuaFindObject("BattleDialogRoot")
 
 		LuaSetText("ExpText", 0)
 		LuaSetText("BattleKarikariText", 0)
@@ -127,10 +127,10 @@ function BattleScene.new()
 		
 		if self.IsInitialized == false then
 			SkillLevelUpDialog.Instance():Initialize()
-			SkillLevelUpDialog.Instance():SetParent("DialogRoot") 
+			SkillLevelUpDialog.Instance():SetParent("BattleDialogRoot") 
 			
 			ResultDialog.Instance():Initialize()
-			ResultDialog.Instance():SetParent("DialogRoot") 
+			ResultDialog.Instance():SetParent("BattleDialogRoot") 
 		end
 		
 		this:SceneBaseInitialize()
@@ -209,10 +209,15 @@ function BattleScene.new()
 		LuaUnityDebugLog("callback!!!!")
 		LuaSetActive("WinEffect", false)
 		
+		local player = PlayerManager.Instance():GetPlayer()
+		local exp = player:GetEXP()
+		
 		ResultDialog.Instance():OpenDialog(
 			function()
 				SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
-			end
+			end,
+			exp,
+			false
 		)
 	end
 	
@@ -227,10 +232,15 @@ function BattleScene.new()
 		LuaUnityDebugLog("callback!!!!")
 		LuaSetActive("LoseEffect", false)
 		
+		local player = PlayerManager.Instance():GetPlayer()
+		local exp = player:GetEXP()
+		
 		ResultDialog.Instance():OpenDialog(
 			function()
 				SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
-			end
+			end,
+			exp,
+			true
 		)
 	end
 	

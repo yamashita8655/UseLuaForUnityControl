@@ -52,6 +52,7 @@ function BootScene.new()
 		
 		GameManager:SetMochiPointValue(SaveObject.HaveMochiPointValue)
 		GameManager:SetBillingPointValue(SaveObject.HaveBillingPointValue)
+		GameManager:SetSpecialPointValue(SaveObject.HaveSpecialPointValue)
 		
 		LuaUnityDebugLog("ChangeSceneBefore")
 

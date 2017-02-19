@@ -114,8 +114,11 @@ function CustomScene.new()
 						LuaSetText("CustomKalikaliPointText", GameManager.Instance():GetKarikariValue())
 						SaveObject.CustomScene_HaveKarikariValue = GameManager.Instance():GetKarikariValue()
 						self:UpdateLockState()
-					end
-					,
+					end,
+					function()
+					end,
+					function()
+					end,
 					function()
 					end
 				)

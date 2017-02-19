@@ -22,6 +22,7 @@ function GameManager:Initialize()
 	self.HaveKarikariValue = 0
 	self.HaveMochiPointValue = 0
 	self.HaveBillingPointValue = 0
+	self.HaveSpecialPointValue = 0
 	self.KarikariSpawnRate = 1000--1%扱い。乱数は1000で割る為。
 	self.GachaItemList = {}
 	self.GachaItemAddParameterList = {}
@@ -80,6 +81,17 @@ function GameManager:GetBillingPointValue()
 end
 function GameManager:AddBillingPointValue(value) 
 	self.HaveBillingPointValue = self.HaveBillingPointValue + value
+end
+
+-- 持っている特別ポイントの量
+function GameManager:SetSpecialPointValue(value) 
+	self.HaveSpecialPointValue = value
+end
+function GameManager:GetSpecialPointValue() 
+	return self.HaveSpecialPointValue
+end
+function GameManager:AddSpecialPointValue(value) 
+	self.HaveSpecialPointValue = self.HaveSpecialPointValue + value
 end
 
 -- カリカリポイント出現レート

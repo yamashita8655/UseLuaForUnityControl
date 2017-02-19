@@ -4,6 +4,44 @@ GachaMoneyType = {
 	BillingPoint	= 1,--課金ポイント
 }
 
+
+GachaList = {
+	{
+		Name = "初めてくじ",
+		PrefabName = "Prefabs/",
+		Price = 10,
+		Detail = "ゲームを始めたばっかりの人の為のくじ。\n『もち』と『とら』が強くなるアイテムが手に入る。\n効果は低いけど安いので、気軽に引いてしまおう。\n\n1回10ねこポイント。",
+		MoneyType = GachaMoneyType.ExpPoint,
+		GachaData = GachaExecuteObject.new(GachaTableWood),
+	},
+	
+	{
+		Name = "慣れたくじ",
+		PrefabName = "Prefabs/",
+		Price = 100,
+		Detail = "ゲームに慣れてきた人の為のくじ。\nこのくじ以降は、『全もちねこ』の強くなるアイテムが手に入る。\n少し高くなるが、そこそこ強くなれるアイテムが手に入る。\n\n1回100ねこポイント。",
+		MoneyType = GachaMoneyType.ExpPoint,
+		GachaData = GachaExecuteObject.new(GachaTableBronze),
+	},
+	
+	{
+		Name = "つわものくじ",
+		PrefabName = "Prefabs/",
+		Price = 1000,
+		Detail = "もっと強くなりたい人の為のくじ。\n値段相応なアイテムが手に入る。\n\n1回1000ねこポイント。",
+		MoneyType = GachaMoneyType.ExpPoint,
+		GachaData = GachaExecuteObject.new(GachaTableSilver),
+	},
+	
+	{
+		Name = "きわみのくじ",
+		PrefabName = "Prefabs/",
+		Price = 10000,
+		Detail = "強さを極めたい人の為のくじ\n値段が見合っていないが、最強を目指すならこのくじを引くことになる。\n\n1回10000ねこポイント。",
+		MoneyType = GachaMoneyType.ExpPoint,
+		GachaData = GachaExecuteObject.new(GachaTableGold),
+	},
+}
 -- 弾の定義
 Gacha_Wood = {
 	Name = "ウッドガチャ",

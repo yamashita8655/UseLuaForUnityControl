@@ -95,24 +95,46 @@ function CharacterDetailDialog:OnClickButton(buttonName)
 	if buttonName == "CharacterDetailCloseButton" then
 		self:CloseDialog()
 	elseif buttonName == "CharacterDetailStatusResetButton" then
-		DialogManager.Instance():OpenDialog(
-			"本当にスキルをリセットしていいですか？",
-			function()
-				local characterAddParameter = SaveObject.CharacterList[self.CharacterData.IdIndex]
-				characterAddParameter[CharacterParameterEnum.RemainParameterPoint] = 100
-				characterAddParameter[CharacterParameterEnum.AddHp] = 0
-				characterAddParameter[CharacterParameterEnum.AddAttack] = 0
-				characterAddParameter[CharacterParameterEnum.AddDeffense] = 0
-				FileIOManager.Instance():Save()
-				self:UpdateAddParameter()
-			end ,
-			function()
-			end,
-			function()
-			end,
-			function()
-			end
-		)
+		local isUnlocked = SaveObject.CustomScene_CharacterUnlockList[self.CharacterData.IdIndex]
+		if isUnlocked == 0 then
+			DialogManager.Instance():OpenDialog(
+				"この子はまだ仲間になっていませんが、スキルをリセットしていいですか？",
+				function()
+					local characterAddParameter = SaveObject.CharacterList[self.CharacterData.IdIndex]
+					characterAddParameter[CharacterParameterEnum.RemainParameterPoint] = 100
+					characterAddParameter[CharacterParameterEnum.AddHp] = 0
+					characterAddParameter[CharacterParameterEnum.AddAttack] = 0
+					characterAddParameter[CharacterParameterEnum.AddDeffense] = 0
+					FileIOManager.Instance():Save()
+					self:UpdateAddParameter()
+				end ,
+				function()
+				end,
+				function()
+				end,
+				function()
+				end
+			)
+		else
+			DialogManager.Instance():OpenDialog(
+				"本当にスキルをリセットしていいですか？",
+				function()
+					local characterAddParameter = SaveObject.CharacterList[self.CharacterData.IdIndex]
+					characterAddParameter[CharacterParameterEnum.RemainParameterPoint] = 100
+					characterAddParameter[CharacterParameterEnum.AddHp] = 0
+					characterAddParameter[CharacterParameterEnum.AddAttack] = 0
+					characterAddParameter[CharacterParameterEnum.AddDeffense] = 0
+					FileIOManager.Instance():Save()
+					self:UpdateAddParameter()
+				end ,
+				function()
+				end,
+				function()
+				end,
+				function()
+				end
+			)
+		end
 	end
 end
 
