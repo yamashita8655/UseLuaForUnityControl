@@ -88,3 +88,35 @@ function UtilityFunction.ListUniq(list)
 	return outputList, dupList
 end
 
+-- ガチャのアイテムの説明を文字列で返す
+function UtilityFunction.CreateGachaResultGetItemString(itemData) 
+	local output = ""
+
+	if itemData:GetItemType() == ItemType.ParameterUp then
+		if itemData:GetKindType() == CharacterTypeEnum.Mochi then
+			output = output.."『もち』の"
+		elseif itemData:GetKindType() == CharacterTypeEnum.Tora then
+			output = output.."『とら』の"
+		elseif itemData:GetKindType() == CharacterTypeEnum.Buchi then
+			output = output.."『ぶち』の"
+		elseif itemData:GetKindType() == CharacterTypeEnum.Sakura then
+			output = output.."『さくら』の"
+		end
+
+		if itemData:GetParameterType() == ParameterType.AddHp then
+			output = output.."『HP』が"
+		elseif itemData:GetParameterType() == ParameterType.AddAttack then
+			output = output.."『攻撃力』が"
+		elseif itemData:GetParameterType() == ParameterType.AddDeffense then
+			output = output.."『防御力』が"
+		elseif itemData:GetParameterType() == ParameterType.AddFriendPoint then
+			output = output.."『信頼度』が"
+		end
+			
+		output = output.."『"..itemData:GetAddValue().."』".."上がった！"
+	else
+	end
+	
+	return output
+end
+

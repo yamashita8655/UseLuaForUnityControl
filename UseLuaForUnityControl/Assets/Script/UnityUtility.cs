@@ -187,6 +187,22 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		return 0;
 	}
+
+	// オブジェクトをリネームする
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityRenameObject(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string renameName = Marshal.PtrToStringAnsi(res_s);
+		GameObject obj = GameObject.Find(objectName);
+		obj.name = renameName;
+		GameObjectCacheManager.Instance.FindGameObject(renameName);
+
+		return 0;
+	}
 	
 	// オブジェクトを探して、Findリストに登録する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
@@ -807,6 +823,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityDestroyObject = new LuaManager.DelegateLuaBindFunction (UnityDestroyObject);
 		IntPtr LuaUnityDestroyObjectIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityDestroyObject);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityDestroyObject", LuaUnityDestroyObjectIntPtr, LuaUnityDestroyObject);
+
+		// オブジェクト名のリネーム
+		LuaManager.DelegateLuaBindFunction LuaUnityRenameObject = new LuaManager.DelegateLuaBindFunction (UnityRenameObject);
+		IntPtr LuaUnityRenameObjectIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityRenameObject);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityRenameObject", LuaUnityRenameObjectIntPtr, LuaUnityRenameObject);
 		
 		// オブジェクトの検索
 		LuaManager.DelegateLuaBindFunction LuaUnityFindObject = new LuaManager.DelegateLuaBindFunction (UnityFindObject);

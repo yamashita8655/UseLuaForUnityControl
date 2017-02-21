@@ -26,6 +26,9 @@ function GachaResultScene.new()
 			LuaFindObject("GachaResultParameterUpRoot")
 			CharacterParameterUpDialog.Instance():Initialize()
 			CharacterParameterUpDialog.Instance():SetParent("GachaResultParameterUpRoot") 
+			
+			GachaResultGetItemListDialog.Instance():Initialize()
+			GachaResultGetItemListDialog.Instance():SetParent("GachaResultDialogRoot") 
 		else
 			LuaSetPosition("GachaResultLayoutRoot", 0, 0, 0)
 			LuaChangeScene("GachaResult", "MainCanvas")
@@ -44,6 +47,15 @@ function GachaResultScene.new()
 
 		for i = 1, #list do
 			LuaLoadPrefabAfter(list[i]:GetPrefabName(), "GachaResultItemNode"..i, "GachaResultScrollContent")
+			if list[i]:GetParameterType() == ParameterType.AddHp then
+				LuaPlayAnimator("GachaResultItemNode"..i, "HpOn", false, false, "", {})
+			elseif list[i]:GetParameterType() == ParameterType.AddAttack then
+				LuaPlayAnimator("GachaResultItemNode"..i, "AttackOn", false, false, "", {})
+			elseif list[i]:GetParameterType() == ParameterType.AddDeffense then
+				LuaPlayAnimator("GachaResultItemNode"..i, "DeffenseOn", false, false, "", {})
+			elseif list[i]:GetParameterType() == ParameterType.FriendPoint then
+				LuaPlayAnimator("GachaResultItemNode"..i, "FriendPointOn", false, false, "", {})
+			end
 		end  
 
 		--Debug
@@ -94,7 +106,16 @@ function GachaResultScene.new()
 			CharacterParameterUpDialog.Instance():CloseDialog()
 		end
 		
+		if buttonName == "GachaResultDetailButton" then
+			GachaResultGetItemListDialog.Instance():OpenDialog(
+				function()
+				end,
+				GameManager.Instance():GetGachaItemList()
+			)
+		end
+		
 		CharacterParameterUpDialog.Instance():OnClickButton(buttonName)
+		GachaResultGetItemListDialog.Instance():OnClickButton(buttonName)
 	end
 
 	

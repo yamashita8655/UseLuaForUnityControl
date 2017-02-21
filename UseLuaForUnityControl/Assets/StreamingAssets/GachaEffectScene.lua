@@ -67,13 +67,13 @@ function GachaEffectScene.new()
 			end
 			
 			for i = 1, #rarityList do
-				self:SetParentMochiImage(i, rarityList[i]:GetPrefabName())
+				self:SetParentMochiImage(i, rarityList[i])
 			end
 			self.SpawnItemList = rarityList
 
 		else
 			for i = 1, #list do
-				self:SetParentMochiImage(i, list[i]:GetPrefabName())
+				self:SetParentMochiImage(i, list[i])
 			end
 			self.SpawnItemList = list
 		end
@@ -124,7 +124,7 @@ function GachaEffectScene.new()
 	end
 	
 	-- 
-	this.SetParentMochiImage = function(self, index, prefabName)
+	this.SetParentMochiImage = function(self, index, itemData)
 		--if rarity == RarityType.Normal then
 		--	LuaSetActive("GachaEffectMochiNormalImage"..index, true)
 		--	LuaSetActive("GachaEffectMochiSilverImage"..index, false)
@@ -138,7 +138,18 @@ function GachaEffectScene.new()
 		--	LuaSetActive("GachaEffectMochiSilverImage"..index, false)
 		--	LuaSetActive("GachaEffectMochiGoldImage"..index, true)
 		--end
+		local prefabName = itemData:GetPrefabName()
 		LuaLoadPrefabAfter(prefabName, prefabName..index, "GachaEffectSpawnMochiRoot"..index)
+
+		if itemData:GetParameterType() == ParameterType.AddHp then
+			LuaPlayAnimator(prefabName..index, "HpOn", false, false, "", {})
+		elseif itemData:GetParameterType() == ParameterType.AddAttack then
+			LuaPlayAnimator(prefabName..index, "AttackOn", false, false, "", {})
+		elseif itemData:GetParameterType() == ParameterType.AddDeffense then
+			LuaPlayAnimator(prefabName..index, "DeffenseOn", false, false, "", {})
+		elseif itemData:GetParameterType() == ParameterType.FriendPoint then
+			LuaPlayAnimator(prefabName..index, "FriendPointOn", false, false, "", {})
+		end
 	end
 	
 	this.ResetActiveMochiImage = function(self)

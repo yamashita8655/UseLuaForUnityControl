@@ -36,6 +36,7 @@ LuaFileList = {
 	"CharacterDetailDialog.lua",
 	"GachaRollDialog.lua",
 	"CharacterParameterUpDialog.lua",
+	"GachaResultGetItemListDialog.lua",
 	"MoveConfig.lua",
 	"BaseMoveController.lua",
 	"MoveControllerSinCurve.lua",
@@ -196,6 +197,13 @@ end
 --結果：Unity側のヒエラルキオブジェクトディクショナリから削除する
 function LuaDestroyObject(hierarchyName)
 	UnityDestroyObject(hierarchyName)
+end
+
+--オブジェクト名リネーム
+--引数：オブジェクトマネージャに登録していない、ヒエラルキ上に存在しているオブジェクト名と、変更後の名前
+--結果：変更後のオブジェクトをオブジェクトマネージャに登録し、アクセスできるようjにする
+function LuaRenameObject(hierarchyName, renameName)
+	UnityRenameObject(hierarchyName, renameName)
 end
 
 --オブジェクト検索
