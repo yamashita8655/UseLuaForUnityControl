@@ -30,8 +30,7 @@ function CharacterDetailDialog:Initialize()
 	LuaFindObject("CharacterDetailAddDeffenseText")
 	LuaFindObject("CharacterDetailFriendSlider")
 	LuaFindObject("CharacterDetailRemailParameterUpCountText")
-
-
+	LuaFindObject("CharacterAttachRoot")
 
 	for i = 1, 5 do
 		LuaFindObject("HpMeter"..i)
@@ -56,9 +55,9 @@ function CharacterDetailDialog:OpenDialog(closeCallback, characterData)
 		LuaSetText("CharacterDetailBaseAttackText", self.CharacterData.BaseParameter:Attack())
 		LuaSetText("CharacterDetailBaseDeffenseText", self.CharacterData.BaseParameter:Deffense())
 
-		self:UpdateAddParameter()
+		LuaLoadPrefabAfter(self.CharacterData.PrefabName, self.CharacterData.PrefabName.."CharacterDetail", "CharacterAttachRoot")
 
-		LuaSetSliderValue("CharacterDetailFriendSlider", 30)
+		self:UpdateAddParameter()
 
 		self:UpdateGrowMeter(characterData) 
 		
@@ -70,6 +69,7 @@ end
 
 function CharacterDetailDialog:CloseDialog() 
 	if self.IsActive == true then
+		LuaDestroyObject(self.CharacterData.PrefabName.."CharacterDetail")
 		CallbackManager.Instance():AddCallback("CharacterDetailDialogManager_CloseCallback", {self}, self.DialogCloseCallback)
 		LuaPlayAnimator("CharacterDetailDialog", "Close", false, true, "LuaCallback", "CharacterDetailDialogManager_CloseCallback")
 	end
@@ -165,5 +165,8 @@ function CharacterDetailDialog:UpdateAddParameter()
 	LuaSetText("CharacterDetailAddHpText", characterAddParameter[CharacterParameterEnum.AddHp])
 	LuaSetText("CharacterDetailAddAttackText", characterAddParameter[CharacterParameterEnum.AddAttack])
 	LuaSetText("CharacterDetailAddDeffenseText", characterAddParameter[CharacterParameterEnum.AddDeffense])
+
+	LuaSetSliderValue("CharacterDetailFriendSlider", characterAddParameter[CharacterParameterEnum.FriendPoint])
+
 end
 

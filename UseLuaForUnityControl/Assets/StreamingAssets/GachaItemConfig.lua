@@ -60,6 +60,14 @@ GachaItemTable = {
 		0.1,
 		CharacterTypeEnum.Mochi
 	),
+	ParameterUpFriendPoint1_001 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"Prefabs/CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		1,
+		CharacterTypeEnum.Mochi
+	),
 	
 	ParameterUpHp1_002 = ParameterItemData.new(
 		ItemType.ParameterUp,
@@ -83,6 +91,14 @@ GachaItemTable = {
 		RarityType.Normal,
 		ParameterType.AddDeffense,
 		0.1,
+		CharacterTypeEnum.Tora
+	),
+	ParameterUpFriendPoint1_002 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"Prefabs/CommonCharacterIcon2",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		1,
 		CharacterTypeEnum.Tora
 	),
 	
@@ -110,6 +126,14 @@ GachaItemTable = {
 		0.1,
 		CharacterTypeEnum.Buchi
 	),
+	ParameterUpFriendPoint1_003 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"Prefabs/CommonCharacterIcon3",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		1,
+		CharacterTypeEnum.Buchi
+	),
 	
 	ParameterUpHp1_004 = ParameterItemData.new(
 		ItemType.ParameterUp,
@@ -133,6 +157,14 @@ GachaItemTable = {
 		RarityType.Normal,
 		ParameterType.AddDeffense,
 		0.1,
+		CharacterTypeEnum.Sakura
+	),
+	ParameterUpFriendPoint1_004 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"Prefabs/CommonCharacterIcon4",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		1,
 		CharacterTypeEnum.Sakura
 	),
 }

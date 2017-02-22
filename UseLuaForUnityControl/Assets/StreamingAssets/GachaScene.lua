@@ -241,19 +241,21 @@ function GachaScene.new()
 
 			for j = 1, #characterTypeList[i] do
 				local item = characterTypeList[i][j]
-				if remainPoint <= 0 then
-					table.insert(canNotAddParameterItemList, item)
+				if item:GetParameterType() == ParameterType.FriendPoint then
+					addFriendPoint = addFriendPoint + item:GetAddValue()
 				else
-					if item:GetParameterType() == ParameterType.AddHp then
-						addHp = addHp + item:GetAddValue()
-					elseif item:GetParameterType() == ParameterType.AddAttack then
-						addAttack = addAttack + item:GetAddValue()
-					elseif item:GetParameterType() == ParameterType.AddDeffense then
-						addDeffense = addDeffense + item:GetAddValue()
-					elseif item:GetParameterType() == ParameterType.AddFriend then
-						addFriendPoint = addFriendPoint + item:GetAddValue()
+					if remainPoint <= 0 then
+						table.insert(canNotAddParameterItemList, item)
+					else
+						if item:GetParameterType() == ParameterType.AddHp then
+							addHp = addHp + item:GetAddValue()
+						elseif item:GetParameterType() == ParameterType.AddAttack then
+							addAttack = addAttack + item:GetAddValue()
+						elseif item:GetParameterType() == ParameterType.AddDeffense then
+							addDeffense = addDeffense + item:GetAddValue()
+						end
+						remainPoint = remainPoint - 1
 					end
-					remainPoint = remainPoint - 1
 				end
 			end
 		
@@ -274,6 +276,9 @@ function GachaScene.new()
 			characterAddParameter[CharacterParameterEnum.AddAttack] = characterAddParameter[CharacterParameterEnum.AddAttack] + addAttack
 			characterAddParameter[CharacterParameterEnum.AddDeffense] = characterAddParameter[CharacterParameterEnum.AddDeffense] + addDeffense
 			characterAddParameter[CharacterParameterEnum.FriendPoint] = characterAddParameter[CharacterParameterEnum.FriendPoint] + addFriendPoint
+			if characterAddParameter[CharacterParameterEnum.FriendPoint] >= 100 then
+				characterAddParameter[CharacterParameterEnum.FriendPoint] = 100
+			end
 		end
 		FileIOManager.Instance():Save()
 
