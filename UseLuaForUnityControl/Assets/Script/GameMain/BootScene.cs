@@ -16,6 +16,7 @@ public class BootScene : MonoBehaviour {
 	private IEnumerator CoroutineStart() {
 		GameSceneManager.Instance.Initialize();
 		GameObjectCacheManager.Instance.Initialize();
+		AssetBundleManager.Instance.Initialize();
 		ResourceManager.Instance.Init();
 		RijindaelManager.Instance.Init();
 		

@@ -1,0 +1,52 @@
+ManifestFileVersion: 0
+CRC: 1569547277
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 831e62222f3e9e3b48ac7dce102d6ce1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 68c3e9d467851e84fef12406fcc781dd
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fb0f953a41bebc54c87485804f6ea2de, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3906b1affc9c42e4a965e1f06232892b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/GachaScene/GachaRollDialogCloseAnimation.anim
+- Assets/Resources/GachaScene/GachaRollDialogAnimator.controller
+- Assets/Resources/GachaScene/GachaRollDialogOpenAnimation.anim
+- Assets/Resources/GachaScene/GachaRollDialog.prefab
+Dependencies:
+- Assets/AssetBundles/Android/common

@@ -299,18 +299,21 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	public static int UnityLoadPrefabAfter(IntPtr luaState)
 	{
 		uint res;
-		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		IntPtr res_assetBundleName = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string assetBundleName = Marshal.PtrToStringAnsi(res_assetBundleName);
+
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
 		string prefabname = Marshal.PtrToStringAnsi(res_s);
 		
-		IntPtr res_objectName = NativeMethods.lua_tolstring(luaState, 2, out res);
+		IntPtr res_objectName = NativeMethods.lua_tolstring(luaState, 3, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_objectName);
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
-		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path, objectName);
-		//retObj.SetActive(false);
-		
-		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		//GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path, objectName);
+		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObjectFromAssetBundle(assetBundleName, prefabname, objectName);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
 		string parentObjectName = Marshal.PtrToStringAnsi(res_s);
 		
 		GameObject parent = GameObjectCacheManager.Instance.FindGameObject(parentObjectName);

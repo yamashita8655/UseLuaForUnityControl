@@ -1,0 +1,66 @@
+ManifestFileVersion: 0
+CRC: 3805757014
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3015e9e7cb2e5410c8ee189d6a06d421
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7ad6879d10ec0dee3c4efb71891d28c7
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fb0f953a41bebc54c87485804f6ea2de, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3906b1affc9c42e4a965e1f06232892b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/TitleScene/TitlePushStartAnimation.anim
+- Assets/Resources/TitleScene/TitleMoAnimation.anim
+- Assets/Resources/TitleScene/TitleKoAnimator.controller
+- Assets/Resources/TitleScene/TitleFuAnimator.controller
+- Assets/Resources/TitleScene/TitleNeAnimator.controller
+- Assets/Resources/TitleScene/TitlePushStartAnimator.controller
+- Assets/Resources/TitleScene/TitleFuAnimation.anim
+- Assets/Resources/TitleScene/TitleKoAnimation.anim
+- Assets/Resources/TitleScene/TitleBackground.png
+- Assets/Resources/TitleScene/TitleNeAnimation.anim
+- Assets/Resources/TitleScene/TitleMoAnimator.controller
+- Assets/Resources/TitleScene/CatAndMouseAnimator.controller
+- Assets/Resources/TitleScene/TitleScene.prefab
+- Assets/Resources/TitleScene/TitleShootingAnimator.controller
+- Assets/Resources/TitleScene/CatAndMouseAnimation.anim
+- Assets/Resources/TitleScene/TitleShootingAnimation.anim
+Dependencies:
+- Assets/AssetBundles/Android/common

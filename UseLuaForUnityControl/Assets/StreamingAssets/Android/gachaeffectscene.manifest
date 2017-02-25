@@ -1,0 +1,61 @@
+ManifestFileVersion: 0
+CRC: 4265273541
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 65eda7189e8b6be03d30ec066a20cb2f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: fc77deef45b5c97131846a6d906d2ba3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 007eeefdf5a212a4f990fc3bbb9e552a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3906b1affc9c42e4a965e1f06232892b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/GachaEffectScene/GachaEffectMochiNormalImage.prefab
+- Assets/Resources/GachaEffectScene/GoldMortar.png
+- Assets/Resources/GachaEffectScene/Pestle.png
+- Assets/Resources/GachaEffectScene/SilverMortarLeft.png
+- Assets/Resources/GachaEffectScene/GachaEffectScene.prefab
+- Assets/Resources/GachaEffectScene/BronzeMortar.png
+- Assets/Resources/GachaEffectScene/RainbowMortarLeft.png
+- Assets/Resources/GachaEffectScene/GachaEffectMochiGoldImage.prefab
+- Assets/Resources/GachaEffectScene/GachaEffectAnimationRoot.controller
+- Assets/Resources/GachaEffectScene/BronzeMortarLeft.png
+- Assets/Resources/GachaEffectScene/GachaEffectMochiSilverImage.prefab
+- Assets/Resources/GachaEffectScene/WoodMortarLeft.png
+- Assets/Resources/GachaEffectScene/BronzeMortarRight.png
+- Assets/Resources/GachaEffectScene/RainbowMortarRight.png
+- Assets/Resources/GachaEffectScene/GoldMortarLeft.png
+- Assets/Resources/GachaEffectScene/RainbowMortar.png
+- Assets/Resources/GachaEffectScene/SilverMortarRight.png
+- Assets/Resources/GachaEffectScene/GachEffectAnimation.anim
+- Assets/Resources/GachaEffectScene/WoodMortar.png
+- Assets/Resources/GachaEffectScene/GachEffectResetAnimation.anim
+- Assets/Resources/GachaEffectScene/SilverMortar.png
+- Assets/Resources/GachaEffectScene/WoodMortarRight.png
+- Assets/Resources/GachaEffectScene/GoldMortarRight.png
+Dependencies:
+- Assets/AssetBundles/Android/common

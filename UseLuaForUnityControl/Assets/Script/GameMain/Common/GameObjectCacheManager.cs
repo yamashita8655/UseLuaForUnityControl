@@ -58,6 +58,30 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 		return output;
 	}
 	
+	public GameObject LoadGameObjectFromAssetBundle(string assetBundleName, string assetName, string hierarcyName) {
+		GameObject output = null;
+		GameObject obj = null;
+		if (RowGameObjectCacheDict.TryGetValue(assetName, out obj)) {
+		} else {
+			AssetBundle asset = AssetBundleManager.Instance.GetAssetBundle(assetBundleName);
+			obj = asset.LoadAsset<GameObject>(assetName);
+			RowGameObjectCacheDict.Add(assetName, obj);
+		}
+
+		if (InstantiateGameObjectCacheDict.TryGetValue(hierarcyName, out output)) {
+		} else {
+			output = UnityEngine.Object.Instantiate(obj) as GameObject;
+			if (hierarcyName != "") {
+				output.name = hierarcyName;
+			} else {
+				output.name = output.name.Replace("(Clone)", "");
+			}
+			InstantiateGameObjectCacheDict.Add(output.name, output);
+		}
+
+		return output;
+	}
+	
 	public void RemoveGameObject(string objectName) {
 		GameObject output = null;
 		if (InstantiateGameObjectCacheDict.TryGetValue(objectName, out output) == false) {

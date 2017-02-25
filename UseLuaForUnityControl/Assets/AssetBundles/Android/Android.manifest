@@ -1,0 +1,52 @@
+ManifestFileVersion: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: luascript
+      Dependencies: {}
+    Info_1:
+      Name: battlescene
+      Dependencies:
+        Dependency_0: common
+    Info_2:
+      Name: bootscene
+      Dependencies: {}
+    Info_3:
+      Name: common
+      Dependencies: {}
+    Info_4:
+      Name: customscene
+      Dependencies:
+        Dependency_0: battlescene
+        Dependency_1: common
+    Info_5:
+      Name: gachaeffectscene
+      Dependencies:
+        Dependency_0: common
+    Info_6:
+      Name: gacharesultscene
+      Dependencies:
+        Dependency_0: common
+    Info_7:
+      Name: gachascene
+      Dependencies:
+        Dependency_0: common
+    Info_8:
+      Name: homescene
+      Dependencies:
+        Dependency_0: common
+    Info_9:
+      Name: loadingscene
+      Dependencies: {}
+    Info_10:
+      Name: optionscene
+      Dependencies:
+        Dependency_0: common
+    Info_11:
+      Name: questscene
+      Dependencies:
+        Dependency_0: common
+    Info_12:
+      Name: titlescene
+      Dependencies:
+        Dependency_0: common

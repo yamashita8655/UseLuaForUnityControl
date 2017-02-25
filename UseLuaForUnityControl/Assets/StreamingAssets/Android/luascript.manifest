@@ -1,0 +1,81 @@
+ManifestFileVersion: 0
+CRC: 1813878144
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 774fa86772f7b0ece818261c0ce17f63
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/ForAssetbundle/BattleScene.txt
+- Assets/Resources/ForAssetbundle/SkillLevelUpDialog.txt
+- Assets/Resources/ForAssetbundle/CharacterParameter.txt
+- Assets/Resources/ForAssetbundle/TimerCallbackManager.txt
+- Assets/Resources/ForAssetbundle/SinCurveEnemy.txt
+- Assets/Resources/ForAssetbundle/CharacterBase.txt
+- Assets/Resources/ForAssetbundle/LuaUtilityClass.txt
+- Assets/Resources/ForAssetbundle/CustomScene.txt
+- Assets/Resources/ForAssetbundle/DefineEnum.txt
+- Assets/Resources/ForAssetbundle/SkillConfig.txt
+- Assets/Resources/ForAssetbundle/OptionScene.txt
+- Assets/Resources/ForAssetbundle/ResultDialog.txt
+- Assets/Resources/ForAssetbundle/NormalBullet.txt
+- Assets/Resources/ForAssetbundle/GachaTable.txt
+- Assets/Resources/ForAssetbundle/LoadingScene.txt
+- Assets/Resources/ForAssetbundle/EnemySpawnTable.txt
+- Assets/Resources/ForAssetbundle/GachaConfig.txt
+- Assets/Resources/ForAssetbundle/GachaResultScene.txt
+- Assets/Resources/ForAssetbundle/EmitterConfig.txt
+- Assets/Resources/ForAssetbundle/BulletManager.txt
+- Assets/Resources/ForAssetbundle/HomeScene.txt
+- Assets/Resources/ForAssetbundle/CharacterDetailDialog.txt
+- Assets/Resources/ForAssetbundle/TitleScene.txt
+- Assets/Resources/ForAssetbundle/GachaItemConfig.txt
+- Assets/Resources/ForAssetbundle/CharacterParameterUpDialog.txt
+- Assets/Resources/ForAssetbundle/LuaUtility2.txt
+- Assets/Resources/ForAssetbundle/CallbackManager.txt
+- Assets/Resources/ForAssetbundle/MoveControllerStraight.txt
+- Assets/Resources/ForAssetbundle/GachaRollDialog.txt
+- Assets/Resources/ForAssetbundle/MoveControllerHoming.txt
+- Assets/Resources/ForAssetbundle/FileIOManager.txt
+- Assets/Resources/ForAssetbundle/MoveConfig.txt
+- Assets/Resources/ForAssetbundle/BulletConfig.txt
+- Assets/Resources/ForAssetbundle/EnemySpawnData.txt
+- Assets/Resources/ForAssetbundle/MoveControllerCircle.txt
+- Assets/Resources/ForAssetbundle/BulletEmitter.txt
+- Assets/Resources/ForAssetbundle/BaseMoveController.txt
+- Assets/Resources/ForAssetbundle/QuestScene.txt
+- Assets/Resources/ForAssetbundle/LuaMain.txt
+- Assets/Resources/ForAssetbundle/SpawnController.txt
+- Assets/Resources/ForAssetbundle/BootScene.txt
+- Assets/Resources/ForAssetbundle/GachaResultGetItemListDialog.txt
+- Assets/Resources/ForAssetbundle/SceneManager.txt
+- Assets/Resources/ForAssetbundle/ObjectBase.txt
+- Assets/Resources/ForAssetbundle/SceneBase.txt
+- Assets/Resources/ForAssetbundle/QuestDataConfig.txt
+- Assets/Resources/ForAssetbundle/GameManager.txt
+- Assets/Resources/ForAssetbundle/MoveControllerSinCurve.txt
+- Assets/Resources/ForAssetbundle/AreaCellManager.txt
+- Assets/Resources/ForAssetbundle/HomingBullet.txt
+- Assets/Resources/ForAssetbundle/DialogManager.txt
+- Assets/Resources/ForAssetbundle/EnemyConfig.txt
+- Assets/Resources/ForAssetbundle/EnemyShooter.txt
+- Assets/Resources/ForAssetbundle/EnemyManager.txt
+- Assets/Resources/ForAssetbundle/NormalEnemyCharacter.txt
+- Assets/Resources/ForAssetbundle/GachaScene.txt
+- Assets/Resources/ForAssetbundle/BulletBase.txt
+- Assets/Resources/ForAssetbundle/LuaUtility.txt
+- Assets/Resources/ForAssetbundle/LuaMainTest.txt
+- Assets/Resources/ForAssetbundle/PlayerCharacter.txt
+- Assets/Resources/ForAssetbundle/GachaEffectScene.txt
+- Assets/Resources/ForAssetbundle/ItemConfig.txt
+- Assets/Resources/ForAssetbundle/EffectManager.txt
+- Assets/Resources/ForAssetbundle/EnemyBase.txt
+- Assets/Resources/ForAssetbundle/PlayerManager.txt
+- Assets/Resources/ForAssetbundle/PlayerCharacterConfig.txt
+Dependencies: []

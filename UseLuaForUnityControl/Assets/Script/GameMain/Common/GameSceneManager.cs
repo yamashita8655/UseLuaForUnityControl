@@ -18,7 +18,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
 	Dictionary<string, GameObject> SceneCacheDict = new Dictionary<string, GameObject>();
 	GameObject CurrentSceneObject = null;
 
-		private readonly string SceneObjectPath = "Prefabs/{0}Scene";
+	private readonly string SceneAssetBundleName = "{0}Scene";
 
 	/// <summary>
 	/// シーンマネージャ初期化処理
@@ -38,9 +38,11 @@ public class GameSceneManager : Singleton<GameSceneManager>
 		GameObject nextSceneObject = null;
 		if (SceneCacheDict.TryGetValue(sceneName, out nextSceneObject)) {
 		} else {
-			string path = string.Format(SceneObjectPath, sceneName);
-			GameObject loadObj = Resources.Load<GameObject>(path);
-			nextSceneObject = Instantiate(loadObj);
+			string assetBundleName = string.Format(SceneAssetBundleName, sceneName);
+			AssetBundle assetBundle = AssetBundleManager.Instance.GetAssetBundle(assetBundleName);
+			GameObject obj = assetBundle.LoadAsset<GameObject>(assetBundleName);
+
+			nextSceneObject = Instantiate(obj);
 			nextSceneObject.transform.SetParent(parent.transform);
 			nextSceneObject.transform.localPosition = Vector3.zero;
 			nextSceneObject.transform.localScale = Vector3.one;

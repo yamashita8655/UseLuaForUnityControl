@@ -95,7 +95,7 @@ end
 
 --LuaのMain関数みたいな奴
 function LuaMain()
-	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "FadeObject", "SystemCanvas")
+	LuaLoadPrefabAfter("common", "FadeObject", "FadeObject", "SystemCanvas")
 	LuaSetActive("FadeObject", false)
 	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
 	LuaFindObject("DebugDisplayText")
@@ -274,8 +274,9 @@ function LuaSetActive(hierarchyName, active)
 end
 
 --プレハブをロードするだけ
-function LuaLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
-	UnityLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
+--function LuaLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
+function LuaLoadPrefabAfter(assetBundleName, prefabName, hierarchyName, parentHierarchyName)
+	UnityLoadPrefabAfter(assetBundleName, prefabName, hierarchyName, parentHierarchyName)
 end
 
 --親の設定
