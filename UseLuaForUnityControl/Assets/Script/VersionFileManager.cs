@@ -29,6 +29,13 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 	private IEnumerator LoadLocalVersionString() {
 		string output = "";
 		if (System.IO.File.Exists(LocalPath + "/version") == true) {
+#if UNITY_EDITOR
+			LocalPath = "file:///" + LocalPath;
+#elif UNITY_ANDROID
+			path = Application.persistentDataPath + "/" + "Android";
+#elif UNITY_IPHONE
+			path = Application.persistentDataPath + "/" + "IOS";
+#endif
 			// データが存在するので、そっち読み込む
 			WWW www = new WWW (LocalPath + "/version");
 			while (www.isDone == false) {
@@ -57,6 +64,14 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 
 		output = www.text;
 		EndCallback(output);
+	}
+	
+	public void SaveVersionString(string path, string src) {
+		if (System.IO.Directory.Exists(path) == false) {
+			System.IO.Directory.CreateDirectory(path);
+		}
+		path = path + "/version";
+		File.WriteAllText(path, src, new System.Text.UTF8Encoding(false));
 	}
 }
 

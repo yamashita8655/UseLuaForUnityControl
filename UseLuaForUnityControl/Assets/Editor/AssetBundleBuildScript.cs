@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -71,7 +72,6 @@ public class AssetBundleBuildScript {
 			sr.Close();
 			
 			string[] loadAssetBundleDataStringList = input.Split("\n" [0]);
-			string output = "";
 			SortedDictionary<string, AssetBundleData> LocalAssetBundleDataSortedDict = new SortedDictionary<string, AssetBundleData>();
 			
 			string localVersionNumber = "";
@@ -136,6 +136,8 @@ public class AssetBundleBuildScript {
 
 			string newAssetBundleHashString = "";
 			string stringForNewAssetBundleHash = "";
+			string output = "";
+
 			foreach(var data in NewAssetBundleDataSortedDict) {
 				stringForNewAssetBundleHash += data.Value.Hash;
 				output += string.Format("{0},{1},{2}\n", data.Value.AssetBundleName, data.Value.Version, data.Value.Hash);
@@ -145,8 +147,8 @@ public class AssetBundleBuildScript {
 			
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(
 				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version", 
-				false, 
-				System.Text.Encoding.UTF8
+				false,
+				new System.Text.UTF8Encoding(false)
 			);
 			sw.Write(output);
 			sw.Close();
@@ -156,8 +158,9 @@ public class AssetBundleBuildScript {
 			outputString += lineString;
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(
 				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version", 
-				false, 
-				System.Text.Encoding.UTF8
+				true,
+//				System.Text.Encoding.UTF8
+				new System.Text.UTF8Encoding(false)
 			);
 			sw.Write(outputString);
 			sw.Close();
