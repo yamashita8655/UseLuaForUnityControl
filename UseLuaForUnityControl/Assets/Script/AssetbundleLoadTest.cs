@@ -14,7 +14,8 @@ public class AssetbundleLoadTest : MonoBehaviour {
 		//SimpleAssetBundleLoadTest();
 		//StartCoroutine (SimpleWWWLoadForAssetBundle());
 		//StartCoroutine (LocalAssetBundleFileLoadTest());
-		UseAssetBundleManager();
+		//UseAssetBundleManager();
+		StartCoroutine(VersionFileDownload());
 	}
 
 	void SimpleAssetBundleLoadTest() {
@@ -68,6 +69,16 @@ public class AssetbundleLoadTest : MonoBehaviour {
 				}
 			}
 		);
+	}
+	
+	IEnumerator VersionFileDownload() {
+		WWW www = new WWW ("http://natural-nail-eye.sakura.ne.jp/Android/version");
+		while (www.isDone == false) {
+			yield return null;
+		}
+
+		string version = www.text;
+		output.text = version;
 	}
 	
 	// Update is called once per frame

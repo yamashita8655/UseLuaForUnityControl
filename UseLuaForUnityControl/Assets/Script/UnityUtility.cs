@@ -15,7 +15,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	float CanvasFactor;
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
-
+	
 	public class MonoPInvokeCallbackAttribute : System.Attribute
 	{
 		private Type type;
@@ -23,7 +23,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	}
 
 	LuaManager.DelegateLuaBindFunction method1 = null;
-	
 	// セーブファイルを読み込み、DoFileできる形式にして保存しなおし、DoFileし終わったら削除する
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadSaveFile(IntPtr luaState)
@@ -637,15 +636,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 	}
 	
+
+	
 	public IEnumerator Init(float canvasFactor)
 	{
 		CanvasFactor = canvasFactor;
 
 		mLuaCallUpdateMap = new Dictionary<string, string>();
-		LuaManager.Instance.Init ();
+		LuaManager.Instance.Init();
 
 		bool isLoaded = false;
-
 		string loadPath = "";
 #if UNITY_EDITOR
 		loadPath = "file:///" + Application.streamingAssetsPath + "/" + scriptName;
@@ -657,7 +657,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string savePath = Application.persistentDataPath + "/" + scriptName;
 
 		ResourceManager.Instance.AddLoaderData(loadPath, savePath, "", () => {
-			StartCoroutine(LoadLuaMainFile(savePath, () => { 
+			StartCoroutine(LoadLuaMainFile(savePath, () => {
 					isLoaded = true;
 				})
 			);
@@ -944,5 +944,6 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	    key = deriveBytes.GetBytes(keySize / 8);
 	    iv = deriveBytes.GetBytes(blockSize / 8);
 	}
+
 }
 
