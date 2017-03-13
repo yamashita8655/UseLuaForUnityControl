@@ -19,7 +19,7 @@ function CharacterParameterUpDialog:Initialize()
 	self.IsActive = false
 	self.CloseCallback = nil 
 
-	LuaLoadPrefabAfter("Prefabs/CharacterParameterUpDialog", "CharacterParameterUpDialog", "SystemCanvas")
+	LuaLoadPrefabAfter("gacharesultscene", "CharacterParameterUpDialog", "CharacterParameterUpDialog", "SystemCanvas")
 	
 	LuaFindObject("CharacterParameterUpBaseHpText")
 	LuaFindObject("CharacterParameterUpAddHpText")

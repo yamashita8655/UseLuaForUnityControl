@@ -46,7 +46,7 @@ function GachaResultScene.new()
 		local list = GameManager.Instance():GetGachaItemList()
 
 		for i = 1, #list do
-			LuaLoadPrefabAfter(list[i]:GetPrefabName(), "GachaResultItemNode"..i, "GachaResultScrollContent")
+			LuaLoadPrefabAfter("common", list[i]:GetPrefabName(), "GachaResultItemNode"..i, "GachaResultScrollContent")
 			if list[i]:GetParameterType() == ParameterType.AddHp then
 				LuaPlayAnimator("GachaResultItemNode"..i, "HpOn", false, false, "", {})
 			elseif list[i]:GetParameterType() == ParameterType.AddAttack then

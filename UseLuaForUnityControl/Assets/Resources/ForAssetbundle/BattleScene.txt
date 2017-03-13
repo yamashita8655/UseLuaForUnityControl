@@ -32,13 +32,13 @@ function BattleScene.new()
 		EnemyManager.Instance():Initialize()
 		AreaCellManager.Instance():Initialize()
 		
-		LuaLoadPrefabAfter("Prefabs/System/LoseEffect", "LoseEffect", "BattleDialogRoot")
+		LuaLoadPrefabAfter("battlescene", "LoseEffect", "LoseEffect", "BattleDialogRoot")
 		LuaSetActive("LoseEffect", false)
 		
-		LuaLoadPrefabAfter("Prefabs/System/WinEffect", "WinEffect", "BattleDialogRoot")
+		LuaLoadPrefabAfter("battlescene", "WinEffect", "WinEffect", "BattleDialogRoot")
 		LuaSetActive("WinEffect", false)
 
-		LuaLoadPrefabAfter("Prefabs/System/BattleStartEffect", "BattleStartEffect", "BattleDialogRoot")
+		LuaLoadPrefabAfter("battlescene", "BattleStartEffect", "BattleStartEffect", "BattleDialogRoot")
 		LuaSetActive("BattleStartEffect", false)
 		
 		LuaFindObject("BattleComboLabel")

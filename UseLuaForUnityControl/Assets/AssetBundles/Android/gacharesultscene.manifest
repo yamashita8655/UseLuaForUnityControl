@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2543815790
+CRC: 1981574132
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c01b1f6a64b1b95f1c9e81722e9fb0ac
+    Hash: e9a97368a92ed65f79ddc87d6cddbc48
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7e1df21cfc7e86a8353cd8c76f813615
@@ -77,7 +77,6 @@ Assets:
 - Assets/Resources/GachaResultScene/GachaResultScene.prefab
 - Assets/Resources/GachaResultScene/CharacterParameterUpDialogAnimator.controller
 - Assets/Resources/GachaResultScene/GachaResultItemNode.prefab
-- Assets/Resources/GachaResultScene/GachaScene.prefab
 - Assets/Resources/GachaResultScene/GachaResultGetItemListItem.prefab
 - Assets/Resources/GachaResultScene/CharacterParameterUpDialog.prefab
 Dependencies:

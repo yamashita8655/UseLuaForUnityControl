@@ -19,7 +19,7 @@ function SkillLevelUpDialog:Initialize()
 	self.IsActive = false
 	self.CloseCallback = nil 
 
-	LuaLoadPrefabAfter("Prefabs/System/SkillUpDialog", "SkillUpDialog", "SystemCanvas")
+	LuaLoadPrefabAfter("battlescene", "SkillUpDialog", "SkillUpDialog", "SystemCanvas")
 	
 	LuaFindObject("SkillNowLevelText1")
 	LuaFindObject("SkillNowLevelText2")

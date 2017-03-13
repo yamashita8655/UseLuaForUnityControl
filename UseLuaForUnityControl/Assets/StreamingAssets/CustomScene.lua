@@ -25,7 +25,7 @@ function CustomScene.new()
 			LuaFindObject("DetailText")
 
 			for i = 1, #PlayerCharacterConfig do
-				LuaLoadPrefabAfter("Prefabs/CustomPlayerSelectListNode"..i, "CustomPlayerSelectListNode"..i, "CustomPlayerSelectContent")
+				LuaLoadPrefabAfter("customscene", "CustomPlayerSelectListNode"..i, "CustomPlayerSelectListNode"..i, "CustomPlayerSelectContent")
 				LuaFindObject("CustomPlayerSelectImage"..i)
 				LuaFindObject("CustomPlayerLockFilterImage"..i)
 				LuaFindObject("KaliKaliIconText"..i)

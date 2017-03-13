@@ -38,7 +38,7 @@ end
 GachaItemTable = {
 	ParameterUpHp1_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon1",
+		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddHp,
 		0.1,
@@ -46,7 +46,7 @@ GachaItemTable = {
 	),
 	ParameterUpAttack1_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon1",
+		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddAttack,
 		0.1,
@@ -54,7 +54,7 @@ GachaItemTable = {
 	),
 	ParameterUpDeffense1_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon1",
+		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
 		0.1,
@@ -62,7 +62,7 @@ GachaItemTable = {
 	),
 	ParameterUpFriendPoint1_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon1",
+		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
 		1,
@@ -71,7 +71,7 @@ GachaItemTable = {
 	
 	ParameterUpHp1_002 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon2",
+		"CommonCharacterIcon2",
 		RarityType.Normal,
 		ParameterType.AddHp,
 		0.1,
@@ -79,7 +79,7 @@ GachaItemTable = {
 	
 	ParameterUpAttack1_002 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon2",
+		"CommonCharacterIcon2",
 		RarityType.Normal,
 		ParameterType.AddAttack,
 		0.1,
@@ -87,7 +87,7 @@ GachaItemTable = {
 	),
 	ParameterUpDeffense1_002 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon2",
+		"CommonCharacterIcon2",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
 		0.1,
@@ -95,7 +95,7 @@ GachaItemTable = {
 	),
 	ParameterUpFriendPoint1_002 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon2",
+		"CommonCharacterIcon2",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
 		1,
@@ -104,7 +104,7 @@ GachaItemTable = {
 	
 	ParameterUpHp1_003 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon3",
+		"CommonCharacterIcon3",
 		RarityType.Normal,
 		ParameterType.AddHp,
 		0.1,
@@ -112,7 +112,7 @@ GachaItemTable = {
 	),
 	ParameterUpAttack1_003 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon3",
+		"CommonCharacterIcon3",
 		RarityType.Normal,
 		ParameterType.AddAttack,
 		0.1,
@@ -120,7 +120,7 @@ GachaItemTable = {
 	),
 	ParameterUpDeffense1_003 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon3",
+		"CommonCharacterIcon3",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
 		0.1,
@@ -128,7 +128,7 @@ GachaItemTable = {
 	),
 	ParameterUpFriendPoint1_003 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon3",
+		"CommonCharacterIcon3",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
 		1,
@@ -137,7 +137,7 @@ GachaItemTable = {
 	
 	ParameterUpHp1_004 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon4",
+		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.AddHp,
 		0.1,
@@ -145,7 +145,7 @@ GachaItemTable = {
 	),
 	ParameterUpAttack1_004 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon4",
+		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.AddAttack,
 		0.1,
@@ -153,7 +153,7 @@ GachaItemTable = {
 	),
 	ParameterUpDeffense1_004 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon4",
+		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
 		0.1,
@@ -161,7 +161,7 @@ GachaItemTable = {
 	),
 	ParameterUpFriendPoint1_004 = ParameterItemData.new(
 		ItemType.ParameterUp,
-		"Prefabs/CommonCharacterIcon4",
+		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
 		1,

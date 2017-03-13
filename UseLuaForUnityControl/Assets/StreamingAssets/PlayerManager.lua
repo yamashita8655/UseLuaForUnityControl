@@ -52,7 +52,7 @@ function PlayerManager:CreatePlayer(playerDataConfig, posx, posy, degree)
 		local skillConfig = SkillData.new(playerDataConfig.SkillConfig:GetSkillTable())
 		local skillDetailText = playerDataConfig.SkillDetailText
 
-		LuaLoadPrefabAfter(prefabName, name, "PlayerCharacterRoot")
+		LuaLoadPrefabAfter("common", prefabName, name, "PlayerCharacterRoot")
 		local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
 		local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
 		LuaFindObject(name)

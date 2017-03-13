@@ -42,7 +42,7 @@ function QuestScene.new()
 		end
 	
 		for i = 1, self.questCount do
-			LuaLoadPrefabAfter("Prefabs/QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
+			LuaLoadPrefabAfter("questscene", "QuestSelectListNode", "QuestSelectListNode"..i, "QuestScrollContent")
 			LuaSetActive("QuestSelectListNode"..i, true)
 		end
 		

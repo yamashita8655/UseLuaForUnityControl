@@ -92,7 +92,7 @@ function BulletManager:CreateBulletTest(prefabName, characterType)
 	
 		for j = 1, 500 do
 			local name = "BulletObject"..self.BulletCounter
-			LuaLoadPrefabAfter(prefabName, name, "PlayerBulletRoot")
+			LuaLoadPrefabAfter("battlescene", prefabName, name, "PlayerBulletRoot")
 			LuaSetActive(name, false)
 			self.BulletCounter = self.BulletCounter + 1
 			table.insert(self.PlayerBulletCanShootList[prefabName], name);
@@ -103,7 +103,7 @@ function BulletManager:CreateBulletTest(prefabName, characterType)
 
 		for j = 1, 100 do
 			local name = "BulletObject"..self.BulletCounter
-			LuaLoadPrefabAfter(prefabName, name, "PlayerBulletRoot")
+			LuaLoadPrefabAfter("battlescene", prefabName, name, "PlayerBulletRoot")
 			LuaSetActive(name, false)
 			self.BulletCounter = self.BulletCounter + 1
 			table.insert(self.EnemyBulletCanShootList[prefabName], name);
@@ -187,7 +187,7 @@ end
 
 function BulletManager:CreateBullet(posx, posy, degree, bulletConfig, characterType)
 	local name = "BulletObject"..self.BulletCounter
-	LuaLoadPrefabAfter(bulletConfig.PrefabName, name, "PlayerBulletRoot")
+	LuaLoadPrefabAfter("battlescene", bulletConfig.PrefabName, name, "PlayerBulletRoot")
 	LuaFindObject(name)
 	LuaSetPosition(name, posx, posy, 0)
 	LuaSetRotate(name, 0, 0, degree)

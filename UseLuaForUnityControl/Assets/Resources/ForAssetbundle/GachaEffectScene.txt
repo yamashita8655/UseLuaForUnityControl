@@ -139,7 +139,7 @@ function GachaEffectScene.new()
 		--	LuaSetActive("GachaEffectMochiGoldImage"..index, true)
 		--end
 		local prefabName = itemData:GetPrefabName()
-		LuaLoadPrefabAfter(prefabName, prefabName..index, "GachaEffectSpawnMochiRoot"..index)
+		LuaLoadPrefabAfter("common", prefabName, prefabName..index, "GachaEffectSpawnMochiRoot"..index)
 
 		if itemData:GetParameterType() == ParameterType.AddHp then
 			LuaPlayAnimator(prefabName..index, "HpOn", false, false, "", {})

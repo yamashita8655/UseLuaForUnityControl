@@ -20,7 +20,7 @@ function CharacterDetailDialog:Initialize()
 	self.CloseCallback = nil 
 	self.CharacterData = {}
 
-	LuaLoadPrefabAfter("Prefabs/System/CharacterDetailDialog", "CharacterDetailDialog", "SystemCanvas")
+	LuaLoadPrefabAfter("customscene", "CharacterDetailDialog", "CharacterDetailDialog", "SystemCanvas")
 	
 	LuaFindObject("CharacterDetailBaseHpText")
 	LuaFindObject("CharacterDetailAddHpText")
@@ -55,7 +55,7 @@ function CharacterDetailDialog:OpenDialog(closeCallback, characterData)
 		LuaSetText("CharacterDetailBaseAttackText", self.CharacterData.BaseParameter:Attack())
 		LuaSetText("CharacterDetailBaseDeffenseText", self.CharacterData.BaseParameter:Deffense())
 
-		LuaLoadPrefabAfter(self.CharacterData.PrefabName, self.CharacterData.PrefabName.."CharacterDetail", "CharacterAttachRoot")
+		LuaLoadPrefabAfter("common", self.CharacterData.PrefabName, self.CharacterData.PrefabName.."CharacterDetail", "CharacterAttachRoot")
 
 		self:UpdateAddParameter()
 

@@ -39,7 +39,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
 		if (SceneCacheDict.TryGetValue(sceneName, out nextSceneObject)) {
 		} else {
 			string assetBundleName = string.Format(SceneAssetBundleName, sceneName);
-			AssetBundle assetBundle = AssetBundleManager.Instance.GetAssetBundle(assetBundleName);
+			AssetBundle assetBundle = AssetBundleManager.Instance.GetAssetBundle(assetBundleName.ToLower());
 			GameObject obj = assetBundle.LoadAsset<GameObject>(assetBundleName);
 
 			nextSceneObject = Instantiate(obj);

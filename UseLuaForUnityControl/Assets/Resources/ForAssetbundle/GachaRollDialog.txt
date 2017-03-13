@@ -22,7 +22,7 @@ function GachaRollDialog:Initialize()
 	self.HavePoint = 0
 	self.Price = 0
 
-	LuaLoadPrefabAfter("Prefabs/System/GachaRollDialog", "GachaRollDialog", "SystemCanvas")
+	LuaLoadPrefabAfter("gachascene", "GachaRollDialog", "GachaRollDialog", "SystemCanvas")
 	
 	LuaFindObject("GachaRollOneTimePriceText")
 	LuaFindObject("GachaRollHavePointText")

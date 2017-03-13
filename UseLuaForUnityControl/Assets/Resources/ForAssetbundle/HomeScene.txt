@@ -28,7 +28,7 @@ function HomeScene.new()
 		local player = GameManager.Instance():GetSelectPlayerCharacterData()
 		self.CurrentCharacterObjectName = player.HomePlayerName
 		LuaUnityDebugLog(player.PrefabName)
-		LuaLoadPrefabAfter(player.PrefabName, player.HomePlayerName, "HomeCharacterMoveRoot")
+		LuaLoadPrefabAfter("common", player.PrefabName, player.HomePlayerName, "HomeCharacterMoveRoot")
 		LuaSetActive(player.HomePlayerName, false)
 
 		TimerCallbackManager:AddCallback(

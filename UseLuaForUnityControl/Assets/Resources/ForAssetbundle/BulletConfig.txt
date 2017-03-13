@@ -6,7 +6,7 @@
 
 -- 弾の定義
 Character1_Bullet0001 = {
-	PrefabName = "Prefabs/BulletObjectNormal",
+	PrefabName = "BulletObjectNormal",
 	Name = "PlayerBullet1",
 	Width = 64,
 	Height = 64,
@@ -19,7 +19,7 @@ Character1_Bullet0001 = {
 }
 
 Character1_Bullet0002 = {
-	PrefabName = "Prefabs/BulletObjectNormal",
+	PrefabName = "BulletObjectNormal",
 	Name = "PlayerBullet2",
 	Width = 64,
 	Height = 64,
@@ -32,7 +32,7 @@ Character1_Bullet0002 = {
 }
 
 Character1_Bullet0003 = {
-	PrefabName = "Prefabs/BulletObjectEnemyTooth1",
+	PrefabName = "BulletObjectEnemyTooth1",
 	Name = "PlayerBullet3",
 	Width = 64,
 	Height = 64,
@@ -45,7 +45,7 @@ Character1_Bullet0003 = {
 }
 
 Bullet0001 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyBullet1",
 	Width = 64,
 	Height = 64,
@@ -58,7 +58,7 @@ Bullet0001 = {
 }
 
 Bullet0002 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyBullet2",
 	Width = 64,
 	Height = 64,
@@ -71,7 +71,7 @@ Bullet0002 = {
 }
 
 Bullet0003 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyBullet3",
 	Width = 64,
 	Height = 64,
@@ -84,7 +84,7 @@ Bullet0003 = {
 }
 
 BulletHomingTest = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyBulletHoming",
 	Width = 64,
 	Height = 64,
@@ -97,7 +97,7 @@ BulletHomingTest = {
 }
 
 BulletStrong = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyBulletStrong",
 	Width = 64,
 	Height = 64,
@@ -110,7 +110,7 @@ BulletStrong = {
 }
 
 EnemyBullet0001 = {
-	PrefabName = "Prefabs/BulletObjectEnemyTooth1",
+	PrefabName = "BulletObjectEnemyTooth1",
 	Name = "EnemyBulletTooth1",
 	Width = 24,
 	Height = 24,
@@ -123,7 +123,7 @@ EnemyBullet0001 = {
 }
 
 EnemyBullet0002 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyBulletTooth2",
 	Width = 64,
 	Height = 64,
@@ -136,7 +136,7 @@ EnemyBullet0002 = {
 }
 
 EnemyBullet0003 = {
-	PrefabName = "Prefabs/BulletObjectNormal",
+	PrefabName = "BulletObjectNormal",
 	Name = "EnemyBulletTooth3",
 	Width = 64,
 	Height = 64,
@@ -149,7 +149,7 @@ EnemyBullet0003 = {
 }
 
 EnemyBullet_Middle1_10 = {
-	PrefabName = "Prefabs/BulletObjectEnemyTooth1",
+	PrefabName = "BulletObjectEnemyTooth1",
 	Name = "EnemyBulletTooth1",
 	Width = 24,
 	Height = 24,

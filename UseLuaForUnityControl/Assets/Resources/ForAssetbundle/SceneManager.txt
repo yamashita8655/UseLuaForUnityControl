@@ -34,8 +34,8 @@ function SceneManager:Initialize()
 		GachaResultScene.new(),
 	}
 
-	LuaLoadPrefabAfter("Prefabs/HeaderObject", "HeaderObject", "HeaderFooterCanvas")
-	LuaLoadPrefabAfter("Prefabs/FooterObject", "FooterObject", "HeaderFooterCanvas")
+	LuaLoadPrefabAfter("common", "HeaderObject", "HeaderObject", "HeaderFooterCanvas")
+	LuaLoadPrefabAfter("common", "FooterObject", "FooterObject", "HeaderFooterCanvas")
 	LuaSetActive("HeaderObject", false)
 	LuaSetActive("FooterObject", false)
 end

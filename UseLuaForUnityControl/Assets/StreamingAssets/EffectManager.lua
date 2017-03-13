@@ -29,7 +29,7 @@ function EffectManager:Initialize()
 end
 
 function EffectManager:SpawnEffect(name, position) 
-	LuaLoadPrefabAfter("Prefabs/System/"..name, name.."_"..self.EffectCounter, "EffectRoot")
+	LuaLoadPrefabAfter("battlescene", name, name.."_"..self.EffectCounter, "EffectRoot")
 	table.insert(self.EffectList, name.."_"..self.EffectCounter)
 	LuaSetPosition(name.."_"..self.EffectCounter, position.x, position.y, position.z)
 	callbackTag = "EffectManager_CallbackEffectAnimationEnd"..self.EffectCounter

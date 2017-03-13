@@ -22,7 +22,7 @@ function DialogManager:Initialize()
 	self.CancelCallback = nil
 	self.CancelAfterCloseCallback = nil
 
-	LuaLoadPrefabAfter("Prefabs/System/OkCancelDialog", "OkCancelDialog", "SystemCanvas")
+	LuaLoadPrefabAfter("common", "OkCancelDialog", "OkCancelDialog", "SystemCanvas")
 	LuaFindObject("OkCancelDialogDetailText")
 	LuaSetActive("OkCancelDialog", false)
 

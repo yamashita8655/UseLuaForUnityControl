@@ -10,7 +10,7 @@
 --000_000
 --検証
 EnemyTest = {
-	PrefabName = "Prefabs/EnemyCharacterObject2",
+	PrefabName = "EnemyCharacterObject2",
 	Name = "EnemyCharacterObject",
 	Width = 48,
 	Height = 48,
@@ -22,7 +22,7 @@ EnemyTest = {
 	EnemyType = EnemyTypeEnum.Normal,
 }
 EnemyTestBullet = {
-	PrefabName = "Prefabs/EnemyCharacterObject2",
+	PrefabName = "EnemyCharacterObject2",
 	Name = "EnemyCharacterObject",
 	Width = 48,
 	Height = 48,
@@ -40,7 +40,7 @@ EnemyTestBullet = {
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
 EnemyTestBullet1 = {
-	PrefabName = "Prefabs/EnemyCharacterObject2",
+	PrefabName = "EnemyCharacterObject2",
 	Name = "EnemyCharacterObject",
 	Width = 48,
 	Height = 48,
@@ -58,7 +58,7 @@ EnemyTestBullet1 = {
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
 EnemyTestBullet2 = {
-	PrefabName = "Prefabs/EnemyCharacterObject2",
+	PrefabName = "EnemyCharacterObject2",
 	Name = "EnemyCharacterObject",
 	Width = 48,
 	Height = 48,
@@ -76,7 +76,7 @@ EnemyTestBullet2 = {
 	},-- 今は、BulletEmitterListとEquipBulletListの数は同じにしておかないとダメ
 }
 EnemyTestBullet3 = {
-	PrefabName = "Prefabs/EnemyCharacterObject2",
+	PrefabName = "EnemyCharacterObject2",
 	Name = "EnemyCharacterObject",
 	Width = 48,
 	Height = 48,
@@ -97,7 +97,7 @@ EnemyTestBullet3 = {
 
 --敵情報1
 Enemy001_001 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
 	Height = 32,
@@ -110,7 +110,7 @@ Enemy001_001 = {
 }
 
 Enemy001_002 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
 	Height = 32,
@@ -125,7 +125,7 @@ Enemy001_002 = {
 
 --敵情報2
 Enemy002_001 = {
-	PrefabName = "Prefabs/EnemyCharacterObject3",
+	PrefabName = "EnemyCharacterObject3",
 	Name = "EnemyCharacterObject3",
 	Width = 32,
 	Height = 32,
@@ -138,7 +138,7 @@ Enemy002_001 = {
 }
 
 Enemy002_002 = {
-	PrefabName = "Prefabs/EnemyCharacterObject3",
+	PrefabName = "EnemyCharacterObject3",
 	Name = "EnemyCharacterObject3",
 	Width = 32,
 	Height = 32,
@@ -153,7 +153,7 @@ Enemy002_002 = {
 
 --敵情報3
 Enemy003_001 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
 	Height = 32,
@@ -172,7 +172,7 @@ Enemy003_001 = {
 }
 
 Enemy003_002 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
 	Height = 32,
@@ -191,7 +191,7 @@ Enemy003_002 = {
 }
 
 Enemy003_003 = {
-	PrefabName = "Prefabs/EnemyCharacterObject",
+	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyCharacterObject",
 	Width = 32,
 	Height = 32,
@@ -211,7 +211,7 @@ Enemy003_003 = {
 --!敵情報3
 
 EnemyMiniMouseStraight1_10 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -225,7 +225,7 @@ EnemyMiniMouseStraight1_10 = {
 }
 
 EnemyMiniMouseSinCurve1_10 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -238,7 +238,7 @@ EnemyMiniMouseSinCurve1_10 = {
 }
 
 EnemyMiniMouseSinCurve1_10_1 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -251,7 +251,7 @@ EnemyMiniMouseSinCurve1_10_1 = {
 }
 
 EnemyMiniMouseSinCurve1_10_2 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -264,7 +264,7 @@ EnemyMiniMouseSinCurve1_10_2 = {
 }
 
 EnemyMiddleMouse1_10 = {
-	PrefabName = "Prefabs/EnemyCharacterMiddleMouse",
+	PrefabName = "EnemyCharacterMiddleMouse",
 	Name = "EnemyCharacterMiddleMouse",
 	Width = 48,
 	Height = 48,
@@ -283,7 +283,7 @@ EnemyMiddleMouse1_10 = {
 }
 
 EnemySpeedMouse1_10 = {
-	PrefabName = "Prefabs/EnemyCharacterSpeedMouse",
+	PrefabName = "EnemyCharacterSpeedMouse",
 	Name = "EnemyCharacterSpeedMouse",
 	Width = 32,
 	Height = 32,
@@ -296,7 +296,7 @@ EnemySpeedMouse1_10 = {
 }
 
 EnemyCircleMouse1_10 = {
-	PrefabName = "Prefabs/EnemyCharacterCircleBulletMouse",
+	PrefabName = "EnemyCharacterCircleBulletMouse",
 	Name = "EnemyCharacterCircleBulletMouse",
 	Width = 32,
 	Height = 32,
@@ -309,7 +309,7 @@ EnemyCircleMouse1_10 = {
 }
 
 EnemyTankMouse1_10 = {
-	PrefabName = "Prefabs/EnemyCharacterTankMouse",
+	PrefabName = "EnemyCharacterTankMouse",
 	Name = "EnemyCharacterTankMouse",
 	Width = 32,
 	Height = 32,
@@ -322,7 +322,7 @@ EnemyTankMouse1_10 = {
 }
 
 EnemyMiniMouseStraight11_20 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -335,7 +335,7 @@ EnemyMiniMouseStraight11_20 = {
 }
 
 EnemyMiniMouseSinCurve11_20_1 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -348,7 +348,7 @@ EnemyMiniMouseSinCurve11_20_1 = {
 }
 
 EnemyMiniMouseSinCurve11_20_2 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -361,7 +361,7 @@ EnemyMiniMouseSinCurve11_20_2 = {
 }
 
 EnemyMiddleMouse11_20 = {
-	PrefabName = "Prefabs/EnemyCharacterMiddleMouse",
+	PrefabName = "EnemyCharacterMiddleMouse",
 	Name = "EnemyCharacterMiddleMouse",
 	Width = 48,
 	Height = 48,
@@ -380,7 +380,7 @@ EnemyMiddleMouse11_20 = {
 }
 
 EnemySpeedMouse11_20 = {
-	PrefabName = "Prefabs/EnemyCharacterSpeedMouse",
+	PrefabName = "EnemyCharacterSpeedMouse",
 	Name = "EnemyCharacterSpeedMouse",
 	Width = 32,
 	Height = 32,
@@ -393,7 +393,7 @@ EnemySpeedMouse11_20 = {
 }
 
 EnemyCircleMouse11_20 = {
-	PrefabName = "Prefabs/EnemyCharacterCircleBulletMouse",
+	PrefabName = "EnemyCharacterCircleBulletMouse",
 	Name = "EnemyCharacterCircleBulletMouse",
 	Width = 32,
 	Height = 32,
@@ -406,7 +406,7 @@ EnemyCircleMouse11_20 = {
 }
 
 EnemyTankMouse11_20 = {
-	PrefabName = "Prefabs/EnemyCharacterTankMouse",
+	PrefabName = "EnemyCharacterTankMouse",
 	Name = "EnemyCharacterTankMouse",
 	Width = 32,
 	Height = 32,
@@ -419,7 +419,7 @@ EnemyTankMouse11_20 = {
 }
 
 EnemyMiniMouseStraight21_30 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -432,7 +432,7 @@ EnemyMiniMouseStraight21_30 = {
 }
 
 EnemyMiniMouseSinCurve21_30_1 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -445,7 +445,7 @@ EnemyMiniMouseSinCurve21_30_1 = {
 }
 
 EnemyMiniMouseSinCurve21_30_2 = {
-	PrefabName = "Prefabs/EnemyCharacterMiniMouse",
+	PrefabName = "EnemyCharacterMiniMouse",
 	Name = "EnemyCharacterMiniMouse",
 	Width = 32,
 	Height = 32,
@@ -458,7 +458,7 @@ EnemyMiniMouseSinCurve21_30_2 = {
 }
 
 EnemyMiddleMouse21_30 = {
-	PrefabName = "Prefabs/EnemyCharacterMiddleMouse",
+	PrefabName = "EnemyCharacterMiddleMouse",
 	Name = "EnemyCharacterMiddleMouse",
 	Width = 48,
 	Height = 48,
@@ -477,7 +477,7 @@ EnemyMiddleMouse21_30 = {
 }
 
 EnemySpeedMouse21_30 = {
-	PrefabName = "Prefabs/EnemyCharacterSpeedMouse",
+	PrefabName = "EnemyCharacterSpeedMouse",
 	Name = "EnemyCharacterSpeedMouse",
 	Width = 32,
 	Height = 32,
@@ -490,7 +490,7 @@ EnemySpeedMouse21_30 = {
 }
 
 EnemyCircleMouse21_30 = {
-	PrefabName = "Prefabs/EnemyCharacterCircleBulletMouse",
+	PrefabName = "EnemyCharacterCircleBulletMouse",
 	Name = "EnemyCharacterCircleBulletMouse",
 	Width = 32,
 	Height = 32,
@@ -509,7 +509,7 @@ EnemyCircleMouse21_30 = {
 }
 
 EnemyTankMouse21_30 = {
-	PrefabName = "Prefabs/EnemyCharacterTankMouse",
+	PrefabName = "EnemyCharacterTankMouse",
 	Name = "EnemyCharacterTankMouse",
 	Width = 32,
 	Height = 32,

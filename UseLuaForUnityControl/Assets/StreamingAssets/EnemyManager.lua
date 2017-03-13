@@ -38,7 +38,7 @@ end
 function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig) 
 	local enemyName = enemyConfig.Name..self.EnemyCounter
 	
-	LuaLoadPrefabAfter(enemyConfig.PrefabName, enemyName, "EnemyCharacterRoot")
+	LuaLoadPrefabAfter("battlescene", enemyConfig.PrefabName, enemyName, "EnemyCharacterRoot")
 	--local offsetx = (posx - (ScreenWidth/2)) / CanvasFactor
 	--local offsety = (posy - (ScreenHeight/2)) / CanvasFactor
 	local offsetx = (posx - (ScreenWidth/2))

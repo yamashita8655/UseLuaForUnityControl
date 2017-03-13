@@ -19,7 +19,7 @@ function ResultDialog:Initialize()
 	self.IsActive = false
 	self.CloseCallback = nil 
 
-	LuaLoadPrefabAfter("Prefabs/System/ResultDialog", "ResultDialog", "SystemCanvas")
+	LuaLoadPrefabAfter("battlescene", "ResultDialog", "ResultDialog", "SystemCanvas")
 	
 	LuaFindObject("BattleResultGetExpText")
 	LuaFindObject("BattleResultFailedText")

@@ -79,6 +79,7 @@ LuaFileList = {
 }
 LuaFileLoadedCount = 0
 SaveLuaScriptIndex = 1
+DoFileCount = 1
 
 --
 function LuaUnityLoadFileAsync(loadPath, savePath, callbackName)
@@ -104,27 +105,8 @@ function LuaMain()
 		LoadAssetBundleStringList = StringSplit(ServerVersionString, "\n")
 		LuaUnityDebugLog(#LoadAssetBundleStringList)
 		LoadAssetBundle()
-		
-		--for i = 1, #lines do
-		--	LuaUnityDebugLog(lines[i])
-		--	--local params = StringSplit(lines[i], ",")
-		--	--if #params ~= 1 then
-		--	--	if (params[1] ~= "version") and (params[1] ~= "luamain") then
-		--	--	LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath.."/Android", params[1], "SaveAssetBundleCallback")
-		--	--	end
-		--	--end
-		--end
 	else
 	end
-
-	-- luascriptの具現化と、それをDoFileする
-	--function LuaSaveScriptFile(loadPath, savePath, assetBundleName, scriptName, callbackName)
-	--for i = 1, #LuaFileList do
-	--	local findPos = string.find(LuaFileList[i], ".lua")
-	--	local scriptName = string.sub(str, 0, findPos-1)
-	--	LuaSaveScriptFile(PersistentDataPath.."/Android", PersistentDataPath.."/Android", "luascript", scriptName, "SaveScriptFileCallback")
-	--end
-
 end
 
 function LoadAssetBundle()
@@ -154,11 +136,12 @@ end
 function SaveScriptFile()
 	if SaveLuaScriptIndex > #LuaFileList then
 		-- dofileに入る
+		DoFileLuaScript()
 	else
 		-- luascriptの具現化
 		local findPos = string.find(LuaFileList[SaveLuaScriptIndex], ".lua")
 		local scriptName = string.sub(LuaFileList[SaveLuaScriptIndex], 0, findPos-1)
-		LuaSaveScriptFile(PersistentDataPath.."/Android", PersistentDataPath.."/Android", "luascript", assetName, scriptName..".lua", "SaveScriptFileCallback")
+		LuaSaveScriptFile(PersistentDataPath.."/Android", PersistentDataPath.."/Android", "luascript", scriptName, scriptName..".lua", "SaveScriptFileCallback")
 	end
 end
 
@@ -198,6 +181,12 @@ function LoadAllLuaScript()
 end
 
 function InitGame()
+	LuaLoadPrefabAfter("common", "FadeObject", "FadeObject", "SystemCanvas")
+	LuaSetActive("FadeObject", false)
+	LuaLoadPrefabAfter("common", "DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
+	LuaFindObject("DebugDisplayText")
+	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
+
 	-- とりあえず、ゲーム開始時の初期設定をする
 	UtilityFunction.Instance():Initialize()
 	GameManager.Instance():Initialize()
@@ -224,6 +213,18 @@ function LoadAllLuaScriptCallback()
 	LuaFileLoadedCount = LuaFileLoadedCount + 1
 	UpdateLoadingData()
 	LoadAllLuaScript()
+end
+
+--doFileのみを行う処理
+function DoFileLuaScript()
+	if DoFileCount <= #LuaFileList then
+		local index = DoFileCount
+		dofile(PersistentDataPath.."/Android/"..LuaFileList[index])
+		DoFileCount = DoFileCount + 1
+		DoFileLuaScript()
+	else
+		InitGame()
+	end
 end
 
 function UpdateLoadingData()
@@ -445,6 +446,7 @@ end
 
 function SaveScriptFileCallback(isSuccess)
 	LuaUnityDebugLog(isSuccess)
+	SaveLuaScriptIndex = SaveLuaScriptIndex + 1
 	SaveScriptFile()
 end
 

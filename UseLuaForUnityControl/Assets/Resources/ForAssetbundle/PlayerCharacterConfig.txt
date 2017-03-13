@@ -4,7 +4,7 @@
 PlayerCharacterConfig = {
 	{
 		IdIndex = CharacterTypeEnum.Mochi,
-		PrefabName = "Prefabs/CommonCharacterIcon1",
+		PrefabName = "CommonCharacterIcon1",
 		Name = "PlayerCharacterObject001",
 		Width = 128,
 		Height = 128,
@@ -25,7 +25,7 @@ PlayerCharacterConfig = {
 	},
 	{
 		IdIndex = CharacterTypeEnum.Tora,
-		PrefabName = "Prefabs/CommonCharacterIcon2",
+		PrefabName = "CommonCharacterIcon2",
 		Name = "PlayerCharacterObject002",
 		Width = 128,
 		Height = 128,
@@ -46,7 +46,7 @@ PlayerCharacterConfig = {
 	},
 	{
 		IdIndex = CharacterTypeEnum.Buchi,
-		PrefabName = "Prefabs/CommonCharacterIcon3",
+		PrefabName = "CommonCharacterIcon3",
 		Name = "PlayerCharacterObject003",
 		Width = 128,
 		Height = 128,
@@ -67,7 +67,7 @@ PlayerCharacterConfig = {
 	},
 	{
 		IdIndex = CharacterTypeEnum.Sakura,
-		PrefabName = "Prefabs/CommonCharacterIcon4",
+		PrefabName = "CommonCharacterIcon4",
 		Name = "PlayerCharacterObject004",
 		Width = 128,
 		Height = 128,

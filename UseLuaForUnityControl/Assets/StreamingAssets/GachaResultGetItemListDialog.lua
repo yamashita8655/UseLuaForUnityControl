@@ -19,11 +19,11 @@ function GachaResultGetItemListDialog:Initialize()
 	self.IsActive = false
 	self.CloseCallback = nil 
 
-	LuaLoadPrefabAfter("Prefabs/System/GachaResultGetItemListDialog", "GachaResultGetItemListDialog", "SystemCanvas")
+	LuaLoadPrefabAfter("gacharesultscene", "GachaResultGetItemListDialog", "GachaResultGetItemListDialog", "SystemCanvas")
 	LuaFindObject("GachaResultGetItemListScrollContent")
 
 	for i = 1, 100 do
-		LuaLoadPrefabAfter("Prefabs/GachaResultGetItemListItem", "GachaResultGetItemListItem"..i, "GachaResultGetItemListScrollContent")
+		LuaLoadPrefabAfter("gacharesultscene", "GachaResultGetItemListItem", "GachaResultGetItemListItem"..i, "GachaResultGetItemListScrollContent")
 		LuaRenameObject("GachaResultGetItemListText", "GachaResultGetItemListText"..i)
 		LuaSetText("GachaResultGetItemListText"..i, i)
 	end
