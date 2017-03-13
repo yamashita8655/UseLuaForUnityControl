@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1813878144
+CRC: 96850876
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 774fa86772f7b0ece818261c0ce17f63
+    Hash: 471fb4db0d13bb877052a213b6b1d671
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
@@ -37,7 +37,6 @@ Assets:
 - Assets/Resources/ForAssetbundle/TitleScene.txt
 - Assets/Resources/ForAssetbundle/GachaItemConfig.txt
 - Assets/Resources/ForAssetbundle/CharacterParameterUpDialog.txt
-- Assets/Resources/ForAssetbundle/LuaUtility2.txt
 - Assets/Resources/ForAssetbundle/CallbackManager.txt
 - Assets/Resources/ForAssetbundle/MoveControllerStraight.txt
 - Assets/Resources/ForAssetbundle/GachaRollDialog.txt
@@ -50,7 +49,6 @@ Assets:
 - Assets/Resources/ForAssetbundle/BulletEmitter.txt
 - Assets/Resources/ForAssetbundle/BaseMoveController.txt
 - Assets/Resources/ForAssetbundle/QuestScene.txt
-- Assets/Resources/ForAssetbundle/LuaMain.txt
 - Assets/Resources/ForAssetbundle/SpawnController.txt
 - Assets/Resources/ForAssetbundle/BootScene.txt
 - Assets/Resources/ForAssetbundle/GachaResultGetItemListDialog.txt

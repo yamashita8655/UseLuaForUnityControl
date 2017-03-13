@@ -82,6 +82,7 @@
      <None Include="Assets\Resources\ForAssetbundle\DefineEnum.txt" />
      <None Include="Assets\Resources\ForAssetbundle\SkillConfig.txt" />
      <None Include="Assets\Resources\ForAssetbundle\OptionScene.txt" />
+     <None Include="Assets\AssetBundles\Android\version.txt" />
      <None Include="Assets\Resources\function.txt" />
      <None Include="Assets\Resources\ForAssetbundle\ResultDialog.txt" />
      <None Include="Assets\Resources\ForAssetbundle\NormalBullet.txt" />
@@ -99,7 +100,6 @@
      <None Include="Assets\Resources\ForAssetbundle\TitleScene.txt" />
      <None Include="Assets\Resources\ForAssetbundle\GachaItemConfig.txt" />
      <None Include="Assets\Resources\ForAssetbundle\CharacterParameterUpDialog.txt" />
-     <None Include="Assets\Resources\ForAssetbundle\LuaUtility2.txt" />
      <None Include="Assets\Resources\ForAssetbundle\CallbackManager.txt" />
      <None Include="Assets\Resources\ForAssetbundle\MoveControllerStraight.txt" />
      <None Include="Assets\Resources\ForAssetbundle\GachaRollDialog.txt" />

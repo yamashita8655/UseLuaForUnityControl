@@ -88,6 +88,25 @@ function UtilityFunction.ListUniq(list)
 	return outputList, dupList
 end
 
+-- © http://symfoware.blog68.fc2.com/blog-entry-455.html
+-- 自作split関数
+function UtilityFunction.StringSplit(str, delim)
+    -- Eliminate bad cases...
+    if string.find(str, delim) == nil then
+        return { str }
+    end
+
+    local result = {}
+    local pat = "(.-)" .. delim .. "()"
+    local lastPos
+    for part, pos in string.gfind(str, pat) do
+        table.insert(result, part)
+        lastPos = pos
+    end
+    table.insert(result, string.sub(str, lastPos))
+    return result
+end
+
 -- ガチャのアイテムの説明を文字列で返す
 function UtilityFunction.CreateGachaResultGetItemString(itemData) 
 	local output = ""

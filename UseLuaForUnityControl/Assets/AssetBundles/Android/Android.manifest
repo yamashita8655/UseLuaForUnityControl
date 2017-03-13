@@ -50,3 +50,6 @@ AssetBundleManifest:
       Name: titlescene
       Dependencies:
         Dependency_0: common
+    Info_13:
+      Name: luamain
+      Dependencies: {}

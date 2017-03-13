@@ -13,6 +13,10 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	GCHandle gcHandle;
 	
 	float CanvasFactor;
+	string LocalVersionString;
+	string ServerVersionString;
+
+	public static bool IsEditor = true;
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
 	
@@ -516,6 +520,130 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		return 0;
 	}
+	
+	// アセットバンドルを読み込む(本当に読み込むだけ。ファイル化も何もしていない状態)
+	// Lua側で、ローカルなのかサーバーなのか判断してパスも変更する必要があると思うよ
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityLoadAssetBundle(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string path = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string assetBundleName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
+		string callbackArg = Marshal.PtrToStringAnsi(res_s);
+
+		string success = "";
+		
+		// 
+		AssetBundleManager.Instance.LoadAssetBundle(path, assetBundleName, (AssetBundle assetBundle) => {
+			// Lua側の関数を呼び出す
+			LuaManager.FunctionData data = new LuaManager.FunctionData();
+			data.returnValueNum = 0;
+			data.functionName = callbackName;
+			ArrayList list = new ArrayList();
+			list.Add(callbackArg);
+			list.Add(success);
+			data.argList = list;
+			ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+	
+		});
+		
+		return 0;
+	}
+	
+	// luaスクリプトのセーブ
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySaveScriptFile(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string loadPath = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string savePath = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string assetBundleName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
+		string assetName = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 5, out res);
+		string scriptName = Marshal.PtrToStringAnsi(res_s);
+		
+		res_s = NativeMethods.lua_tolstring(luaState, 6, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+
+//#if UNITY_EDITOR
+//		savePath = savePath + "/Android";
+//#elif UNITY_ANDROID
+//		savePath = savePath + "/Android";
+//#elif UNITY_IPHONE
+//		savePath = savePath + "/IOS";
+//#endif
+		AssetBundleManager.Instance.LoadAssetBundle(loadPath, assetBundleName, (AssetBundle assetBundle) => {
+			TextAsset resultObject = assetBundle.LoadAsset<TextAsset>(assetName);
+			string error = "";
+			string path = string.Format("{0}/{1}", savePath, scriptName);
+
+			System.IO.StreamWriter sw = new System.IO.StreamWriter(
+				path, 
+				false, 
+				System.Text.Encoding.UTF8
+			);
+			sw.Write(resultObject.text);
+			sw.Close();
+				
+			// Lua側の関数を呼び出す
+			LuaManager.FunctionData data = new LuaManager.FunctionData();
+			data.returnValueNum = 0;
+			data.functionName = callbackName;
+			ArrayList list = new ArrayList();
+			list.Add(error);
+			data.argList = list;
+			ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+		});
+		
+		return 0;
+	}
+
+	// アセットバンドルをダウンロードして保存する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySaveAssetBundle(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string loadPath = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string savePath = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string assetBundleName = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+
+		AssetBundleManager.Instance.SaveAssetBundle(loadPath, savePath, assetBundleName, (AssetBundle assetBundle, string error) => {
+			// Lua側の関数を呼び出す
+			LuaManager.FunctionData data = new LuaManager.FunctionData();
+			data.returnValueNum = 0;
+			data.functionName = callbackName;
+			ArrayList list = new ArrayList();
+			list.Add(error);
+			data.argList = list;
+			ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+		});
+
+		return 0;
+	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadLevel(IntPtr luaState)
@@ -622,6 +750,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		list.Add((float)Screen.width);
 		list.Add((float)Screen.height);
 		list.Add((float)canvasFactor);
+		list.Add(LocalVersionString);
+		list.Add(ServerVersionString);
+
 		string streamingAssetsPath = "";
 #if UNITY_EDITOR
 		streamingAssetsPath = "file:///" + Application.streamingAssetsPath;
@@ -636,9 +767,49 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 	}
 	
+	public IEnumerator Init(float canvasFactor, string localVersionString, string serverVersionString)
+	{
+		CanvasFactor = canvasFactor;
+		LocalVersionString = localVersionString;
+		ServerVersionString = serverVersionString;
+
+		mLuaCallUpdateMap = new Dictionary<string, string>();
+		LuaManager.Instance.Init();
+
+		bool isLoaded = false;
+		string loadPath = "";
+		string savePath = "";
+#if UNITY_EDITOR
+		//loadPath = "file:///" + Application.streamingAssetsPath + "/" + scriptName;
+		loadPath = Application.streamingAssetsPath + "/" + scriptName;
+		savePath = Application.persistentDataPath + "/Android/" + scriptName;
+#elif UNITY_ANDROID
+		loadPath = Application.streamingAssetsPath + "/Android/" + scriptName;
+		savePath = Application.persistentDataPath + "/Android/" + scriptName;
+#elif UNITY_IPHONE
+		loadPath = Application.streamingAssetsPath + "/IOS/" + scriptName;
+@		savePath = Application.persistentDataPath + "/IOS/" + scriptName;
+#endif
+	
+		if (UnityUtility.IsEditor == true) {
+			StartCoroutine(LoadLuaMainFile(loadPath, () => {
+					isLoaded = true;
+				})
+			);
+		} else {
+			StartCoroutine(LoadLuaMainFile(savePath, () => {
+					isLoaded = true;
+				})
+			);
+		}
+
+		while (isLoaded != true) {
+			yield return null;
+		}
+	}
 
 	
-	public IEnumerator Init(float canvasFactor)
+/*	public IEnumerator Init(float canvasFactor)
 	{
 		CanvasFactor = canvasFactor;
 
@@ -666,7 +837,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		while (isLoaded != true) {
 			yield return null;
 		}
-	}
+	}*/
 	
 	private IEnumerator LoadLuaMainFile(string filePath, Action endCallback) {
 		string loadPath = "";
@@ -911,6 +1082,21 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityAddCallUpdateScript = new LuaManager.DelegateLuaBindFunction (UnityAddCallUpdateScript);
 		IntPtr LuaUnityAddCallUpdateScriptIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityAddCallUpdateScript);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityAddCallUpdateScript", LuaUnityAddCallUpdateScriptIntPtr, LuaUnityAddCallUpdateScript);
+		
+		// アセットバンドルの読み込み
+		LuaManager.DelegateLuaBindFunction LuaUnityLoadAssetBundle = new LuaManager.DelegateLuaBindFunction (UnityLoadAssetBundle);
+		IntPtr LuaUnityLoadAssetBundleIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityLoadAssetBundle);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityLoadAssetBundle", LuaUnityLoadAssetBundleIntPtr, LuaUnityLoadAssetBundle);
+		
+		// Luaスクリプトの保存
+		LuaManager.DelegateLuaBindFunction LuaUnitySaveScriptFile = new LuaManager.DelegateLuaBindFunction (UnitySaveScriptFile);
+		IntPtr LuaUnitySaveScriptFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySaveScriptFile);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySaveScriptFile", LuaUnitySaveScriptFileIntPtr, LuaUnitySaveScriptFile);
+		
+		// アセットバンドルの保存
+		LuaManager.DelegateLuaBindFunction LuaUnitySaveAssetBundle = new LuaManager.DelegateLuaBindFunction (UnitySaveAssetBundle);
+		IntPtr LuaUnitySaveAssetBundleIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySaveAssetBundle);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySaveAssetBundle", LuaUnitySaveAssetBundleIntPtr, LuaUnitySaveAssetBundle);
 		
 		// コモン関数の登録
 		LuaManager.DelegateLuaBindFunction LuaUnityBindCommonFunction = new LuaManager.DelegateLuaBindFunction (UnityBindCommonFunction);

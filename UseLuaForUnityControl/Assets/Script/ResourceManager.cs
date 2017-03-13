@@ -53,7 +53,7 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager> {
 		// 閉じる
 		sr.Close();
 
-		string toPath = loaderData.SavePath;
+		string toPath = loaderData.avePath;
 		File.WriteAllText(toPath, text, System.Text.Encoding.GetEncoding("utf-8"));
 		yield return null;
 

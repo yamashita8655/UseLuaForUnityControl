@@ -12,10 +12,10 @@ public class AssetbundleLoadTest : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//SimpleAssetBundleLoadTest();
-		//StartCoroutine (SimpleWWWLoadForAssetBundle());
+		StartCoroutine (SimpleWWWLoadForAssetBundle());
 		//StartCoroutine (LocalAssetBundleFileLoadTest());
 		//UseAssetBundleManager();
-		StartCoroutine(VersionFileDownload());
+		//StartCoroutine(VersionFileDownload());
 	}
 
 	void SimpleAssetBundleLoadTest() {

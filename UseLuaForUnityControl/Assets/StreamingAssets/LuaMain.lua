@@ -2,9 +2,15 @@
 
 ScreenWidth = ""
 ScreenHeight = ""
+LocalVersionString = ""
+ServerVersionString = ""
 StreamingDataPath = ""
 PersistentDataPath = ""
 CanvasFactor = 0.0
+LoadAssetBundleStringList = {}
+
+--URL = "http://natural-nail-eye.sakura.ne.jp"
+URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
 --StreamingAssets内にある、Lua用分割スクリプト。最終的には、ここはアセットバンドルから読み込むことになるはず
 LuaFileList = {
@@ -13,7 +19,7 @@ LuaFileList = {
 	"GachaTable.lua",
 	"GachaConfig.lua",
 	"LuaUtility.lua",
-	"LuaUtility2.txt",
+	--"LuaUtility2.txt",
 	"LuaUtilityClass.lua",
 	"SceneBase.lua",
 	"CallbackManager.lua",
@@ -72,34 +78,71 @@ LuaFileList = {
 	"FileIOManager.lua",
 }
 LuaFileLoadedCount = 0
+SaveLuaScriptIndex = 1
+DoFileCount = 1
 
 --
 function LuaUnityLoadFileAsync(loadPath, savePath, callbackName)
 	UnityLoadFileAsync(loadPath, savePath, callbackName)
 end
 
-----LuaのMain関数みたいな奴
---function LuaMain()
---	LuaChangeScene("Title", "MainCanvas")
---	LuaLoadPrefabAfter("Prefabs/System/FadeObject", "", "SystemCanvas")
---	LuaLoadPrefabAfter("Prefabs/System/LoadingTextObject", "", "SystemCanvas")
---	LuaLoadPrefabAfter("Prefabs/HeaderObject", "", "HeaderFooterCanvas")
---	LuaLoadPrefabAfter("Prefabs/FooterObject", "", "HeaderFooterCanvas")
---	LuaSetActive("FadeObject", false)
---	LuaSetActive("HeaderObject", false)
---	LuaSetActive("FooterObject", false)
---	LuaSetActive("LoadingTextObject", false)
---	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "", "SystemCanvas")
---	LuaFindObject("DebugDisplayText")
---end
 
 --LuaのMain関数みたいな奴
+--function LuaMain()
+--	LuaLoadPrefabAfter("common", "FadeObject", "FadeObject", "SystemCanvas")
+--	LuaSetActive("FadeObject", false)
+--	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
+--	LuaFindObject("DebugDisplayText")
+--	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
+--end
 function LuaMain()
-	LuaLoadPrefabAfter("common", "FadeObject", "FadeObject", "SystemCanvas")
-	LuaSetActive("FadeObject", false)
-	LuaLoadPrefabAfter("Prefabs/System/DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
-	LuaFindObject("DebugDisplayText")
-	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
+	LuaUnityDebugLog(LocalVersionString)
+	LuaUnityDebugLog(ServerVersionString)
+
+	if LocalVersionString == "" then
+		-- とりあえず、アセットバンドルを全部読み込んで、ファイル化しておく
+		-- セーブの方は、ファイル化するついでに、マネージャにキャッシュもしてる
+		LoadAssetBundleStringList = StringSplit(ServerVersionString, "\n")
+		LuaUnityDebugLog(#LoadAssetBundleStringList)
+		LoadAssetBundle()
+	else
+	end
+end
+
+function LoadAssetBundle()
+	if #LoadAssetBundleStringList == 0 then
+		-- スクリプトファイルの生成に移る
+		LuaUnityDebugLog("CreateScriptFile")
+		SaveLuaScriptCount = 1
+		SaveScriptFile()
+	else
+		local params = StringSplit(LoadAssetBundleStringList[1], ",")
+		table.remove(LoadAssetBundleStringList, 1)
+
+		if #params < 3 then
+			-- 次へ
+			LoadAssetBundle()
+		else
+			if (params[1] == "version") or (params[1] == "luamain") then
+				-- 次へ
+				LoadAssetBundle()
+			else
+				LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath.."/Android", params[1], "SaveAssetBundleCallback")
+			end
+		end
+	end
+end
+
+function SaveScriptFile()
+	if SaveLuaScriptIndex > #LuaFileList then
+		-- dofileに入る
+		DoFileLuaScript()
+	else
+		-- luascriptの具現化
+		local findPos = string.find(LuaFileList[SaveLuaScriptIndex], ".lua")
+		local scriptName = string.sub(LuaFileList[SaveLuaScriptIndex], 0, findPos-1)
+		LuaSaveScriptFile(PersistentDataPath.."/Android", PersistentDataPath.."/Android", "luascript", scriptName, scriptName..".lua", "SaveScriptFileCallback")
+	end
 end
 
 function InitLoadingScene()
@@ -113,10 +156,12 @@ function StartLoadLuaScript()
 end
 
 --ゲームの情報
-function SetUnityGameData(screenWidth, screenHeight, canvasFactor, streamingDataPath, persistentDataPath)
+function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionString, serverVersionString, streamingDataPath, persistentDataPath)
 	ScreenWidth = screenWidth
 	ScreenHeight = screenHeight
 	CanvasFactor = canvasFactor
+	LocalVersionString = localVersionString
+	ServerVersionString = serverVersionString
 	StreamingDataPath = streamingDataPath 
 	PersistentDataPath = persistentDataPath
 	
@@ -136,6 +181,12 @@ function LoadAllLuaScript()
 end
 
 function InitGame()
+	LuaLoadPrefabAfter("common", "FadeObject", "FadeObject", "SystemCanvas")
+	LuaSetActive("FadeObject", false)
+	LuaLoadPrefabAfter("common", "DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
+	LuaFindObject("DebugDisplayText")
+	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
+
 	-- とりあえず、ゲーム開始時の初期設定をする
 	UtilityFunction.Instance():Initialize()
 	GameManager.Instance():Initialize()
@@ -162,6 +213,18 @@ function LoadAllLuaScriptCallback()
 	LuaFileLoadedCount = LuaFileLoadedCount + 1
 	UpdateLoadingData()
 	LoadAllLuaScript()
+end
+
+--doFileのみを行う処理
+function DoFileLuaScript()
+	if DoFileCount <= #LuaFileList then
+		local index = DoFileCount
+		dofile(PersistentDataPath.."/Android/"..LuaFileList[index])
+		DoFileCount = DoFileCount + 1
+		DoFileLuaScript()
+	else
+		InitGame()
+	end
 end
 
 function UpdateLoadingData()
@@ -273,6 +336,18 @@ function LuaSetActive(hierarchyName, active)
 	UnitySetActive(hierarchyName, active)
 end
 
+function LuaLoadAssetBundle(persistentDataPath, assetBundleName, callbackName, callbackArg)
+	UnityLoadAssetBundle(persistentDataPath, assetBundleName, callbackName, callbackArg)
+end
+
+function LuaSaveAssetBundle(loadPath, savePath, assetBundleName, callbackName)
+	UnitySaveAssetBundle(loadPath, savePath, assetBundleName, callbackName)
+end
+
+function LuaSaveScriptFile(loadPath, savePath, assetBundleName, assetName, scriptName, callbackName)
+	UnitySaveScriptFile(loadPath, savePath, assetBundleName, assetName, scriptName, callbackName)
+end
+
 --プレハブをロードするだけ
 --function LuaLoadPrefabAfter(prefabPath, hierarchyName, parentHierarchyName)
 function LuaLoadPrefabAfter(assetBundleName, prefabName, hierarchyName, parentHierarchyName)
@@ -359,4 +434,44 @@ end
 --		coroutine.yield(0)
 --	end
 --end
+
+function LoadAssetBundleCallback(arg, isSuccess)
+	LuaUnityDebugLog(arg)
+end
+
+function SaveAssetBundleCallback(isSuccess)
+	LuaUnityDebugLog(isSuccess)
+	LoadAssetBundle()
+end
+
+function SaveScriptFileCallback(isSuccess)
+	LuaUnityDebugLog(isSuccess)
+	SaveLuaScriptIndex = SaveLuaScriptIndex + 1
+	SaveScriptFile()
+end
+
+
+-- 自作split関数
+-- delimは一文字想定
+function StringSplit(str, delim)
+    -- Eliminate bad cases...
+    if string.find(str, delim) == nil then
+        return { str }
+    end
+
+    local result = {}
+    local lastPos
+
+	local count = 0
+
+	while string.find(str, delim) ~= nil do
+		local findPos = string.find(str, delim)
+		local item = string.sub(str, 0, findPos-1)
+		str = string.sub(str, findPos+1)
+		table.insert(result, item)
+	end
+	table.insert(result, str)
+    
+	return result
+end
 

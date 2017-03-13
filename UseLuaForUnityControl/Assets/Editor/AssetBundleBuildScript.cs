@@ -143,7 +143,7 @@ public class AssetBundleBuildScript {
 				output += string.Format("{0},{1},{2}\n", data.Value.AssetBundleName, data.Value.Version, data.Value.Hash);
 			}
 			newAssetBundleHashString = CreateMD5Hash(stringForNewAssetBundleHash);
-			output += string.Format("{0},{1},{2}\n", "version", (int.Parse(localVersionNumber)+1).ToString(), newAssetBundleHashString);
+			output += string.Format("{0},{1},{2}", "version", (int.Parse(localVersionNumber)+1).ToString(), newAssetBundleHashString);
 			
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(
 				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version", 
@@ -154,7 +154,7 @@ public class AssetBundleBuildScript {
 			sw.Close();
 		} else {
 			Debug.Log("完全に新規作成です。意図していない場合は、諸々確認をしてください。");
-			string lineString = string.Format("{0},{1},{2}\n", "version", "1", serverVersionHashString);
+			string lineString = string.Format("{0},{1},{2}", "version", "1", serverVersionHashString);
 			outputString += lineString;
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(
 				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version", 
@@ -164,6 +164,15 @@ public class AssetBundleBuildScript {
 			);
 			sw.Write(outputString);
 			sw.Close();
+
+			System.IO.StreamWriter swtxt = new System.IO.StreamWriter(
+				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version.txt", 
+				true,
+//				System.Text.Encoding.UTF8
+				new System.Text.UTF8Encoding(false)
+			);
+			swtxt.Write(outputString);
+			swtxt.Close();
 		}
 
 	}

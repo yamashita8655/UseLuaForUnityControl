@@ -23,6 +23,8 @@ public class BootScene : MonoBehaviour {
 	string ServerVersionString = "";
 	string LocalVersionString = "";
 
+	string URL = "http://natural-nail-eye.sakura.ne.jp";
+
 	// Use this for initialization
 	void Start () {
 		Application.targetFrameRate = 60;
@@ -43,39 +45,57 @@ public class BootScene : MonoBehaviour {
 	}
 	
 	public void LoadServerVersionFile() {
-		string url = "";
+		if (UnityUtility.IsEditor == true) {
+			// ローカルリソースから読み込み
 #if UNITY_EDITOR
-		url = "http://natural-nail-eye.sakura.ne.jp/Android";
-#elif UNITY_ANDROID
-		url = "http://natural-nail-eye.sakura.ne.jp/Android";
-#elif UNITY_IPHONE
-		url = "http://natural-nail-eye.sakura.ne.jp/IOS";
+			var serverVersion = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/AssetBundles/Android/version.txt");
+			ServerVersionString = serverVersion.text;
 #endif
-		VersionFileManager.Instance.GetServerVersionString(url, (string output) => {
-			if (output == null) {
-				RetryText.text = "失敗しました、通信ができる環境で再度お試しください。";
-				RetryButton.interactable = true;
-				return;
-			}
-			
-			ServerVersionString = output;
 			LoadLocalVersionFile();
-		});
+		} else {
+			string url = "";
+#if UNITY_EDITOR
+			url = "http://natural-nail-eye.sakura.ne.jp/Android";
+#elif UNITY_ANDROID
+			url = "http://natural-nail-eye.sakura.ne.jp/Android";
+#elif UNITY_IPHONE
+			url = "http://natural-nail-eye.sakura.ne.jp/IOS";
+#endif
+			VersionFileManager.Instance.GetServerVersionString(url, (string output) => {
+				if (output == null) {
+					RetryText.text = "失敗しました、通信ができる環境で再度お試しください。";
+					RetryButton.interactable = true;
+					return;
+				}
+				
+				ServerVersionString = output;
+				LoadLocalVersionFile();
+			});
+		}
 	}
 	
 	public void LoadLocalVersionFile() {
-		string path = "";
+		if (UnityUtility.IsEditor == true) {
+			// ローカルリソースから読み込み
 #if UNITY_EDITOR
-		path = Application.persistentDataPath + "/" + "Android";
-#elif UNITY_ANDROID
-		path = Application.persistentDataPath + "/" + "Android";
-#elif UNITY_IPHONE
-		path = Application.persistentDataPath + "/" + "IOS";
+//			var localVersion = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/AssetBundles/Android/version.txt");
+//			LocalVersionString = localVersion.text;
 #endif
-		VersionFileManager.Instance.GetLocalVersionString(path, (string output) => {
-			LocalVersionString = output;
 			CheckVersionFile();
-		});
+		} else {
+			string path = "";
+#if UNITY_EDITOR
+			path = Application.persistentDataPath + "/" + "Android";
+#elif UNITY_ANDROID
+			path = Application.persistentDataPath + "/" + "Android";
+#elif UNITY_IPHONE
+			path = Application.persistentDataPath + "/" + "IOS";
+#endif
+			VersionFileManager.Instance.GetLocalVersionString(path, (string output) => {
+				LocalVersionString = output;
+				CheckVersionFile();
+			});
+		}
 	}
 	
 	public void CheckVersionFile() {
@@ -89,8 +109,59 @@ public class BootScene : MonoBehaviour {
 #endif
 
 		if (string.IsNullOrEmpty(LocalVersionString)) {
-			// サーバーから落としたバージョン情報をローカルに保存し、その情報でアセットバンドルダウンロード
-			VersionFileManager.Instance.SaveVersionString(path, ServerVersionString);
+			// LuaMainファイルだけまずダウンロード
+//C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\AssetBundles\Android
+#if UNITY_EDITOR
+			string url = "";
+			if (UnityUtility.IsEditor = true) {
+				url = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
+			} else {
+				url = URL;
+			}
+#else
+			string url = URL;
+#endif
+			string savePath = "";
+#if UNITY_EDITOR
+			savePath = Application.persistentDataPath + "/Android";
+			url += "/" + "Android/luamain";
+#elif UNITY_ANDROID
+			savePath = Application.persistentDataPath + "/Android";
+			url += "/" + "Android/luamain";
+#elif UNITY_IPHONE
+			savePath = Application.persistentDataPath + "/IOS";
+			url += "/" + "IOS/luamain";
+#endif
+			//// バージョンファイルがなかったら、ロードじゃなくてセーブの方にする
+			//AssetBundleManager.Instance.LoadAssetBundle(url, "luamain", (AssetBundle assetBundle) => {
+			//	TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
+			//	System.IO.StreamWriter sw = new System.IO.StreamWriter(
+			//		savePath+"/LuaMain.lua",
+			//		false, 
+			//		System.Text.Encoding.UTF8
+			//	);
+			//	sw.Write(resultObject.text);
+			//	sw.Close();
+			//	//assetBundle.Unload(false);
+
+			//	StartCoroutine(LuaInit());
+			//});
+			
+			// バージョンファイルがなかったら、ロードじゃなくてセーブの方にする
+			AssetBundleManager.Instance.SaveAssetBundle(url, savePath, "luamain", (AssetBundle assetBundle, string error) => {
+				TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
+				System.IO.StreamWriter sw = new System.IO.StreamWriter(
+					savePath+"/LuaMain.lua",
+					false, 
+					System.Text.Encoding.UTF8
+				);
+				sw.Write(resultObject.text);
+				sw.Close();
+				//assetBundle.Unload(false);
+
+				StartCoroutine(LuaInit());
+			});
+		
 		} else {
 			Dictionary<string, AssetBundleData> localDict = CreateVersionDataDict(LocalVersionString);
 			Dictionary<string, AssetBundleData> serverDict = CreateVersionDataDict(ServerVersionString);
@@ -117,7 +188,7 @@ public class BootScene : MonoBehaviour {
 	
 	IEnumerator LuaInit() {
 		float factor = MainCanvas.scaleFactor;
-		yield return StartCoroutine(UnityUtility.Instance.Init(factor));
+		yield return StartCoroutine(UnityUtility.Instance.Init(factor, LocalVersionString, ServerVersionString));
 	}
 	
 	Dictionary<string, AssetBundleData> CreateVersionDataDict(string src) {

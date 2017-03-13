@@ -17,6 +17,22 @@ public class AssetBundleManager : SingletonMonoBehaviour<AssetBundleManager> {
 	void Update() {
 	}
 
+	public void SaveAssetBundle(string loadPath, string savePath, string assetBundleName, Action<AssetBundle, string> endCallback) {
+		StartCoroutine(SaveAssetBundleCoroutine(loadPath, savePath, assetBundleName, endCallback));
+	}
+
+	private IEnumerator SaveAssetBundleCoroutine(string loadPath, string savePath, string assetBundleName, Action<AssetBundle, string> endCallback) {
+		WWW www = new WWW (loadPath);
+		while (www.isDone == false) {
+			yield return null;
+		}
+
+		AssetBundle assetBundle = www.assetBundle;
+		AssetBundleCacheDict.Add(assetBundleName, assetBundle);
+		File.WriteAllBytes(savePath+"/"+assetBundleName, www.bytes);
+		endCallback(assetBundle, www.error);
+	}
+
 	public void LoadAssetBundle(string assetBundlePathAndName, string assetBundleName, Action<AssetBundle> endCallback) {
 		AssetBundle output = null;
 		if (AssetBundleCacheDict.TryGetValue (assetBundleName, out output) == true) {
