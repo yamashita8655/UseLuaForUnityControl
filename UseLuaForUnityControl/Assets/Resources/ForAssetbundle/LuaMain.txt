@@ -9,8 +9,8 @@ PersistentDataPath = ""
 CanvasFactor = 0.0
 LoadAssetBundleStringList = {}
 
---URL = "http://natural-nail-eye.sakura.ne.jp"
-URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
+URL = "http://natural-nail-eye.sakura.ne.jp"
+--URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
 --StreamingAssets内にある、Lua用分割スクリプト。最終的には、ここはアセットバンドルから読み込むことになるはず
 LuaFileList = {
@@ -127,7 +127,7 @@ function LoadAssetBundle()
 				-- 次へ
 				LoadAssetBundle()
 			else
-				LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath.."/Android", params[1], "SaveAssetBundleCallback")
+				LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath, params[1], "SaveAssetBundleCallback")
 			end
 		end
 	end
@@ -141,7 +141,7 @@ function SaveScriptFile()
 		-- luascriptの具現化
 		local findPos = string.find(LuaFileList[SaveLuaScriptIndex], ".lua")
 		local scriptName = string.sub(LuaFileList[SaveLuaScriptIndex], 0, findPos-1)
-		LuaSaveScriptFile(PersistentDataPath.."/Android", PersistentDataPath.."/Android", "luascript", scriptName, scriptName..".lua", "SaveScriptFileCallback")
+		LuaSaveScriptFile(PersistentDataPath, PersistentDataPath, "luascript", scriptName, scriptName..".lua", "SaveScriptFileCallback")
 	end
 end
 
@@ -219,7 +219,7 @@ end
 function DoFileLuaScript()
 	if DoFileCount <= #LuaFileList then
 		local index = DoFileCount
-		dofile(PersistentDataPath.."/Android/"..LuaFileList[index])
+		dofile(PersistentDataPath.."/"..LuaFileList[index])
 		DoFileCount = DoFileCount + 1
 		DoFileLuaScript()
 	else

@@ -32,9 +32,9 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 #if UNITY_EDITOR
 			LocalPath = "file:///" + LocalPath;
 #elif UNITY_ANDROID
-			path = Application.persistentDataPath + "/" + "Android";
+			LocalPath = Application.persistentDataPath;
 #elif UNITY_IPHONE
-			path = Application.persistentDataPath + "/" + "IOS";
+			LocalPath = Application.persistentDataPath;
 #endif
 			// データが存在するので、そっち読み込む
 			WWW www = new WWW (LocalPath + "/version");
@@ -50,6 +50,7 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 
 	private IEnumerator LoadServerVersionString() {
 		string output = "";
+		Debug.Log("LoadServerVersionString:Start");
 
 		// データが存在するので、そっち読み込む
 		WWW www = new WWW (ServerUrl + "/version");
@@ -57,7 +58,8 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 			yield return null;
 		}
 		
-		if (string.IsNullOrEmpty (www.error) == false) {
+		if (string.IsNullOrEmpty(www.error) == false) {
+			Debug.Log(www.error);
 			EndCallback(null);
 			yield break;
 		}

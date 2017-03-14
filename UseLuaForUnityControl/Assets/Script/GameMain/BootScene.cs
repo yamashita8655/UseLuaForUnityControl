@@ -23,7 +23,7 @@ public class BootScene : MonoBehaviour {
 	string ServerVersionString = "";
 	string LocalVersionString = "";
 
-	string URL = "http://natural-nail-eye.sakura.ne.jp";
+	string ServerURL = "http://natural-nail-eye.sakura.ne.jp";
 
 	// Use this for initialization
 	void Start () {
@@ -45,7 +45,7 @@ public class BootScene : MonoBehaviour {
 	}
 	
 	public void LoadServerVersionFile() {
-		if (UnityUtility.IsEditor == true) {
+		if (UnityUtility.IsCheckVersionFile == false) {
 			// ローカルリソースから読み込み
 #if UNITY_EDITOR
 			var serverVersion = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/AssetBundles/Android/version.txt");
@@ -55,11 +55,11 @@ public class BootScene : MonoBehaviour {
 		} else {
 			string url = "";
 #if UNITY_EDITOR
-			url = "http://natural-nail-eye.sakura.ne.jp/Android";
+			url = ServerURL + "/Android";
 #elif UNITY_ANDROID
-			url = "http://natural-nail-eye.sakura.ne.jp/Android";
+			url = ServerURL + "/Android";
 #elif UNITY_IPHONE
-			url = "http://natural-nail-eye.sakura.ne.jp/IOS";
+			url = ServerURL + "/IOS";
 #endif
 			VersionFileManager.Instance.GetServerVersionString(url, (string output) => {
 				if (output == null) {
@@ -69,83 +69,118 @@ public class BootScene : MonoBehaviour {
 				}
 				
 				ServerVersionString = output;
+				Debug.Log(ServerVersionString);
 				LoadLocalVersionFile();
 			});
 		}
+
+
+//		if (UnityUtility.IsEditor == true) {
+//			// ローカルリソースから読み込み
+//#if UNITY_EDITOR
+//			var serverVersion = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/AssetBundles/Android/version.txt");
+//			ServerVersionString = serverVersion.text;
+//#endif
+//			LoadLocalVersionFile();
+//		} else {
+//			string url = "";
+//#if UNITY_EDITOR
+//			url = "http://natural-nail-eye.sakura.ne.jp/Android";
+//#elif UNITY_ANDROID
+//			url = "http://natural-nail-eye.sakura.ne.jp/Android";
+//#elif UNITY_IPHONE
+//			url = "http://natural-nail-eye.sakura.ne.jp/IOS";
+//#endif
+//			VersionFileManager.Instance.GetServerVersionString(url, (string output) => {
+//				if (output == null) {
+//					RetryText.text = "失敗しました、通信ができる環境で再度お試しください。";
+//					RetryButton.interactable = true;
+//					return;
+//				}
+//				
+//				ServerVersionString = output;
+//				LoadLocalVersionFile();
+//			});
+//		}
 	}
 	
 	public void LoadLocalVersionFile() {
-		if (UnityUtility.IsEditor == true) {
-			// ローカルリソースから読み込み
-#if UNITY_EDITOR
-//			var localVersion = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/AssetBundles/Android/version.txt");
-//			LocalVersionString = localVersion.text;
-#endif
+		if (UnityUtility.IsCheckVersionFile == false) {
 			CheckVersionFile();
 		} else {
 			string path = "";
 #if UNITY_EDITOR
-			path = Application.persistentDataPath + "/" + "Android";
+			path = Application.persistentDataPath;
 #elif UNITY_ANDROID
-			path = Application.persistentDataPath + "/" + "Android";
+			path = Application.persistentDataPath;
 #elif UNITY_IPHONE
-			path = Application.persistentDataPath + "/" + "IOS";
+			path = Application.persistentDataPath;
 #endif
 			VersionFileManager.Instance.GetLocalVersionString(path, (string output) => {
 				LocalVersionString = output;
+				Debug.Log(LocalVersionString);
 				CheckVersionFile();
 			});
 		}
+
+//		if (UnityUtility.IsEditor == true) {
+//			// ローカルリソースから読み込み
+//#if UNITY_EDITOR
+////			var localVersion = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/AssetBundles/Android/version.txt");
+////			LocalVersionString = localVersion.text;
+//#endif
+//			CheckVersionFile();
+//		} else {
+//			string path = "";
+//#if UNITY_EDITOR
+//			path = Application.persistentDataPath + "/" + "Android";
+//#elif UNITY_ANDROID
+//			path = Application.persistentDataPath + "/" + "Android";
+//#elif UNITY_IPHONE
+//			path = Application.persistentDataPath + "/" + "IOS";
+//#endif
+//			VersionFileManager.Instance.GetLocalVersionString(path, (string output) => {
+//				LocalVersionString = output;
+//				CheckVersionFile();
+//			});
+//		}
 	}
 	
 	public void CheckVersionFile() {
+		Debug.Log("CheckVersionFile");
 		string path = "";
 #if UNITY_EDITOR
-		path = Application.persistentDataPath + "/" + "Android";
+		path = Application.persistentDataPath;
 #elif UNITY_ANDROID
-		path = Application.persistentDataPath + "/" + "Android";
+		path = Application.persistentDataPath;
 #elif UNITY_IPHONE
-		path = Application.persistentDataPath + "/" + "IOS";
+		path = Application.persistentDataPath;
 #endif
 
+		// バージョンチェックしない場合は、ローカルは空にしている。この場合、サーバーと言っているが、最新のローカルバージョンファイルを参照している（ややこしいけど…
 		if (string.IsNullOrEmpty(LocalVersionString)) {
 			// LuaMainファイルだけまずダウンロード
-//C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\AssetBundles\Android
 #if UNITY_EDITOR
 			string url = "";
-			if (UnityUtility.IsEditor = true) {
+			if (UnityUtility.IsUseLocalAssetBundle = true) {
 				url = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 			} else {
-				url = URL;
+				url = ServerURL;
 			}
 #else
-			string url = URL;
+			string url = ServerURL;
 #endif
 			string savePath = "";
 #if UNITY_EDITOR
-			savePath = Application.persistentDataPath + "/Android";
+			savePath = Application.persistentDataPath;
 			url += "/" + "Android/luamain";
 #elif UNITY_ANDROID
-			savePath = Application.persistentDataPath + "/Android";
+			savePath = Application.persistentDataPath;
 			url += "/" + "Android/luamain";
 #elif UNITY_IPHONE
-			savePath = Application.persistentDataPath + "/IOS";
+			savePath = Application.persistentDataPath;
 			url += "/" + "IOS/luamain";
 #endif
-			//// バージョンファイルがなかったら、ロードじゃなくてセーブの方にする
-			//AssetBundleManager.Instance.LoadAssetBundle(url, "luamain", (AssetBundle assetBundle) => {
-			//	TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
-			//	System.IO.StreamWriter sw = new System.IO.StreamWriter(
-			//		savePath+"/LuaMain.lua",
-			//		false, 
-			//		System.Text.Encoding.UTF8
-			//	);
-			//	sw.Write(resultObject.text);
-			//	sw.Close();
-			//	//assetBundle.Unload(false);
-
-			//	StartCoroutine(LuaInit());
-			//});
 			
 			// バージョンファイルがなかったら、ロードじゃなくてセーブの方にする
 			AssetBundleManager.Instance.SaveAssetBundle(url, savePath, "luamain", (AssetBundle assetBundle, string error) => {
@@ -178,6 +213,80 @@ public class BootScene : MonoBehaviour {
 				VersionFileManager.Instance.SaveVersionString(path, ServerVersionString);
 			}
 		}
+
+
+
+
+
+
+
+
+
+//		string path = "";
+//#if UNITY_EDITOR
+//		path = Application.persistentDataPath + "/" + "Android";
+//#elif UNITY_ANDROID
+//		path = Application.persistentDataPath + "/" + "Android";
+//#elif UNITY_IPHONE
+//		path = Application.persistentDataPath + "/" + "IOS";
+//#endif
+//
+//		// バージョンチェックしない場合は、ローカルは空にしている。この場合、サーバーと言っているが、最新のローカルバージョンファイルを参照している（ややこしいけど…
+//		if (string.IsNullOrEmpty(LocalVersionString)) {
+//			// LuaMainファイルだけまずダウンロード
+//#if UNITY_EDITOR
+//			string url = "";
+//			if (UnityUtility.IsEditor = true) {
+//				url = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
+//			} else {
+//				url = ServerURL;
+//			}
+//#else
+//			string url = ServerURL;
+//#endif
+//			string savePath = "";
+//#if UNITY_EDITOR
+//			savePath = Application.persistentDataPath + "/Android";
+//			url += "/" + "Android/luamain";
+//#elif UNITY_ANDROID
+//			savePath = Application.persistentDataPath + "/Android";
+//			url += "/" + "Android/luamain";
+//#elif UNITY_IPHONE
+//			savePath = Application.persistentDataPath + "/IOS";
+//			url += "/" + "IOS/luamain";
+//#endif
+//			
+//			// バージョンファイルがなかったら、ロードじゃなくてセーブの方にする
+//			AssetBundleManager.Instance.SaveAssetBundle(url, savePath, "luamain", (AssetBundle assetBundle, string error) => {
+//				TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
+//				System.IO.StreamWriter sw = new System.IO.StreamWriter(
+//					savePath+"/LuaMain.lua",
+//					false, 
+//					System.Text.Encoding.UTF8
+//				);
+//				sw.Write(resultObject.text);
+//				sw.Close();
+//				//assetBundle.Unload(false);
+//
+//				StartCoroutine(LuaInit());
+//			});
+//		
+//		} else {
+//			Dictionary<string, AssetBundleData> localDict = CreateVersionDataDict(LocalVersionString);
+//			Dictionary<string, AssetBundleData> serverDict = CreateVersionDataDict(ServerVersionString);
+//			AssetBundleData localVersion = null;
+//			localDict.TryGetValue("version", out localVersion);
+//			AssetBundleData serverVersion = null;
+//			serverDict.TryGetValue("version", out serverVersion);
+//
+//			if (localVersion.Version == serverVersion.Version) {
+//				// バージョン同じなので、ローカルのデータを参照してゲーム始める
+//				int i = 0;
+//			} else {
+//				// 差分チェックして、更新があるデータをダウンロードして、バージョンファイルを保存する
+//				VersionFileManager.Instance.SaveVersionString(path, ServerVersionString);
+//			}
+//		}
 	}
 
 	public void OnClickRetryButton() {

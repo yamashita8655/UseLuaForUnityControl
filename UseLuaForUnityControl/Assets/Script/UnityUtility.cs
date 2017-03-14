@@ -18,6 +18,14 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	public static bool IsEditor = true;
 	
+#if UNITY_EDITOR
+	public static bool IsUseLocalAssetBundle = true;
+	public static bool IsCheckVersionFile = false;
+#else
+	public static bool IsUseLocalAssetBundle = false;
+	public static bool IsCheckVersionFile = true;
+#endif
+	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
 	
 	public class MonoPInvokeCallbackAttribute : System.Attribute
@@ -618,6 +626,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnitySaveAssetBundle(IntPtr luaState)
 	{
+		Debug.Log("UnitySaveAssetBundle:Start");
 		uint res;
 		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
 		string loadPath = Marshal.PtrToStringAnsi(res_s);
@@ -631,6 +640,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
 		string callbackName = Marshal.PtrToStringAnsi(res_s);
 
+		Debug.Log(loadPath);
+		Debug.Log(savePath);
 		AssetBundleManager.Instance.SaveAssetBundle(loadPath, savePath, assetBundleName, (AssetBundle assetBundle, string error) => {
 			// Lua側の関数を呼び出す
 			LuaManager.FunctionData data = new LuaManager.FunctionData();
@@ -782,16 +793,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 #if UNITY_EDITOR
 		//loadPath = "file:///" + Application.streamingAssetsPath + "/" + scriptName;
 		loadPath = Application.streamingAssetsPath + "/" + scriptName;
-		savePath = Application.persistentDataPath + "/Android/" + scriptName;
+		savePath = Application.persistentDataPath + "/" + scriptName;
 #elif UNITY_ANDROID
 		loadPath = Application.streamingAssetsPath + "/Android/" + scriptName;
-		savePath = Application.persistentDataPath + "/Android/" + scriptName;
+		savePath = Application.persistentDataPath + "/" + scriptName;
 #elif UNITY_IPHONE
 		loadPath = Application.streamingAssetsPath + "/IOS/" + scriptName;
-@		savePath = Application.persistentDataPath + "/IOS/" + scriptName;
+		savePath = Application.persistentDataPath + "/" + scriptName;
 #endif
 	
-		if (UnityUtility.IsEditor == true) {
+		if (UnityUtility.IsUseLocalAssetBundle == true) {
 			StartCoroutine(LoadLuaMainFile(loadPath, () => {
 					isLoaded = true;
 				})
@@ -856,7 +867,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 			yield return null;
 		}*/
 
+		Debug.Log(loadPath+":start");
 		string output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+		Debug.Log(loadPath+":end");
 
 		//			TextAsset file = Resources.Load<TextAsset>(scriptName);
 		//TextAsset file = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);

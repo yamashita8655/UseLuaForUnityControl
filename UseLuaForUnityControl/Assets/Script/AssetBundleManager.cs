@@ -22,9 +22,14 @@ public class AssetBundleManager : SingletonMonoBehaviour<AssetBundleManager> {
 	}
 
 	private IEnumerator SaveAssetBundleCoroutine(string loadPath, string savePath, string assetBundleName, Action<AssetBundle, string> endCallback) {
-		WWW www = new WWW (loadPath);
+		WWW www = new WWW(loadPath);
 		while (www.isDone == false) {
 			yield return null;
+		}
+
+		if (string.IsNullOrEmpty(www.error) == false) {
+			Debug.Log(www.error);
+			yield break;
 		}
 
 		AssetBundle assetBundle = www.assetBundle;

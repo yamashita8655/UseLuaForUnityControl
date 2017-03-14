@@ -7,9 +7,9 @@ gacharesultscene,2,e9a97368a92ed65f79ddc87d6cddbc48
 gachascene,2,bc6ace3172901c7b715f94d173b6221a
 homescene,1,70d5b2f1a2ba1eccf363858e95c5f016
 loadingscene,1,778cab3644a3fed5b2d6c4e3f89ca9f9
-luamain,1,4e21bf39bc1e4e62f9313cdafb6787d0
-luascript,1,00fcef9d821886e8ae2bb0bda0c2a89a
+luamain,3,7570051f82c0b937112f6f7f3de6c1d9
+luascript,4,f57d2f5491325200cbcf16858db68f1e
 optionscene,1,1cdef497ffc59a155eef1c3f34c2348a
 questscene,1,25fdcfba54d9d54b7bcb977eb8502c23
 titlescene,1,3015e9e7cb2e5410c8ee189d6a06d421
-version,2,6c964a5b67eaa940ad56652cc0cc37e1
+version,6,d2abc4c18a2add82e994ff165cbf50eb
