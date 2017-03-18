@@ -60,6 +60,17 @@ function GachaScene.new()
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "GachaSceneBackButton" then
+			--DialogManager.Instance():OpenDialog(
+			--	"アセバン更新しないと、戻れないぞ☆",
+			--	function()
+			--	end,
+			--	function()
+			--	end,
+			--	function()
+			--	end,
+			--	function()
+			--	end
+			--)
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 		end
 		if buttonName == "GachaScene_GachaButton" then

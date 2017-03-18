@@ -765,15 +765,20 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		list.Add(ServerVersionString);
 
 		string streamingAssetsPath = "";
+		string platform = "";
 #if UNITY_EDITOR
 		streamingAssetsPath = "file:///" + Application.streamingAssetsPath;
+		platform = "Android";
 #elif UNITY_ANDROID
 		streamingAssetsPath = Application.streamingAssetsPath;
+		platform = "Android";
 #elif UNITY_IPHONE
 		streamingAssetsPath = Application.streamingAssetsPath;
+		platform = "IOS";
 #endif
 		list.Add(streamingAssetsPath);
 		list.Add(Application.persistentDataPath);
+		list.Add(platform);
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 	}
