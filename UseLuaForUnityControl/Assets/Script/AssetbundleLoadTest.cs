@@ -63,7 +63,7 @@ public class AssetbundleLoadTest : MonoBehaviour {
 		AssetBundleManager.Instance.LoadAssetBundle (
 			"file:///" + Application.streamingAssetsPath + "/Android/common",
 			"common",
-			(AssetBundle assetBundle) => {
+			(AssetBundle assetBundle, string error) => {
 				if (assetBundle == null) {
 					Debug.Log("error");
 				}

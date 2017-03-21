@@ -96,6 +96,7 @@ end
 --	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
 --end
 function LuaMain()
+	-- Unity側では、バージョンファイルの読み込みだけは行ってくれて
 	LuaUnityDebugLog(LocalVersionString)
 	LuaUnityDebugLog(ServerVersionString)
 
@@ -223,7 +224,7 @@ function DoFileLuaScript()
 		DoFileCount = DoFileCount + 1
 		DoFileLuaScript()
 	else
-		InitGame()
+		LuaUnitySaveVersionFile(PersistentDataPath, ServerVersionString, "SaveVersionFileCallback", "")
 	end
 end
 
@@ -233,6 +234,10 @@ function UpdateLoadingData()
 	--LuaSetScale("LoadingCurrentLoadingGaugeBar", 0.0, 1.0, 1.0)
 	LuaSetText("LoadingLoadedValueText", LuaFileLoadedCount)
 	LuaSetText("LoadingMaxValueText", #LuaFileList)
+end
+
+function LuaUnitySaveVersionFile(path, src, callbackName, callbackArg)
+	UnitySaveVersionFile(path, src, callbackName, callbackArg)
 end
 
 function LuaUnityLoadSaveFile(path, oneTimeFileName, callbackName, callbackArg)
@@ -448,6 +453,11 @@ function SaveScriptFileCallback(isSuccess)
 	LuaUnityDebugLog(isSuccess)
 	SaveLuaScriptIndex = SaveLuaScriptIndex + 1
 	SaveScriptFile()
+end
+
+function SaveVersionFileCallback(isSuccess)
+	LuaUnityDebugLog(isSuccess)
+	InitGame()
 end
 
 

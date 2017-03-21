@@ -19,8 +19,10 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	public static bool IsEditor = true;
 	
 #if UNITY_EDITOR
-	public static bool IsUseLocalAssetBundle = true;
-	public static bool IsCheckVersionFile = false;
+	//public static bool IsUseLocalAssetBundle = true;
+	//public static bool IsCheckVersionFile = false;
+	public static bool IsUseLocalAssetBundle = false;
+	public static bool IsCheckVersionFile = true;
 #else
 	public static bool IsUseLocalAssetBundle = false;
 	public static bool IsCheckVersionFile = true;
@@ -510,6 +512,39 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 
+	// バージョンファイルの保存
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySaveVersionFile(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string path = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 2, out res);
+		string src = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 3, out res);
+		string callbackName = Marshal.PtrToStringAnsi(res_s);
+
+		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
+		string callbackArg = Marshal.PtrToStringAnsi(res_s);
+
+		string success = "";
+		VersionFileManager.Instance.SaveVersionString(path, src);
+
+		// Lua側の関数を呼び出す
+		LuaManager.FunctionData data = new LuaManager.FunctionData();
+		data.returnValueNum = 0;
+		data.functionName = callbackName;
+		ArrayList list = new ArrayList();
+		list.Add(callbackArg);
+		list.Add(success);
+		data.argList = list;
+		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+
+		return 0;
+	}
+
 	// プレハブを読み込んでシーンに追加する。ファイル名はLua側から渡される
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityLoadPrefab(IntPtr luaState)
@@ -547,17 +582,15 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
 		string callbackArg = Marshal.PtrToStringAnsi(res_s);
 
-		string success = "";
-		
 		// 
-		AssetBundleManager.Instance.LoadAssetBundle(path, assetBundleName, (AssetBundle assetBundle) => {
+		AssetBundleManager.Instance.LoadAssetBundle(path, assetBundleName, (AssetBundle assetBundle, string error) => {
 			// Lua側の関数を呼び出す
 			LuaManager.FunctionData data = new LuaManager.FunctionData();
 			data.returnValueNum = 0;
 			data.functionName = callbackName;
 			ArrayList list = new ArrayList();
 			list.Add(callbackArg);
-			list.Add(success);
+			list.Add(error);
 			data.argList = list;
 			ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
 	
@@ -596,9 +629,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 //#elif UNITY_IPHONE
 //		savePath = savePath + "/IOS";
 //#endif
-		AssetBundleManager.Instance.LoadAssetBundle(loadPath, assetBundleName, (AssetBundle assetBundle) => {
+		AssetBundleManager.Instance.LoadAssetBundle(loadPath, assetBundleName, (AssetBundle assetBundle, string error) => {
 			TextAsset resultObject = assetBundle.LoadAsset<TextAsset>(assetName);
-			string error = "";
 			string path = string.Format("{0}/{1}", savePath, scriptName);
 
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(
@@ -1110,7 +1142,12 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnitySaveAssetBundle = new LuaManager.DelegateLuaBindFunction (UnitySaveAssetBundle);
 		IntPtr LuaUnitySaveAssetBundleIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySaveAssetBundle);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySaveAssetBundle", LuaUnitySaveAssetBundleIntPtr, LuaUnitySaveAssetBundle);
-		
+
+		// バージョンファイルの保存
+		LuaManager.DelegateLuaBindFunction LuaUnitySaveVersionFile = new LuaManager.DelegateLuaBindFunction (UnitySaveVersionFile);
+		IntPtr LuaUnitySaveVersionFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySaveVersionFile);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySaveVersionFile", LuaUnitySaveVersionFileIntPtr, LuaUnitySaveVersionFile);
+
 		// コモン関数の登録
 		LuaManager.DelegateLuaBindFunction LuaUnityBindCommonFunction = new LuaManager.DelegateLuaBindFunction (UnityBindCommonFunction);
 		IntPtr LuaUnityBindCommonFunctionIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityBindCommonFunction);

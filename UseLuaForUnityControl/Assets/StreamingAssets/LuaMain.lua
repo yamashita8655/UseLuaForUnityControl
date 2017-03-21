@@ -96,6 +96,7 @@ end
 --	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
 --end
 function LuaMain()
+	-- Unity側では、バージョンファイルの読み込みだけは行ってくれて
 	LuaUnityDebugLog(LocalVersionString)
 	LuaUnityDebugLog(ServerVersionString)
 
@@ -104,17 +105,49 @@ function LuaMain()
 		-- セーブの方は、ファイル化するついでに、マネージャにキャッシュもしてる
 		LoadAssetBundleStringList = StringSplit(ServerVersionString, "\n")
 		LuaUnityDebugLog(#LoadAssetBundleStringList)
-		LoadAssetBundle()
+		SaveAssetBundle()
 	else
+		local serverStringList = StringSplit(ServerVersionString, "\n")
+		local localStringList = StringSplit(LocalVersionString, "\n")
+
+		local serverVersion = 0
+		local localVersion = 0
+
+		for i = 1, #serverStringList do
+			local params = StringSplit(serverStringList[i], ",")
+			if #params < 3 then
+			else
+				if (params[1] == "version") then
+					serverVersion = params[2]
+				end
+			end
+		end
+		
+		for i = 1, #localStringList do
+			local params = StringSplit(localStringList[i], ",")
+			if #params < 3 then
+			else
+				if (params[1] == "version") then
+					localVersion = params[2]
+				end
+			end
+		end
+
+		-- バージョンチェック
+		if serverVersion == localVersion then
+			LoadAssetBundleStringList = serverStringList
+			LoadAssetBundle(PersistentDataPath)
+		else
+			--LoadAssetBundleStringList = serverStringList
+			--LoadAssetBundle(URL)
+		end
 	end
 end
 
-function LoadAssetBundle()
+function LoadAssetBundle(path)
 	if #LoadAssetBundleStringList == 0 then
-		-- スクリプトファイルの生成に移る
-		LuaUnityDebugLog("CreateScriptFile")
-		SaveLuaScriptCount = 1
-		SaveScriptFile()
+		-- LuaScriptはすでに存在しているので、DoFileを行う
+		DoFileLuaScript()
 	else
 		local params = StringSplit(LoadAssetBundleStringList[1], ",")
 		table.remove(LoadAssetBundleStringList, 1)
@@ -126,6 +159,30 @@ function LoadAssetBundle()
 			if (params[1] == "version") or (params[1] == "luamain") then
 				-- 次へ
 				LoadAssetBundle()
+			else
+				LuaSaveAssetBundle(path.."/Android/"..params[1], PersistentDataPath, params[1], "LoadAssetBundleCallback")
+			end
+		end
+	end
+end
+
+function SaveAssetBundle()
+	if #LoadAssetBundleStringList == 0 then
+		-- スクリプトファイルの生成に移る
+		LuaUnityDebugLog("CreateScriptFile")
+		SaveLuaScriptCount = 1
+		SaveScriptFile()
+	else
+		local params = StringSplit(LoadAssetBundleStringList[1], ",")
+		table.remove(LoadAssetBundleStringList, 1)
+
+		if #params < 3 then
+			-- 次へ
+			SaveAssetBundle()
+		else
+			if (params[1] == "version") or (params[1] == "luamain") then
+				-- 次へ
+				SaveAssetBundle()
 			else
 				LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath, params[1], "SaveAssetBundleCallback")
 			end
@@ -223,7 +280,7 @@ function DoFileLuaScript()
 		DoFileCount = DoFileCount + 1
 		DoFileLuaScript()
 	else
-		InitGame()
+		LuaUnitySaveVersionFile(PersistentDataPath, ServerVersionString, "SaveVersionFileCallback", "")
 	end
 end
 
@@ -233,6 +290,10 @@ function UpdateLoadingData()
 	--LuaSetScale("LoadingCurrentLoadingGaugeBar", 0.0, 1.0, 1.0)
 	LuaSetText("LoadingLoadedValueText", LuaFileLoadedCount)
 	LuaSetText("LoadingMaxValueText", #LuaFileList)
+end
+
+function LuaUnitySaveVersionFile(path, src, callbackName, callbackArg)
+	UnitySaveVersionFile(path, src, callbackName, callbackArg)
 end
 
 function LuaUnityLoadSaveFile(path, oneTimeFileName, callbackName, callbackArg)
@@ -441,13 +502,18 @@ end
 
 function SaveAssetBundleCallback(isSuccess)
 	LuaUnityDebugLog(isSuccess)
-	LoadAssetBundle()
+	SaveAssetBundle()
 end
 
 function SaveScriptFileCallback(isSuccess)
 	LuaUnityDebugLog(isSuccess)
 	SaveLuaScriptIndex = SaveLuaScriptIndex + 1
 	SaveScriptFile()
+end
+
+function SaveVersionFileCallback(isSuccess)
+	LuaUnityDebugLog(isSuccess)
+	InitGame()
 end
 
 
