@@ -63,9 +63,11 @@ public class AssetBundleBuildScript {
 		}
 		serverVersionHashString = CreateMD5Hash(stringForCreateHash);
 
-		if (System.IO.File.Exists("C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version") == true) {
+		string dataPath = Application.dataPath;
+
+		if (System.IO.File.Exists(dataPath + "/AssetBundles/" + platform + "/version") == true) {
 			System.IO.StreamReader sr = new System.IO.StreamReader(
-				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version", 
+				dataPath + "/AssetBundles/" + platform + "/version", 
 				System.Text.Encoding.UTF8
 			);
 			string input = sr.ReadToEnd();
@@ -146,7 +148,7 @@ public class AssetBundleBuildScript {
 			output += string.Format("{0},{1},{2}", "version", (int.Parse(localVersionNumber)+1).ToString(), newAssetBundleHashString);
 			
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(
-				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version", 
+				dataPath + "/AssetBundles/" + platform + "/version", 
 				false,
 				new System.Text.UTF8Encoding(false)
 			);
@@ -157,7 +159,7 @@ public class AssetBundleBuildScript {
 			string lineString = string.Format("{0},{1},{2}", "version", "1", serverVersionHashString);
 			outputString += lineString;
 			System.IO.StreamWriter sw = new System.IO.StreamWriter(
-				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version", 
+				dataPath + "/AssetBundles/" + platform + "/version", 
 				true,
 //				System.Text.Encoding.UTF8
 				new System.Text.UTF8Encoding(false)
@@ -166,7 +168,7 @@ public class AssetBundleBuildScript {
 			sw.Close();
 
 			System.IO.StreamWriter swtxt = new System.IO.StreamWriter(
-				"C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles/" + platform + "/version.txt", 
+				dataPath + "/AssetBundles/" + platform + "/version.txt", 
 				true,
 //				System.Text.Encoding.UTF8
 				new System.Text.UTF8Encoding(false)

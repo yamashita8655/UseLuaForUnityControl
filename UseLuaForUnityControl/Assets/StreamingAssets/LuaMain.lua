@@ -12,6 +12,8 @@ LoadAssetBundleStringList = {}
 URL = "http://natural-nail-eye.sakura.ne.jp"
 --URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
+Platform = ""
+
 --StreamingAssets内にある、Lua用分割スクリプト。最終的には、ここはアセットバンドルから読み込むことになるはず
 LuaFileList = {
 	"DefineEnum.lua",
@@ -184,7 +186,7 @@ function SaveAssetBundle()
 				-- 次へ
 				SaveAssetBundle()
 			else
-				LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath, params[1], "SaveAssetBundleCallback")
+				LuaSaveAssetBundle(URL.."/"..Platform.."/"..params[1], PersistentDataPath, params[1], "SaveAssetBundleCallback")
 			end
 		end
 	end
@@ -213,7 +215,7 @@ function StartLoadLuaScript()
 end
 
 --ゲームの情報
-function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionString, serverVersionString, streamingDataPath, persistentDataPath)
+function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionString, serverVersionString, streamingDataPath, persistentDataPath, platform)
 	ScreenWidth = screenWidth
 	ScreenHeight = screenHeight
 	CanvasFactor = canvasFactor
@@ -221,6 +223,7 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionS
 	ServerVersionString = serverVersionString
 	StreamingDataPath = streamingDataPath 
 	PersistentDataPath = persistentDataPath
+	Platform = platform
 	
 end
 

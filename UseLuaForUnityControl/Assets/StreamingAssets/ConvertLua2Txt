@@ -1,0 +1,4 @@
+rm ../Resources/ForAssetbundle/*.txt
+cp -f *.lua ../Resources/ForAssetbundle
+rm ../Resources/ForAssetbundle/*.meta
+echo "end"

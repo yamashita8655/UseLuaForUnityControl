@@ -149,7 +149,7 @@ public class BootScene : MonoBehaviour {
 #if UNITY_EDITOR
 		string url = "";
 		if (UnityUtility.IsUseLocalAssetBundle = true) {
-			url = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
+			url = "file:///" + Application.dataPath + "/AssetBundles";
 		} else {
 			url = ServerURL;
 		}
