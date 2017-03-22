@@ -208,8 +208,37 @@ public class BootScene : MonoBehaviour {
 					InAppObject.SetActive(false);
 				});
 			} else {
-				// 差分チェックして、更新があるデータをダウンロードして、バージョンファイルを保存する
-				//VersionFileManager.Instance.SaveVersionString(path, ServerVersionString);
+				// LuaMainに差分があるか確認する
+				AssetBundleData localLuaMain = null;
+				localDict.TryGetValue("luamain", out localLuaMain);
+				AssetBundleData serverLuaMain = null;
+				serverDict.TryGetValue("luamain", out serverLuaMain);
+
+				if (localLuaMain.Version == serverLuaMain.Version) {
+					// LuaMainのバージョン同じなので、LuaMainはそのまま実行する
+					AssetBundleManager.Instance.LoadAssetBundle(loadPath+"/luamain", "luamain", (AssetBundle assetBundle, string error) => {
+						TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
+						StartCoroutine(LuaInit());
+						InAppObject.SetActive(false);
+					});
+				} else {
+					// LuaMainを落としなおして、実行する
+					// バージョンファイルがなかったら、ロードじゃなくてセーブの方にする
+					AssetBundleManager.Instance.SaveAssetBundle(url, savePath, "luamain", (AssetBundle assetBundle, string error) => {
+						TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
+						System.IO.StreamWriter sw = new System.IO.StreamWriter(
+							savePath+"/LuaMain.lua",
+							false, 
+							System.Text.Encoding.UTF8
+						);
+						sw.Write(resultObject.text);
+						sw.Close();
+						//assetBundle.Unload(false);
+
+						StartCoroutine(LuaInit());
+						InAppObject.SetActive(false);
+					});
+				}
 			}
 		}
 	}

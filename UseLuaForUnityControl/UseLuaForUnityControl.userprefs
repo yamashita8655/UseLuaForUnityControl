@@ -1,17 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\GameMain\BootScene.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\UnityUtility.cs">
     <Files>
-      <File FileName="Assets\Script\GameMain\BootScene.cs" Line="204" Column="35" />
-      <File FileName="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\UnityUtility.cs" Line="533" Column="1" />
-      <File FileName="Assets\Script\AssetBundleManager.cs" Line="67" Column="1" />
+      <File FileName="Assets\Script\UnityUtility.cs" Line="586" Column="1" />
+      <File FileName="Assets\Script\AssetBundleManager.cs" Line="61" Column="1" />
+      <File FileName="Assets\Script\GameMain\BootScene.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\GameMain\Common\GameObjectCacheManager.cs" Line="67" Column="1" />
       <File FileName="Assets\Script\AssetbundleLoadTest.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\LuaManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\ResourceManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\VersionFileManager.cs" Line="31" Column="1" />
+      <File FileName="Assets\Script\VersionFileManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Script\test1-scenechange\Test1_StartUp.cs" Line="1" Column="1" />
-      <File FileName="Assets\Script\GameMain\Common\GameSceneManager.cs" Line="42" Column="1" />
+      <File FileName="Assets\Script\GameMain\Common\GameSceneManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Editor\AssetBundleBuildScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
@@ -25,10 +25,10 @@
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="97" column="1" />
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\HowToUseLua.cs" line="85" column="1" />
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\AssetbundleLoadTest.cs" line="34" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="579" column="37" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\VersionFileManager.cs" line="31" column="1" />
       <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="520" column="1" />
-      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="533" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="675" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="623" column="1" />
+      <Breakpoint file="C:\yamashita\github\UseLuaForUnityControl\UseLuaForUnityControl\Assets\Script\UnityUtility.cs" line="586" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

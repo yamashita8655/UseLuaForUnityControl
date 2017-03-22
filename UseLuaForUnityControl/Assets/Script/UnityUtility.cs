@@ -800,7 +800,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string platform = "";
 #if UNITY_EDITOR
 		streamingAssetsPath = "file:///" + Application.streamingAssetsPath;
-		platform = "Android";
+		platform = "Editor";
 #elif UNITY_ANDROID
 		streamingAssetsPath = Application.streamingAssetsPath;
 		platform = "Android";

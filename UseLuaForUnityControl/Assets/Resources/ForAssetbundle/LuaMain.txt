@@ -8,9 +8,15 @@ StreamingDataPath = ""
 PersistentDataPath = ""
 CanvasFactor = 0.0
 LoadAssetBundleStringList = {}
+SaveAssetBundleStringList = {}
+
+AfterSaveAssetBundleCallback = nil
+AfterLoadAssetBundleCallback = nil
 
 URL = "http://natural-nail-eye.sakura.ne.jp"
 --URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
+
+Platform = ""
 
 --StreamingAssets内にある、Lua用分割スクリプト。最終的には、ここはアセットバンドルから読み込むことになるはず
 LuaFileList = {
@@ -103,32 +109,138 @@ function LuaMain()
 	if LocalVersionString == "" then
 		-- とりあえず、アセットバンドルを全部読み込んで、ファイル化しておく
 		-- セーブの方は、ファイル化するついでに、マネージャにキャッシュもしてる
-		LoadAssetBundleStringList = StringSplit(ServerVersionString, "\n")
-		LuaUnityDebugLog(#LoadAssetBundleStringList)
-		LoadAssetBundle()
+		SaveAssetBundleStringList = StringSplit(ServerVersionString, "\n")
+		LuaUnityDebugLog(#SaveAssetBundleStringList)
+		AfterSaveAssetBundleCallback = SaveScriptFile
+		SaveAssetBundle()
 	else
+		local serverStringList = StringSplit(ServerVersionString, "\n")
+		local localStringList = StringSplit(LocalVersionString, "\n")
+
+		local serverVersion = 0
+		local localVersion = 0
+
+		for i = 1, #serverStringList do
+			local params = StringSplit(serverStringList[i], ",")
+			if #params < 3 then
+			else
+				if (params[1] == "version") then
+					serverVersion = params[2]
+				end
+			end
+		end
+		
+		for i = 1, #localStringList do
+			local params = StringSplit(localStringList[i], ",")
+			if #params < 3 then
+			else
+				if (params[1] == "version") then
+					localVersion = params[2]
+				end
+			end
+		end
+
+		-- バージョンチェック
+		if serverVersion == localVersion then
+			LoadAssetBundleStringList = localStringList
+			AfterLoadAssetBundleCallback = DoFileLuaScript
+			LoadAssetBundle()
+		else
+			for i = 1, #serverStringList do
+				local serverParams = StringSplit(serverStringList[i], ",")
+				if #serverParams >= 3 then
+					for j = 1, #localStringList do
+						local localParams = StringSplit(localStringList[j], ",")
+						if #localParams >= 3 then
+							if (serverParams[1] == localParams[1]) then
+								if (serverParams[2] ~= localParams[2]) then
+									-- バージョンが違うので、セーブリストにリスト追加
+									table.insert(SaveAssetBundleStringList, serverStringList[i])
+								else
+									-- バージョンが同じなので、ロードリストにリスト追加
+									table.insert(LoadAssetBundleStringList, serverStringList[i])
+								end
+							end
+						end
+					end
+				end
+			end
+
+			LuaUnityDebugLog("Save")
+			for i = 1, #SaveAssetBundleStringList do
+				LuaUnityDebugLog(SaveAssetBundleStringList[i])
+			end
+			LuaUnityDebugLog("Load")
+			for i = 1, #LoadAssetBundleStringList do
+				LuaUnityDebugLog(LoadAssetBundleStringList[i])
+			end
+			AfterSaveAssetBundleCallback = LoadAssetBundle
+			AfterLoadAssetBundleCallback = DoFileLuaScript
+			SaveAssetBundle()
+		end
 	end
 end
 
 function LoadAssetBundle()
+	LuaUnityDebugLog("LoadAssetBundle")
 	if #LoadAssetBundleStringList == 0 then
-		-- スクリプトファイルの生成に移る
-		LuaUnityDebugLog("CreateScriptFile")
-		SaveLuaScriptCount = 1
-		SaveScriptFile()
+		-- LuaScriptはすでに存在しているので、DoFileを行う
+		LuaUnityDebugLog("GO:DoFileLuaScript")
+		--DoFileLuaScript()
+		AfterLoadAssetBundleCallback()
 	else
+		LuaUnityDebugLog("a")
 		local params = StringSplit(LoadAssetBundleStringList[1], ",")
 		table.remove(LoadAssetBundleStringList, 1)
 
+		LuaUnityDebugLog("b")
 		if #params < 3 then
 			-- 次へ
+			LuaUnityDebugLog("c")
 			LoadAssetBundle()
+		else
+			LuaUnityDebugLog("d")
+			if (params[1] == "version") or (params[1] == "luamain") then
+				-- 次へ
+				LuaUnityDebugLog("e")
+				LoadAssetBundle()
+			else
+				if Platform == "Editor" then
+					LuaUnityDebugLog("f")
+					LuaLoadAssetBundle("file:///"..PersistentDataPath.."/"..params[1], params[1], "LoadAssetBundleCallback", "")
+				else
+					LuaUnityDebugLog("g")
+					LuaLoadAssetBundle(PersistentDataPath.."/"..params[1], params[1], "LoadAssetBundleCallback", "")
+				end
+			end
+		end
+	end
+end
+
+function SaveAssetBundle()
+	if #SaveAssetBundleStringList == 0 then
+		-- スクリプトファイルの生成に移る
+		LuaUnityDebugLog("CreateScriptFile")
+		SaveLuaScriptCount = 1
+		--SaveScriptFile()
+		AfterSaveAssetBundleCallback()
+	else
+		local params = StringSplit(SaveAssetBundleStringList[1], ",")
+		table.remove(SaveAssetBundleStringList, 1)
+
+		if #params < 3 then
+			-- 次へ
+			SaveAssetBundle()
 		else
 			if (params[1] == "version") or (params[1] == "luamain") then
 				-- 次へ
-				LoadAssetBundle()
+				SaveAssetBundle()
 			else
-				LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath, params[1], "SaveAssetBundleCallback")
+				if Platform == "Editor" then
+					LuaSaveAssetBundle(URL.."/Android/"..params[1], PersistentDataPath, params[1], "SaveAssetBundleCallback")
+				else
+					LuaSaveAssetBundle(URL.."/"..Platform.."/"..params[1], PersistentDataPath, params[1], "SaveAssetBundleCallback")
+				end
 			end
 		end
 	end
@@ -157,7 +269,7 @@ function StartLoadLuaScript()
 end
 
 --ゲームの情報
-function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionString, serverVersionString, streamingDataPath, persistentDataPath)
+function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionString, serverVersionString, streamingDataPath, persistentDataPath, platform)
 	ScreenWidth = screenWidth
 	ScreenHeight = screenHeight
 	CanvasFactor = canvasFactor
@@ -165,6 +277,7 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionS
 	ServerVersionString = serverVersionString
 	StreamingDataPath = streamingDataPath 
 	PersistentDataPath = persistentDataPath
+	Platform = platform
 	
 end
 
@@ -441,12 +554,13 @@ end
 --end
 
 function LoadAssetBundleCallback(arg, isSuccess)
-	LuaUnityDebugLog(arg)
+	LuaUnityDebugLog(isSuccess)
+	LoadAssetBundle()
 end
 
 function SaveAssetBundleCallback(isSuccess)
 	LuaUnityDebugLog(isSuccess)
-	LoadAssetBundle()
+	SaveAssetBundle()
 end
 
 function SaveScriptFileCallback(isSuccess)
