@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 
-	private Action<string> EndCallback = null;
+	private Action<string, string> EndCallback = null;
 	private string LocalPath = "";
 	private string ServerUrl = "";
 
@@ -14,13 +14,13 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 		DontDestroyOnLoad(this);
 	}
 
-	public void GetLocalVersionString(string localPath, Action<string> endCallback) {
+	public void GetLocalVersionString(string localPath, Action<string, string> endCallback) {
 		LocalPath = localPath;
 		EndCallback = endCallback;
 		StartCoroutine(LoadLocalVersionString());
 	}
 	
-	public void GetServerVersionString(string serverUrl, Action<string> endCallback) {
+	public void GetServerVersionString(string serverUrl, Action<string, string> endCallback) {
 		ServerUrl = serverUrl;
 		EndCallback = endCallback;
 		StartCoroutine(LoadServerVersionString());
@@ -28,6 +28,7 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 	
 	private IEnumerator LoadLocalVersionString() {
 		string output = "";
+		string error = "";
 		if (System.IO.File.Exists(LocalPath + "/version") == true) {
 #if UNITY_EDITOR
 			LocalPath = "file:///" + LocalPath;
@@ -41,15 +42,22 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 			while (www.isDone == false) {
 				yield return null;
 			}
+		
+			if (string.IsNullOrEmpty(www.error) == false) {
+				error = www.error;
+			}
 			
 			output = www.text;
+		} else {
+			// ファイルが無いのは想定内。初回起動等の時は、当然存在しない
 		}
 
-		EndCallback(output);
+		EndCallback(output, error);
 	}
 
 	private IEnumerator LoadServerVersionString() {
 		string output = "";
+		string error = "";
 		Debug.Log("LoadServerVersionString:Start");
 
 		// データが存在するので、そっち読み込む
@@ -59,13 +67,11 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 		}
 		
 		if (string.IsNullOrEmpty(www.error) == false) {
-			Debug.Log(www.error);
-			EndCallback(null);
-			yield break;
+			error = www.error;
 		}
 
 		output = www.text;
-		EndCallback(output);
+		EndCallback(output, error);
 	}
 	
 	public void SaveVersionString(string path, string src) {

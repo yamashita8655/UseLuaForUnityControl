@@ -18,6 +18,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 	public static bool IsEditor = true;
 	
+	private static Action<string, int> ExeptionCallback = null;
+	
 #if UNITY_EDITOR
 	//public static bool IsUseLocalAssetBundle = true;
 	//public static bool IsCheckVersionFile = false;
@@ -674,6 +676,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		Debug.Log(loadPath);
 		Debug.Log(savePath);
+		//AssetBundleManager.Instance.SaveAssetBundle(loadPath, savePath, assetBundleName, (AssetBundle assetBundle, string error) => {
 		AssetBundleManager.Instance.SaveAssetBundle(loadPath, savePath, assetBundleName, (AssetBundle assetBundle, string error) => {
 			// Lua側の関数を呼び出す
 			LuaManager.FunctionData data = new LuaManager.FunctionData();
@@ -684,6 +687,21 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 			data.argList = list;
 			ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
 		});
+
+		return 0;
+	}
+	
+	// 例外処理を呼ぶ
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityCallExeptionCallback(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string errorString = Marshal.PtrToStringAnsi(res_s);
+
+		int errorNumber = (int)NativeMethods.lua_tonumberx(luaState, 2, 0);
+
+		ExeptionCallback(errorString, errorNumber);
 
 		return 0;
 	}
@@ -815,11 +833,12 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
 	}
 	
-	public IEnumerator Init(float canvasFactor, string localVersionString, string serverVersionString)
+	public IEnumerator Init(float canvasFactor, string localVersionString, string serverVersionString, Action<string, int> exeptionCallback)
 	{
 		CanvasFactor = canvasFactor;
 		LocalVersionString = localVersionString;
 		ServerVersionString = serverVersionString;
+		ExeptionCallback = exeptionCallback;
 
 		mLuaCallUpdateMap = new Dictionary<string, string>();
 		LuaManager.Instance.Init();
@@ -1152,6 +1171,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnitySaveVersionFile = new LuaManager.DelegateLuaBindFunction (UnitySaveVersionFile);
 		IntPtr LuaUnitySaveVersionFileIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySaveVersionFile);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySaveVersionFile", LuaUnitySaveVersionFileIntPtr, LuaUnitySaveVersionFile);
+		
+		// 例外処理の呼び出し
+		LuaManager.DelegateLuaBindFunction LuaUnityCallExeptionCallback = new LuaManager.DelegateLuaBindFunction (UnityCallExeptionCallback);
+		IntPtr LuaUnityCallExeptionCallbackIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityCallExeptionCallback);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityCallExeptionCallback", LuaUnityCallExeptionCallbackIntPtr, LuaUnityCallExeptionCallback);
 
 		// コモン関数の登録
 		LuaManager.DelegateLuaBindFunction LuaUnityBindCommonFunction = new LuaManager.DelegateLuaBindFunction (UnityBindCommonFunction);

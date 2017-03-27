@@ -502,6 +502,11 @@ function LoadLuaFile(filename)
 	UnityLoadLuaFile(filename)
 end
 
+--例外処理呼び出し
+function LuaUnityCallExeptionCallback(errorString, errorNumber)
+	UnityCallExeptionCallback(errorString, errorNumber)
+end
+
 --Unity側から呼び出される。Event系の関数
 function EventClickButtonFromUnity(buttonName)
 	SceneManager.Instance():OnClickButton(buttonName) 
@@ -558,9 +563,13 @@ function LoadAssetBundleCallback(arg, isSuccess)
 	LoadAssetBundle()
 end
 
-function SaveAssetBundleCallback(isSuccess)
-	LuaUnityDebugLog(isSuccess)
-	SaveAssetBundle()
+function SaveAssetBundleCallback(errorString)
+	LuaUnityDebugLog(errorString)
+	if errorString ~= nil and errorString ~= "" then
+		LuaUnityCallExeptionCallback(errorString, 3)
+	else
+		SaveAssetBundle()
+	end
 end
 
 function SaveScriptFileCallback(isSuccess)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -67,8 +68,8 @@ public class BootScene : MonoBehaviour {
 #elif UNITY_IPHONE
 			url = ServerURL + "/IOS";
 #endif
-			VersionFileManager.Instance.GetServerVersionString(url, (string output) => {
-				if (output == null) {
+			VersionFileManager.Instance.GetServerVersionString(url, (string output, string error) => {
+				if (string.IsNullOrEmpty(error) == false) {
 					RetryText.text = "通信に失敗しました、通信環境がよい所で再度お試しください。";
 					RetryButton.gameObject.SetActive(true);
 					LoadingObject.gameObject.SetActive(false);
@@ -125,10 +126,14 @@ public class BootScene : MonoBehaviour {
 #elif UNITY_IPHONE
 			path = Application.persistentDataPath;
 #endif
-			VersionFileManager.Instance.GetLocalVersionString(path, (string output) => {
-				LocalVersionString = output;
-				Debug.Log(LocalVersionString);
-				CheckVersionFile();
+			VersionFileManager.Instance.GetLocalVersionString(path, (string output, string error) => {
+				if (string.IsNullOrEmpty(error) == false) {
+					ExeptionHandle(error, 0);
+				} else {
+					LocalVersionString = output;
+					Debug.Log(LocalVersionString);
+					CheckVersionFile();
+				}
 			});
 		}
 	}
@@ -177,19 +182,27 @@ public class BootScene : MonoBehaviour {
 			
 			// バージョンファイルがなかったら、ロードじゃなくてセーブの方にする
 			AssetBundleManager.Instance.SaveAssetBundle(url, savePath, "luamain", (AssetBundle assetBundle, string error) => {
-				TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
-				System.IO.StreamWriter sw = new System.IO.StreamWriter(
-					savePath+"/LuaMain.lua",
-					false, 
-					System.Text.Encoding.UTF8
-				);
-				sw.Write(resultObject.text);
-				sw.Close();
-				//assetBundle.Unload(false);
+				if (string.IsNullOrEmpty(error) == false) {
+					ExeptionHandle(error, 1);
+				} else {
+					TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
+					try {
+						System.IO.StreamWriter sw = new System.IO.StreamWriter(
+							savePath+"/LuaMain.lua",
+							false, 
+							System.Text.Encoding.UTF8
+						);
+						sw.Write(resultObject.text);
+						sw.Close();
+					} catch (IOException e) {
+						ExeptionHandle(e.ToString(), 2);
+						return;
+					}
 
-				StartCoroutine(LuaInit());
-				
-				InAppObject.SetActive(false);
+					StartCoroutine(LuaInit());
+					
+					InAppObject.SetActive(false);
+				}
 			});
 		
 		} else {
@@ -251,7 +264,7 @@ public class BootScene : MonoBehaviour {
 	
 	IEnumerator LuaInit() {
 		float factor = MainCanvas.scaleFactor;
-		yield return StartCoroutine(UnityUtility.Instance.Init(factor, LocalVersionString, ServerVersionString));
+		yield return StartCoroutine(UnityUtility.Instance.Init(factor, LocalVersionString, ServerVersionString, ExeptionHandle));
 	}
 	
 	Dictionary<string, AssetBundleData> CreateVersionDataDict(string src) {
@@ -272,5 +285,11 @@ public class BootScene : MonoBehaviour {
 		}
 
 		return dict;
+	}
+
+	// 例外検知して、ユーザーに伝える
+	public void ExeptionHandle(string error, int errorNumber) { 
+		InAppObject.SetActive(true);
+		RetryText.text = string.Format ("下記のエラーが発生しました。アプリを再起動するか、問題が解決しない場合は、アプリ作成者にエラー内容を送ってください。\n{0}\nerrorNumber:{1}\n\n", error, errorNumber);
 	}
 }

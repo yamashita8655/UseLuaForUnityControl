@@ -22,19 +22,25 @@ public class AssetBundleManager : SingletonMonoBehaviour<AssetBundleManager> {
 	}
 
 	private IEnumerator SaveAssetBundleCoroutine(string loadPath, string savePath, string assetBundleName, Action<AssetBundle, string> endCallback) {
+		string error = "";
 		WWW www = new WWW(loadPath);
 		while (www.isDone == false) {
 			yield return null;
 		}
 
 		if (string.IsNullOrEmpty(www.error) == false) {
-			Debug.Log(www.error);
+			endCallback(null, www.error);
 			yield break;
 		}
 
 		AssetBundle assetBundle = www.assetBundle;
 		AssetBundleCacheDict.Add(assetBundleName, assetBundle);
-		File.WriteAllBytes(savePath+"/"+assetBundleName, www.bytes);
+		try {
+			File.WriteAllBytes(savePath+"/"+assetBundleName, www.bytes);
+		} catch (IOException e) {
+			endCallback(null, e.ToString());
+			yield break;
+		}
 		endCallback(assetBundle, www.error);
 	}
 
