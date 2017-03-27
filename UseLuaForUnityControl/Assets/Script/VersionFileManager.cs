@@ -74,12 +74,19 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 		EndCallback(output, error);
 	}
 	
-	public void SaveVersionString(string path, string src) {
+	public string SaveVersionString(string path, string src) {
+		string error = "";
 		if (System.IO.Directory.Exists(path) == false) {
 			System.IO.Directory.CreateDirectory(path);
 		}
 		path = path + "/version";
-		File.WriteAllText(path, src, new System.Text.UTF8Encoding(false));
+		try {
+			File.WriteAllText(path, src, new System.Text.UTF8Encoding(false));
+		} catch (IOException e) {
+			error = e.ToString();
+		}
+
+		return error;
 	}
 }
 

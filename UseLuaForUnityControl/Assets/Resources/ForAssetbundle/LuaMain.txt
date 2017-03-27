@@ -572,17 +572,24 @@ function SaveAssetBundleCallback(errorString)
 	end
 end
 
-function SaveScriptFileCallback(isSuccess)
-	LuaUnityDebugLog(isSuccess)
-	SaveLuaScriptIndex = SaveLuaScriptIndex + 1
-	SaveScriptFile()
+function SaveScriptFileCallback(errorString)
+	LuaUnityDebugLog(errorString)
+	if errorString ~= nil and errorString ~= "" then
+		LuaUnityCallExeptionCallback(errorString, 4)
+	else
+		SaveLuaScriptIndex = SaveLuaScriptIndex + 1
+		SaveScriptFile()
+	end
 end
 
-function SaveVersionFileCallback(isSuccess)
-	LuaUnityDebugLog(isSuccess)
-	InitGame()
+function SaveVersionFileCallback(callbackArg, errorString)
+	LuaUnityDebugLog(errorString)
+	if errorString ~= nil and errorString ~= "" then
+		LuaUnityCallExeptionCallback(errorString, 5)
+	else
+		InitGame()
+	end
 end
-
 
 -- 自作split関数
 -- delimは一文字想定

@@ -531,8 +531,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
 		string callbackArg = Marshal.PtrToStringAnsi(res_s);
 
-		string success = "";
-		VersionFileManager.Instance.SaveVersionString(path, src);
+		string error = VersionFileManager.Instance.SaveVersionString(path, src);
 
 		// Lua側の関数を呼び出す
 		LuaManager.FunctionData data = new LuaManager.FunctionData();
@@ -540,7 +539,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		data.functionName = callbackName;
 		ArrayList list = new ArrayList();
 		list.Add(callbackArg);
-		list.Add(success);
+		list.Add(error);
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
 
@@ -632,17 +631,24 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 //		savePath = savePath + "/IOS";
 //#endif
 		AssetBundleManager.Instance.LoadAssetBundle(loadPath, assetBundleName, (AssetBundle assetBundle, string error) => {
-			TextAsset resultObject = assetBundle.LoadAsset<TextAsset>(assetName);
-			string path = string.Format("{0}/{1}", savePath, scriptName);
+			if (string.IsNullOrEmpty(error) == false) {
+			} else {
+				TextAsset resultObject = assetBundle.LoadAsset<TextAsset>(assetName);
+				string path = string.Format("{0}/{1}", savePath, scriptName);
 
-			System.IO.StreamWriter sw = new System.IO.StreamWriter(
-				path, 
-				false, 
-				System.Text.Encoding.UTF8
-			);
-			sw.Write(resultObject.text);
-			sw.Close();
-				
+				try {
+					System.IO.StreamWriter sw = new System.IO.StreamWriter(
+						path, 
+						false, 
+						System.Text.Encoding.UTF8
+					);
+					sw.Write(resultObject.text);
+					sw.Close();
+				} catch (IOException e) {
+					error = e.ToString();
+				}
+			}
+			
 			// Lua側の関数を呼び出す
 			LuaManager.FunctionData data = new LuaManager.FunctionData();
 			data.returnValueNum = 0;
