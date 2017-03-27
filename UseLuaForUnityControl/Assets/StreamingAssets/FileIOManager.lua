@@ -89,6 +89,9 @@ end
 function FileIOManager.SaveCallback(argList, unityArg) 
 	local self = argList[1]
 	local unityText = unityArg
+	if unityText ~= nil and unityText ~= "" then
+		LuaUnityCallExeptionCallback(unityText, 100)
+	end
 end
 
 -- プログラム中でアクセスするので、デフォルトデータは用意する

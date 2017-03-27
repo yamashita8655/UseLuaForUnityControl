@@ -200,8 +200,6 @@ public class BootScene : MonoBehaviour {
 					}
 
 					StartCoroutine(LuaInit());
-					
-					InAppObject.SetActive(false);
 				}
 			});
 		
@@ -216,9 +214,12 @@ public class BootScene : MonoBehaviour {
 			if (localVersion.Version == serverVersion.Version) {
 				// バージョン同じなので、ローカルのデータを参照してゲーム始める
 				AssetBundleManager.Instance.LoadAssetBundle(loadPath+"/luamain", "luamain", (AssetBundle assetBundle, string error) => {
-					TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
-					StartCoroutine(LuaInit());
-					InAppObject.SetActive(false);
+					if (string.IsNullOrEmpty(error) == false) {
+						ExeptionHandle(error, 6);
+					} else {
+						TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
+						StartCoroutine(LuaInit());
+					}
 				});
 			} else {
 				// LuaMainに差分があるか確認する
@@ -232,7 +233,6 @@ public class BootScene : MonoBehaviour {
 					AssetBundleManager.Instance.LoadAssetBundle(loadPath+"/luamain", "luamain", (AssetBundle assetBundle, string error) => {
 						TextAsset resultObject = assetBundle.LoadAsset<TextAsset>("LuaMain");
 						StartCoroutine(LuaInit());
-						InAppObject.SetActive(false);
 					});
 				} else {
 					// LuaMainを落としなおして、実行する
@@ -249,7 +249,6 @@ public class BootScene : MonoBehaviour {
 						//assetBundle.Unload(false);
 
 						StartCoroutine(LuaInit());
-						InAppObject.SetActive(false);
 					});
 				}
 			}
@@ -264,7 +263,7 @@ public class BootScene : MonoBehaviour {
 	
 	IEnumerator LuaInit() {
 		float factor = MainCanvas.scaleFactor;
-		yield return StartCoroutine(UnityUtility.Instance.Init(factor, LocalVersionString, ServerVersionString, ExeptionHandle));
+		yield return StartCoroutine(UnityUtility.Instance.Init(factor, LocalVersionString, ServerVersionString, ExeptionHandle, EndLuaMainInit));
 	}
 	
 	Dictionary<string, AssetBundleData> CreateVersionDataDict(string src) {
@@ -291,5 +290,10 @@ public class BootScene : MonoBehaviour {
 	public void ExeptionHandle(string error, int errorNumber) { 
 		InAppObject.SetActive(true);
 		RetryText.text = string.Format ("下記のエラーが発生しました。アプリを再起動するか、問題が解決しない場合は、アプリ作成者にエラー内容を送ってください。\n{0}\nerrorNumber:{1}\n\n", error, errorNumber);
+	}
+	
+	// Luaの初期化関数が終わった後のコールバック
+	public void EndLuaMainInit() { 
+		InAppObject.SetActive(false);
 	}
 }

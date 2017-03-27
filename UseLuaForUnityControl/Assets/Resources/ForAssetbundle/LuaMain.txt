@@ -146,6 +146,7 @@ function LuaMain()
 			AfterLoadAssetBundleCallback = DoFileLuaScript
 			LoadAssetBundle()
 		else
+			local isUpdateLuaScript = false
 			for i = 1, #serverStringList do
 				local serverParams = StringSplit(serverStringList[i], ",")
 				if #serverParams >= 3 then
@@ -156,6 +157,9 @@ function LuaMain()
 								if (serverParams[2] ~= localParams[2]) then
 									-- バージョンが違うので、セーブリストにリスト追加
 									table.insert(SaveAssetBundleStringList, serverStringList[i])
+									if serverParams[1] == "luascript" then
+										isUpdateLuaScript = true
+									end
 								else
 									-- バージョンが同じなので、ロードリストにリスト追加
 									table.insert(LoadAssetBundleStringList, serverStringList[i])
@@ -174,8 +178,13 @@ function LuaMain()
 			for i = 1, #LoadAssetBundleStringList do
 				LuaUnityDebugLog(LoadAssetBundleStringList[i])
 			end
+			
 			AfterSaveAssetBundleCallback = LoadAssetBundle
-			AfterLoadAssetBundleCallback = DoFileLuaScript
+			if isUpdateLuaScript == true then
+				AfterLoadAssetBundleCallback = SaveScriptFile
+			else
+				AfterLoadAssetBundleCallback = DoFileLuaScript
+			end
 			SaveAssetBundle()
 		end
 	end
@@ -369,10 +378,6 @@ function LuaUnitySaveFile(fileName, saveString, callbackName, callbackTag)
 	UnitySaveFile(fileName, saveString, callbackName, callbackTag)
 end
 
-function LuaUnityLoadFile(fileName, saveString, callbackName, callbackTag)
-	UnitySaveFile(fileName, saveString, callbackName, callbackTag)
-end
-
 --オブジェクト破棄
 --引数：ヒエラルキに登録しているオブジェクト名を指定する
 --結果：Unity側のヒエラルキオブジェクトディクショナリから削除する
@@ -507,6 +512,11 @@ function LuaUnityCallExeptionCallback(errorString, errorNumber)
 	UnityCallExeptionCallback(errorString, errorNumber)
 end
 
+--LuaMainの初期化が終わった事を通知する
+function LuaUnityCallLuaMainEndCallback()
+	UnityCallLuaMainEndCallback()
+end
+
 --Unity側から呼び出される。Event系の関数
 function EventClickButtonFromUnity(buttonName)
 	SceneManager.Instance():OnClickButton(buttonName) 
@@ -558,9 +568,13 @@ end
 --	end
 --end
 
-function LoadAssetBundleCallback(arg, isSuccess)
-	LuaUnityDebugLog(isSuccess)
-	LoadAssetBundle()
+function LoadAssetBundleCallback(arg, errorString)
+	LuaUnityDebugLog(errorString)
+	if errorString ~= nil and errorString ~= "" then
+		LuaUnityCallExeptionCallback(errorString, 7)
+	else
+		LoadAssetBundle()
+	end
 end
 
 function SaveAssetBundleCallback(errorString)
@@ -587,6 +601,7 @@ function SaveVersionFileCallback(callbackArg, errorString)
 	if errorString ~= nil and errorString ~= "" then
 		LuaUnityCallExeptionCallback(errorString, 5)
 	else
+		LuaUnityCallLuaMainEndCallback()
 		InitGame()
 	end
 end
