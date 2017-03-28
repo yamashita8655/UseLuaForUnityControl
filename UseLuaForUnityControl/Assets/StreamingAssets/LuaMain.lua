@@ -174,16 +174,18 @@ function LuaMain()
 					for j = 1, #localStringList do
 						local localParams = StringSplit(localStringList[j], ",")
 						if #localParams >= 3 then
-							if (serverParams[1] == localParams[1]) then
-								if (serverParams[2] ~= localParams[2]) then
-									-- バージョンが違うので、セーブリストにリスト追加
-									table.insert(SaveAssetBundleStringList, serverStringList[i])
-									if serverParams[1] == "luascript" then
-										isUpdateLuaScript = true
+							if serverParams[1] ~= "version" and serverParams[1] ~= "luamain" then
+								if (serverParams[1] == localParams[1]) then
+									if (serverParams[2] ~= localParams[2]) then
+										-- バージョンが違うので、セーブリストにリスト追加
+										table.insert(SaveAssetBundleStringList, serverStringList[i])
+										if serverParams[1] == "luascript" then
+											isUpdateLuaScript = true
+										end
+									else
+										-- バージョンが同じなので、ロードリストにリスト追加
+										table.insert(LoadAssetBundleStringList, serverStringList[i])
 									end
-								else
-									-- バージョンが同じなので、ロードリストにリスト追加
-									table.insert(LoadAssetBundleStringList, serverStringList[i])
 								end
 							end
 						end
@@ -199,6 +201,12 @@ function LuaMain()
 			for i = 1, #LoadAssetBundleStringList do
 				LuaUnityDebugLog(LoadAssetBundleStringList[i])
 			end
+		
+			SaveAssetBundleCounter = 1
+			LuaSetSliderValue("InAppSlider", SaveAssetBundleCounter)
+			LuaSetMaxSliderValue("InAppSlider", #SaveAssetBundleStringList)-- こっちは、すでにLuaMainとVersionは除いてある
+			LuaSetText("InAppNowLoadText", SaveAssetBundleCounter)
+			LuaSetText("InAppMaxLoadText", #SaveAssetBundleStringList)
 			
 			AfterSaveAssetBundleCallback = LoadAssetBundle
 			if isUpdateLuaScript == true then
@@ -206,6 +214,7 @@ function LuaMain()
 			else
 				AfterLoadAssetBundleCallback = DoFileLuaScript
 			end
+			
 			SaveAssetBundle()
 		end
 	end
