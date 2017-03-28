@@ -13,6 +13,9 @@ SaveAssetBundleStringList = {}
 AfterSaveAssetBundleCallback = nil
 AfterLoadAssetBundleCallback = nil
 
+SaveAssetBundleCounter = 0
+SaveScriptFileCounter = 0
+
 URL = "http://natural-nail-eye.sakura.ne.jp"
 --URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
@@ -102,7 +105,19 @@ end
 --	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
 --end
 function LuaMain()
-	-- Unity側では、バージョンファイルの読み込みだけは行ってくれて
+	-- 進行状況を確認する為のオブジェクトをFindしておく
+
+--〇プログレスが必要な物
+--・アセットバンドルダウンロード
+--・LuaScriptセーブ
+--・LuaScriptのDoFile
+
+	LuaFindObject("InAppSlider")
+	LuaFindObject("InAppNowLoadText")
+	LuaFindObject("InAppMaxLoadText")
+
+	-- Unity側では、バージョンファイルの読み込みとLuaMainの読み込み自体（このファイルその物）の実行をしてくれているので
+	-- 渡されたバージョン情報から、各種データの比較・更新を行う
 	LuaUnityDebugLog(LocalVersionString)
 	LuaUnityDebugLog(ServerVersionString)
 
@@ -111,6 +126,12 @@ function LuaMain()
 		-- セーブの方は、ファイル化するついでに、マネージャにキャッシュもしてる
 		SaveAssetBundleStringList = StringSplit(ServerVersionString, "\n")
 		LuaUnityDebugLog(#SaveAssetBundleStringList)
+		SaveAssetBundleCounter = 1
+		LuaSetSliderValue("InAppSlider", SaveAssetBundleCounter)
+		LuaSetMaxSliderValue("InAppSlider", #SaveAssetBundleStringList-2)-- LuaMainとVersionは読まないデータなので、その分差し引く
+		LuaSetText("InAppNowLoadText", SaveAssetBundleCounter)
+		LuaSetText("InAppMaxLoadText", #SaveAssetBundleStringList-2)
+
 		AfterSaveAssetBundleCallback = SaveScriptFile
 		SaveAssetBundle()
 	else
@@ -232,6 +253,12 @@ function SaveAssetBundle()
 		LuaUnityDebugLog("CreateScriptFile")
 		SaveLuaScriptCount = 1
 		--SaveScriptFile()
+
+		SaveScriptFileCounter = 1
+		LuaSetSliderValue("InAppSlider", SaveScriptFileCounter)
+		LuaSetMaxSliderValue("InAppSlider", #LuaFileList)-- LuaMainとVersionは読まないデータなので、その分差し引く
+		LuaSetText("InAppNowLoadText", SaveScriptFileCounter)
+		LuaSetText("InAppMaxLoadText", #LuaFileList)
 		AfterSaveAssetBundleCallback()
 	else
 		local params = StringSplit(SaveAssetBundleStringList[1], ",")
@@ -411,6 +438,12 @@ function LuaSetSliderValue(hierarchyName, value)
 	UnitySetSliderValue(hierarchyName, value)
 end
 
+--スライダー最大量設定
+--引数：ヒエラルキに登録しているオブジェクト名と、量
+function LuaSetMaxSliderValue(hierarchyName, value)
+	UnitySetMaxSliderValue(hierarchyName, value)
+end
+
 --アニメーション再生
 --引数：オブジェクト名、アニメーション名、アニメーションが終わった後のLua側のコールバック関数名
 function LuaPlayAnimator(hierarchyName, animationName, isLoop, isAutoActiveFalse, callbackMethodName, callbackMethodArg)
@@ -582,6 +615,9 @@ function SaveAssetBundleCallback(errorString)
 	if errorString ~= nil and errorString ~= "" then
 		LuaUnityCallExeptionCallback(errorString, 3)
 	else
+		SaveAssetBundleCounter = SaveAssetBundleCounter + 1
+		LuaSetSliderValue("InAppSlider", SaveAssetBundleCounter)
+		LuaSetText("InAppNowLoadText", SaveAssetBundleCounter)
 		SaveAssetBundle()
 	end
 end
@@ -592,6 +628,8 @@ function SaveScriptFileCallback(errorString)
 		LuaUnityCallExeptionCallback(errorString, 4)
 	else
 		SaveLuaScriptIndex = SaveLuaScriptIndex + 1
+		LuaSetSliderValue("InAppSlider", SaveLuaScriptIndex)
+		LuaSetText("InAppNowLoadText", SaveLuaScriptIndex)
 		SaveScriptFile()
 	end
 end

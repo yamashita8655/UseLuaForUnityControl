@@ -44,14 +44,19 @@ public class AssetBundleManager : SingletonMonoBehaviour<AssetBundleManager> {
 		endCallback(assetBundle, www.error);
 	}
 
+	//public void LoadAssetBundle(string assetBundlePathAndName, string assetBundleName, Action<AssetBundle, string> endCallback) {
+	//	AssetBundle output = null;
+	//	if (AssetBundleCacheDict.TryGetValue (assetBundleName, out output) == true) {
+	//		endCallback(output, "");
+	//	} else {
+	//		EndCallback = endCallback;
+	//		StartCoroutine(LoadAssetBundleCoroutine(assetBundlePathAndName, assetBundleName));
+	//	}
+	//}
+	
 	public void LoadAssetBundle(string assetBundlePathAndName, string assetBundleName, Action<AssetBundle, string> endCallback) {
-		AssetBundle output = null;
-		if (AssetBundleCacheDict.TryGetValue (assetBundleName, out output) == true) {
-			endCallback(output, "");
-		} else {
-			EndCallback = endCallback;
-			StartCoroutine(LoadAssetBundleCoroutine(assetBundlePathAndName, assetBundleName));
-		}
+		EndCallback = endCallback;
+		StartCoroutine(LoadAssetBundleCoroutine(assetBundlePathAndName, assetBundleName));
 	}
 	
 	public AssetBundle GetAssetBundle(string assetBundleName) {
@@ -63,7 +68,30 @@ public class AssetBundleManager : SingletonMonoBehaviour<AssetBundleManager> {
 		return output;
 	}
 				
+	//private IEnumerator LoadAssetBundleCoroutine(string assetBundlePathAndName, string assetBundleName) {
+	//	WWW www = new WWW (assetBundlePathAndName);
+	//	while (www.isDone == false) {
+	//		yield return null;
+	//	}
+
+	//	if (string.IsNullOrEmpty(www.error) == false) {
+	//		EndCallback(null, www.error);
+	//		yield break;
+	//	}
+
+	//	AssetBundle assetBundle = www.assetBundle;
+	//	AssetBundleCacheDict.Add(assetBundleName, assetBundle);
+	//	EndCallback(assetBundle, www.error);
+	//}
+	
 	private IEnumerator LoadAssetBundleCoroutine(string assetBundlePathAndName, string assetBundleName) {
+		yield return null; // 1フレーム待ち。Lua側で処理を通したいため
+		AssetBundle output = null;
+		if (AssetBundleCacheDict.TryGetValue(assetBundleName, out output) == true) {
+			EndCallback(output, "");
+			yield break;
+		}
+
 		WWW www = new WWW (assetBundlePathAndName);
 		while (www.isDone == false) {
 			yield return null;

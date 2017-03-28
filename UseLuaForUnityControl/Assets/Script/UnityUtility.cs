@@ -497,6 +497,21 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		return 0;
 	}
+	
+	// スライダーの最大値を設定する
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetMaxSliderValue(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		
+		float value = (float)NativeMethods.lua_tonumberx(luaState, 2, 0);
+		obj.GetComponent<Slider>().maxValue = value;
+		
+		return 0;
+	}
 
 	// シーンを切り替える
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
@@ -1124,6 +1139,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnitySetSliderValue = new LuaManager.DelegateLuaBindFunction (UnitySetSliderValue);
 		IntPtr LuaUnitySetSliderValueIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetSliderValue);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetSliderValue", LuaUnitySetSliderValueIntPtr, LuaUnitySetSliderValue);
+		
+		// スライダーの最大量
+		LuaManager.DelegateLuaBindFunction LuaUnitySetMaxSliderValue = new LuaManager.DelegateLuaBindFunction (UnitySetMaxSliderValue);
+		IntPtr LuaUnitySetMaxSliderValueIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetMaxSliderValue);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetMaxSliderValue", LuaUnitySetMaxSliderValueIntPtr, LuaUnitySetMaxSliderValue);
 
 		// シーン(と呼んでる、オブジェクト)の切り替え
 		LuaManager.DelegateLuaBindFunction LuaUnityChangeScene = new LuaManager.DelegateLuaBindFunction (UnityChangeScene);
