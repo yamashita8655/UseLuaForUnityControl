@@ -113,6 +113,7 @@ function LuaMain()
 --・LuaScriptのDoFile
 
 	LuaFindObject("InAppSlider")
+	LuaFindObject("InAppText")
 	LuaFindObject("InAppNowLoadText")
 	LuaFindObject("InAppMaxLoadText")
 
@@ -222,6 +223,7 @@ end
 
 function LoadAssetBundle()
 	LuaUnityDebugLog("LoadAssetBundle")
+	LuaSetText("InAppText", "ゲーム実行準備中")
 	if #LoadAssetBundleStringList == 0 then
 		-- LuaScriptはすでに存在しているので、DoFileを行う
 		LuaUnityDebugLog("GO:DoFileLuaScript")
@@ -257,6 +259,8 @@ function LoadAssetBundle()
 end
 
 function SaveAssetBundle()
+	LuaSetText("InAppText", "ゲーム起動に必要なデータをダウンロード中")
+
 	if #SaveAssetBundleStringList == 0 then
 		-- スクリプトファイルの生成に移る
 		LuaUnityDebugLog("CreateScriptFile")
@@ -292,6 +296,7 @@ function SaveAssetBundle()
 end
 
 function SaveScriptFile()
+	LuaSetText("InAppText", "データセーブ中")
 	if SaveLuaScriptIndex > #LuaFileList then
 		-- dofileに入る
 		DoFileLuaScript()
@@ -376,6 +381,7 @@ end
 
 --doFileのみを行う処理
 function DoFileLuaScript()
+	LuaSetText("InAppText", "ゲーム実行準備中")
 	if DoFileCount <= #LuaFileList then
 		local index = DoFileCount
 		dofile(PersistentDataPath.."/"..LuaFileList[index])
