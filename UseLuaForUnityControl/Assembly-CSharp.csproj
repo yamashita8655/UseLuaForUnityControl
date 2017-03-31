@@ -86,7 +86,9 @@
      <None Include="Assets\Resources\function.txt" />
      <None Include="Assets\Resources\ForAssetbundle\ResultDialog.txt" />
      <None Include="Assets\Resources\ForAssetbundle\NormalBullet.txt" />
+     <None Include="Assets\AssetBundles\IOS\appVersion.txt" />
      <None Include="Assets\Resources\ForAssetbundle\GachaTable.txt" />
+     <None Include="Assets\AssetBundles\Android\appVersion.txt" />
      <None Include="Assets\Resources\ForAssetbundle\LoadingScene.txt" />
      <None Include="Assets\Resources\ForAssetbundle\EnemySpawnTable.txt" />
      <None Include="Assets\Resources\CsvManager.txt" />

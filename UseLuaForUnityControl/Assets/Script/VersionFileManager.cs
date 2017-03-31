@@ -9,9 +9,34 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 	private Action<string, string> EndCallback = null;
 	private string LocalPath = "";
 	private string ServerUrl = "";
+	private string ApplicationVersionPath = "";
 
 	public void Initialize() {
 		DontDestroyOnLoad(this);
+	}
+	
+	public void GetApplicationVersionString(string applicationVersionPath, Action<string, string> endCallback) {
+		StartCoroutine(GetApplicationVersionStringCoroutine(applicationVersionPath, endCallback));
+	}
+	
+	private IEnumerator GetApplicationVersionStringCoroutine(string applicationVersionPath, Action<string, string> endCallback) {
+		string output = "";
+		string error = "";
+
+		// データが存在するので、そっち読み込む
+		WWW www = new WWW (applicationVersionPath + "/appVersion.txt");
+		while (www.isDone == false) {
+			yield return null;
+		}
+		
+		if (string.IsNullOrEmpty(www.error) == false) {
+			error = www.error;
+		}
+
+		output = www.text;
+		if (endCallback != null) {
+			endCallback(output, error);
+		}
 	}
 
 	public void GetLocalVersionString(string localPath, Action<string, string> endCallback) {

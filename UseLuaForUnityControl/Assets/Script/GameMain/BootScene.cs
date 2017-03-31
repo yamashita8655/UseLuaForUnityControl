@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class BootScene : MonoBehaviour {
 
+	private readonly int AppicationVersion = 1;
+
 	class AssetBundleData {
 		public string AssetBundleName { get; set; }
 		public string Version { get; set; }
@@ -23,11 +25,20 @@ public class BootScene : MonoBehaviour {
 
 	[SerializeField] GameObject InAppObject;
 	[SerializeField] GameObject LoadingObject;
+	[SerializeField] GameObject SliderObject;
 
 	string ServerVersionString = "";
 	string LocalVersionString = "";
 
 	string ServerURL = "http://natural-nail-eye.sakura.ne.jp";
+	
+	private enum FuncState {
+		None = 0,
+		GetApplicationVersionString = 1,
+		GetServerVersionString = 2,
+	};
+
+	private FuncState State = FuncState.None;
 
 	// Use this for initialization
 	void Start () {
@@ -44,12 +55,43 @@ public class BootScene : MonoBehaviour {
 		RijindaelManager.Instance.Init();
 		VersionFileManager.Instance.Initialize();
 
-		LoadServerVersionFile();
+		CheckApplicationVersion();
+		//LoadServerVersionFile();
 		
 		yield return null;
 	}
 	
+	public void CheckApplicationVersion() {
+		State = FuncState.GetApplicationVersionString;
+		RetryText.text = "アプリケーションバージョンチェック中";
+		string url = "";
+#if UNITY_EDITOR
+		url = ServerURL + "/Android";
+#elif UNITY_ANDROID
+		url = ServerURL + "/Android";
+#elif UNITY_IPHONE
+		url = ServerURL + "/IOS";
+#endif
+		VersionFileManager.Instance.GetApplicationVersionString(url, (string output, string error) => {
+			if (string.IsNullOrEmpty(error) == false) {
+				RetryText.text = "通信に失敗しました、通信環境がよい所で再度お試しください。";
+				RetryButton.gameObject.SetActive(true);
+				LoadingObject.gameObject.SetActive(false);
+				return;
+			}
+
+			if (AppicationVersion != int.Parse(output)) {
+				RetryText.text = "アプリケーションのバージョンが異なります。\n最新にアップデートして再起動してください。";
+				LoadingObject.gameObject.SetActive(false);
+				SliderObject.gameObject.SetActive(false);
+			} else {
+				LoadServerVersionFile();
+			}
+		});
+	}
+	
 	public void LoadServerVersionFile() {
+		State = FuncState.GetServerVersionString;
 		RetryText.text = "サーバーのバージョンファイル取得中";
 		LoadingObject.gameObject.SetActive(true);
 		if (UnityUtility.IsCheckVersionFile == false) {
@@ -256,7 +298,11 @@ public class BootScene : MonoBehaviour {
 	}
 
 	public void OnClickRetryButton() {
-		LoadServerVersionFile();
+		if (State == FuncState.GetApplicationVersionString) {
+			CheckApplicationVersion();
+		} else if (State == FuncState.GetServerVersionString) {
+			LoadServerVersionFile();
+		}
 //		RetryText.text = "サーバーデータアクセス中";
 		RetryButton.gameObject.SetActive(false);
 	}
