@@ -14,6 +14,7 @@ function BootScene.new()
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
 		this:SceneBaseInitialize()
+		LuaSetActive("InAppRootObject", false)-- 場所が飛びまくってわかりづらいが、ここで、ゲーム開始時の情報オブジェクトを非表示にする
 		LuaChangeScene("Boot", "MainCanvas")
 	end
 	
@@ -57,9 +58,9 @@ function BootScene.new()
 		LuaUnityDebugLog("ChangeSceneBefore")
 
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Quest)
-		--SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
+		SceneManager.Instance():ChangeScene(SceneNameEnum.Title)
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Custom)
-		SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
+		--SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
 		--SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 	end
 	

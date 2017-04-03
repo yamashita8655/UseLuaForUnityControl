@@ -340,6 +340,5 @@ public class BootScene : MonoBehaviour {
 	
 	// Luaの初期化関数が終わった後のコールバック
 	public void EndLuaMainInit() { 
-		InAppObject.SetActive(false);
 	}
 }

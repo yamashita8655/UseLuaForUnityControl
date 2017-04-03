@@ -116,6 +116,7 @@ function LuaMain()
 	LuaFindObject("InAppText")
 	LuaFindObject("InAppNowLoadText")
 	LuaFindObject("InAppMaxLoadText")
+	LuaFindObject("InAppRootObject")
 
 	-- Unity側では、バージョンファイルの読み込みとLuaMainの読み込み自体（このファイルその物）の実行をしてくれているので
 	-- 渡されたバージョン情報から、各種データの比較・更新を行う
@@ -345,6 +346,7 @@ function LoadAllLuaScript()
 end
 
 function InitGame()
+	LuaSetText("InAppText", "ゲーム実行準備完了！")
 	LuaLoadPrefabAfter("common", "FadeObject", "FadeObject", "SystemCanvas")
 	LuaSetActive("FadeObject", false)
 	LuaLoadPrefabAfter("common", "DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
