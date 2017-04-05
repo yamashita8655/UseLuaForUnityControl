@@ -35,7 +35,8 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	-- HPゲージの更新
 	this.UpdateHpGauge = function(self)
 		barRate = self.NowHp / self.MaxHp
-		LuaSetScale("PlayerHPGaugeBar", 1.0, barRate, 1.0)
+		--LuaSetScale("PlayerHPGaugeBar", 1.0, barRate, 1.0)
+		LuaSetScale("PlayerHPGaugeBar", barRate, 1.0, 1.0)
 	end
 	
 	-- 現在HPの加減算

@@ -21,6 +21,8 @@ function GachaRollDialog:Initialize()
 	self.RollCount = 0
 	self.HavePoint = 0
 	self.Price = 0
+	
+	self.GachaMaxRollCount = 100
 
 	LuaLoadPrefabAfter("gachascene", "GachaRollDialog", "GachaRollDialog", "SystemCanvas")
 	
@@ -28,10 +30,10 @@ function GachaRollDialog:Initialize()
 	LuaFindObject("GachaRollHavePointText")
 	LuaFindObject("GachaRollUsePointText")
 	LuaFindObject("GachaRollRollValueText")
-	LuaFindObject("GachaRollRollValueMinButton")
+	LuaFindObject("GachaRollRollValueTenMinusButton")
 	LuaFindObject("GachaRollRollValueMinusButton")
 	LuaFindObject("GachaRollRollValuePlusButton")
-	LuaFindObject("GachaRollRollValueMaxButton")
+	LuaFindObject("GachaRollRollValueTenPlusButton")
 	LuaFindObject("GachaRollButton")
 
 	LuaSetActive("GachaRollDialog", false)
@@ -103,8 +105,11 @@ function GachaRollDialog:OnClickButton(buttonName)
 		self:CloseDialog()
 	end
 	
-	if buttonName == "GachaRollRollValueMinButton" then
-		self.RollCount = 0
+	if buttonName == "GachaRollRollValueTenMinusButton" then
+		self.RollCount = self.RollCount - 10
+		if self.RollCount < 0 then
+			self.RollCount = 0
+		end
 		self:UpdatePriceText()
 		self:UpdateButtonInteractable() 
 	end
@@ -117,7 +122,8 @@ function GachaRollDialog:OnClickButton(buttonName)
 		self:UpdateButtonInteractable() 
 	end
 	if buttonName == "GachaRollRollValuePlusButton" then
-		local max = math.floor(self.HavePoint / self.Price)
+		--local max = math.floor(self.HavePoint / self.Price)
+		local max = self.GachaMaxRollCount
 		self.RollCount = self.RollCount + 1
 		if self.RollCount > max then
 			self.RollCount = max
@@ -125,9 +131,13 @@ function GachaRollDialog:OnClickButton(buttonName)
 		self:UpdatePriceText()
 		self:UpdateButtonInteractable() 
 	end
-	if buttonName == "GachaRollRollValueMaxButton" then
-		local max = math.floor(self.HavePoint / self.Price)
-		self.RollCount = max
+	if buttonName == "GachaRollRollValueTenPlusButton" then
+		--local max = math.floor(self.HavePoint / self.Price)
+		local max = self.GachaMaxRollCount
+		self.RollCount = self.RollCount + 10
+		if self.RollCount > max then
+			self.RollCount = max
+		end
 		self:UpdatePriceText()
 		self:UpdateButtonInteractable() 
 	end
@@ -140,22 +150,23 @@ end
 
 function GachaRollDialog:UpdateButtonInteractable() 
 	if self.RollCount <= 0 then
-		LuaSetButtonInteractable("GachaRollRollValueMinButton", false)
+		LuaSetButtonInteractable("GachaRollRollValueTenMinusButton", false)
 		LuaSetButtonInteractable("GachaRollRollValueMinusButton", false)
 		LuaSetButtonInteractable("GachaRollButton", false)
 	else
-		LuaSetButtonInteractable("GachaRollRollValueMinButton", true)
+		LuaSetButtonInteractable("GachaRollRollValueTenMinusButton", true)
 		LuaSetButtonInteractable("GachaRollRollValueMinusButton", true)
 		LuaSetButtonInteractable("GachaRollButton", true)
 	end
 		
-	local max = math.floor(self.HavePoint / self.Price)
+	--local max = math.floor(self.HavePoint / self.Price)
+	local max = self.GachaMaxRollCount
 	if self.RollCount >= max then
 		LuaSetButtonInteractable("GachaRollRollValuePlusButton", false)
-		LuaSetButtonInteractable("GachaRollRollValueMaxButton", false)
+		LuaSetButtonInteractable("GachaRollRollValueTenPlusButton", false)
 	else
 		LuaSetButtonInteractable("GachaRollRollValuePlusButton", true)
-		LuaSetButtonInteractable("GachaRollRollValueMaxButton", true)
+		LuaSetButtonInteractable("GachaRollRollValueTenPlusButton", true)
 	end
 end
 
