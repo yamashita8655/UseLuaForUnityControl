@@ -23,19 +23,19 @@ function SkillLevelUpDialog:Initialize()
 	
 	LuaFindObject("SkillNowLevelText1")
 	LuaFindObject("SkillNowLevelText2")
-	LuaFindObject("SkillNowLevelText3")
+	--LuaFindObject("SkillNowLevelText3")
 	LuaFindObject("SkillMaxLevelText1")
 	LuaFindObject("SkillMaxLevelText2")
-	LuaFindObject("SkillMaxLevelText3")
+	--LuaFindObject("SkillMaxLevelText3")
 	LuaFindObject("SkillSelectFilter1")
 	LuaFindObject("SkillSelectFilter2")
-	LuaFindObject("SkillSelectFilter3")
+	--LuaFindObject("SkillSelectFilter3")
 	LuaFindObject("SkillUpButton1")
 	LuaFindObject("SkillUpButton2")
-	LuaFindObject("SkillUpButton3")
+	--LuaFindObject("SkillUpButton3")
 	LuaFindObject("SkillNeedExpText1")
 	LuaFindObject("SkillNeedExpText2")
-	LuaFindObject("SkillNeedExpText3")
+	--LuaFindObject("SkillNeedExpText3")
 	LuaFindObject("SkillDetailText")
 	LuaFindObject("SkillHaveExpText")
 
@@ -53,7 +53,7 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 		
 		LuaSetActive("SkillSelectFilter1", false)
 		LuaSetActive("SkillSelectFilter2", false)
-		LuaSetActive("SkillSelectFilter3", false)
+		--LuaSetActive("SkillSelectFilter3", false)
 
 		local player = PlayerManager.Instance():GetPlayer() 
 		local skillData = player:GetSkillConfig()
@@ -64,10 +64,10 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 		self:UpdateSkillText(SkillTypeEnum.Bullet) 
 
 		
-		LuaSetText("SkillNowLevelText3", "1")
-		LuaSetText("SkillMaxLevelText3", "1")
-		LuaSetButtonInteractable("SkillUpButton3", false)
-		LuaSetText("SkillNeedExpText3", "empty")
+		--LuaSetText("SkillNowLevelText3", "1")
+		--LuaSetText("SkillMaxLevelText3", "1")
+		--LuaSetButtonInteractable("SkillUpButton3", false)
+		--LuaSetText("SkillNeedExpText3", "empty")
 
 		self.IsActive = true
 		CallbackManager.Instance():AddCallback("SkillLevelUpDialogManager_OpenCallback", {self}, self.DialogOpenCallback)
@@ -130,6 +130,18 @@ function SkillLevelUpDialog:UpdateSkillText(skillType)
 			LuaSetButtonInteractable("SkillUpButton"..objectIndex, true)
 		else
 			LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
+		end
+	end
+	
+	local nextExp = skillData:GetNextExp(skillType)
+	local playerExp = player:GetEXP()
+	if nextExp == "MAX" then
+		LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
+	else
+		if nextExp > playerExp then
+			LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
+		else
+			LuaSetButtonInteractable("SkillUpButton"..objectIndex, true)
 		end
 	end
 	LuaSetText("SkillNeedExpText"..objectIndex, nextExp)
@@ -233,17 +245,17 @@ function SkillLevelUpDialog:ToggleSkillSelectFilter(selectIndex)
 		LuaSetText("SkillDetailText", skillDetailData[1])
 		LuaSetActive("SkillSelectFilter1", true)
 		LuaSetActive("SkillSelectFilter2", false)
-		LuaSetActive("SkillSelectFilter3", false)
+		--LuaSetActive("SkillSelectFilter3", false)
 	elseif selectIndex == 2 then
 		LuaSetText("SkillDetailText", skillDetailData[2])
 		LuaSetActive("SkillSelectFilter1", false)
 		LuaSetActive("SkillSelectFilter2", true)
-		LuaSetActive("SkillSelectFilter3", false)
+		--LuaSetActive("SkillSelectFilter3", false)
 	elseif selectIndex == 3 then
 		LuaSetText("SkillDetailText", skillDetailData[3])
 		LuaSetActive("SkillSelectFilter1", false)
 		LuaSetActive("SkillSelectFilter2", false)
-		LuaSetActive("SkillSelectFilter3", true)
+		--LuaSetActive("SkillSelectFilter3", true)
 	end
 end
 

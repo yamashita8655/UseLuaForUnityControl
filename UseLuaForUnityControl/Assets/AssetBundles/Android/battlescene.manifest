@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1714257969
+CRC: 752558695
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cc7876c762f2994df2aaaad0cea74956
+    Hash: bb9a0ab2929a37f0f130ae90fd385792
   TypeTreeHash:
     serializedVersion: 2
     Hash: 572195e8d4fa6339a2a95a39d16e92bf
@@ -56,6 +56,7 @@ ClassTypes:
 Assets:
 - Assets/Resources/BattleScene/HitEffect1.prefab
 - Assets/Resources/BattleScene/g.png
+- Assets/Resources/BattleScene/hpGauge.png
 - Assets/Resources/BattleScene/HitEffect1.controller
 - Assets/Resources/BattleScene/HitEffect1Animation.anim
 - Assets/Resources/BattleScene/SkillWindowCloseAnimation.anim
@@ -106,9 +107,11 @@ Assets:
 - Assets/Resources/BattleScene/HitEffect2.controller
 - Assets/Resources/BattleScene/ResultDialog.prefab
 - Assets/Resources/BattleScene/WinEffect.prefab
+- Assets/Resources/BattleScene/retire.png
 - Assets/Resources/BattleScene/woodbg.png
 - Assets/Resources/BattleScene/WinEffectAnimation.anim
 - Assets/Resources/BattleScene/LoseEffect.prefab
 - Assets/Resources/BattleScene/BattleComboCounterAnimator.controller
+- Assets/Resources/BattleScene/skill.png
 Dependencies:
 - Assets/AssetBundles/Android/common

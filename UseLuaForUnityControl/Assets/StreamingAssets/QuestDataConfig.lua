@@ -21,10 +21,8 @@ QuestConfig = {
 	
 	ID_QUICK = {
 		QuestName = "クイックバトル",
-		EnemySpawnTable = SpawnTable_003,
+		--EnemySpawnTable = SpawnTable_003,
+		EnemySpawnTable = SpawnTableTest,
 	},
 }
 
-QuestQuickBattleId = {
-	EnemySpawnTable = SpawnTable_003,
-}
