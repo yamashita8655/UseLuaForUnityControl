@@ -215,7 +215,7 @@ public class BootScene : MonoBehaviour {
 		url += "/" + "Android/luamain";
 #elif UNITY_IPHONE
 		savePath = Application.persistentDataPath;
-		loadPath = Application.persistentDataPath;
+		loadPath = "file:///" + Application.persistentDataPath;
 		url += "/" + "IOS/luamain";
 #endif
 		// バージョンチェックしない場合は、ローカルは空にしている。この場合、サーバーと言っているが、最新のローカルバージョンファイルを参照している（ややこしいけど…
