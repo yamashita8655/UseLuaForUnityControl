@@ -19,7 +19,7 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	this.SkillConfig = {}
 	this.SkillDetailText = {}
 	this.SkillLevel = 1
-	this.HaveSkillPoint = 0
+	this.HaveSkillPoint = 0 -- 一度、自動でレベルアップしてポイントを
 
 	-- メソッド定義
 	-- 初期化
@@ -105,6 +105,7 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	-- 経験値増減
 	this.AddEXP = function(self, value)
 		self.EXP = self.EXP + value
+
 		local skillConfig = self.SkillConfig
 		local skillTable = skillConfig:GetSkillTable()
 		local skillExp = skillTable[SkillTypeEnum.ExpTable][self.SkillLevel]

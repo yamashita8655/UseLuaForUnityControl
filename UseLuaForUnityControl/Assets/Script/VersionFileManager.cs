@@ -58,7 +58,7 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 #if UNITY_EDITOR
 			LocalPath = "file:///" + LocalPath;
 #elif UNITY_ANDROID
-			LocalPath = Application.persistentDataPath;
+			LocalPath = "file:///" + Application.persistentDataPath;
 #elif UNITY_IPHONE
 			LocalPath = Application.persistentDataPath;
 #endif

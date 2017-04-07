@@ -710,7 +710,7 @@ SpawnTableTest = {
 			SpawnData = SpawnWave030_009,		--出現情報
 		},
 	},
-	EndTime = 1000,	-- この秒数が経過してら、バトル終了チェックを周期的に開始する
+	EndTime = 300,	-- この秒数が経過してら、バトル終了チェックを周期的に開始する
 }
 
 SpawnTable_001 = {

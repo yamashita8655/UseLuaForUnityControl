@@ -211,7 +211,7 @@ public class BootScene : MonoBehaviour {
 		url += "/" + "Android/luamain";
 #elif UNITY_ANDROID
 		savePath = Application.persistentDataPath;
-		loadPath = Application.persistentDataPath;
+		loadPath = "file:///" + Application.persistentDataPath;
 		url += "/" + "Android/luamain";
 #elif UNITY_IPHONE
 		savePath = Application.persistentDataPath;
@@ -335,7 +335,7 @@ public class BootScene : MonoBehaviour {
 	// 例外検知して、ユーザーに伝える
 	public void ExeptionHandle(string error, int errorNumber) { 
 		InAppObject.SetActive(true);
-		RetryText.text = string.Format ("下記のエラーが発生しました。アプリを再起動するか、問題が解決しない場合は、アプリ作成者にエラー内容を送ってください。\n{0}\nerrorNumber:{1}\n\n", error, errorNumber);
+		RetryText.text = string.Format ("下記のエラーが発生しました。\nアプリを再起動するか、問題が解決しない場合は、\nアプリ作成者にエラー内容を送ってください。\n{0}\nerrorNumber:{1}\n\n", error, errorNumber);
 	}
 	
 	// Luaの初期化関数が終わった後のコールバック

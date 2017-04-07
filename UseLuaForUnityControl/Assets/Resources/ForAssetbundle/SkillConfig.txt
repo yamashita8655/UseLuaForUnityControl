@@ -31,8 +31,6 @@ function SkillData.new(skillTable)
 		table.insert(this.SkillNextExpList, skillTable[i])
 	end
 	
-
-
 	this.SkillTable = skillTable
 	
 	this.GetSkillLevel = function(self, skillType)
@@ -45,16 +43,26 @@ function SkillData.new(skillTable)
 	this.GetMaxSkillLevel = function(self, skillType)
 		return self.SkillMaxLevelList[skillType]
 	end
-	this.GetNextExp = function(self, skillType)
-		local nowLevel = self.SkillLevelList[skillType]
-		local maxLevel = self.SkillMaxLevelList[skillType]
+	
+	this.GetNextExp = function(self, skillLevel)
+		--local nowLevel = self.SkillLevelList[skillType]
+		--local maxLevel = self.SkillMaxLevelList[skillType]
+		--local exp = ""
+		--if nowLevel == maxLevel then
+		--	exp = "MAX"
+		--else
+		--	local needExpTable = self.SkillTable[skillType]
+		--	local needExp = needExpTable[nowLevel]
+		--	exp = needExp
+		--end
+		
 		local exp = ""
-		if nowLevel == maxLevel then
+		if self.SkillTable[skillLevel] == -1 then
 			exp = "MAX"
 		else
-			local typeTable = self.SkillNextExpList[skillType]
-			local levelData = typeTable[nowLevel+1]
-			exp = levelData[1]
+			local needExpTable = self.SkillTable[SkillTypeEnum.ExpTable]
+			local needExp = needExpTable[skillLevel]
+			exp = needExp
 		end
 
 		return exp
@@ -84,14 +92,14 @@ SkillTable_001 = {
 	-- Emitter
 	{
 		{
-			0, 
+			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
 			BulletEmitterList = {
 				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 			},
 		},
 		
 		{
-			0,
+			100,
 			BulletEmitterList = {
 				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
@@ -100,7 +108,7 @@ SkillTable_001 = {
 		},
 		
 		{
-			0,
+			200,
 			BulletEmitterList = {
 				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
@@ -111,7 +119,7 @@ SkillTable_001 = {
 		},
 		
 		{
-			0,
+			300,
 			BulletEmitterList = {
 				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
@@ -125,7 +133,7 @@ SkillTable_001 = {
 		},
 		
 		{
-			0,
+			500,
 			BulletEmitterList = {
 				Emitter001.new(0.125, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 				Emitter001.new(0.125, Vector2.new(-100, 0), 0, EmitterTypeEnum.Satellite),
@@ -155,14 +163,14 @@ SkillTable_001 = {
 		},
 		
 		{
-			0,
+			1000,
 			EquipBulletList = {
 				Character1_Bullet0002,
 			},
 		},
 		
 		{	
-			0,
+			5000,
 			EquipBulletList = {
 				Character1_Bullet0003,
 			},
@@ -187,6 +195,6 @@ SkillDetailText001 = {
 	-- BulletDetail
 	"レベルが上がると、弾の攻撃力が上がる\n地味だけど重要\n体感はしづらいかもしれない",
 	-- Test
-	"多分パッシブ\nHPとか。\nそのへん。",
+	--"多分パッシブ\nHPとか。\nそのへん。",
 }
 

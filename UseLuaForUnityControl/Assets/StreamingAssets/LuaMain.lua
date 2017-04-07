@@ -252,7 +252,7 @@ function LoadAssetBundle()
 					LuaLoadAssetBundle("file:///"..PersistentDataPath.."/"..params[1], params[1], "LoadAssetBundleCallback", "")
 				else
 					LuaUnityDebugLog("g")
-					LuaLoadAssetBundle(PersistentDataPath.."/"..params[1], params[1], "LoadAssetBundleCallback", "")
+					LuaLoadAssetBundle("file:///"..PersistentDataPath.."/"..params[1], params[1], "LoadAssetBundleCallback", "")
 				end
 			end
 		end

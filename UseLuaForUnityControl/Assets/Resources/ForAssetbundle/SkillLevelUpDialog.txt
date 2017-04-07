@@ -33,11 +33,12 @@ function SkillLevelUpDialog:Initialize()
 	LuaFindObject("SkillUpButton1")
 	LuaFindObject("SkillUpButton2")
 	--LuaFindObject("SkillUpButton3")
-	LuaFindObject("SkillNeedExpText1")
-	LuaFindObject("SkillNeedExpText2")
-	--LuaFindObject("SkillNeedExpText3")
 	LuaFindObject("SkillDetailText")
 	LuaFindObject("SkillHaveExpText")
+
+	LuaFindObject("SkillHaveSkillPointText")
+	LuaFindObject("SkillNextLevelUpText")
+	
 
 	LuaSetActive("SkillUpDialog", false)
 end
@@ -59,15 +60,15 @@ function SkillLevelUpDialog:OpenDialog(closeCallback)
 		local skillData = player:GetSkillConfig()
 		local skillDetailData = player:GetSkillDetailText()
 		
-		self:UpdateSkillPointText()
+		self:UpdateHaveExpText()
+		self:UpdateHaveSkillPoint()
+		self:UpdateNeedNextExp()
 		self:UpdateSkillText(SkillTypeEnum.Emitter) 
 		self:UpdateSkillText(SkillTypeEnum.Bullet) 
-
 		
 		--LuaSetText("SkillNowLevelText3", "1")
 		--LuaSetText("SkillMaxLevelText3", "1")
 		--LuaSetButtonInteractable("SkillUpButton3", false)
-		--LuaSetText("SkillNeedExpText3", "empty")
 
 		self.IsActive = true
 		CallbackManager.Instance():AddCallback("SkillLevelUpDialogManager_OpenCallback", {self}, self.DialogOpenCallback)
@@ -103,7 +104,6 @@ function SkillLevelUpDialog:UpdateSkillText(skillType)
 	--		LuaSetButtonInteractable("SkillUpButton"..objectIndex, true)
 	--	end
 	--end
-	--LuaSetText("SkillNeedExpText"..objectIndex, nextExp)
 	
 	local objectIndex = 0
 	if skillType == SkillTypeEnum.Emitter then
@@ -133,24 +133,25 @@ function SkillLevelUpDialog:UpdateSkillText(skillType)
 		end
 	end
 	
-	local nextExp = skillData:GetNextExp(skillType)
-	local playerExp = player:GetEXP()
-	if nextExp == "MAX" then
-		LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
-	else
-		if nextExp > playerExp then
-			LuaSetButtonInteractable("SkillUpButton"..objectIndex, false)
-		else
-			LuaSetButtonInteractable("SkillUpButton"..objectIndex, true)
-		end
+	-- 次のレベルまでの経験値量設定
+	local playerSkillLevel = player:GetSkillLevel()
+	local nextExp = skillData:GetNextExp(playerSkillLevel)
+	if nextExp == -1 then
+		nextExp = "MAX"
 	end
-	LuaSetText("SkillNeedExpText"..objectIndex, nextExp)
+	LuaSetText("SkillNextLevelUpText", nextExp)
+end
+
+function SkillLevelUpDialog:UpdateHaveExpText() 
+	local player = PlayerManager.Instance():GetPlayer() 
+	local exp = player:GetEXP()
+	LuaSetText("SkillHaveExpText", exp)
 end
 
 function SkillLevelUpDialog:UpdateSkillPointText() 
 	local player = PlayerManager.Instance():GetPlayer() 
 	local playerSkillPoint = player:GetHaveSkillPoint()
-	LuaSetText("SkillHaveExpText", playerSkillPoint)
+	LuaSetText("SkillHaveSkillPointText", playerSkillPoint)
 end
 
 function SkillLevelUpDialog:CloseDialog() 
@@ -175,7 +176,8 @@ end
 function SkillLevelUpDialog:UpdateSkillLevel(skillType) 
 	local player = PlayerManager.Instance():GetPlayer()
 	local skillConfig = player:GetSkillConfig()
-	local nextExp = skillConfig:GetNextExp(skillType)
+	local playerSkillLevel = player:GetSkillLevel()
+	local nextExp = skillConfig:GetNextExp(playerSkillLevel)
 	skillConfig:AddSkillLevel(skillType)
 	
 	local emitterNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
@@ -185,10 +187,20 @@ function SkillLevelUpDialog:UpdateSkillLevel(skillType)
 	player:ClearBulletEmitter()
 	player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][emitterNowLevel].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][bulletNowLevel].EquipBulletList, CharacterType.Player)
 
-	player:AddHaveSkillPoint(-1)
-	
+	self:UpdateHaveSkillPoint()
 	self:UpdateSkillPointText()
 	self:UpdateSkillText(skillType) 
+end
+
+function SkillLevelUpDialog:UpdateHaveSkillPoint() 
+	local player = PlayerManager.Instance():GetPlayer()
+	local point = player:GetHaveSkillPoint()
+	LuaSetText("SkillHaveSkillPointText", point)
+end
+
+function SkillLevelUpDialog:UpdateNeedNextExp() 
+	local needExp = 0
+	LuaSetText("SkillNextLevelUpText", needExp)
 end
 
 function SkillLevelUpDialog:OnClickButton(buttonName) 
@@ -199,18 +211,20 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 	if buttonName == "SkillUpCloseButton" then
 		self:CloseDialog()
 	else
-		if buttonName == "SkillUpImageButton1" then
+		if buttonName == "SkillDetailButton1" then
 			self:ToggleSkillSelectFilter(1) 
-		elseif buttonName == "SkillUpImageButton2" then
+		elseif buttonName == "SkillDetailButton2" then
 			self:ToggleSkillSelectFilter(2) 
-		elseif buttonName == "SkillUpImageButton3" then
+		elseif buttonName == "SkillDetailButton3" then
 			self:ToggleSkillSelectFilter(3) 
 		elseif buttonName == "SkillUpButton1" then
 			DialogManager.Instance():OpenDialog(
 				"スキルのレベルを上げていいですか？",
 				function()
+					self:AddPlayerSkillPoint(-1)
 					self:UpdateSkillLevel(SkillTypeEnum.Emitter)
 					self:UpdateSkillText(SkillTypeEnum.Bullet) 
+					self:UpdateSkillPointText() 
 				end ,
 				function()
 				end,
@@ -223,8 +237,10 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 			DialogManager.Instance():OpenDialog(
 				"スキルのレベルを上げていいですか？",
 				function()
+					self:AddPlayerSkillPoint(-1)
 					self:UpdateSkillLevel(SkillTypeEnum.Bullet)
 					self:UpdateSkillText(SkillTypeEnum.Emitter) 
+					self:UpdateSkillPointText() 
 				end,
 				function()
 				end,
@@ -236,6 +252,11 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 		elseif buttonName == "SkillUpButton3" then
 		end
 	end
+end
+
+function SkillLevelUpDialog:AddPlayerSkillPoint(val) 
+	local player = PlayerManager.Instance():GetPlayer() 
+	player:AddHaveSkillPoint(val)
 end
 
 function SkillLevelUpDialog:ToggleSkillSelectFilter(selectIndex) 
