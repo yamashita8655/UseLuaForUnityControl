@@ -60,7 +60,8 @@ public class VersionFileManager : SingletonMonoBehaviour<VersionFileManager> {
 #elif UNITY_ANDROID
 			LocalPath = "file:///" + Application.persistentDataPath;
 #elif UNITY_IPHONE
-			LocalPath = Application.persistentDataPath;
+			//LocalPath = Application.persistentDataPath;
+			LocalPath = "file:///" + Application.persistentDataPath;
 #endif
 			// データが存在するので、そっち読み込む
 			WWW www = new WWW (LocalPath + "/version");
