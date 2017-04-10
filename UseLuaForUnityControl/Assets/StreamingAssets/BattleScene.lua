@@ -132,9 +132,10 @@ function BattleScene.new()
 			ResultDialog.Instance():Initialize()
 			ResultDialog.Instance():SetParent("BattleDialogRoot") 
 		end
+
+		self:LoadSaveData()
 		
 		this:SceneBaseInitialize()
-
 	end
 
 
@@ -790,7 +791,41 @@ function BattleScene.new()
 		return isSpawn
 	end
 	
-	this.SpawnKarikari = function(self, position)
+	-- セーブデータをロードして、内容を設定、のテスト
+
+--途中復帰に必要な情報
+--
+--・経過秒数
+--・獲得経験値
+--・残りスキルポイント
+--・獲得カリカリ
+--・スキル割り振り状態
+--・現在HP
+--・コンボ数
+--・
+
+
+	this.LoadSaveData = function(self)
+
+		LuaUnityDebugLog("LoadSaveData")
+
+		self.EndTimeCounter = 45
+		EnemyManager:SetTimer(self.EndTimeCounter) 
+		
+		-- プレイヤーに付随する情報
+		local player = PlayerManager:Instance():GetPlayer()
+		player:AddEXP(10000)
+		player:AddHaveSkillPoint(5)
+		player:SetNowHp(50)
+
+		-- その中でも、スキルに関する物
+		local skillConfig = player:GetSkillConfig()
+		skillConfig:SetSkillLevel(SkillTypeEnum.Emitter, 2)
+		skillConfig:SetSkillLevel(SkillTypeEnum.Bullet, 1)
+		
+		-- こいつらは、Update呼ばれたら更新されるからおｋ
+		self.ComboCount = 100
+		self.GetKarikari = 50
 	end
 	
 	return this

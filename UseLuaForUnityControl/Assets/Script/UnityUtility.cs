@@ -22,10 +22,10 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	private static Action LuaMainEndCallback = null;
 	
 #if UNITY_EDITOR
-	//public static bool IsUseLocalAssetBundle = true;
-	//public static bool IsCheckVersionFile = false;
-	public static bool IsUseLocalAssetBundle = false;
-	public static bool IsCheckVersionFile = true;
+	public static bool IsUseLocalAssetBundle = true;
+	public static bool IsCheckVersionFile = false;
+	//public static bool IsUseLocalAssetBundle = false;
+	//public static bool IsCheckVersionFile = true;
 #else
 	public static bool IsUseLocalAssetBundle = false;
 	public static bool IsCheckVersionFile = true;

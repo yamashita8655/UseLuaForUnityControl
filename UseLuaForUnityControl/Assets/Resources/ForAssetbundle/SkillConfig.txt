@@ -36,6 +36,9 @@ function SkillData.new(skillTable)
 	this.GetSkillLevel = function(self, skillType)
 		return self.SkillLevelList[skillType]
 	end
+	this.SetSkillLevel = function(self, skillType, value)
+		self.SkillLevelList[skillType] = value
+	end
 	this.AddSkillLevel = function(self, skillType)
 		self.SkillLevelList[skillType] = self.SkillLevelList[skillType] + 1
 	end

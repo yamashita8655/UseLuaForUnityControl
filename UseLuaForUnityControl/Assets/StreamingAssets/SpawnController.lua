@@ -22,6 +22,16 @@ function SpawnController.new()
 			table.insert(self.SpawnDataList, listData)
 		end
 	end
+
+	-- タイマーを外部からセット。途中復帰用。
+	this.SetTimer = function(self, timer)
+		for i = 1, #self.SpawnDataList do
+			listData = self.SpawnDataList[i]
+			listData:SetTimer(timer)
+		end
+
+		self:CheckAndDeleteListData()
+	end
 	
 	-- 更新
 	this.Update = function(self, deltaTime)
@@ -30,6 +40,25 @@ function SpawnController.new()
 			listData:Update(deltaTime)
 		end
 
+		self:CheckAndDeleteListData()
+		--local index = 1
+		--while true do
+		--	if index > #self.SpawnDataList then
+		--		break
+		--	end
+
+		--	local data = self.SpawnDataList[index]
+		--	local IsEnable = data:GetEnable()
+		--	if IsEnable then
+		--		index = index + 1
+		--	else
+		--		table.remove(self.SpawnDataList, index)
+		--	end
+		--end
+	end
+
+	-- 無効なデータの削除
+	this.CheckAndDeleteListData = function(self)
 		local index = 1
 		while true do
 			if index > #self.SpawnDataList then
@@ -81,6 +110,15 @@ function SpawnListData.new()
 	end
 	this.GetEnable = function(self)
 		return self.IsEnable
+	end
+	
+	-- カウンターをセット。途中復帰対応用。
+	-- 時間がオーバーしてたら、敵を出現させずにデータを無効にする
+	this.SetTimer = function(self, timer)
+		self.Timer = timer
+		if self.Timer > self.Time then
+			self.IsEnable = false
+		end
 	end
 	
 	this.Update = function(self, deltaTime)

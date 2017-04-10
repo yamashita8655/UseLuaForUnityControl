@@ -31,6 +31,10 @@ function EnemyManager:CreateSpawnController(spawnTable)
 	self.SpawnController = inst
 end
 
+function EnemyManager:SetTimer(timer) 
+	self.SpawnController:SetTimer(timer)
+end
+
 function EnemyManager:GetList() 
 	return self.EnemyList
 end

@@ -16,8 +16,8 @@ AfterLoadAssetBundleCallback = nil
 SaveAssetBundleCounter = 0
 SaveScriptFileCounter = 0
 
-URL = "http://natural-nail-eye.sakura.ne.jp"
---URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
+--URL = "http://natural-nail-eye.sakura.ne.jp"
+URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
 Platform = ""
 

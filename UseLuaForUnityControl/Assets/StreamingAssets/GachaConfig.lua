@@ -42,7 +42,8 @@ GachaList = {
 		GachaData = GachaExecuteObject.new(GachaTableGold),
 	},
 }
--- 弾の定義
+
+-- ガチャの定義
 Gacha_Wood = {
 	Name = "ウッドガチャ",
 	Detail = "入門者用のアイテムが手に入るガチャ",

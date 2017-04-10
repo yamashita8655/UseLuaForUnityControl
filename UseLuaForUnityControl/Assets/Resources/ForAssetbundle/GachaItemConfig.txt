@@ -36,6 +36,12 @@ end
 
 -- ガチャから排出されるアイテムの定義
 GachaItemTable = {
+	-- アイテムタイプ
+	-- アイコンオブジェクト名
+	-- レアリティ
+	-- パラメータタイプ
+	-- 増加量
+	-- キャラタイプ
 	ParameterUpHp1_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon1",
