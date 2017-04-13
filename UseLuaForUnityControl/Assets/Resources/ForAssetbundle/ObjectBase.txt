@@ -46,6 +46,11 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 		end
 	end
 	
+	-- 現在HPの取得
+	this.GetNowHp = function(self)
+		return self.NowHp
+	end
+	
 	-- 最大HPの加減算
 	this.AddMaxHp = function(self, addValue)
 		if addValue > 0 then

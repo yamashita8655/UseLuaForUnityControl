@@ -13,6 +13,10 @@ function BattleScene.new()
 	this.EndCheckInterval = 5
 	this.EndCheckIntervalCounter = 0
 	
+--	this.SaveInterval = 30 -- セーブ処理を走らせる間隔秒
+	this.SaveInterval = 5 -- セーブ処理を走らせる間隔秒
+	this.SaveIntervalCounter = 0 
+	
 	this.AlignScale		= Vector3.new(1.0, 1.0, 1.0)-- 画面表示の拡縮調整
 	this.AlignPosition	= Vector3.new(0.0, 0.0, 0.0)-- 画面表示のポジション調整
 	
@@ -50,7 +54,8 @@ function BattleScene.new()
 		this.ComboCount = 0
 		this.GetKarikari = 0
 		
-		selectQuestId = GameManager.Instance():GetSelectQuestId()
+		local selectQuestId = GameManager.Instance():GetSelectQuestId()
+		LuaUnityDebugLog(selectQuestId)
 		enemySpawnTable = QuestConfig[selectQuestId].EnemySpawnTable
 
 		EnemyManager:CreateSpawnController(enemySpawnTable)
@@ -133,7 +138,11 @@ function BattleScene.new()
 			ResultDialog.Instance():SetParent("BattleDialogRoot") 
 		end
 
-		self:LoadSaveData()
+
+		-- 有効なセーブデータが存在したら
+		if SaveObject.BattleSaveEnable == 1 then
+			self:LoadDataFromFileIO()
+		end
 		
 		this:SceneBaseInitialize()
 	end
@@ -182,6 +191,13 @@ function BattleScene.new()
 			if player:IsAlive() == false then
 				self.IsGamePause = true
 				self:LoseSequence()
+			end
+
+			-- タイマーを確認して、情報をセーブ
+			self.SaveIntervalCounter = self.SaveIntervalCounter + deltaTime
+			if self.SaveIntervalCounter > self.SaveInterval then
+				self:SaveDataFromFileIO()
+				self.SaveIntervalCounter = 0
 			end
 		end
 	end
@@ -262,6 +278,9 @@ function BattleScene.new()
 
 		GameManager.Instance():AddKarikariValue(self.GetKarikari)
 		SaveObject.CustomScene_HaveKarikariValue = GameManager.Instance():GetKarikariValue()
+
+		SaveObject.BattleSaveEnable = 0 -- セーブ情報は無効にする
+
 		FileIOManager.Instance():Save()
 
 	end
@@ -803,29 +822,77 @@ function BattleScene.new()
 --・現在HP
 --・コンボ数
 --・
+	this.LoadDataFromFileIO = function(self)
+
+		LuaUnityDebugLog("LoadDataFromFileIO")
 
 
-	this.LoadSaveData = function(self)
+		---- こっちは、デバッグ用に仮うちの値でゲーム開始
+		--self.EndTimeCounter = 45
+		--EnemyManager:SetTimer(self.EndTimeCounter) 
+		--
+		---- プレイヤーに付随する情報
+		--local player = PlayerManager:Instance():GetPlayer()
+		--player:AddEXP(10000)
+		--player:AddHaveSkillPoint(5)
+		--player:SetNowHp(50)
 
-		LuaUnityDebugLog("LoadSaveData")
+		---- その中でも、スキルに関する物
+		--local skillConfig = player:GetSkillConfig()
+		--skillConfig:SetSkillLevel(SkillTypeEnum.Emitter, 2)
+		--skillConfig:SetSkillLevel(SkillTypeEnum.Bullet, 1)
+		--
+		---- こいつらは、Update呼ばれたら更新されるからおｋ
+		--self.ComboCount = 100
+		--self.GetKarikari = 50
 
-		self.EndTimeCounter = 45
+		-- 経過時間設定
+		self.EndTimeCounter = SaveObject.BattleEndTimeCounter
 		EnemyManager:SetTimer(self.EndTimeCounter) 
 		
 		-- プレイヤーに付随する情報
 		local player = PlayerManager:Instance():GetPlayer()
-		player:AddEXP(10000)
-		player:AddHaveSkillPoint(5)
-		player:SetNowHp(50)
-
 		-- その中でも、スキルに関する物
 		local skillConfig = player:GetSkillConfig()
-		skillConfig:SetSkillLevel(SkillTypeEnum.Emitter, 2)
-		skillConfig:SetSkillLevel(SkillTypeEnum.Bullet, 1)
+		skillConfig:SetSkillLevel(SkillTypeEnum.Emitter, SaveObject.BattleEmitterLevel)
+		skillConfig:SetSkillLevel(SkillTypeEnum.Bullet, SaveObject.BattleBulletLevel)
+		player:AddHaveSkillPoint(SaveObject.BattleSkillPoint)
+		player:SetSkillLevel(SaveObject.BattleEmitterLevel+SaveObject.BattleBulletLevel)
+		
+		player:AddEXP(SaveObject.BattleExp)
+		player:SetNowHp(SaveObject.BattleHp)
+
 		
 		-- こいつらは、Update呼ばれたら更新されるからおｋ
-		self.ComboCount = 100
-		self.GetKarikari = 50
+		self.ComboCount = SaveObject.BattleComboCount
+		if self.ComboCount ~= 0 then
+			LuaSetActive("BattleComboLabel", true)
+			LuaSetActive("BattleComboCounterText", true)
+			LuaSetText("BattleComboCounterText", self.ComboCount)
+		end
+		self.GetKarikari = SaveObject.BattleKarikari
+	end
+	
+	this.SaveDataFromFileIO = function(self)
+		LuaUnityDebugLog("SaveDataFromFileIO")
+		
+		local player = PlayerManager:Instance():GetPlayer()
+		local skillConfig = player:GetSkillConfig()
+		
+		SaveObject.BattleSelectQuestId = GameManager.Instance():GetSelectQuestId()
+		LuaUnityDebugLog(SaveObject.BattleSelectQuestId)
+		SaveObject.BattleEndTimeCounter = self.EndTimeCounter
+		SaveObject.BattleExp = player:GetEXP()
+		SaveObject.BattleSkillPoint = player:GetHaveSkillPoint()
+		SaveObject.BattleHp = player:GetNowHp()
+		SaveObject.BattleSkillLevel = player:GetSkillLevel()
+		SaveObject.BattleEmitterLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+		SaveObject.BattleBulletLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+		SaveObject.BattleComboCount = self.ComboCount
+		SaveObject.BattleKarikari = self.GetKarikari
+		SaveObject.BattleSaveEnable = 1
+
+		FileIOManager.Instance():Save()
 	end
 	
 	return this

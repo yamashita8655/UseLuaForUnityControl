@@ -83,7 +83,7 @@ function QuestScene.new()
 			CallbackManager.Instance():AddCallback("QuestScene_S2FCallback", {self}, self.S2FCallback)
 			LuaPlayAnimator("QuestPanelContainer", "S2F", false, false, "LuaCallback", "QuestScene_S2FCallback")
 		elseif buttonName == "QuestQuickBattleButton" then
-			GameManager.Instance():SetSelectQuestId("ID_QUICK")
+			GameManager.Instance():SetSelectQuestId("ID_QUICK")-- クイック(殴)
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Battle)
 		elseif buttonName == "QuestStoryButton" then
 			LuaSetActive("QuestClickFilter", true)

@@ -125,6 +125,9 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 		return self.EXP
 	end
 
+	this.SetSkillLevel = function(self, value)
+		self.SkillLevel = value
+	end
 	-- 
 	this.GetSkillLevel = function(self)
 		return self.SkillLevel

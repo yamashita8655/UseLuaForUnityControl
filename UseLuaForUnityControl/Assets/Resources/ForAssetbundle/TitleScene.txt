@@ -38,7 +38,12 @@ function TitleScene.new()
 	-- コールバック
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "TitleSceneGoHomeButton" then
-			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			if SaveObject.BattleSaveEnable == 1 then
+				GameManager.Instance():SetSelectQuestId(SaveObject.BattleSelectQuestId)
+				SceneManager.Instance():ChangeScene(SceneNameEnum.Battle)
+			else
+				SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
+			end
 			--DialogManager.Instance():OpenDialog(
 			--	"text",
 			--	function()
