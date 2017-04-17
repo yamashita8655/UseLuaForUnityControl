@@ -4,6 +4,18 @@
 --	UseTargetPosition = 1,--他の何かの座標値が影響する弾の情報
 --}
 
+
+--〇メインウェポン
+--・真っ直ぐ飛ばないが連射力の高いサブマシンガン
+--・連射力は低いが、攻撃力が高く範囲も広い鉄球貫通弾
+--・攻撃範囲が広い、サークルガン
+--・射程は短いが、連射力と威力が高いインサイドサブマシンガン
+--
+--〇サブウェポン
+--・自機の周りを周回するサークルバリア弾
+--・敵を追尾するホーミングミサイル
+--・敵を追尾してかつ、複数破壊するまで生存するホーミング弾
+
 -- 弾の定義
 Character1_Bullet0001 = {
 	PrefabName = "BulletObjectNormal",
@@ -40,6 +52,47 @@ Character1_Bullet0003 = {
 	MaxHp = 1,
 	Attack = 2,
 	ExistTime = 3,
+	MoveType = MoveStraight.new(15),
+	BulletType = BulletTypeEnum.Normal,
+}
+
+-- トラ用弾
+-- 威力は高いが、弾サイズと継続時間が短い
+Bullet_Tora_Bullet_1 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "ToraBullet1",
+	Width = 16,
+	Height = 16,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 2,
+	ExistTime = 0.25,
+	--ExistTime = 5,
+	MoveType = MoveStraight.new(15),
+	--MoveType = MoveStraight.new(5),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_2 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "ToraBullet2",
+	Width = 16,
+	Height = 16,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 2,
+	ExistTime = 0.35,
+	MoveType = MoveStraight.new(15),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_3 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "ToraBullet3",
+	Width = 16,
+	Height = 16,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 3,
+	ExistTime = 0.5,
 	MoveType = MoveStraight.new(15),
 	BulletType = BulletTypeEnum.Normal,
 }

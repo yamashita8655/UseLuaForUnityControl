@@ -91,6 +91,7 @@ end
 --	Emitter001.new(0.25, Vector2.new(-100, 0), EmitterTypeEnum.Satellite),
 --}
 
+-- モチ用スキルテーブル
 SkillTable_001 = {
 	-- Emitter
 	{
@@ -201,3 +202,66 @@ SkillDetailText001 = {
 	--"多分パッシブ\nHPとか。\nそのへん。",
 }
 
+-- トラ用スキルテーブル
+SkillTable_Tora = {
+	-- Emitter
+	{
+		{
+			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
+			BulletEmitterList = {
+				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+			},
+		},
+		
+		{
+			100,
+			BulletEmitterList = {
+				Emitter001.new(0.15, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+			}
+		},
+		
+		{
+			100,
+			BulletEmitterList = {
+				Emitter001.new(0.05, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+			}
+		},
+	},
+	
+	-- Bullet
+	{
+		{
+			0,	
+			EquipBulletList = {
+				Bullet_Tora_Bullet_1,
+			},
+		},
+		
+		{
+			1000,
+			EquipBulletList = {
+				Bullet_Tora_Bullet_1,
+			},
+		},
+	},
+	
+	-- ExpTable
+	{
+		100,
+		300,
+		1000,
+		2500,
+		5000,
+		10000,
+		-1,
+	},
+}
+
+SkillDetailTextTora = {
+	-- EmitterDetail
+	"レベルが上がると、発射間隔が早くなる\n1⇒3⇒5⇒？⇒？\n",
+	-- BulletDetail
+	"レベルが上がると、弾の攻撃力が上がる\n地味だけど重要\n体感はしづらいかもしれない",
+	-- Test
+	--"多分パッシブ\nHPとか。\nそのへん。",
+}

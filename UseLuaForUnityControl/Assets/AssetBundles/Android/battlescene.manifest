@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2996131848
+CRC: 974143553
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1df0656b6b1f98889a364d9d4480be7e
+    Hash: da9a82190aca4358a800a041cac3afa4
   TypeTreeHash:
     serializedVersion: 2
     Hash: 572195e8d4fa6339a2a95a39d16e92bf
@@ -82,6 +82,7 @@ Assets:
 - Assets/Resources/BattleScene/BulletObject.prefab
 - Assets/Resources/BattleScene/EnemyCharacterCircleBulletMouse.prefab
 - Assets/Resources/BattleScene/BattleScene.prefab
+- Assets/Resources/BattleScene/BulletObjectTooth16.prefab
 - Assets/Resources/BattleScene/hit1.png
 - Assets/Resources/BattleScene/SpawnKarikariAnimator.controller
 - Assets/Resources/BattleScene/BattleStartAnimation.anim

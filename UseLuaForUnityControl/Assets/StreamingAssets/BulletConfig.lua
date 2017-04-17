@@ -56,6 +56,47 @@ Character1_Bullet0003 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 
+-- トラ用弾
+-- 威力は高いが、弾サイズと継続時間が短い
+Bullet_Tora_Bullet_1 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "ToraBullet1",
+	Width = 16,
+	Height = 16,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 2,
+	ExistTime = 0.25,
+	--ExistTime = 5,
+	MoveType = MoveStraight.new(15),
+	--MoveType = MoveStraight.new(5),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_2 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "ToraBullet2",
+	Width = 16,
+	Height = 16,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 2,
+	ExistTime = 0.35,
+	MoveType = MoveStraight.new(15),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_3 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "ToraBullet3",
+	Width = 16,
+	Height = 16,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 3,
+	ExistTime = 0.5,
+	MoveType = MoveStraight.new(15),
+	BulletType = BulletTypeEnum.Normal,
+}
+
 Bullet0001 = {
 	PrefabName = "EnemyCharacterObject",
 	Name = "EnemyBullet1",

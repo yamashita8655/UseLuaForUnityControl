@@ -13,8 +13,8 @@ function BattleScene.new()
 	this.EndCheckInterval = 5
 	this.EndCheckIntervalCounter = 0
 	
---	this.SaveInterval = 30 -- セーブ処理を走らせる間隔秒
-	this.SaveInterval = 5 -- セーブ処理を走らせる間隔秒
+	--this.SaveInterval = 30 -- セーブ処理を走らせる間隔秒
+	this.SaveInterval = 10000 -- セーブ処理を走らせる間隔秒
 	this.SaveIntervalCounter = 0 
 	
 	this.AlignScale		= Vector3.new(1.0, 1.0, 1.0)-- 画面表示の拡縮調整
@@ -210,7 +210,6 @@ function BattleScene.new()
 	
 	this.BattleStartSequenceCallback = function(arg, unityArg)
 		local self = arg[1]
-		LuaUnityDebugLog("callback!!!!")
 		LuaSetActive("BattleStartEffect", false)
 		self.IsGamePause = false
 	end
@@ -223,7 +222,6 @@ function BattleScene.new()
 	
 	this.WinSequenceCallback = function(arg, unityArg)
 		local self = arg[1]
-		LuaUnityDebugLog("callback!!!!")
 		LuaSetActive("WinEffect", false)
 		
 		local player = PlayerManager.Instance():GetPlayer()
@@ -246,7 +244,6 @@ function BattleScene.new()
 	
 	this.LoseSequenceCallback = function(arg, unityArg)
 		local self = arg[1]
-		LuaUnityDebugLog("callback!!!!")
 		LuaSetActive("LoseEffect", false)
 		
 		local player = PlayerManager.Instance():GetPlayer()
@@ -759,7 +756,10 @@ function BattleScene.new()
 		local rightTR = {rightPosX+rightWidth/2, rightPosY+rightHeight/2}
 		local rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
 		local rightBR = {rightPosX+rightWidth/2, rightPosY-rightHeight/2}
-	
+
+		--LuaUnityDebugLog("Left x:"..leftPosX.."y:"..leftPosY.."height:"..leftHeight.."width:"..leftWidth)
+		--LuaUnityDebugLog("Right x:"..rightPosX.."y:"..rightPosY.."height:"..rightHeight.."width:"..rightWidth)
+
 		--左オブジェクトの左上が、右オブジェクトの範囲内に入っているかどうか
 		--x座標が範囲内か確認
 		if (leftTL[x] >= rightTL[x] and leftTL[x] <= rightTR[x]) then
@@ -792,6 +792,42 @@ function BattleScene.new()
 		if (leftBR[x] >= rightBL[x] and leftBR[x] <= rightBR[x]) then
 			--y座標が範囲内か確認
 			if (leftBR[y] <= rightTR[y] and leftBR[y] >= rightBR[y]) then
+				return true
+			end
+		end
+		
+		--右オブジェクトの左上が、左オブジェクトの範囲内に入っているかどうか
+		--x座標が範囲内か確認
+		if (rightTL[x] >= leftTL[x] and rightTL[x] <= leftTR[x]) then
+			--y座標が範囲内か確認
+			if (rightTL[y] <= leftTL[y] and rightTL[y] >= leftBL[y]) then
+				return true
+			end
+		end
+		
+		--右オブジェクトの右上が、左オブジェクトの範囲内に入っているかどうか
+		--x座標が範囲内か確認
+		if (rightTR[x] >= leftTL[x] and rightTR[x] <= leftTR[x]) then
+			--y座標が範囲内か確認
+			if (rightTR[y] <= leftTR[y] and rightTR[y] >= leftBR[y]) then
+				return true
+			end
+		end
+	
+		--右オブジェクトの左下が、左オブジェクトの範囲内に入っているかどうか
+		--x座標が範囲内か確認
+		if (rightBL[x] >= leftBL[x] and rightBL[x] <= leftBR[x]) then
+			--y座標が範囲内か確認
+			if (rightBL[y] <= leftTL[y] and rightBL[y] >= leftBL[y]) then
+				return true
+			end
+		end
+		
+		--右オブジェクトの右下が、左オブジェクトの範囲内に入っているかどうか
+		--x座標が範囲内か確認
+		if (rightBR[x] >= leftBL[x] and rightBR[x] <= leftBR[x]) then
+			--y座標が範囲内か確認
+			if (rightBR[y] <= leftTR[y] and rightBR[y] >= leftBR[y]) then
 				return true
 			end
 		end

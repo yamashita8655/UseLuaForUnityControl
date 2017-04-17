@@ -1,4 +1,4 @@
-battlescene,10,1df0656b6b1f98889a364d9d4480be7e
+battlescene,11,da9a82190aca4358a800a041cac3afa4
 bootscene,1,47e629b886c7762c4513b42d20f57b1f
 common,4,a1ca9ca2511f6e6bdbbe8cc2413d5630
 customscene,2,a9afc32cb06b89cb49de871ff1f52183
@@ -8,8 +8,8 @@ gachascene,6,99d5fcce619d76b4194b297e95b4ffaa
 homescene,3,4e0f7b7a8ff190309c5563b90cc99de7
 loadingscene,1,778cab3644a3fed5b2d6c4e3f89ca9f9
 luamain,39,c97fe73e88be320c8f6bee89b52dcfa2
-luascript,52,ac9b4ed5a00b6dd2f250191d0fe189cd
+luascript,65,17272ddc4b877f05544e18adc7b1d191
 optionscene,1,1cdef497ffc59a155eef1c3f34c2348a
 questscene,3,b5a63ecfbc26c793132e7946194fa939
 titlescene,2,a1af613e41086e517a93fc7d0e344bb6
-version,91,2cf61aab2e7a7eb96d71836c97f3511e
+version,104,5f3fe3cb5c4588ec1bf5ed8aaf130019
