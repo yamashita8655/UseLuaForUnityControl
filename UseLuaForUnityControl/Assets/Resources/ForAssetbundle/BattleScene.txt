@@ -101,9 +101,10 @@ function BattleScene.new()
 		for i = 1, #bulletList do
 			local bulletData = bulletList[i]
 			local bulletConfigList = bulletData.EquipBulletList
-			local bulletConfig = bulletConfigList[1]
-			local prefabName = bulletConfig.PrefabName
-			table.insert(prefabNameList, prefabName)
+			for j = 1, #bulletConfigList do
+				local prefabName = bulletConfigList[j].PrefabName
+				table.insert(prefabNameList, prefabName)
+			end
 		end
 		
 		local outputList, dup = UtilityFunction.Instance().ListUniq(prefabNameList) 

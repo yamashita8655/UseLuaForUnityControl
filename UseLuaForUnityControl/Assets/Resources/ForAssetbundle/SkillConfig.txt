@@ -209,14 +209,17 @@ SkillTable_Tora = {
 		{
 			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.15, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, 0), 180, EmitterTypeEnum.Satellite),
 			},
 		},
 		
 		{
 			100,
 			BulletEmitterList = {
-				Emitter001.new(0.15, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.10, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, 0), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, 0), 0, EmitterTypeEnum.Satellite),
 			}
 		},
 		
@@ -224,6 +227,12 @@ SkillTable_Tora = {
 			100,
 			BulletEmitterList = {
 				Emitter001.new(0.05, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				
+				Emitter001.new(0.33, Vector2.new(0, 0), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, 0), 0, EmitterTypeEnum.Satellite),
+				
+				Emitter001.new(0.75, Vector2.new(-50, 0), 90, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.75, Vector2.new(50, 0), -90, EmitterTypeEnum.Satellite),
 			}
 		},
 	},
@@ -234,13 +243,32 @@ SkillTable_Tora = {
 			0,	
 			EquipBulletList = {
 				Bullet_Tora_Bullet_1,
+				Bullet_Tora_Bullet_Circle1,
+				Bullet_Tora_Bullet_Circle1,
+				Bullet_Tora_Bullet_Homing1,
+				Bullet_Tora_Bullet_Homing1,
 			},
 		},
 		
 		{
 			1000,
 			EquipBulletList = {
-				Bullet_Tora_Bullet_1,
+				Bullet_Tora_Bullet_2,
+				Bullet_Tora_Bullet_Circle2,
+				Bullet_Tora_Bullet_Circle2,
+				Bullet_Tora_Bullet_Homing1,
+				Bullet_Tora_Bullet_Homing1,
+			},
+		},
+
+		{
+			1000,
+			EquipBulletList = {
+				Bullet_Tora_Bullet_3,
+				Bullet_Tora_Bullet_Circle3,
+				Bullet_Tora_Bullet_Circle3,
+				Bullet_Tora_Bullet_Homing1,
+				Bullet_Tora_Bullet_Homing1,
 			},
 		},
 	},

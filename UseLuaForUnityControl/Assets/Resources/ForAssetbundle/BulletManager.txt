@@ -86,6 +86,7 @@ end
 --end
 
 function BulletManager:CreateBulletTest(prefabName, characterType)
+	LuaUnityDebugLog(prefabName)
 	if characterType == CharacterType.Player then
 		self.PlayerBulletCanShootList[prefabName] = {}
 		self.PlayerBulletNowShooting[prefabName] = {}

@@ -61,12 +61,19 @@ function UtilityFunction.SetEmitter(character, bulletEmitterList, equipBulletLis
 		emitter = nil
 		if bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Normal then
 			emitter = BulletEmitter.new()
-			--emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], character:GetPosition(), characterType)
-			emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), bulletEmitterList[i]:RotateOffset(), equipBulletList[1], character:GetPosition(), characterType)
+			if i > #equipBulletList then
+				-- 弾の設定がされてなかったら、1番目の弾を使う
+				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), bulletEmitterList[i]:RotateOffset(), equipBulletList[1], character:GetPosition(), characterType)
+			else
+				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), bulletEmitterList[i]:RotateOffset(), equipBulletList[i], character:GetPosition(), characterType)
+			end
 		elseif bulletEmitterList[i]:EmitterType() == EmitterTypeEnum.Satellite then
 			emitter = BulletEmitterSatellite.new()
-			--emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), equipBulletList[i], character:GetPosition(), characterType, Vector2.new(0, 0))
-			emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), bulletEmitterList[i]:RotateOffset(), equipBulletList[1], character:GetPosition(), characterType, Vector2.new(0, 0))
+			if i > #equipBulletList then
+				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), bulletEmitterList[i]:RotateOffset(), equipBulletList[1], character:GetPosition(), characterType, Vector2.new(0, 0))
+			else
+				emitter:Initialize(bulletEmitterList[i]:Position(), bulletEmitterList[i]:ShootInterval(), bulletEmitterList[i]:RotateOffset(), equipBulletList[i], character:GetPosition(), characterType, Vector2.new(0, 0))
+			end
 		end
 		character:AddBulletEmitter(emitter)
 	end

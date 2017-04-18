@@ -81,20 +81,68 @@ Bullet_Tora_Bullet_2 = {
 	MaxHp = 1,
 	Attack = 2,
 	ExistTime = 0.35,
-	MoveType = MoveStraight.new(15),
+	MoveType = MoveStraight.new(20),
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Tora_Bullet_3 = {
 	PrefabName = "BulletObjectTooth16",
 	Name = "ToraBullet3",
-	Width = 16,
-	Height = 16,
+	Width = 24,
+	Height = 24,
 	NowHp = 1,
 	MaxHp = 1,
 	Attack = 3,
 	ExistTime = 0.5,
-	MoveType = MoveStraight.new(15),
+	MoveType = MoveStraight.new(25),
 	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_Circle1 = {
+	PrefabName = "EnemyCharacterObject",
+	Name = "ToraBullet4",
+	Width = 32,
+	Height = 32,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 3.0,
+	MoveType = MoveCircle.new(0, 5, 3),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_Circle2 = {
+	PrefabName = "EnemyCharacterObject",
+	Name = "ToraBullet5",
+	Width = 32,
+	Height = 32,
+	NowHp = 2,
+	MaxHp = 2,
+	Attack = 1,
+	ExistTime = 3.0,
+	MoveType = MoveCircle.new(0, 5, 3),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_Circle3 = {
+	PrefabName = "EnemyCharacterObject",
+	Name = "ToraBullet6",
+	Width = 32,
+	Height = 32,
+	NowHp = 3,
+	MaxHp = 3,
+	Attack = 1,
+	ExistTime = 3.0,
+	MoveType = MoveCircle.new(0, 5, 3),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Tora_Bullet_Homing1 = {
+	PrefabName = "EnemyCharacterObject",
+	Name = "ToraBullet7",
+	Width = 32,
+	Height = 32,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 0.75,
+	MoveType = MoveHoming.new(0.25, 0, 10),
+	BulletType = BulletTypeEnum.UseTargetPosition,
 }
 
 Bullet0001 = {
