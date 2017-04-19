@@ -23,6 +23,7 @@ function BattleScene.new()
 	this.IsGamePause = false
 	this.ComboCount = 0
 	this.GetKarikari = 0
+	this.SelectCharacter = nil
 	
 	-- メソッド定義
 	-- 初期化
@@ -66,9 +67,8 @@ function BattleScene.new()
 		local posx = ScreenWidth/2
 		local posy = ScreenHeight/2
 	
-		selectCharacter = nil
-		selectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
-		PlayerManager.Instance():CreatePlayer(selectCharacter, posx, posy, 0)
+		self.SelectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
+		PlayerManager.Instance():CreatePlayer(self.SelectCharacter, posx, posy, 0)
 		
 		--Test
 		local enemyPrefabNameList = {}
@@ -179,8 +179,7 @@ function BattleScene.new()
 			PlayerManager.Instance():Update(GameManager:GetBattleDeltaTime())
 			BulletManager.Instance():Update(GameManager:GetBattleDeltaTime())
 			EnemyManager.Instance():Update(GameManager:GetBattleDeltaTime())
-			--self:CheckBump()
-			self:CheckBumpTest()
+			self:CheckBump()
 
 			local player = PlayerManager.Instance():GetPlayer()
 			local exp = player:GetEXP()
@@ -360,7 +359,7 @@ function BattleScene.new()
 	end
 
 
-	this.CheckBumpTest = function(self)
+	this.CheckBump = function(self)
 		AreaCellManager.Instance():Clear() 
 
 		playerBulletList = BulletManager.Instance():GetPlayerBulletList()
@@ -469,7 +468,10 @@ function BattleScene.new()
 						if isHit == true then
 							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemy:GetPosition())
 							local bulletAttack = bullet:GetAttack()
-							enemy:AddNowHp(-bulletAttack)
+							local playerAttack = self.SelectCharacter.BaseParameter:Attack() + self.SelectCharacter.AddParameter:Attack()
+							-- TODO 後で消す
+							LuaUnityDebugLog("bulletAtk:"..bulletAttack.." baseAtk:"..self.SelectCharacter.BaseParameter:Attack().." addAtk:"..self.SelectCharacter.AddParameter:Attack())
+							enemy:AddNowHp(-(bulletAttack+playerAttack))
 							if enemy:IsAlive() == false then
 								local exp = enemy:GetEXP()
 								exp = exp * (1 + (self.ComboCount/1000))
@@ -600,150 +602,6 @@ function BattleScene.new()
 	end
 
 	--当たり判定
-	this.CheckBump = function(self)
-		playerBulletList = BulletManager.Instance():GetPlayerBulletList()
-		enemyBulletList = BulletManager.Instance():GetEnemyBulletList()
-		enemyList = EnemyManager.Instance():GetList()
-		player = PlayerManager:GetPlayer()
-
-		local LoopCounter = 0
-		
-		local comboAddCounter = 0
-	
-		-- 弾と敵とのあたり判定
-		-- 当たったオブジェクト双方に、DeadFlagのtrueを付与する
-		if #playerBulletList > 0 and #enemyList > 0 then
-			for bulletIndex = 1, #playerBulletList do
-				for enemyIndex = 1, #enemyList do
-					local enemy = enemyList[enemyIndex]
-					local bullet = playerBulletList[bulletIndex]
-	
-					local enemyIsAlive = enemy:IsAlive()
-					local bulletIsAlive = bullet:IsAlive()
-	
-					if (enemyIsAlive == false) or (bulletIsAlive == false) then
-					else
-						enemyPosition = enemy:GetPosition()
-						enemyWidth, enemyHeight = enemy:GetSize()
-	
-						bulletPosition = bullet:GetPosition()
-						bulletWidth, bulletHeight = bullet:GetSize()
-	
-						isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
-	
-						if isHit == true then
-							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemy:GetPosition())
-							local bulletAttack = bullet:GetAttack()
-							enemy:AddNowHp(-bulletAttack)
-							if enemy:IsAlive() == false then
-								local exp = enemy:GetEXP()
-								exp = exp * (1 + (self.ComboCount/1000))
-								player:AddEXP(exp)
-							end
-							bullet:AddNowHp(-1)
-						end
-					end
-
-					LoopCounter = LoopCounter + 1
-				end
-			end
-		end
-		
-		-- 敵と自キャラとのあたり判定
-		-- 当たったら、敵の種別を判定して、削除する敵だったら、DeadFlagのtrueを付与する
-		for enemyIndex = 1, #enemyList do
-			enemy = enemyList[enemyIndex]
-	
-			enemyIsAlive = enemy:IsAlive()
-	
-			if (enemyIsAlive == false)then
-			else
-				enemyPosition = enemy:GetPosition()
-				enemyWidth, enemyHeight = enemy:GetSize()
-	
-				playerPosition = player:GetPosition()
-				playerWidth, playerHeight = player:GetSize()
-	
-				isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
-	
-				if isHit == true then
-					local attack = enemy:GetAttack()
-					enemy:SetNowHp(0)
-					player:AddNowHp(-attack)
-				end
-			end
-			LoopCounter = LoopCounter + 1
-		end
-		
-		-- 敵弾と自キャラとのあたり判定
-		-- 当たったら、敵の種別を判定して、削除する敵だったら、DeadFlagのtrueを付与する
-		for bulletIndex = 1, #enemyBulletList do
-			bullet = enemyBulletList[bulletIndex]
-	
-			bulletIsAlive = bullet:IsAlive()
-	
-			if (bulletIsAlive == false)then
-			else
-				bulletPosition = bullet:GetPosition()
-				bulletWidth, bulletHeight = bullet:GetSize()
-	
-				playerPosition = player:GetPosition()
-				playerWidth, playerHeight = player:GetSize()
-	
-				isHit = self:IsHit(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
-	
-				if isHit == true then
-					local attack = bullet:GetAttack()
-					bullet:SetNowHp(0)
-					player:AddNowHp(-attack)
-				end
-			end
-			LoopCounter = LoopCounter + 1
-		end
-		
-		-- 敵弾と自弾とのあたり判定
-		if #playerBulletList > 0 and #enemyBulletList > 0 then
-			for playerBulletIndex = 1, #playerBulletList do
-				for enemyBulletIndex = 1, #enemyBulletList do
-					enemyBullet = enemyBulletList[enemyBulletIndex]
-					playerBullet = playerBulletList[playerBulletIndex]
-	
-					local enemyBulletIsAlive = enemyBullet:IsAlive()
-					local playerBulletIsAlive = playerBullet:IsAlive()
-	
-					if (enemyBulletIsAlive == false) or (playerBulletIsAlive == false) then
-					else
-						enemyBulletPosition = enemyBullet:GetPosition()
-						enemyBulletWidth, enemyBulletHeight = enemyBullet:GetSize()
-	
-						playerBulletPosition = playerBullet:GetPosition()
-						playerBulletWidth, playerBulletHeight = playerBullet:GetSize()
-	
-						isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
-	
-						if isHit == true then
-							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemyBullet:GetPosition())
-							local playerBulletAttack = playerBullet:GetAttack()
-							local enemyBulletAttack = enemyBullet:GetAttack()
-							enemyBullet:AddNowHp(-playerBulletAttack)
-							playerBullet:AddNowHp(-enemyBulletAttack)
-						end
-					end
-				end
-				LoopCounter = LoopCounter + 1
-			end
-		end
-
-
-		if comboAddCounter > 0 then
-			self.ComboCount = self.ComboCount + comboAddCounter
-		end
-	
-		-- 死亡フラグが立っている物を削除する
-		EnemyManager:RemoveDeadObject()
-		BulletManager:RemoveDeadObject()
-	end
-
 	this.IsHit = function(self, leftPosX, leftPosY, leftWidth, leftHeight, rightPosX, rightPosY, rightWidth, rightHeight)
 		local x = 1
 		local y = 2

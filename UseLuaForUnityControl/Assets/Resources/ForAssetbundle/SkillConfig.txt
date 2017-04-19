@@ -210,7 +210,7 @@ SkillTable_Tora = {
 			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
 			BulletEmitterList = {
 				Emitter001.new(0.15, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(0.33, Vector2.new(0, 0), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, -110), 180, EmitterTypeEnum.Satellite),
 			},
 		},
 		
@@ -218,8 +218,7 @@ SkillTable_Tora = {
 			100,
 			BulletEmitterList = {
 				Emitter001.new(0.10, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(0.33, Vector2.new(0, 0), 180, EmitterTypeEnum.Satellite),
-				Emitter001.new(0.33, Vector2.new(0, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, -110), 180, EmitterTypeEnum.Satellite),
 			}
 		},
 		
@@ -228,8 +227,7 @@ SkillTable_Tora = {
 			BulletEmitterList = {
 				Emitter001.new(0.05, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 				
-				Emitter001.new(0.33, Vector2.new(0, 0), 180, EmitterTypeEnum.Satellite),
-				Emitter001.new(0.33, Vector2.new(0, 0), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, -110), 180, EmitterTypeEnum.Satellite),
 				
 				Emitter001.new(0.75, Vector2.new(-50, 0), 90, EmitterTypeEnum.Satellite),
 				Emitter001.new(0.75, Vector2.new(50, 0), -90, EmitterTypeEnum.Satellite),
@@ -244,7 +242,6 @@ SkillTable_Tora = {
 			EquipBulletList = {
 				Bullet_Tora_Bullet_1,
 				Bullet_Tora_Bullet_Circle1,
-				Bullet_Tora_Bullet_Circle1,
 				Bullet_Tora_Bullet_Homing1,
 				Bullet_Tora_Bullet_Homing1,
 			},
@@ -254,8 +251,7 @@ SkillTable_Tora = {
 			1000,
 			EquipBulletList = {
 				Bullet_Tora_Bullet_2,
-				Bullet_Tora_Bullet_Circle2,
-				Bullet_Tora_Bullet_Circle2,
+				Bullet_Tora_Bullet_Circle1,
 				Bullet_Tora_Bullet_Homing1,
 				Bullet_Tora_Bullet_Homing1,
 			},
@@ -265,8 +261,7 @@ SkillTable_Tora = {
 			1000,
 			EquipBulletList = {
 				Bullet_Tora_Bullet_3,
-				Bullet_Tora_Bullet_Circle3,
-				Bullet_Tora_Bullet_Circle3,
+				Bullet_Tora_Bullet_Circle1,
 				Bullet_Tora_Bullet_Homing1,
 				Bullet_Tora_Bullet_Homing1,
 			},
@@ -286,6 +281,193 @@ SkillTable_Tora = {
 }
 
 SkillDetailTextTora = {
+	-- EmitterDetail
+	"レベルが上がると、発射間隔が早くなる\n1⇒3⇒5⇒？⇒？\n",
+	-- BulletDetail
+	"レベルが上がると、弾の攻撃力が上がる\n地味だけど重要\n体感はしづらいかもしれない",
+	-- Test
+	--"多分パッシブ\nHPとか。\nそのへん。",
+}
+
+-- ブチ用スキルテーブル
+SkillTable_Buchi = {
+	-- Emitter
+	{
+		{
+			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
+			BulletEmitterList = {
+				Emitter001.new(2.5, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+
+				Emitter001.new(0.33, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.33, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+			},
+		},
+		
+		{
+			100,
+			BulletEmitterList = {
+				Emitter001.new(2.0, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+
+				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+			}
+		},
+		
+		{
+			100,
+			BulletEmitterList = {
+				Emitter001.new(1.5, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+
+				Emitter001.new(0.17, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.17, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+			}
+		},
+	},
+	
+	-- Bullet
+	{
+		{
+			0,	
+			EquipBulletList = {
+				Bullet_Buchi_Bullet_Cannon1,
+				Bullet_Buchi_Bullet_CinCurve1_1,
+				Bullet_Buchi_Bullet_CinCurve1_2,
+			},
+		},
+		
+		{
+			1000,
+			EquipBulletList = {
+				Bullet_Buchi_Bullet_Cannon2,
+				Bullet_Buchi_Bullet_CinCurve2_1,
+				Bullet_Buchi_Bullet_CinCurve2_2,
+			},
+		},
+
+		{
+			1000,
+			EquipBulletList = {
+				Bullet_Buchi_Bullet_Cannon3,
+				Bullet_Buchi_Bullet_CinCurve3_1,
+				Bullet_Buchi_Bullet_CinCurve3_2,
+			},
+		},
+	},
+	
+	-- ExpTable
+	{
+		100,
+		300,
+		1000,
+		2500,
+		5000,
+		10000,
+		-1,
+	},
+}
+
+SkillDetailTextBuchi = {
+	-- EmitterDetail
+	"レベルが上がると、発射間隔が早くなる\n1⇒3⇒5⇒？⇒？\n",
+	-- BulletDetail
+	"レベルが上がると、弾の攻撃力が上がる\n地味だけど重要\n体感はしづらいかもしれない",
+	-- Test
+	--"多分パッシブ\nHPとか。\nそのへん。",
+}
+
+-- サクラ用スキルテーブル
+SkillTable_Sakura = {
+	-- Emitter
+	{
+		{
+			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
+			BulletEmitterList = {
+				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.25, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.25, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
+			},
+		},
+		
+		{
+			100,
+			BulletEmitterList = {
+				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.25, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.25, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
+			}
+		},
+		
+		{
+			100,
+			BulletEmitterList = {
+				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.25, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.25, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
+				Emitter001.new(6.0, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
+			}
+		},
+	},
+	
+	-- Bullet
+	{
+		{
+			0,	
+			EquipBulletList = {
+				Bullet_Sakura_Bullet1,
+				Bullet_Sakura_HomingBullet1,
+				Bullet_Sakura_HomingBullet1,
+				Bullet_Sakura_WallBullet1,
+				Bullet_Sakura_WallBullet1,
+				Bullet_Sakura_WallBullet1,
+			},
+		},
+		
+		{
+			1000,
+			EquipBulletList = {
+				Bullet_Sakura_Bullet1,
+				Bullet_Sakura_HomingBullet1,
+				Bullet_Sakura_HomingBullet1,
+				Bullet_Sakura_WallBullet2,
+				Bullet_Sakura_WallBullet2,
+				Bullet_Sakura_WallBullet2,
+			},
+		},
+
+		{
+			1000,
+			EquipBulletList = {
+				Bullet_Sakura_Bullet1,
+				Bullet_Sakura_HomingBullet1,
+				Bullet_Sakura_HomingBullet1,
+				Bullet_Sakura_WallBullet3,
+				Bullet_Sakura_WallBullet3,
+				Bullet_Sakura_WallBullet3,
+			},
+		},
+	},
+	
+	-- ExpTable
+	{
+		100,
+		300,
+		1000,
+		2500,
+		5000,
+		10000,
+		-1,
+	},
+}
+
+SkillDetailTextSakura = {
 	-- EmitterDetail
 	"レベルが上がると、発射間隔が早くなる\n1⇒3⇒5⇒？⇒？\n",
 	-- BulletDetail

@@ -105,31 +105,7 @@ Bullet_Tora_Bullet_Circle1 = {
 	MaxHp = 1,
 	Attack = 1,
 	ExistTime = 3.0,
-	MoveType = MoveCircle.new(0, 5, 3),
-	BulletType = BulletTypeEnum.Normal,
-}
-Bullet_Tora_Bullet_Circle2 = {
-	PrefabName = "EnemyCharacterObject",
-	Name = "ToraBullet5",
-	Width = 32,
-	Height = 32,
-	NowHp = 2,
-	MaxHp = 2,
-	Attack = 1,
-	ExistTime = 3.0,
-	MoveType = MoveCircle.new(0, 5, 3),
-	BulletType = BulletTypeEnum.Normal,
-}
-Bullet_Tora_Bullet_Circle3 = {
-	PrefabName = "EnemyCharacterObject",
-	Name = "ToraBullet6",
-	Width = 32,
-	Height = 32,
-	NowHp = 3,
-	MaxHp = 3,
-	Attack = 1,
-	ExistTime = 3.0,
-	MoveType = MoveCircle.new(0, 5, 3),
+	MoveType = MoveSinCurve.new(0, -5, 10),
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Tora_Bullet_Homing1 = {
@@ -144,6 +120,179 @@ Bullet_Tora_Bullet_Homing1 = {
 	MoveType = MoveHoming.new(0.25, 0, 10),
 	BulletType = BulletTypeEnum.UseTargetPosition,
 }
+
+-- ブチ用弾
+Bullet_Buchi_Bullet_Cannon1 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "BuchiBullet1",
+	Width = 32,
+	Height = 32,
+	NowHp = 10,
+	MaxHp = 10,
+	Attack = 1,
+	ExistTime = 1.0,
+	MoveType = MoveStraight.new(30),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_Cannon2 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "BuchiBullet2",
+	Width = 64,
+	Height = 64,
+	NowHp = 15,
+	MaxHp = 15,
+	Attack = 2,
+	ExistTime = 1.0,
+	MoveType = MoveStraight.new(40),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_Cannon3 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "BuchiBullet3",
+	Width = 96,
+	Height = 96,
+	NowHp = 20,
+	MaxHp = 20,
+	Attack = 3,
+	ExistTime = 1.0,
+	MoveType = MoveStraight.new(50),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_CinCurve1_1 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "BuchiBullet4",
+	Width = 24,
+	Height = 24,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 2.0,
+	MoveType = MoveSinCurve.new(0, 30, 15),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_CinCurve1_2 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "BuchiBullet5",
+	Width = 24,
+	Height = 24,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 2.0,
+	MoveType = MoveSinCurve.new(180, 30, 15),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_CinCurve2_1 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "BuchiBullet6",
+	Width = 24,
+	Height = 24,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 2.0,
+	MoveType = MoveSinCurve.new(0, 20, 15),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_CinCurve2_2 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "BuchiBullet7",
+	Width = 24,
+	Height = 24,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 2.0,
+	MoveType = MoveSinCurve.new(180, 20, 15),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_CinCurve3_1 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "BuchiBullet8",
+	Width = 24,
+	Height = 24,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 2.0,
+	MoveType = MoveSinCurve.new(0, 15, 15),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Buchi_Bullet_CinCurve3_2 = {
+	PrefabName = "BulletObjectTooth16",
+	Name = "BuchiBullet9",
+	Width = 24,
+	Height = 24,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 2.0,
+	MoveType = MoveSinCurve.new(180, 15, 15),
+	BulletType = BulletTypeEnum.Normal,
+}
+
+-- サクラ用弾
+Bullet_Sakura_Bullet1 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "SakuraBullet1",
+	Width = 32,
+	Height = 32,
+	NowHp = 1,
+	MaxHp = 1,
+	Attack = 1,
+	ExistTime = 1.0,
+	MoveType = MoveStraight.new(20),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Sakura_HomingBullet1 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "SakuraBullet2",
+	Width = 32,
+	Height = 32,
+	NowHp = 5,
+	MaxHp = 5,
+	Attack = 1,
+	ExistTime = 1,
+	MoveType = MoveHoming.new(0.125, 0, 5),
+	BulletType = BulletTypeEnum.UseTargetPosition,
+}
+Bullet_Sakura_WallBullet1 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "SakuraBullet3",
+	Width = 32,
+	Height = 32,
+	NowHp = 15,
+	MaxHp = 15,
+	Attack = 1,
+	ExistTime = 5,
+	MoveType = MoveStraight.new(0),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Sakura_WallBullet2 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "SakuraBullet4",
+	Width = 64,
+	Height = 64,
+	NowHp = 20,
+	MaxHp = 20,
+	Attack = 1,
+	ExistTime = 5,
+	MoveType = MoveStraight.new(0),
+	BulletType = BulletTypeEnum.Normal,
+}
+Bullet_Sakura_WallBullet3 = {
+	PrefabName = "BulletObjectNormal",
+	Name = "SakuraBullet5",
+	Width = 96,
+	Height = 96,
+	NowHp = 20,
+	MaxHp = 20,
+	Attack = 1,
+	ExistTime = 5,
+	MoveType = MoveStraight.new(0),
+	BulletType = BulletTypeEnum.Normal,
+}
+
 
 Bullet0001 = {
 	PrefabName = "EnemyCharacterObject",
