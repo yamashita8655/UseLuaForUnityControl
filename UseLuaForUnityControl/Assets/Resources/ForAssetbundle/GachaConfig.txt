@@ -10,7 +10,7 @@ GachaList = {
 		Name = "初めてくじ",
 		PrefabName = "Prefabs/",
 		Price = 10,
-		Detail = "ゲームを始めたばっかりの人の為のくじ。\n『もち』と『とら』が強くなるアイテムが手に入る。\n効果は低いけど安いので、気軽に引いてしまおう。\n\n1回10ねこポイント。",
+		Detail = "ゲームを始めたばっかりの人の為のくじ。\n『もち』が強くなるアイテムが手に入る。\n効果は低いけど安いので、気軽に引いてしまおう。\n極稀に、結構強くなれるよ！\n\n1回10ねこポイント。",
 		MoneyType = GachaMoneyType.ExpPoint,
 		GachaData = GachaExecuteObject.new(GachaTableWood),
 	},

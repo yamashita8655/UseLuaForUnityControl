@@ -93,6 +93,12 @@ function BattleScene.new()
 		
 		--Test
 		local player = PlayerManager:Instance():GetPlayer()
+		local baseHp = self.SelectCharacter.BaseParameter:MaxHp()
+		local characterAddParameter = SaveObject.CharacterList[self.SelectCharacter.IdIndex]
+		local addHp = characterAddParameter[CharacterParameterEnum.AddHp]
+		player:SetNowHp(baseHp + addHp)
+		player:SetMaxHp(baseHp + addHp)
+		LuaUnityDebugLog("baseHp:"..baseHp.." addHp:"..addHp)
 		local skillConfig = player:GetSkillConfig()
 		local skillTable = skillConfig:GetSkillTable()
 		local bulletList = skillTable[SkillTypeEnum.Bullet]
@@ -467,9 +473,14 @@ function BattleScene.new()
 	
 						if isHit == true then
 							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemy:GetPosition())
+
 							local bulletAttack = bullet:GetAttack()
-							local playerAttack = self.SelectCharacter.BaseParameter:Attack() + self.SelectCharacter.AddParameter:Attack()
-							LuaUnityDebugLog("bulletAtk:"..bulletAttack.." baseAtk:"..self.SelectCharacter.BaseParameter:Attack().." addAtk:"..self.SelectCharacter.AddParameter:Attack())
+							local baseAttack = self.SelectCharacter.BaseParameter:Attack()
+							local characterAddParameter = SaveObject.CharacterList[self.SelectCharacter.IdIndex]
+							local addAttack = characterAddParameter[CharacterParameterEnum.AddAttack]
+							local playerAttack = baseAttack + addAttack
+							-- TODO 後で消す
+							LuaUnityDebugLog("bulletAtk:"..bulletAttack.." baseAtk:"..baseAttack.." addAtk:"..addAttack)
 							enemy:AddNowHp(-(bulletAttack+playerAttack))
 							if enemy:IsAlive() == false then
 								local exp = enemy:GetEXP()
@@ -509,8 +520,17 @@ function BattleScene.new()
 	
 				if isHit == true then
 					local attack = enemy:GetAttack()
+					local baseDeffense = self.SelectCharacter.BaseParameter:Deffense()
+					local characterAddParameter = SaveObject.CharacterList[self.SelectCharacter.IdIndex]
+					local addDeffense = characterAddParameter[CharacterParameterEnum.AddDeffense]
+					local damage = (attack-(baseDeffense+addDeffense))
+					if damage < 0 then
+						damage = 0
+					end
 					enemy:SetNowHp(0)
-					player:AddNowHp(-attack)
+					LuaUnityDebugLog("atk:"..attack.." baseDef:"..baseDeffense.." addDef:"..addDeffense)
+					player:AddNowHp(-damage)
+					LuaUnityDebugLog("nowHp:"..player:GetNowHp())
 					takeDamage = true
 				end
 			end
@@ -537,7 +557,16 @@ function BattleScene.new()
 				if isHit == true then
 					local attack = bullet:GetAttack()
 					bullet:SetNowHp(0)
-					player:AddNowHp(-attack)
+
+					local baseDeffense = self.SelectCharacter.BaseParameter:Deffense()
+					local characterAddParameter = SaveObject.CharacterList[self.SelectCharacter.IdIndex]
+					local addDeffense = characterAddParameter[CharacterParameterEnum.AddDeffense]
+					local damage = (attack-(baseDeffense+addDeffense))
+					if damage < 0 then
+						damage = 0
+					end
+					LuaUnityDebugLog("atk:"..attack.." baseDef:"..baseDeffense.." addDef:"..addDeffense)
+					player:AddNowHp(-damage)
 					takeDamage = true
 				end
 			end

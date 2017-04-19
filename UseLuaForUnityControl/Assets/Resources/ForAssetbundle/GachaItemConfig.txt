@@ -47,7 +47,7 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddHp,
-		0.1,
+		1,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpAttack1_001 = ParameterItemData.new(
@@ -55,7 +55,7 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddAttack,
-		0.1,
+		0.05,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpDeffense1_001 = ParameterItemData.new(
@@ -63,10 +63,42 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
-		0.1,
+		0.05,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpFriendPoint1_001 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		0.01,
+		CharacterTypeEnum.Mochi
+	),
+	ParameterUpHp2_001 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddHp,
+		10,
+		CharacterTypeEnum.Mochi
+	),
+	ParameterUpAttack2_001 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddAttack,
+		1,
+		CharacterTypeEnum.Mochi
+	),
+	ParameterUpDeffense2_001 = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddDeffense,
+		1,
+		CharacterTypeEnum.Mochi
+	),
+	ParameterUpFriendPoint2_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon1",
 		RarityType.Normal,

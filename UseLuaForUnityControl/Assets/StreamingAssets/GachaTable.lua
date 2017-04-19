@@ -55,22 +55,14 @@ end
 
 -- ガチャから排出されるアイテムの定義
 GachaTableWood = {
-	--GachaTableData.new(GachaItemTable.ParameterUpHp1_001, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpAttack1_001, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpDeffense1_001, 100),
-	GachaTableData.new(GachaItemTable.ParameterUpFriendPoint1_001, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpHp1_002, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpAttack1_002, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpDeffense1_002, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpFriendPoint1_002, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpHp1_003, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpAttack1_003, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpDeffense1_003, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpFriendPoint1_003, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpHp1_004, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpAttack1_004, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpDeffense1_004, 100),
-	--GachaTableData.new(GachaItemTable.ParameterUpFriendPoint1_004, 100),
+	GachaTableData.new(GachaItemTable.ParameterUpHp1_001, 15),
+	GachaTableData.new(GachaItemTable.ParameterUpAttack1_001, 15),
+	GachaTableData.new(GachaItemTable.ParameterUpDeffense1_001, 15),
+	GachaTableData.new(GachaItemTable.ParameterUpFriendPoint1_001, 15),
+	GachaTableData.new(GachaItemTable.ParameterUpHp2_001, 1),
+	GachaTableData.new(GachaItemTable.ParameterUpAttack2_001, 1),
+	GachaTableData.new(GachaItemTable.ParameterUpDeffense2_001, 1),
+	GachaTableData.new(GachaItemTable.ParameterUpFriendPoint2_001, 1),
 }
 
 GachaTableBronze = {

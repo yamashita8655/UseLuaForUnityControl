@@ -79,6 +79,11 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 			self.NowHp = self.MaxHp
 		end
 	end
+	
+	-- 最大HPの取得
+	this.GetMaxHp = function(self)
+		return self.MaxHp
+	end
 
 	-- 座標取得
 	this.GetPosition = function(self)
