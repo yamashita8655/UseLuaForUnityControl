@@ -13,8 +13,8 @@ function BattleScene.new()
 	this.EndCheckInterval = 5
 	this.EndCheckIntervalCounter = 0
 	
-	--this.SaveInterval = 30 -- セーブ処理を走らせる間隔秒
-	this.SaveInterval = 10000 -- セーブ処理を走らせる間隔秒
+	this.SaveInterval = 30 -- セーブ処理を走らせる間隔秒
+	--this.SaveInterval = 10000 -- セーブ処理を走らせる間隔秒
 	this.SaveIntervalCounter = 0 
 	
 	this.AlignScale		= Vector3.new(1.0, 1.0, 1.0)-- 画面表示の拡縮調整

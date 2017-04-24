@@ -17,8 +17,8 @@ SaveAssetBundleCounter = 0
 SaveScriptFileCounter = 0
 
 -- TODO 実機確認するときは、HTTPの方にする事！
---URL = "http://natural-nail-eye.sakura.ne.jp"
-URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
+URL = "http://natural-nail-eye.sakura.ne.jp"
+--URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
 Platform = ""
 
@@ -350,8 +350,8 @@ function InitGame()
 	LuaSetText("InAppText", "ゲーム実行準備完了！")
 	LuaLoadPrefabAfter("common", "FadeObject", "FadeObject", "SystemCanvas")
 	LuaSetActive("FadeObject", false)
-	LuaLoadPrefabAfter("common", "DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
-	LuaFindObject("DebugDisplayText")
+	--LuaLoadPrefabAfter("common", "DebugDisplayObject", "DebugDisplayObject", "SystemCanvas")
+	--LuaFindObject("DebugDisplayText")
 	LuaPlayAnimator("FadeObject", "FadeIn", false, false, "InitLoadingScene", "")
 
 	-- とりあえず、ゲーム開始時の初期設定をする
