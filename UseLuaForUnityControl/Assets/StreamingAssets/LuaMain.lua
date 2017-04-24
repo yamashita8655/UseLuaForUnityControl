@@ -16,6 +16,7 @@ AfterLoadAssetBundleCallback = nil
 SaveAssetBundleCounter = 0
 SaveScriptFileCounter = 0
 
+-- TODO 実機確認するときは、HTTPの方にする事！
 --URL = "http://natural-nail-eye.sakura.ne.jp"
 URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 

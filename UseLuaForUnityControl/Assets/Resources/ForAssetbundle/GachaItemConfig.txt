@@ -42,12 +42,15 @@ GachaItemTable = {
 	-- パラメータタイプ
 	-- 増加量
 	-- キャラタイプ
+
+	-- ウッドガチャ用
+	-- モチの強化アイテムしか出ない
 	ParameterUpHp1_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddHp,
-		1,
+		0.2,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpAttack1_001 = ParameterItemData.new(
@@ -55,7 +58,7 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddAttack,
-		0.05,
+		0.01,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpDeffense1_001 = ParameterItemData.new(
@@ -63,7 +66,7 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
-		0.05,
+		0.01,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpFriendPoint1_001 = ParameterItemData.new(
@@ -74,12 +77,13 @@ GachaItemTable = {
 		0.01,
 		CharacterTypeEnum.Mochi
 	),
+
 	ParameterUpHp2_001 = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddHp,
-		10,
+		2,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpAttack2_001 = ParameterItemData.new(
@@ -87,7 +91,7 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddAttack,
-		1,
+		0.1,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpDeffense2_001 = ParameterItemData.new(
@@ -95,7 +99,7 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
-		1,
+		0.1,
 		CharacterTypeEnum.Mochi
 	),
 	ParameterUpFriendPoint2_001 = ParameterItemData.new(
@@ -103,27 +107,125 @@ GachaItemTable = {
 		"CommonCharacterIcon1",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
-		1,
+		0.1,
 		CharacterTypeEnum.Mochi
 	),
 	
-	ParameterUpHp1_002 = ParameterItemData.new(
+	-- ブロンズガチャ用
+	MochiBronzeHpNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddHp,
+		0.4,
+		CharacterTypeEnum.Mochi
+	),
+	MochiBronzeAttackNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddAttack,
+		0.02,
+		CharacterTypeEnum.Mochi
+	),
+	MochiBronzeDeffenseNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddDeffense,
+		0.02,
+		CharacterTypeEnum.Mochi
+	),
+	MochiBronzeFriendPointNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		0.02,
+		CharacterTypeEnum.Mochi
+	),
+	MochiBronzeHpRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddHp,
+		4,
+		CharacterTypeEnum.Mochi
+	),
+	MochiBronzeAttackRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddAttack,
+		0.2,
+		CharacterTypeEnum.Mochi
+	),
+	MochiBronzeDeffenseRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.AddDeffense,
+		0.2,
+		CharacterTypeEnum.Mochi
+	),
+	MochiBronzeFriendPointRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon1",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		0.2,
+		CharacterTypeEnum.Mochi
+	),
+	
+	ToraBronzeHpNormal = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon2",
 		RarityType.Normal,
 		ParameterType.AddHp,
-		0.1,
-		CharacterTypeEnum.Tora),
-	
-	ParameterUpAttack1_002 = ParameterItemData.new(
+		0.5,
+		CharacterTypeEnum.Tora
+	),
+	ToraBronzeAttackNormal = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon2",
 		RarityType.Normal,
 		ParameterType.AddAttack,
-		0.1,
+		0.04,
 		CharacterTypeEnum.Tora
 	),
-	ParameterUpDeffense1_002 = ParameterItemData.new(
+	ToraBronzeDeffenseNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon2",
+		RarityType.Normal,
+		ParameterType.AddDeffense,
+		0.01,
+		CharacterTypeEnum.Tora
+	),
+	ToraBronzeFriendPointNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon2",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		0.02,
+		CharacterTypeEnum.Tora
+	),
+	ToraBronzeHpRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon2",
+		RarityType.Normal,
+		ParameterType.AddHp,
+		5,
+		CharacterTypeEnum.Tora
+	),
+	ToraBronzeAttackRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon2",
+		RarityType.Normal,
+		ParameterType.AddAttack,
+		0.4,
+		CharacterTypeEnum.Tora
+	),
+	ToraBronzeDeffenseRare = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon2",
 		RarityType.Normal,
@@ -131,16 +233,16 @@ GachaItemTable = {
 		0.1,
 		CharacterTypeEnum.Tora
 	),
-	ParameterUpFriendPoint1_002 = ParameterItemData.new(
+	ToraBronzeFriendPointRare = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon2",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
-		1,
+		0.2,
 		CharacterTypeEnum.Tora
 	),
-	
-	ParameterUpHp1_003 = ParameterItemData.new(
+
+	BuchiBronzeHpNormal = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon3",
 		RarityType.Normal,
@@ -148,7 +250,39 @@ GachaItemTable = {
 		0.1,
 		CharacterTypeEnum.Buchi
 	),
-	ParameterUpAttack1_003 = ParameterItemData.new(
+	BuchiBronzeAttackNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon3",
+		RarityType.Normal,
+		ParameterType.AddAttack,
+		0.01,
+		CharacterTypeEnum.Buchi
+	),
+	BuchiBronzeDeffenseNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon3",
+		RarityType.Normal,
+		ParameterType.AddDeffense,
+		0.04,
+		CharacterTypeEnum.Buchi
+	),
+	BuchiBronzeFriendPointNormal = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon3",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		0.02,
+		CharacterTypeEnum.Buchi
+	),
+	BuchiBronzeHpRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon3",
+		RarityType.Normal,
+		ParameterType.AddHp,
+		1,
+		CharacterTypeEnum.Buchi
+	),
+	BuchiBronzeAttackRare = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon3",
 		RarityType.Normal,
@@ -156,55 +290,88 @@ GachaItemTable = {
 		0.1,
 		CharacterTypeEnum.Buchi
 	),
-	ParameterUpDeffense1_003 = ParameterItemData.new(
+	BuchiBronzeDeffenseRare = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon3",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
-		0.1,
+		0.4,
 		CharacterTypeEnum.Buchi
 	),
-	ParameterUpFriendPoint1_003 = ParameterItemData.new(
+	BuchiBronzeFriendPointRare = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon3",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
-		1,
+		0.2,
 		CharacterTypeEnum.Buchi
 	),
-	
-	ParameterUpHp1_004 = ParameterItemData.new(
+
+	SakuraBronzeHpNormal = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.AddHp,
-		0.1,
+		0.4,
 		CharacterTypeEnum.Sakura
 	),
-	ParameterUpAttack1_004 = ParameterItemData.new(
+	SakuraBronzeAttackNormal = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.AddAttack,
-		0.1,
+		0.02,
 		CharacterTypeEnum.Sakura
 	),
-	ParameterUpDeffense1_004 = ParameterItemData.new(
+	SakuraBronzeDeffenseNormal = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.AddDeffense,
-		0.1,
+		0.02,
 		CharacterTypeEnum.Sakura
 	),
-	ParameterUpFriendPoint1_004 = ParameterItemData.new(
+	SakuraBronzeFriendPointNormal = ParameterItemData.new(
 		ItemType.ParameterUp,
 		"CommonCharacterIcon4",
 		RarityType.Normal,
 		ParameterType.FriendPoint,
-		1,
+		0.02,
 		CharacterTypeEnum.Sakura
 	),
+	SakuraBronzeHpRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon4",
+		RarityType.Normal,
+		ParameterType.AddHp,
+		4,
+		CharacterTypeEnum.Sakura
+	),
+	SakuraBronzeAttackRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon4",
+		RarityType.Normal,
+		ParameterType.AddAttack,
+		0.2,
+		CharacterTypeEnum.Sakura
+	),
+	SakuraBronzeDeffenseRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon4",
+		RarityType.Normal,
+		ParameterType.AddDeffense,
+		0.2,
+		CharacterTypeEnum.Sakura
+	),
+	SakuraBronzeFriendPointRare = ParameterItemData.new(
+		ItemType.ParameterUp,
+		"CommonCharacterIcon4",
+		RarityType.Normal,
+		ParameterType.FriendPoint,
+		0.2,
+		CharacterTypeEnum.Sakura
+	),
+	
 }
 
 
