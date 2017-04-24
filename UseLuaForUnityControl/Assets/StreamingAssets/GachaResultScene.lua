@@ -250,7 +250,8 @@ function GachaResultScene.new()
 				addHp,
 				addAttack,
 				addDeffense,
-				addFriendPoint
+				addFriendPoint,
+				PlayerCharacterConfig[characterType].PrefabName
 			)
 		end
 	end

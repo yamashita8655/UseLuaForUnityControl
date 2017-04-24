@@ -24,10 +24,10 @@ function GachaScene.new()
 		LuaFindObject("GachaDetailText")
 
 		local mochiPoint = GameManager.Instance():GetMochiPointValue()
-		LuaSetText("GachaNekoPointText", mochiPoint)
+		LuaSetText("GachaNekoPointText", math.floor(mochiPoint))
 		
 		local billingPoint = GameManager.Instance():GetBillingPointValue()
-		LuaSetText("GachaBillingPointText", billingPoint)
+		LuaSetText("GachaBillingPointText", math.floor(billingPoint))
 		
 		if self.IsInitialized == false then
 			GachaRollDialog.Instance():Initialize()
@@ -206,7 +206,7 @@ function GachaScene.new()
 		local mochiPoint = GameManager.Instance():GetMochiPointValue()
 		SaveObject.HaveMochiPointValue = GameManager.Instance():GetMochiPointValue()
 		FileIOManager.Instance():Save()
-		LuaSetText("GachaNekoPointText", mochiPoint)
+		LuaSetText("GachaNekoPointText", math.floor(mochiPoint))
 	end
 	
 	this.UpdateGachaDetailText = function(self)
@@ -219,7 +219,7 @@ function GachaScene.new()
 		local point = GameManager.Instance():GetBillingPointValue()
 		SaveObject.HaveBillingPointValue = GameManager.Instance():GetBillingPointValue()
 		FileIOManager.Instance():Save()
-		LuaSetText("GachaBillingPointText", point)
+		LuaSetText("GachaBillingPointText", math.floor(point))
 	end
 	
 	this.UpdateCharacterParameter = function(self, itemList)

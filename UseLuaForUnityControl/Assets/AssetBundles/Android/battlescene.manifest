@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 974143553
+CRC: 105450448
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: da9a82190aca4358a800a041cac3afa4
+    Hash: 00d79aa79e00260be577516544adb0dc
   TypeTreeHash:
     serializedVersion: 2
     Hash: 572195e8d4fa6339a2a95a39d16e92bf
@@ -54,6 +54,7 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
+- Assets/Resources/BattleScene/BulletObjectNormal96.prefab
 - Assets/Resources/BattleScene/HitEffect1.prefab
 - Assets/Resources/BattleScene/g.png
 - Assets/Resources/BattleScene/hpGauge.png
@@ -71,6 +72,7 @@ Assets:
 - Assets/Resources/BattleScene/SpawnKarikariAnimation.anim
 - Assets/Resources/BattleScene/enemyMouse.png
 - Assets/Resources/BattleScene/SkillWindowAnimator.controller
+- Assets/Resources/BattleScene/BulletObjectTooth24.prefab
 - Assets/Resources/BattleScene/BulletObjectEnemyTooth1.prefab
 - Assets/Resources/BattleScene/enemyMouseRed.png
 - Assets/Resources/BattleScene/HitEffect2Animation.anim
@@ -109,6 +111,7 @@ Assets:
 - Assets/Resources/BattleScene/ResultDialog.prefab
 - Assets/Resources/BattleScene/WinEffect.prefab
 - Assets/Resources/BattleScene/retire.png
+- Assets/Resources/BattleScene/BulletObjectNormal64.prefab
 - Assets/Resources/BattleScene/woodbg.png
 - Assets/Resources/BattleScene/WinEffectAnimation.anim
 - Assets/Resources/BattleScene/LoseEffect.prefab

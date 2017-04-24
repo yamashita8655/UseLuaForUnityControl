@@ -145,7 +145,7 @@ end
 function SkillLevelUpDialog:UpdateHaveExpText() 
 	local player = PlayerManager.Instance():GetPlayer() 
 	local exp = player:GetEXP()
-	LuaSetText("SkillHaveExpText", exp)
+	LuaSetText("SkillHaveExpText", math.floor(exp))
 end
 
 function SkillLevelUpDialog:UpdateSkillPointText() 

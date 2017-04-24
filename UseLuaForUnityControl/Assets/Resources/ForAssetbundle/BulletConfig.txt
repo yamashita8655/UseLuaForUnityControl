@@ -85,7 +85,7 @@ Bullet_Tora_Bullet_2 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Tora_Bullet_3 = {
-	PrefabName = "BulletObjectTooth16",
+	PrefabName = "BulletObjectTooth24",
 	Name = "ToraBullet3",
 	Width = 24,
 	Height = 24,
@@ -135,7 +135,7 @@ Bullet_Buchi_Bullet_Cannon1 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_Cannon2 = {
-	PrefabName = "BulletObjectNormal",
+	PrefabName = "BulletObjectNormal64",
 	Name = "BuchiBullet2",
 	Width = 64,
 	Height = 64,
@@ -147,7 +147,7 @@ Bullet_Buchi_Bullet_Cannon2 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_Cannon3 = {
-	PrefabName = "BulletObjectNormal",
+	PrefabName = "BulletObjectNormal96",
 	Name = "BuchiBullet3",
 	Width = 96,
 	Height = 96,
@@ -159,7 +159,7 @@ Bullet_Buchi_Bullet_Cannon3 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_CinCurve1_1 = {
-	PrefabName = "BulletObjectTooth16",
+	PrefabName = "BulletObjectTooth24",
 	Name = "BuchiBullet4",
 	Width = 24,
 	Height = 24,
@@ -171,7 +171,7 @@ Bullet_Buchi_Bullet_CinCurve1_1 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_CinCurve1_2 = {
-	PrefabName = "BulletObjectTooth16",
+	PrefabName = "BulletObjectTooth24",
 	Name = "BuchiBullet5",
 	Width = 24,
 	Height = 24,
@@ -183,7 +183,7 @@ Bullet_Buchi_Bullet_CinCurve1_2 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_CinCurve2_1 = {
-	PrefabName = "BulletObjectTooth16",
+	PrefabName = "BulletObjectTooth24",
 	Name = "BuchiBullet6",
 	Width = 24,
 	Height = 24,
@@ -195,7 +195,7 @@ Bullet_Buchi_Bullet_CinCurve2_1 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_CinCurve2_2 = {
-	PrefabName = "BulletObjectTooth16",
+	PrefabName = "BulletObjectTooth24",
 	Name = "BuchiBullet7",
 	Width = 24,
 	Height = 24,
@@ -207,7 +207,7 @@ Bullet_Buchi_Bullet_CinCurve2_2 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_CinCurve3_1 = {
-	PrefabName = "BulletObjectTooth16",
+	PrefabName = "BulletObjectTooth24",
 	Name = "BuchiBullet8",
 	Width = 24,
 	Height = 24,
@@ -219,7 +219,7 @@ Bullet_Buchi_Bullet_CinCurve3_1 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Buchi_Bullet_CinCurve3_2 = {
-	PrefabName = "BulletObjectTooth16",
+	PrefabName = "BulletObjectTooth24",
 	Name = "BuchiBullet9",
 	Width = 24,
 	Height = 24,
@@ -269,7 +269,7 @@ Bullet_Sakura_WallBullet1 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Sakura_WallBullet2 = {
-	PrefabName = "BulletObjectNormal",
+	PrefabName = "BulletObjectNormal64",
 	Name = "SakuraBullet4",
 	Width = 64,
 	Height = 64,
@@ -281,7 +281,7 @@ Bullet_Sakura_WallBullet2 = {
 	BulletType = BulletTypeEnum.Normal,
 }
 Bullet_Sakura_WallBullet3 = {
-	PrefabName = "BulletObjectNormal",
+	PrefabName = "BulletObjectNormal96",
 	Name = "SakuraBullet5",
 	Width = 96,
 	Height = 96,

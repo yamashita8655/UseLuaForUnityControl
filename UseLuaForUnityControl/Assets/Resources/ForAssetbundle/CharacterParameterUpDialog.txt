@@ -18,6 +18,7 @@ end
 function CharacterParameterUpDialog:Initialize() 
 	self.IsActive = false
 	self.CloseCallback = nil 
+	self.PrefabName = ""
 
 	LuaLoadPrefabAfter("gacharesultscene", "CharacterParameterUpDialog", "CharacterParameterUpDialog", "SystemCanvas")
 	
@@ -38,18 +39,21 @@ function CharacterParameterUpDialog:SetParent(parentName)
 	LuaSetParent("CharacterParameterUpDialog", parentName)
 end
 
-function CharacterParameterUpDialog:OpenDialog(openCallback, closeCallback, baseHp, baseAttack,  baseDeffense, baseFriendPoint, addHp, addAttack, addDeffense, addFriendPoint)
+function CharacterParameterUpDialog:OpenDialog(openCallback, closeCallback, baseHp, baseAttack,  baseDeffense, baseFriendPoint, addHp, addAttack, addDeffense, addFriendPoint, prefabName)
 	if self.IsActive == false then
 		LuaSetText("CharacterParameterUpBaseHpText", baseHp)
-		LuaSetText("CharacterParameterUpAddHpText", addHp)
+		LuaSetText("CharacterParameterUpAddHpText", "+"..addHp)
 		LuaSetText("CharacterParameterUpBaseAttackText", baseAttack)
-		LuaSetText("CharacterParameterUpAddAttackText", addAttack)
+		LuaSetText("CharacterParameterUpAddAttackText", "+"..addAttack)
 		LuaSetText("CharacterParameterUpBaseDeffenseText", baseDeffense)
-		LuaSetText("CharacterParameterUpAddDeffenseText", addDeffense)
-		LuaSetText("CharacterParameterUpAddFriendPointText", addFriendPoint)
+		LuaSetText("CharacterParameterUpAddDeffenseText", "+"..addDeffense)
+		LuaSetText("CharacterParameterUpAddFriendPointText", "+"..addFriendPoint)
 		LuaSetSliderValue("CharacterParameterUpFriendSlider", baseFriendPoint)
 
-		--LuaSetParent(餅画像"", "CharacterParameterAttachRoot")
+		self.PrefabName = prefabName
+
+		--キャラ画像
+		LuaLoadPrefabAfter("common", self.PrefabName, self.PrefabName.."CharacterParameterUp", "CharacterParameterAttachRoot")
 
 		self.OpenCallback = openCallback
 		self.CloseCallback = closeCallback
@@ -61,6 +65,7 @@ end
 
 function CharacterParameterUpDialog:CloseDialog() 
 	if self.IsActive == true then
+		LuaDestroyObject(self.PrefabName.."CharacterParameterUp")
 		CallbackManager.Instance():AddCallback("CharacterParameterUpDialogManager_CloseCallback", {self}, self.DialogCloseCallback)
 		LuaPlayAnimator("CharacterParameterUpDialog", "Close", false, true, "LuaCallback", "CharacterParameterUpDialogManager_CloseCallback")
 	end

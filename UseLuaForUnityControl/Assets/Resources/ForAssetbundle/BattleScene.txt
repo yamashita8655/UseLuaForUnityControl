@@ -192,7 +192,8 @@ function BattleScene.new()
 			exp = math.floor(exp)
 			LuaSetText("ExpText", exp)
 			
-			LuaSetText("BattleKarikariText", self.GetKarikari)
+			local karikari = math.floor(self.GetKarikari)
+			LuaSetText("BattleKarikariText", karikari)
 			
 			if player:IsAlive() == false then
 				self.IsGamePause = true

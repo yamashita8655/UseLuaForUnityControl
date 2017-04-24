@@ -36,13 +36,13 @@ function ResultDialog:OpenDialog(closeCallback, expPoint, isFailed)
 	if self.IsActive == false then
 
 		if isFailed == true then
-			LuaSetText("BattleResultGetExpText", expPoint)
+			LuaSetText("BattleResultGetExpText", math.floor(expPoint))
 			LuaSetText("BattleResultFailedText", "1/10")
 			LuaSetText("BattleResultGetExpFinalText", math.floor(expPoint/10))
 		else
-			LuaSetText("BattleResultGetExpText", expPoint)
+			LuaSetText("BattleResultGetExpText", math.floor(expPoint))
 			LuaSetText("BattleResultFailedText", "-")
-			LuaSetText("BattleResultGetExpFinalText", expPoint)
+			LuaSetText("BattleResultGetExpFinalText", math.floor(expPoint))
 		end
 
 		self.CloseCallback = closeCallback

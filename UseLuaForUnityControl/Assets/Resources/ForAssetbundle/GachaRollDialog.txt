@@ -56,7 +56,7 @@ function GachaRollDialog:OpenDialog(rollCallback, price, havePoint)
 		self:UpdateButtonInteractable() 
 
 		LuaSetText("GachaRollOneTimePriceText", price)
-		LuaSetText("GachaRollHavePointText", havePoint)
+		LuaSetText("GachaRollHavePointText", math.floor(havePoint))
 
 		CallbackManager.Instance():AddCallback("GachaRollDialogManager_OpenCallback", {self}, self.DialogOpenCallback)
 		LuaPlayAnimator("GachaRollDialog", "Open", false, false, "LuaCallback", "GachaRollDialogManager_OpenCallback")
