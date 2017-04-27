@@ -1,4 +1,0 @@
-﻿function FunctionDebugLog()
-	res = MainDebugLog()
-	return res
-end

@@ -1,3 +1,0 @@
-﻿function MainDebugLog()
-	return "main.txt"
-end
