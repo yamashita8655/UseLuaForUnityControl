@@ -16,8 +16,8 @@ public class EditorApplicationBuild {
 				allScene.Add (scene.path);
 			}
 		}
-		//PlayerSettings.bundleIdentifier = "com.yourcompany.newgame";
-		//PlayerSettings.statusBarHidden = true;
+		PlayerSettings.bundleIdentifier = "com.mochimoffu.mofuneko";
+		PlayerSettings.statusBarHidden = true;
 		BuildPipeline.BuildPlayer( 
 			allScene.ToArray(),
 			"Mofuneko.apk",
