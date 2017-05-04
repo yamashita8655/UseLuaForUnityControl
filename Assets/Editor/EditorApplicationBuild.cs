@@ -18,6 +18,10 @@ public class EditorApplicationBuild {
 		}
 		PlayerSettings.bundleIdentifier = "com.mochimoffu.mofuneko";
 		PlayerSettings.statusBarHidden = true;
+		PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
+		PlayerSettings.use32BitDisplayBuffer = true;
+		PlayerSettings.renderingPath = RenderingPath.Forward;
+
 		BuildPipeline.BuildPlayer( 
 			allScene.ToArray(),
 			"Mofuneko.apk",
