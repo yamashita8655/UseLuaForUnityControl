@@ -29,4 +29,31 @@ public class EditorApplicationBuild {
 			BuildOptions.None
 		);
 	}
+	
+	[UnityEditor.MenuItem("Tools/Build Android Release")]
+	public static void BuildAndroidRelease() {
+		EditorUserBuildSettings.SwitchActiveBuildTarget( BuildTarget.Android );
+		List<string> allScene = new List<string>();
+		foreach( EditorBuildSettingsScene scene in EditorBuildSettings.scenes ){
+			if (scene.enabled) {
+				allScene.Add (scene.path);
+			}
+		}
+		PlayerSettings.bundleIdentifier = "com.mochimoffu.mofuneko";
+		PlayerSettings.statusBarHidden = true;
+		PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
+		PlayerSettings.use32BitDisplayBuffer = true;
+		PlayerSettings.renderingPath = RenderingPath.Forward;
+
+		PlayerSettings.Android.keystorePass = "user.keystore";
+		PlayerSettings.Android.keyaliasName = "mochimoffu";
+		PlayerSettings.Android.keyaliasPass = "yaranaika-8655";
+
+		BuildPipeline.BuildPlayer( 
+			allScene.ToArray(),
+			"Mofuneko.apk",
+			BuildTarget.Android,
+			BuildOptions.None
+		);
+	}
 }
