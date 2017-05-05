@@ -46,7 +46,7 @@ public class EditorApplicationBuild {
 		PlayerSettings.renderingPath = RenderingPath.Forward;
 
 		PlayerSettings.Android.keystorePass = "yaranaika-8655";
-		PlayerSettings.Android.keyaliasName = "mochimoffu";
+		PlayerSettings.Android.keyaliasName = "mofuneko";
 		PlayerSettings.Android.keyaliasPass = "yaranaika-8655";
 
 		BuildPipeline.BuildPlayer( 
