@@ -45,7 +45,7 @@ public class EditorApplicationBuild {
 		PlayerSettings.use32BitDisplayBuffer = true;
 		PlayerSettings.renderingPath = RenderingPath.Forward;
 
-		PlayerSettings.Android.keystorePass = "user.keystore";
+		PlayerSettings.Android.keystorePass = "yaranaika-8655";
 		PlayerSettings.Android.keyaliasName = "mochimoffu";
 		PlayerSettings.Android.keyaliasPass = "yaranaika-8655";
 
