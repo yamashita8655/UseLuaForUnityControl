@@ -56,4 +56,33 @@ public class EditorApplicationBuild {
 			BuildOptions.None
 		);
 	}
+	
+	[UnityEditor.MenuItem("Tools/Build IOS")]
+	public static void BuildIOSRelease() {
+		EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
+		List<string> allScene = new List<string>();
+		foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes) {
+			if (scene.enabled) {
+				allScene.Add (scene.path);
+			}
+		}
+
+		BuildOptions opt = BuildOptions.SymlinkLibraries;
+
+		//BUILD for Device
+		PlayerSettings.iOS.sdkVersion = iOSSdkVersion.DeviceSDK;
+		PlayerSettings.bundleIdentifier = "com.mochimoffu.mofuneko";
+		PlayerSettings.statusBarHidden = true;
+		string errorMsg_Device = BuildPipeline.BuildPlayer (
+									allScene.ToArray(),
+									"Mofuneko",
+									BuildTarget.iOS,
+									opt
+								 );
+
+		if (string.IsNullOrEmpty (errorMsg_Device)) {
+		} else {
+			// エラー処理
+		}
+	}
 }
