@@ -168,5 +168,9 @@ function GachaRollDialog:UpdateButtonInteractable()
 		LuaSetButtonInteractable("GachaRollRollValuePlusButton", true)
 		LuaSetButtonInteractable("GachaRollRollValueTenPlusButton", true)
 	end
+
+	if self.HavePoint < (self.RollCount*self.Price) then
+		LuaSetButtonInteractable("GachaRollButton", false)
+	end
 end
 
