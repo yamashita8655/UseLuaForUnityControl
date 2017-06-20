@@ -1,1 +1,0 @@
-﻿ls | sed -e s/¥*.lua// | awk '{print $1 ".lua " $1 ".txt"}' | xargs -n 2 mv
