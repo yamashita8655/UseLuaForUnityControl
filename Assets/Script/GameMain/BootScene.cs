@@ -55,7 +55,11 @@ public class BootScene : MonoBehaviour {
 		RijindaelManager.Instance.Init();
 		VersionFileManager.Instance.Initialize();
 
-		CheckApplicationVersion();
+		if (UnityUtility.IsUseLocalFile == true) {
+			StartCoroutine(LuaInit());
+		} else {
+			CheckApplicationVersion();
+		}
 		//LoadServerVersionFile();
 		
 		yield return null;

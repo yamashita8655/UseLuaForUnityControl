@@ -21,6 +21,9 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	private static Action<string, int> ExeptionCallback = null;
 	private static Action LuaMainEndCallback = null;
 	
+	// ローカルのファイルで完結できるようにするかどうか。開発中用フラグ
+	public static bool IsUseLocalFile = true;
+
 #if UNITY_EDITOR
 	public static bool IsUseLocalAssetBundle = true;
 	public static bool IsCheckVersionFile = false;
@@ -327,7 +330,12 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
 		//GameObject retObj = GameObjectCacheManager.Instance.LoadGameObject(path, objectName);
-		GameObject retObj = GameObjectCacheManager.Instance.LoadGameObjectFromAssetBundle(assetBundleName, prefabname, objectName);
+		GameObject retObj = null;
+		if (IsUseLocalFile == true) {
+			retObj = GameObjectCacheManager.Instance.LoadGameObject(assetBundleName+"/"+prefabname, objectName);
+		} else {
+			retObj = GameObjectCacheManager.Instance.LoadGameObjectFromAssetBundle(assetBundleName, prefabname, objectName);
+		}
 
 		res_s = NativeMethods.lua_tolstring(luaState, 4, out res);
 		string parentObjectName = Marshal.PtrToStringAnsi(res_s);
@@ -525,7 +533,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string parentName = Marshal.PtrToStringAnsi(res_s);
 
 		GameObject parent =	GameObjectCacheManager.Instance.FindGameObject(parentName);
-		GameSceneManager.Instance.ChangeScene(sceneName, parent);
+		GameSceneManager.Instance.ChangeScene(sceneName, parent, IsUseLocalFile);
 
 		return 0;
 	}
@@ -849,8 +857,13 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		string streamingAssetsPath = "";
 		string platform = "";
 #if UNITY_EDITOR
-		streamingAssetsPath = "file:///" + Application.streamingAssetsPath;
-		platform = "Editor";
+		if (IsUseLocalFile == true) {
+			streamingAssetsPath = Application.streamingAssetsPath;
+			platform = "Editor";
+		} else {
+			streamingAssetsPath = "file:///" + Application.streamingAssetsPath;
+			platform = "Editor";
+		}
 #elif UNITY_ANDROID
 		streamingAssetsPath = Application.streamingAssetsPath;
 		platform = "Android";
@@ -890,18 +903,25 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		loadPath = Application.streamingAssetsPath + "/IOS/" + scriptName;
 		savePath = Application.persistentDataPath + "/" + scriptName;
 #endif
-	
-		if (UnityUtility.IsUseLocalAssetBundle == true) {
+		if (IsUseLocalFile == true) {
 			StartCoroutine(LoadLuaMainFile(loadPath, () => {
 					isLoaded = true;
 				})
 			);
 		} else {
-			StartCoroutine(LoadLuaMainFile(savePath, () => {
-					isLoaded = true;
-				})
-			);
+			if (UnityUtility.IsUseLocalAssetBundle == true) {
+				StartCoroutine(LoadLuaMainFile(loadPath, () => {
+						isLoaded = true;
+					})
+				);
+			} else {
+				StartCoroutine(LoadLuaMainFile(savePath, () => {
+						isLoaded = true;
+					})
+				);
+			}
 		}
+	
 
 		while (isLoaded != true) {
 			yield return null;

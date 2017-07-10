@@ -19,6 +19,7 @@ namespace LuaDLLTest
 		const string LIBNAME = "lua523";
 #endif
 
+				// これは、以前参考にしたソースの名残なので、不要な物。
 #if USE_DYNAMIC_DLL_REGISTER
 		static NativeMethods ()
 		{

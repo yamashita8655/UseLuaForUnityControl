@@ -30,7 +30,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
 	/// <summary>
 	/// シーン切り替え
 	/// </summary>
-	public void ChangeScene(string sceneName, GameObject parent) {
+	public void ChangeScene(string sceneName, GameObject parent, bool isUseLocal) {
 		if (CurrentSceneObject != null) {
 			CurrentSceneObject.SetActive(false);
 		}
@@ -38,9 +38,14 @@ public class GameSceneManager : Singleton<GameSceneManager>
 		GameObject nextSceneObject = null;
 		if (SceneCacheDict.TryGetValue(sceneName, out nextSceneObject)) {
 		} else {
+			GameObject obj = null;
 			string assetBundleName = string.Format(SceneAssetBundleName, sceneName);
-			AssetBundle assetBundle = AssetBundleManager.Instance.GetAssetBundle(assetBundleName.ToLower());
-			GameObject obj = assetBundle.LoadAsset<GameObject>(assetBundleName);
+			if (isUseLocal == true) {
+					obj = Resources.Load<GameObject>(assetBundleName+"/"+assetBundleName);
+			} else {
+				AssetBundle assetBundle = AssetBundleManager.Instance.GetAssetBundle(assetBundleName.ToLower());
+				obj = assetBundle.LoadAsset<GameObject>(assetBundleName);
+			}
 
 			nextSceneObject = Instantiate(obj);
 			nextSceneObject.transform.SetParent(parent.transform);
