@@ -54,6 +54,7 @@ public class BootScene : MonoBehaviour {
 		ResourceManager.Instance.Init();
 		RijindaelManager.Instance.Init();
 		VersionFileManager.Instance.Initialize();
+		SoundManager.Instance.Initialize();
 
 		if (UnityUtility.IsUseLocalFile == true) {
 			StartCoroutine(LuaInit());
