@@ -16,6 +16,8 @@ function TitleScene.new()
 		this:SceneBaseInitialize()
 		LuaSetActive("OkCancelDialog", false)
 		LuaChangeScene("Title", "MainCanvas")
+		
+		SoundManager.Instance():PlayBGM(SoundManager.Instance().BGMIndexList.TitleSceneBgm)
 	end
 	
 	-- 更新

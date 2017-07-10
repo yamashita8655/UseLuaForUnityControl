@@ -152,6 +152,8 @@ function BattleScene.new()
 		end
 		
 		this:SceneBaseInitialize()
+		
+		SoundManager.Instance():PlayBGM(SoundManager.Instance().BGMIndexList.BattleSceneBgm)
 	end
 
 

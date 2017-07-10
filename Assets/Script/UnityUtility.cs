@@ -798,6 +798,44 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		mLuaCallUpdateMap.Add(csvname, csvname);
 		return 0;
 	}
+	
+	// BGMの登録
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityAddBGMAudioSourceAndClip(IntPtr luastate)
+	{
+		uint res;
+		IntPtr res_assetBundleName = NativeMethods.lua_tolstring(luastate, 1, out res);
+		string assetBundleName = Marshal.PtrToStringAnsi(res_assetBundleName);
+
+		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 2, out res);
+		string soundName = Marshal.PtrToStringAnsi(res_s);
+		
+		string ext = Path.GetExtension(soundName);
+		string path = soundName.Substring(0, soundName.Length - ext.Length);
+		
+		AudioClip audioClip = null;
+		if (IsUseLocalFile == true) {
+			audioClip = GameObjectCacheManager.Instance.LoadAudioClip(assetBundleName+"/"+soundName);
+		} else {
+			audioClip = GameObjectCacheManager.Instance.LoadAudioClipFromAssetBundle(assetBundleName, soundName);
+		}
+
+		SoundManager.Instance.AddBGMAudioSource(audioClip);
+
+		return 0;
+	}
+	
+	// BGMの再生
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityPlayBGM(IntPtr luastate)
+	{
+		uint res;
+		int bgmIndex = (int)NativeMethods.lua_tonumberx(luastate, 1, 0);
+
+		SoundManager.Instance.PlayBGM(bgmIndex);
+
+		return 0;
+	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityBindCommonFunction(IntPtr luastate)
@@ -1239,6 +1277,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityCallLuaMainEndCallback = new LuaManager.DelegateLuaBindFunction (UnityCallLuaMainEndCallback);
 		IntPtr LuaUnityCallLuaMainEndCallbackIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityCallLuaMainEndCallback);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityCallLuaMainEndCallback", LuaUnityCallLuaMainEndCallbackIntPtr, LuaUnityCallLuaMainEndCallback);
+		
+		// サウンド（BGM）の初期化
+		LuaManager.DelegateLuaBindFunction LuaUnityAddBGMAudioSourceAndClip = new LuaManager.DelegateLuaBindFunction (UnityAddBGMAudioSourceAndClip);
+		IntPtr LuaUnityAddBGMAudioSourceAndClipIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityAddBGMAudioSourceAndClip);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityAddBGMAudioSourceAndClip", LuaUnityAddBGMAudioSourceAndClipIntPtr, LuaUnityAddBGMAudioSourceAndClip);
+		
+		// サウンド（BGM）の再生
+		LuaManager.DelegateLuaBindFunction LuaUnityPlayBGM = new LuaManager.DelegateLuaBindFunction (UnityPlayBGM);
+		IntPtr LuaUnityPlayBGMIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityPlayBGM);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityPlayBGM", LuaUnityPlayBGMIntPtr, LuaUnityPlayBGM);
 
 		// コモン関数の登録
 		LuaManager.DelegateLuaBindFunction LuaUnityBindCommonFunction = new LuaManager.DelegateLuaBindFunction (UnityBindCommonFunction);

@@ -17,6 +17,8 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 {
 	Dictionary<string, GameObject> RowGameObjectCacheDict = new Dictionary<string, GameObject>();
 	Dictionary<string, GameObject> InstantiateGameObjectCacheDict = new Dictionary<string, GameObject>();
+	
+	Dictionary<string, AudioClip> AudioClipCacheDict = new Dictionary<string, AudioClip>();
 	/// <summary>
 	/// シーンマネージャ初期化処理
 	/// </summary>
@@ -80,6 +82,29 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 		}
 
 		return output;
+	}
+	
+	public AudioClip LoadAudioClip(string loadPath) {
+		AudioClip audioClip = null;
+		if (AudioClipCacheDict.TryGetValue(loadPath, out audioClip)) {
+		} else {
+			audioClip = Resources.Load<AudioClip>(loadPath);
+			AudioClipCacheDict.Add(loadPath, audioClip);
+		}
+
+		return audioClip;
+	}
+	
+	public AudioClip LoadAudioClipFromAssetBundle(string assetBundleName, string assetName) {
+		AudioClip audioClip = null;
+		if (AudioClipCacheDict.TryGetValue(assetName, out audioClip)) {
+		} else {
+			AssetBundle asset = AssetBundleManager.Instance.GetAssetBundle(assetBundleName);
+			audioClip = asset.LoadAsset<AudioClip>(assetName);
+			AudioClipCacheDict.Add(assetName, audioClip);
+		}
+
+		return audioClip;
 	}
 	
 	public void RemoveGameObject(string objectName) {

@@ -38,6 +38,8 @@ function HomeScene.new()
 		) 
 		
 		this:SceneBaseInitialize()
+		
+		SoundManager.Instance():PlayBGM(SoundManager.Instance().BGMIndexList.HomeSceneBgm)
 	end
 	
 	-- 更新

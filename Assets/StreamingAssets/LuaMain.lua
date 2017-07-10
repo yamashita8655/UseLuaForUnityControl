@@ -38,6 +38,7 @@ LuaFileList = {
 	"CallbackManager.lua",
 	"TimerCallbackManager.lua",
 	"AreaCellManager.lua",
+	"SoundManager.lua",
 	"BootScene.lua",
 	"TitleScene.lua",
 	"HomeScene.lua",
@@ -371,6 +372,7 @@ function InitGame()
 	FileIOManager.Instance():Initialize()
 	SceneManager.Instance():Initialize()
 	DialogManager.Instance():Initialize()
+	SoundManager.Instance():Initialize()
 	
 	--FileIOManager.Instance():DebugDeleteSaveFile()
 	--FileIOManager.Instance():Save()
@@ -594,6 +596,16 @@ end
 function EventClickButtonFromUnity(buttonName)
 	SceneManager.Instance():OnClickButton(buttonName) 
 	DialogManager.Instance():OnClickButton(buttonName) 
+end
+
+-- BGMのAudioClipを読んで、マネージャに登録
+function LuaUnityAddBGMAudioSourceAndClip(assetBundleName, assetName)
+	UnityAddBGMAudioSourceAndClip(assetBundleName, assetName)
+end
+
+-- BGMの再生
+function LuaUnityPlayBGM(bgmIndex)
+	UnityPlayBGM(bgmIndex)
 end
 
 function EventSliderFromUnity(sliderName, value)
