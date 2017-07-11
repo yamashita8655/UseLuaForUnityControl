@@ -30,6 +30,12 @@ function SoundManager:Initialize()
 		"BGM_MusMus_HomeBgm",
 		"BGM_MusMus_BattleBgm",
 	}
+	self.SENameList = {
+		BoardSlide = "boardSlide",
+		ButtonePush = "buttonPush",
+	}
+
+	LuaUnityCreateSEAudioSource(50)
 
 	for i = 1, #self.BGMNameList do
 		LuaUnityDebugLog("SoundManagerInit!!")
@@ -37,8 +43,13 @@ function SoundManager:Initialize()
 	end
 end
 
--- シーンの切り替え
+-- BGM再生
 function SoundManager:PlayBGM(index) 
 	LuaUnityPlayBGM(index)
+end
+
+-- SE再生
+function SoundManager:PlaySE(assetBundleName, seName) 
+	LuaUnityPlaySE(assetBundleName, seName)
 end
 

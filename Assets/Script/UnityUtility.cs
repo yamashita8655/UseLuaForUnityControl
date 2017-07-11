@@ -836,6 +836,41 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 
 		return 0;
 	}
+	
+	// SE用のAudioSource作成
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityCreateSEAudioSource(IntPtr luastate)
+	{
+		uint res;
+		int sourceNum = (int)NativeMethods.lua_tonumberx(luastate, 1, 0);
+
+		SoundManager.Instance.CreateSEAudioSource(sourceNum);
+
+		return 0;
+	}
+	
+	// SEの再生
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityPlaySE(IntPtr luastate)
+	{
+		uint res;
+		IntPtr res_assetBundleName = NativeMethods.lua_tolstring(luastate, 1, out res);
+		string assetBundleName = Marshal.PtrToStringAnsi(res_assetBundleName);
+
+		IntPtr res_s = NativeMethods.lua_tolstring(luastate, 2, out res);
+		string soundName = Marshal.PtrToStringAnsi(res_s);
+
+		AudioClip audioClip = null;
+		if (IsUseLocalFile == true) {
+			audioClip = GameObjectCacheManager.Instance.LoadAudioClip(assetBundleName+"/"+soundName);
+		} else {
+			audioClip = GameObjectCacheManager.Instance.LoadAudioClipFromAssetBundle(assetBundleName, soundName);
+		}
+
+		SoundManager.Instance.PlaySE(audioClip);
+
+		return 0;
+	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityBindCommonFunction(IntPtr luastate)
@@ -1287,6 +1322,16 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityPlayBGM = new LuaManager.DelegateLuaBindFunction (UnityPlayBGM);
 		IntPtr LuaUnityPlayBGMIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityPlayBGM);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityPlayBGM", LuaUnityPlayBGMIntPtr, LuaUnityPlayBGM);
+
+		// SE用のAudioSourceの作成
+		LuaManager.DelegateLuaBindFunction LuaUnityCreateSEAudioSource = new LuaManager.DelegateLuaBindFunction (UnityCreateSEAudioSource);
+		IntPtr LuaUnityCreateSEAudioSourceIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityCreateSEAudioSource);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityCreateSEAudioSource", LuaUnityCreateSEAudioSourceIntPtr, LuaUnityCreateSEAudioSource);
+
+		// サウンド（SE）の再生
+		LuaManager.DelegateLuaBindFunction LuaUnityPlaySE = new LuaManager.DelegateLuaBindFunction (UnityPlaySE);
+		IntPtr LuaUnityPlaySEIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityPlaySE);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityPlaySE", LuaUnityPlaySEIntPtr, LuaUnityPlaySE);
 
 		// コモン関数の登録
 		LuaManager.DelegateLuaBindFunction LuaUnityBindCommonFunction = new LuaManager.DelegateLuaBindFunction (UnityBindCommonFunction);

@@ -68,14 +68,15 @@ public class SoundManager : Singleton<SoundManager>
 	/// </summary>
 	public void PlaySE(AudioClip seClip, int loopCount = 1) {
 		for (int i = 0; i < SESoundDataList.Count; i++) {
-			if (SESoundDataList[i].IsPlaying == true) {
+			if (SESoundDataList[i].AudioSource.isPlaying == true) {
 				continue;
 			}
 			SESoundDataList[i].AudioSource.clip = seClip;
-			SESoundDataList[i].LoopCount = loopCount;
-			SESoundDataList[i].PlayedCount = 0;
+//			SESoundDataList[i].LoopCount = loopCount;
+//			SESoundDataList[i].PlayedCount = 0;
 			SESoundDataList[i].AudioSource.Play();
-			SESoundDataList[i].IsPlaying = true;
+			break;
+//			SESoundDataList[i].IsPlaying = true;
 		}
 	}
 	

@@ -88,6 +88,7 @@ function SceneManager:OnClickButton(buttonName)
 	elseif buttonName == "OptionButton" then
 		self:ChangeScene(SceneNameEnum.Option)
 	else
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.ButtonePush)
 		self.CurrentScene:OnClickButton(buttonName)
 	end
 end

@@ -608,6 +608,16 @@ function LuaUnityPlayBGM(bgmIndex)
 	UnityPlayBGM(bgmIndex)
 end
 
+-- SEの初期化
+function LuaUnityCreateSEAudioSource(sourceNum)
+	UnityCreateSEAudioSource(sourceNum)
+end
+
+-- SEの再生
+function LuaUnityPlaySE(assetBundleName, seName)
+	UnityPlaySE(assetBundleName, seName)
+end
+
 function EventSliderFromUnity(sliderName, value)
 	SceneManager.Instance():OnChangeSliderValue(sliderName, value) 
 end
