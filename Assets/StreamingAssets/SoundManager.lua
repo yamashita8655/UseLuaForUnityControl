@@ -33,6 +33,14 @@ function SoundManager:Initialize()
 	self.SENameList = {
 		BoardSlide = "boardSlide",
 		ButtonePush = "buttonPush",
+		EnemyDeath = "enemyDeath",
+		BattleLose = "Jingle_MusMus_BattleLose",
+		BattleWin = "Jingle_MusMus_BattleWin",
+		ResultStringVisible = "ResultStringVisible",
+		RareDrop = "SE_MusMus_RareDrop",
+		BulletShoot = "selfBulletShoot",
+		SelfHit = "selfHit",
+		SlideDialogOpen = "SlideDialogOpen",
 	}
 
 	LuaUnityCreateSEAudioSource(50)
@@ -46,6 +54,11 @@ end
 -- BGM再生
 function SoundManager:PlayBGM(index) 
 	LuaUnityPlayBGM(index)
+end
+
+-- SE再生
+function SoundManager:StopBGM(index) 
+	LuaUnityStopBGM(index)
 end
 
 -- SE再生

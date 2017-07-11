@@ -608,6 +608,11 @@ function LuaUnityPlayBGM(bgmIndex)
 	UnityPlayBGM(bgmIndex)
 end
 
+-- BGMの停止
+function LuaUnityStopBGM(bgmIndex)
+	UnityStopBGM(bgmIndex)
+end
+
 -- SEの初期化
 function LuaUnityCreateSEAudioSource(sourceNum)
 	UnityCreateSEAudioSource(sourceNum)

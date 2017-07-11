@@ -97,10 +97,19 @@ public class SoundManager : Singleton<SoundManager>
 		}
 				
 		if (alreadyPlay == false) {
+			BGMSoundDataList [index].AudioSource.loop = true;
 			BGMSoundDataList[index].AudioSource.Play();
 			BGMSoundDataList[index].IsPlaying = true;
 		}
 	}
+	
+	/// <summary>
+	/// BGMの停止
+	/// </summary>
+	public void StopBGM(int index) {
+		BGMSoundDataList[index].AudioSource.Stop();
+	}
+
 
 	public void Update() {
 	}

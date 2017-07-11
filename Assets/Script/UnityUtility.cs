@@ -837,6 +837,18 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		return 0;
 	}
 	
+	// BGMの停止
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnityStopBGM(IntPtr luastate)
+	{
+		uint res;
+		int bgmIndex = (int)NativeMethods.lua_tonumberx(luastate, 1, 0);
+
+		SoundManager.Instance.StopBGM(bgmIndex);
+
+		return 0;
+	}
+	
 	// SE用のAudioSource作成
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
 	public static int UnityCreateSEAudioSource(IntPtr luastate)
@@ -1322,6 +1334,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnityPlayBGM = new LuaManager.DelegateLuaBindFunction (UnityPlayBGM);
 		IntPtr LuaUnityPlayBGMIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityPlayBGM);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnityPlayBGM", LuaUnityPlayBGMIntPtr, LuaUnityPlayBGM);
+		
+		// サウンド（BGM）の停止
+		LuaManager.DelegateLuaBindFunction LuaUnityStopBGM = new LuaManager.DelegateLuaBindFunction (UnityStopBGM);
+		IntPtr LuaUnityStopBGMIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnityStopBGM);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnityStopBGM", LuaUnityStopBGMIntPtr, LuaUnityStopBGM);
 
 		// SE用のAudioSourceの作成
 		LuaManager.DelegateLuaBindFunction LuaUnityCreateSEAudioSource = new LuaManager.DelegateLuaBindFunction (UnityCreateSEAudioSource);

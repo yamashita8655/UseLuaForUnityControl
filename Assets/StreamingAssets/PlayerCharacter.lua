@@ -88,10 +88,18 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	
 	-- 弾のクールタイムが終わっているかどうか
 	this.ShootBullet = function(self, degree)
+		isShoot = false
 		for i = 1, #self.BulletEmitterList do
 			emitter = self.BulletEmitterList[i]
-			emitter:ShootBullet(degree)
+			if isShoot == false then
+				isShoot = emitter:ShootBullet(degree)
+			else
+				-- Falseだと、Trueが上書きされる可能性があるので、一度Trueを検知したら、代入しない
+				emitter:ShootBullet(degree)
+			end
 		end
+
+		return isShoot
 	end
 	
 	-- BulletEmitterSatellite

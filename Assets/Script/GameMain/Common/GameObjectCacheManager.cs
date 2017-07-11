@@ -87,6 +87,8 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 	public AudioClip LoadAudioClip(string loadPath) {
 		AudioClip audioClip = null;
 		if (AudioClipCacheDict.TryGetValue(loadPath, out audioClip)) {
+			//AudioClip clone = AudioClip.Instantiate(audioClip);
+			//audioClip = clone;
 		} else {
 			audioClip = Resources.Load<AudioClip>(loadPath);
 			AudioClipCacheDict.Add(loadPath, audioClip);

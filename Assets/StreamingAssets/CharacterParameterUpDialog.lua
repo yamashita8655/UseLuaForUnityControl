@@ -72,6 +72,7 @@ function CharacterParameterUpDialog:CloseDialog()
 end
 
 function CharacterParameterUpDialog.DialogOpenCallback(arg, unityArg) 
+	SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SlideDialogOpen)
 	local self =  arg[1]
 	if self.OpenCallback ~= nil then
 		self.OpenCallback()

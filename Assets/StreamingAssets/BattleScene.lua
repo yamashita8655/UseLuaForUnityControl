@@ -225,6 +225,8 @@ function BattleScene.new()
 	
 	-- 勝ちエフェクト
 	this.WinSequence = function(self)
+		SoundManager.Instance():StopBGM(SoundManager.Instance().BGMIndexList.BattleSceneBgm)
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.BattleWin)
 		CallbackManager.Instance():AddCallback("Battle_WinSequence", {self}, self.WinSequenceCallback)
 		LuaPlayAnimator("WinEffect", "Play", false, true, "LuaCallback", "Battle_WinSequence")
 	end
@@ -247,6 +249,8 @@ function BattleScene.new()
 	
 	-- 負けエフェクト
 	this.LoseSequence = function(self)
+		SoundManager.Instance():StopBGM(SoundManager.Instance().BGMIndexList.BattleSceneBgm)
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.BattleLose)
 		CallbackManager.Instance():AddCallback("Battle_LoseSequence", {self}, self.LoseSequenceCallback)
 		LuaPlayAnimator("LoseEffect", "Play", false, true, "LuaCallback", "Battle_LoseSequence")
 	end
@@ -486,6 +490,7 @@ function BattleScene.new()
 							LuaUnityDebugLog("bulletAtk:"..bulletAttack.." baseAtk:"..baseAttack.." addAtk:"..addAttack)
 							enemy:AddNowHp(-(bulletAttack+playerAttack))
 							if enemy:IsAlive() == false then
+								SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.EnemyDeath)
 								local exp = enemy:GetEXP()
 								exp = exp * (1 + (self.ComboCount/1000))
 								player:AddEXP(exp)
@@ -494,6 +499,7 @@ function BattleScene.new()
 								if karikari == true then
 									EffectManager.Instance():SpawnEffect(EffectNameEnum.KarikariEffect, enemy:GetPosition())
 									self.GetKarikari = self.GetKarikari + 1
+									SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.RareDrop)
 								end
 							end
 							bullet:AddNowHp(-1)
@@ -535,6 +541,8 @@ function BattleScene.new()
 					player:AddNowHp(-damage)
 					LuaUnityDebugLog("nowHp:"..player:GetNowHp())
 					takeDamage = true
+					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
+					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.EnemyDeath)
 				end
 			end
 			LoopCounter = LoopCounter + 1
@@ -571,6 +579,7 @@ function BattleScene.new()
 					LuaUnityDebugLog("atk:"..attack.." baseDef:"..baseDeffense.." addDef:"..addDeffense)
 					player:AddNowHp(-damage)
 					takeDamage = true
+					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
 				end
 			end
 			LoopCounter = LoopCounter + 1
