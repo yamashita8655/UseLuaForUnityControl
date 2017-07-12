@@ -30,8 +30,10 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	//public static bool IsUseLocalAssetBundle = false;
 	//public static bool IsCheckVersionFile = true;
 #else
-	public static bool IsUseLocalAssetBundle = false;
-	public static bool IsCheckVersionFile = true;
+	public static bool IsUseLocalAssetBundle = true;
+	public static bool IsCheckVersionFile = false;
+	//public static bool IsUseLocalAssetBundle = false;
+	//public static bool IsCheckVersionFile = true;
 #endif
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
@@ -654,34 +656,52 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 //#elif UNITY_IPHONE
 //		savePath = savePath + "/IOS";
 //#endif
-		AssetBundleManager.Instance.LoadAssetBundle(loadPath, assetBundleName, (AssetBundle assetBundle, string error) => {
-			if (string.IsNullOrEmpty(error) == false) {
-			} else {
-				TextAsset resultObject = assetBundle.LoadAsset<TextAsset>(assetName);
-				string path = string.Format("{0}/{1}", savePath, scriptName);
+		if (IsUseLocalFile == true) {
+			// こっちのフローは、アンドロイド版かIOS版のローカルでしかこない予定
+#if UNITY_ANDROID
+			GameObjectCacheManager.Instance.SaveLocalLuaScript(loadPath+"/"+scriptName, savePath, scriptName, () => {
+				// Lua側の関数を呼び出す
+				LuaManager.FunctionData data = new LuaManager.FunctionData();
+				data.returnValueNum = 0;
+				data.functionName = callbackName;
+				ArrayList list = new ArrayList();
+				list.Add("");
+				data.argList = list;
+				ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+			});
+#elif UNITY_IPHONE
+#endif
 
-				try {
-					System.IO.StreamWriter sw = new System.IO.StreamWriter(
-						path, 
-						false, 
-						System.Text.Encoding.UTF8
-					);
-					sw.Write(resultObject.text);
-					sw.Close();
-				} catch (IOException e) {
-					error = e.ToString();
+		} else {
+			AssetBundleManager.Instance.LoadAssetBundle(loadPath, assetBundleName, (AssetBundle assetBundle, string error) => {
+				if (string.IsNullOrEmpty(error) == false) {
+				} else {
+					TextAsset resultObject = assetBundle.LoadAsset<TextAsset>(assetName);
+					string path = string.Format("{0}/{1}", savePath, scriptName);
+
+					try {
+						System.IO.StreamWriter sw = new System.IO.StreamWriter(
+							path, 
+							false, 
+							System.Text.Encoding.UTF8
+						);
+						sw.Write(resultObject.text);
+						sw.Close();
+					} catch (IOException e) {
+						error = e.ToString();
+					}
 				}
-			}
-			
-			// Lua側の関数を呼び出す
-			LuaManager.FunctionData data = new LuaManager.FunctionData();
-			data.returnValueNum = 0;
-			data.functionName = callbackName;
-			ArrayList list = new ArrayList();
-			list.Add(error);
-			data.argList = list;
-			ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
-		});
+				
+				// Lua側の関数を呼び出す
+				LuaManager.FunctionData data = new LuaManager.FunctionData();
+				data.returnValueNum = 0;
+				data.functionName = callbackName;
+				ArrayList list = new ArrayList();
+				list.Add(error);
+				data.argList = list;
+				ArrayList returnList = LuaManager.Instance.Call(UnityUtility.Instance.scriptName, data);
+			});
+		}
 		
 		return 0;
 	}
@@ -982,8 +1002,13 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		loadPath = Application.streamingAssetsPath + "/" + scriptName;
 		savePath = Application.persistentDataPath + "/" + scriptName;
 #elif UNITY_ANDROID
-		loadPath = Application.streamingAssetsPath + "/Android/" + scriptName;
-		savePath = Application.persistentDataPath + "/" + scriptName;
+		if (IsUseLocalFile == true) {
+			loadPath = Application.streamingAssetsPath + "/" + scriptName;
+			savePath = Application.persistentDataPath + "/" + scriptName;
+		} else {
+			loadPath = Application.streamingAssetsPath + "/Android/" + scriptName;
+			savePath = Application.persistentDataPath + "/" + scriptName;
+		}
 #elif UNITY_IPHONE
 		loadPath = Application.streamingAssetsPath + "/IOS/" + scriptName;
 		savePath = Application.persistentDataPath + "/" + scriptName;
@@ -1062,7 +1087,23 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		}*/
 
 		Debug.Log(loadPath+":start");
-		string output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+		string output = "";
+		if (IsUseLocalFile == true) {
+#if UNITY_EDITOR
+			output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+#elif UNITY_ANDROID
+			WWW www = new WWW(loadPath);
+			while (www.isDone == false) {
+				yield return null;
+			}
+			output = www.text;
+#elif UNITY_IPHONE
+			output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+#endif
+		} else {
+			output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+		}
+
 		Debug.Log(loadPath+":end");
 
 		//			TextAsset file = Resources.Load<TextAsset>(scriptName);

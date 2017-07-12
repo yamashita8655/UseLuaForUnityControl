@@ -8,6 +8,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
 
 /// <summary>
 /// シーンの管理を行う
@@ -116,5 +117,20 @@ public class GameObjectCacheManager : Singleton<GameObjectCacheManager>
 		}
 		InstantiateGameObjectCacheDict.Remove(objectName);
 		Destroy(output);
+	}
+
+	// ローカルのLuaスクリプトを、実機で読むために、保存する処理
+	public void SaveLocalLuaScript(string path, string savePath, string scriptName, Action callback) {
+		StartCoroutine(SaveLocalLuaScriptCoroutine(path, savePath, scriptName, callback));
+	}
+	
+	private IEnumerator SaveLocalLuaScriptCoroutine(string path, string savePath, string scriptName, Action callback) {
+		WWW www = new WWW(path);
+		while (www.isDone == false) {
+			yield return null;
+		}
+		Debug.Log(path);
+		File.WriteAllBytes(savePath+"/"+scriptName, www.bytes);
+		callback();
 	}
 }

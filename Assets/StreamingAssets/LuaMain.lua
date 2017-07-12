@@ -398,12 +398,27 @@ function DoFileLuaScriptFromLocal()
 	LuaSetText("InAppText", "ゲーム実行準備中")
 	if DoFileCount <= #LuaFileList then
 		local index = DoFileCount
-		dofile(StreamingDataPath.."/"..LuaFileList[index])
-		DoFileCount = DoFileCount + 1
-		DoFileLuaScriptFromLocal()
+		if Platform == "Editor" then
+			dofile(StreamingDataPath.."/"..LuaFileList[index])
+			DoFileCount = DoFileCount + 1
+			DoFileLuaScriptFromLocal()
+		elseif Platform == "Android" then
+			LuaSaveScriptFile(StreamingDataPath, PersistentDataPath, "", "", LuaFileList[index], "SaveLocalLuaScriptCallback")
+		elseif Platform == "IOS" then
+			dofile(StreamingDataPath.."/"..LuaFileList[index])
+			DoFileCount = DoFileCount + 1
+			DoFileLuaScriptFromLocal()
+		end
 	else
 		InitGame()
 	end
+end
+
+function SaveLocalLuaScriptCallback()
+	LuaUnityDebugLog("SaveLocalLuaScriptCallback")
+	dofile(PersistentDataPath.."/"..LuaFileList[DoFileCount])
+	DoFileCount = DoFileCount + 1
+	DoFileLuaScriptFromLocal()
 end
 
 --doFileのみを行う処理
