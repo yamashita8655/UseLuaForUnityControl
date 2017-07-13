@@ -24,6 +24,7 @@ function BattleScene.new()
 	this.ComboCount = 0
 	this.GetKarikari = 0
 	this.SelectCharacter = nil
+	this.SkillLevelUpNowFlag = false
 	
 	-- メソッド定義
 	-- 初期化
@@ -493,7 +494,10 @@ function BattleScene.new()
 								SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.EnemyDeath)
 								local exp = enemy:GetEXP()
 								exp = exp * (1 + (self.ComboCount/1000))
-								player:AddEXP(exp)
+								self.SkillLevelUpNowFlag = player:AddEXP(exp)
+								if self.SkillLevelUpNowFlag == true then
+									SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SkillLevelUp)
+								end
 								comboAddCounter = comboAddCounter + 1
 								local karikari = self:LotKarikari()
 								if karikari == true then

@@ -112,6 +112,7 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 	
 	-- 経験値増減
 	this.AddEXP = function(self, value)
+		local isLevelUp = false
 		self.EXP = self.EXP + value
 
 		local skillConfig = self.SkillConfig
@@ -124,8 +125,11 @@ function PlayerCharacter.new(position, rotate, name, width, height)
 			if self.EXP >= skillExp then
 				self.SkillLevel = self.SkillLevel + 1
 				self.HaveSkillPoint = self.HaveSkillPoint + 1
+				isLevelUp = true;
 			end
 		end
+
+		return isLevelUp
 	end
 	
 	-- 経験値取得

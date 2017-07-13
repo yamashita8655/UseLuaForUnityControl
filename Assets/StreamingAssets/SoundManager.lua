@@ -41,6 +41,7 @@ function SoundManager:Initialize()
 		BulletShoot = "selfBulletShoot",
 		SelfHit = "selfHit",
 		SlideDialogOpen = "SlideDialogOpen",
+		SkillLevelUp = "SkillLevelUp",
 	}
 
 	LuaUnityCreateSEAudioSource(50)
