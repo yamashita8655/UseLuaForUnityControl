@@ -103,6 +103,13 @@ function CustomScene.new()
 				self:ToggleSelectImage(PlayerCharacterConfig[i])
 				self:ToggleSelectDetailText(PlayerCharacterConfig[i])
 			end
+			if buttonName == "CustomSelectCharacterButton"..i then
+				if SaveObject.CustomScene_CharacterUnlockList[i] == 1 then
+					GameManager.Instance():SetSelectPlayerCharacterData(PlayerCharacterConfig[i])
+					self:ToggleSelectImage(PlayerCharacterConfig[i])
+					self:ToggleSelectDetailText(PlayerCharacterConfig[i])
+				end
+			end
 
 			if buttonName == "CustomUnlockButton"..i then
 				local unlockNeedValue = PlayerCharacterConfig[i].UnlockNeedValue
