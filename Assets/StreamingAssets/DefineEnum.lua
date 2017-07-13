@@ -56,6 +56,7 @@ SceneNameEnum = {
 	Gacha		= 8,
 	GachaEffect	= 9,
 	GachaResult	= 10,
+	Credit		= 11,
 }
 
 SkillTypeEnum = {

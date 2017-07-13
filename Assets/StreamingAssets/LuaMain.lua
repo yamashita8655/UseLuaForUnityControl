@@ -47,6 +47,7 @@ LuaFileList = {
 	"OptionScene.lua",
 	"BattleScene.lua",
 	"GachaScene.lua",
+	"CreditScene.lua",
 	"GachaEffectScene.lua",
 	"GachaResultScene.lua",
 	"SceneManager.lua",

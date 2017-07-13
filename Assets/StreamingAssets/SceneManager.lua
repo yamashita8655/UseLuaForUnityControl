@@ -32,6 +32,7 @@ function SceneManager:Initialize()
 		GachaScene.new(),
 		GachaEffectScene.new(),
 		GachaResultScene.new(),
+		CreditScene.new(),
 	}
 
 	LuaLoadPrefabAfter("common", "HeaderObject", "HeaderObject", "HeaderFooterCanvas")

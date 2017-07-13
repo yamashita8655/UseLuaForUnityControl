@@ -69,6 +69,8 @@ function HomeScene.new()
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Option)
 		elseif buttonName == "HomeButtonGacha" then
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Gacha)
+		elseif buttonName == "HomeButtonCredit" then
+			SceneManager.Instance():ChangeScene(SceneNameEnum.Credit)
 		end
 	end
 	
