@@ -100,18 +100,29 @@ function GachaResultScene.new()
 			LuaSetButtonInteractable("GachaResultSecondOkButton", false)
 			CallbackManager.Instance():AddCallback("GachaResultScene_F2SCallback", {self}, self.F2SCallback)
 			LuaPlayAnimator("GachaResultLayoutRoot", "F2S", false, false, "LuaCallback", "GachaResultScene_F2SCallback")
-		end
-		
-		if buttonName == "GachaResultSecondOkButton" then
+		elseif buttonName == "GachaResultSecondOkButton" then
 			CharacterParameterUpDialog.Instance():CloseDialog()
-		end
-		
-		if buttonName == "GachaResultDetailButton" then
+		elseif buttonName == "GachaResultDetailButton" then
 			GachaResultGetItemListDialog.Instance():OpenDialog(
 				function()
 				end,
 				GameManager.Instance():GetGachaItemList()
 			)
+		else
+			local list = GameManager.Instance():GetGachaItemList()
+			for i = 1, #list do
+				if buttonName == "GachaResultItemNode"..i then
+					local str = UtilityFunction.CreateGachaResultGetItemString(list[i])
+					DialogManager.Instance():OpenOkDialog(
+						str,
+						function()
+						end,
+						function()
+						end
+					)
+					break
+				end
+			end
 		end
 		
 		CharacterParameterUpDialog.Instance():OnClickButton(buttonName)

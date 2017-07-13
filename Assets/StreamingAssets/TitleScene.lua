@@ -46,16 +46,6 @@ function TitleScene.new()
 			else
 				SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 			end
-			--DialogManager.Instance():OpenDialog(
-			--	"text",
-			--	function()
-			--		LuaUnityDebugLog("clickOk")
-			--	end
-			--	,
-			--	function()
-			--		LuaUnityDebugLog("clickCancel")
-			--	end
-			--)
 		end
 	end
 	

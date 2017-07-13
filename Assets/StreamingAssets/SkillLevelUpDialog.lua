@@ -218,7 +218,7 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 		elseif buttonName == "SkillDetailButton3" then
 			self:ToggleSkillSelectFilter(3) 
 		elseif buttonName == "SkillUpButton1" then
-			DialogManager.Instance():OpenDialog(
+			DialogManager.Instance():OpenOkCancelDialog(
 				"スキルのレベルを上げていいですか？",
 				function()
 					self:AddPlayerSkillPoint(-1)
@@ -234,7 +234,7 @@ function SkillLevelUpDialog:OnClickButton(buttonName)
 				end
 			)
 		elseif buttonName == "SkillUpButton2" then
-			DialogManager.Instance():OpenDialog(
+			DialogManager.Instance():OpenOkCancelDialog(
 				"スキルのレベルを上げていいですか？",
 				function()
 					self:AddPlayerSkillPoint(-1)

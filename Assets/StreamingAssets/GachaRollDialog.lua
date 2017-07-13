@@ -87,7 +87,7 @@ function GachaRollDialog:OnClickButton(buttonName)
 	if buttonName == "GachaRollButton" then
 		local price = self.Price * self.RollCount
 		local count = self.RollCount
-		DialogManager.Instance():OpenDialog(
+		DialogManager.Instance():OpenOkCancelDialog(
 			price.."ポイントで"..count.."回引きますが\nよろしいですか？",
 			function()
 			end ,

@@ -324,7 +324,7 @@ function BattleScene.new()
 		end
 		if buttonName == "BattleExitButton" then
 			self.IsGamePause = true
-			DialogManager.Instance():OpenDialog(
+			DialogManager.Instance():OpenOkCancelDialog(
 				"ねずみ退治をやめますか？\n※獲得したポイント等は破棄されます",
 				function()
 				end,

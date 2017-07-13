@@ -113,7 +113,7 @@ function CustomScene.new()
 
 			if buttonName == "CustomUnlockButton"..i then
 				local unlockNeedValue = PlayerCharacterConfig[i].UnlockNeedValue
-				DialogManager.Instance():OpenDialog(
+				DialogManager.Instance():OpenOkCancelDialog(
 					"この子とお友達になります。よろしいですか？",
 					function()
 						SaveObject.CustomScene_CharacterUnlockList[i] = 1

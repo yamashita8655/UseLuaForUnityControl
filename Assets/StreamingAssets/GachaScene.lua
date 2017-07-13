@@ -64,17 +64,6 @@ function GachaScene.new()
 	-- ボタン
 	this.OnClickButton = function(self, buttonName)
 		if buttonName == "GachaSceneBackButton" then
-			--DialogManager.Instance():OpenDialog(
-			--	"アセバン更新しないと、戻れないぞ☆",
-			--	function()
-			--	end,
-			--	function()
-			--	end,
-			--	function()
-			--	end,
-			--	function()
-			--	end
-			--)
 			SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 		end
 		if buttonName == "GachaScene_GachaButton" then
@@ -127,7 +116,7 @@ function GachaScene.new()
 			self:UpdateGachaSelectImage()
 
 			--local mochiPoint = GameManager.Instance():GetMochiPointValue()
-			--GachaRollDialog.Instance():OpenDialog(
+			--GachaRollDialog.Instance():OpenOkCanelDialog(
 			--	function(count)
 			--		LuaUnityDebugLog(count)
 			--		local list = self:RollGachaDebug(GachaList[1], count)
@@ -176,7 +165,7 @@ function GachaScene.new()
 		
 		if buttonName == "GachaSceneItemListButton" then
 			if GachaList[self.GachaSelectIndex].MoneyType == GachaMoneyType.ExpPoint then
-				DialogManager.Instance():OpenDialog(
+				DialogManager.Instance():OpenOkCancelDialog(
 					"課金ガチャじゃないので、排出内容は内緒☆",
 					function()
 					end,
