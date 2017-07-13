@@ -90,7 +90,7 @@ function SceneManager:OnClickButton(buttonName)
 		self:ChangeScene(SceneNameEnum.Option)
 	elseif buttonName == "HomeCharacter1" then
 		-- ホームシーンで猫タッチしたら鳴かせる
-		SoundManager.Instance():StopSE("sound", SoundManager.Instance().SENameList.SelfHit)
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
 	elseif buttonName == "HomeCharacter2" then
 		-- ホームシーンで猫タッチしたら鳴かせる
 		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)

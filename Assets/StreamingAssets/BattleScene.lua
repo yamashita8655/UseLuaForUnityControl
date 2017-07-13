@@ -52,6 +52,8 @@ function BattleScene.new()
 		LuaSetActive("BattleComboLabel", false)
 		LuaSetActive("BattleComboCounterText", false)
 		
+		LuaFindObject("BattleOptionButton")
+		
 		this.IsGamePause = true
 		this.ComboCount = 0
 		this.GetKarikari = 0
@@ -322,6 +324,7 @@ function BattleScene.new()
 					EffectManager.Instance():ResumeEffect()
 				end
 			)
+			LuaPlayAnimator("BattleOptionButton", "Stop", false, false, "LuaCallback", "")
 		end
 		if buttonName == "BattleExitButton" then
 			self.IsGamePause = true
@@ -497,6 +500,7 @@ function BattleScene.new()
 								self.SkillLevelUpNowFlag = player:AddEXP(exp)
 								if self.SkillLevelUpNowFlag == true then
 									SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SkillLevelUp)
+									LuaPlayAnimator("BattleOptionButton", "Move", false, false, "LuaCallback", "")
 								end
 								comboAddCounter = comboAddCounter + 1
 								local karikari = self:LotKarikari()
