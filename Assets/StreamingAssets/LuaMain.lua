@@ -17,7 +17,9 @@ SaveAssetBundleCounter = 0
 SaveScriptFileCounter = 0
 
 -- TODO 実機確認するときは、HTTPの方にする事！
-URL = "http://natural-nail-eye.sakura.ne.jp"
+--URL = "http://natural-nail-eye.sakura.ne.jp"
+-- TODO 開発中のサーバー接続はこっち
+URL = "http://natural-nail-eye.sakura.ne.jp/Work"
 --URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
 -- TODO ローカルのリソースを使って、ローカルのLuaスクリプトを使う時は、これをTrueにする事

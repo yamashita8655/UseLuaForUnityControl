@@ -88,6 +88,18 @@ function SceneManager:OnClickButton(buttonName)
 		self:ChangeScene(SceneNameEnum.Quest)
 	elseif buttonName == "OptionButton" then
 		self:ChangeScene(SceneNameEnum.Option)
+	elseif buttonName == "HomeCharacter1" then
+		-- ホームシーンで猫タッチしたら鳴かせる
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
+	elseif buttonName == "HomeCharacter2" then
+		-- ホームシーンで猫タッチしたら鳴かせる
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
+	elseif buttonName == "HomeCharacter3" then
+		-- ホームシーンで猫タッチしたら鳴かせる
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
+	elseif buttonName == "HomeCharacter4" then
+		-- ホームシーンで猫タッチしたら鳴かせる
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
 	else
 		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.ButtonePush)
 		self.CurrentScene:OnClickButton(buttonName)
