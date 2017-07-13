@@ -22,6 +22,9 @@ function GachaScene.new()
 		LuaFindObject("GachaNekoPointText")
 		LuaFindObject("GachaBillingPointText")
 		LuaFindObject("GachaDetailText")
+		
+		LuaFindObject("GachaSelectImage1")
+		LuaFindObject("GachaSelectImage2")
 
 		local mochiPoint = GameManager.Instance():GetMochiPointValue()
 		LuaSetText("GachaNekoPointText", math.floor(mochiPoint))
@@ -35,6 +38,7 @@ function GachaScene.new()
 		end
 
 		self:UpdateGachaDetailText()
+		self:UpdateGachaSelectImage()
 		
 		this:SceneBaseInitialize()
 	end
@@ -120,6 +124,8 @@ function GachaScene.new()
 		if buttonName == "GachaSceneFirstButton" then
 			self.GachaSelectIndex = 1
 			self:UpdateGachaDetailText()
+			self:UpdateGachaSelectImage()
+
 			--local mochiPoint = GameManager.Instance():GetMochiPointValue()
 			--GachaRollDialog.Instance():OpenDialog(
 			--	function(count)
@@ -134,14 +140,17 @@ function GachaScene.new()
 		elseif buttonName == "GachaSceneSecondButton" then
 			self.GachaSelectIndex = 2
 			self:UpdateGachaDetailText()
+			self:UpdateGachaSelectImage()
 			--self:RollGachaDebug(GachaList[2], 100)
 		elseif buttonName == "GachaSceneThirdButton" then
 			self.GachaSelectIndex = 3
 			self:UpdateGachaDetailText()
+			self:UpdateGachaSelectImage()
 			--self:RollGachaDebug(GachaList[3], 100)
 		elseif buttonName == "GachaSceneFourthButton" then
 			self.GachaSelectIndex = 4
 			self:UpdateGachaDetailText()
+			self:UpdateGachaSelectImage()
 			--self:RollGachaDebug(GachaList[4], 100)
 		end
 		
@@ -212,6 +221,13 @@ function GachaScene.new()
 	this.UpdateGachaDetailText = function(self)
 		local gachaData = GachaList[self.GachaSelectIndex]
 		LuaSetText("GachaDetailText", gachaData.Detail)
+	end
+	
+	this.UpdateGachaSelectImage = function(self)
+		LuaSetActive("GachaSelectImage1", false)
+		LuaSetActive("GachaSelectImage2", false)
+		
+		LuaSetActive("GachaSelectImage"..self.GachaSelectIndex, true)
 	end
 	
 	this.DebugBillingPointAdd = function(self)
