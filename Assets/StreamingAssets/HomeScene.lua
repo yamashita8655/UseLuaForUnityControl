@@ -80,7 +80,7 @@ function HomeScene.new()
 	
 	this.TimerStartCharacterMove = function(arg)
 		self = arg[1]
-		local number = math.random(2)
+		local number = math.random(3)
 		LuaSetActive(this.CurrentCharacterObjectName, true)
 		CallbackManager.Instance():AddCallback("HomeScene_CharacterMoveAnimationCallback", {self}, self.CharacterMoveAnimationCallback)
 		if number == 1 then
@@ -90,6 +90,9 @@ function HomeScene.new()
 		elseif number == 2 then
 			LuaUnityDebugLog("Dorodoro")
 			LuaPlayAnimator(this.CurrentCharacterObjectName, "Dorodoro", false, false, "LuaCallback", "HomeScene_CharacterMoveAnimationCallback")
+		elseif number == 3 then
+			LuaUnityDebugLog("Pyonpyon")
+			LuaPlayAnimator(this.CurrentCharacterObjectName, "Pyonpyon", false, false, "LuaCallback", "HomeScene_CharacterMoveAnimationCallback")
 		end
 	end
 	
