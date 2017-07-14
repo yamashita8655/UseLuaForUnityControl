@@ -18,6 +18,7 @@ end
 function QuestEditDialog:Initialize() 
 	self.IsActive = false
 	self.WaveCount = 0
+	self.OkAfterCloseCallback = nil
 	
 	self.MaxWaveCount = 999
 
@@ -38,10 +39,11 @@ function QuestEditDialog:SetParent(parentName)
 	LuaSetParent("QuestEditDialog", parentName)
 end
 
-function QuestEditDialog:OpenDialog()
+function QuestEditDialog:OpenDialog(okAfterCloseCallback)
 	if self.IsActive == false then
 
 		self.IsActive = true
+		self.OkAfterCloseCallback = okAfterCloseCallback
 	
 		self.WaveCount = 1
 		self:UpdateWaveText()
@@ -57,17 +59,31 @@ function QuestEditDialog:OpenDialog()
 	end
 end
 
-function QuestEditDialog:CloseDialog() 
+function QuestEditDialog:OkCloseDialog() 
 	if self.IsActive == true then
-		CallbackManager.Instance():AddCallback("QuestEditDialogManager_CloseCallback", {self}, self.DialogCloseCallback)
-		LuaPlayAnimator("QuestEditDialog", "Close", false, true, "LuaCallback", "QuestEditDialogManager_CloseCallback")
+		CallbackManager.Instance():AddCallback("QuestEditDialogManager_OkCloseCallback", {self}, self.DialogOkCloseCallback)
+		LuaPlayAnimator("QuestEditDialog", "Close", false, true, "LuaCallback", "QuestEditDialogManager_OkCloseCallback")
+	end
+end
+
+function QuestEditDialog:CancelCloseDialog() 
+	if self.IsActive == true then
+		CallbackManager.Instance():AddCallback("QuestEditDialogManager_CancelCloseCallback", {self}, self.DialogCancelCloseCallback)
+		LuaPlayAnimator("QuestEditDialog", "Close", false, true, "LuaCallback", "QuestEditDialogManager_CancelCloseCallback")
 	end
 end
 
 function QuestEditDialog.DialogOpenCallback(arg, unityArg) 
 end
 
-function QuestEditDialog.DialogCloseCallback(arg, unityArg) 
+function QuestEditDialog.DialogOkCloseCallback(arg, unityArg) 
+	local self =  arg[1]
+	self.IsActive = false
+	LuaSetActive("QuestEditDialog", false)
+	self:OkAfterCloseCallback(self.WaveCount)
+end
+
+function QuestEditDialog.DialogCancelCloseCallback(arg, unityArg) 
 	local self =  arg[1]
 	self.IsActive = false
 	LuaSetActive("QuestEditDialog", false)
@@ -75,15 +91,15 @@ end
 
 function QuestEditDialog:OnClickButton(buttonName) 
 	if self.IsActive == false then
-		LuaUnityDebugLog("active false")
 		return
 	end
 
 	if buttonName == "QuestEditOkButton" then
+		self:OkCloseDialog()
 	end
 
 	if buttonName == "QuestEditCancelButton" then
-		self:CloseDialog()
+		self:CancelCloseDialog()
 	end
 	
 	if buttonName == "QuestEditWaveValueTenMinusButton" then

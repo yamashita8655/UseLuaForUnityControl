@@ -26,6 +26,8 @@ function BattleScene.new()
 	this.SelectCharacter = nil
 	this.SkillLevelUpNowFlag = false
 	
+	this.MaxWave = 0
+	
 	-- メソッド定義
 	-- 初期化
 	this.SceneBaseInitialize = this.Initialize
@@ -57,6 +59,8 @@ function BattleScene.new()
 		this.IsGamePause = true
 		this.ComboCount = 0
 		this.GetKarikari = 0
+	
+		this.MaxWave = GameManager.Instance():GetQuestEditWaveCount()
 		
 		local selectQuestId = GameManager.Instance():GetSelectQuestId()
 		LuaUnityDebugLog(selectQuestId)

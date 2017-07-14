@@ -27,6 +27,7 @@ function GameManager:Initialize()
 	self.GachaItemList = {}
 	self.GachaItemAddParameterList = {}
 	self.GachaItemCanNotAddParameterList = {}
+	self.QuestEditWaveCount = 0
 end
 
 -- 選択しているキャラクターデータ指定
@@ -119,6 +120,13 @@ function GameManager:SetGachaItemCanNotAddParameterList(list)
 end
 function GameManager:GetGachaItemCanNotAddParameterList() 
 	return self.GachaItemCanNotAddParameterList
+end
+-- クエストウェーブ数指定で指定されたウェーブ数
+function GameManager:SetQuestEditWaveCount(count) 
+	self.QuestEditWaveCount = count
+end
+function GameManager:GetQuestEditWaveCount() 
+	return self.QuestEditWaveCount
 end
 
 

@@ -87,7 +87,13 @@ function QuestScene.new()
 			CallbackManager.Instance():AddCallback("QuestScene_S2FCallback", {self}, self.S2FCallback)
 			LuaPlayAnimator("QuestPanelContainer", "S2F", false, false, "LuaCallback", "QuestScene_S2FCallback")
 		elseif buttonName == "QuestQuickBattleButton" then
-			QuestEditDialog.Instance():OpenDialog()
+			QuestEditDialog.Instance():OpenDialog(
+				function(waveCount)
+					GameManager.Instance():SetQuestEditWaveCount(waveCount)
+					GameManager.Instance():SetSelectQuestId("ID_QUICK")-- クイック(殴)
+					SceneManager.Instance():ChangeScene(SceneNameEnum.Battle)
+				end
+			)
 			--GameManager.Instance():SetSelectQuestId("ID_QUICK")-- クイック(殴)
 			--SceneManager.Instance():ChangeScene(SceneNameEnum.Battle)
 		elseif buttonName == "QuestStoryButton" then
