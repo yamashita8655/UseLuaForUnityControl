@@ -29,7 +29,11 @@ function QuestScene.new()
 		else
 			LuaChangeScene("Quest", "MainCanvas")
 			LuaFindObject("QuestPanelContainer")
+			LuaFindObject("QuestEditDialogRoot")
 			LuaSetPosition("QuestPanelContainer", 0, 0, 0)
+			
+			QuestEditDialog.Instance():Initialize()
+			QuestEditDialog.Instance():SetParent("QuestEditDialogRoot") 
 		end
 		LuaSetActive("HeaderObject", false)
 		LuaSetActive("FooterObject", false)
@@ -83,13 +87,16 @@ function QuestScene.new()
 			CallbackManager.Instance():AddCallback("QuestScene_S2FCallback", {self}, self.S2FCallback)
 			LuaPlayAnimator("QuestPanelContainer", "S2F", false, false, "LuaCallback", "QuestScene_S2FCallback")
 		elseif buttonName == "QuestQuickBattleButton" then
-			GameManager.Instance():SetSelectQuestId("ID_QUICK")-- クイック(殴)
-			SceneManager.Instance():ChangeScene(SceneNameEnum.Battle)
+			QuestEditDialog.Instance():OpenDialog()
+			--GameManager.Instance():SetSelectQuestId("ID_QUICK")-- クイック(殴)
+			--SceneManager.Instance():ChangeScene(SceneNameEnum.Battle)
 		elseif buttonName == "QuestStoryButton" then
 			LuaSetActive("QuestClickFilter", true)
 			CallbackManager.Instance():AddCallback("QuestScene_F2SCallback", {self}, self.F2SCallback)
 			LuaPlayAnimator("QuestPanelContainer", "F2S", false, false, "LuaCallback", "QuestScene_F2SCallback")
 		end
+
+		QuestEditDialog.Instance():OnClickButton(buttonName)
 	end
 	
 	-- コールバック

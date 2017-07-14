@@ -60,6 +60,7 @@ LuaFileList = {
 	"GachaRollDialog.lua",
 	"CharacterParameterUpDialog.lua",
 	"GachaResultGetItemListDialog.lua",
+	"QuestEditDialog.lua",
 	"MoveConfig.lua",
 	"BaseMoveController.lua",
 	"MoveControllerSinCurve.lua",
