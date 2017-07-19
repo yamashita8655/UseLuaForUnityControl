@@ -80,7 +80,7 @@ function QuestEditDialog.DialogOkCloseCallback(arg, unityArg)
 	local self =  arg[1]
 	self.IsActive = false
 	LuaSetActive("QuestEditDialog", false)
-	self:OkAfterCloseCallback(self.WaveCount)
+	self.OkAfterCloseCallback(self.WaveCount)
 end
 
 function QuestEditDialog.DialogCancelCloseCallback(arg, unityArg) 

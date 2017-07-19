@@ -24,5 +24,11 @@ QuestConfig = {
 		--EnemySpawnTable = SpawnTable_003,
 		EnemySpawnTable = SpawnTableTest,
 	},
+	
+	ID_NEW_QUICK = {
+		QuestName = "クイックバトル",
+		--EnemySpawnTable = SpawnTable_003,
+		EnemySpawnTable = NewSpawnTable,
+	},
 }
 

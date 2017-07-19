@@ -68,6 +68,7 @@ LuaFileList = {
 	"MoveControllerHoming.lua",
 	"MoveControllerCircle.lua",
 	"SpawnController.lua",
+	"NewSpawnController.lua",
 	"EnemyBase.lua",
 	"EmitterConfig.lua",
 	"BulletConfig.lua",

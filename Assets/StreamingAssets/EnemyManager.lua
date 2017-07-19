@@ -31,8 +31,18 @@ function EnemyManager:CreateSpawnController(spawnTable)
 	self.SpawnController = inst
 end
 
+function EnemyManager:CreateNewSpawnController(spawnTable, maxWave)
+	local inst = NewSpawnController.new()
+	inst:Initialize(spawnTable, maxWave)
+	self.SpawnController = inst
+end
+
 function EnemyManager:SetTimer(timer) 
 	self.SpawnController:SetTimer(timer)
+end
+
+function EnemyManager:SetWaveCounter(waveCount) 
+	self.SpawnController:SetWaveCounter(waveCount)
 end
 
 function EnemyManager:GetList() 

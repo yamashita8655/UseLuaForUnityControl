@@ -90,7 +90,8 @@ function QuestScene.new()
 			QuestEditDialog.Instance():OpenDialog(
 				function(waveCount)
 					GameManager.Instance():SetQuestEditWaveCount(waveCount)
-					GameManager.Instance():SetSelectQuestId("ID_QUICK")-- クイック(殴)
+					--GameManager.Instance():SetSelectQuestId("ID_QUICK")-- クイック(殴)
+					GameManager.Instance():SetSelectQuestId("ID_NEW_QUICK")-- クイック(殴)
 					SceneManager.Instance():ChangeScene(SceneNameEnum.Battle)
 				end
 			)
