@@ -13,8 +13,8 @@ function BattleScene.new()
 	this.EndCheckInterval = 5
 	this.EndCheckIntervalCounter = 0
 	
-	this.EnemySpawnInterval = 0
-	this.EnemySpawnIntervalCounter = 0
+	this.WaveInterval = 0
+	this.WaveIntervalCounter = 0
 	
 	this.SaveInterval = 30 -- セーブ処理を走らせる間隔秒
 	--this.SaveInterval = 10000 -- セーブ処理を走らせる間隔秒
@@ -69,19 +69,20 @@ function BattleScene.new()
 		this.GetKarikari = 0
 	
 		this.MaxWave = GameManager.Instance():GetQuestEditWaveCount()
-		this.WaveCounter = 1
-		self:UpdateWaveText(self.WaveCounter, self.MaxWave)
+		this.WaveCounter = 0
+		self:UpdateWaveText()
 		
 		local selectQuestId = GameManager.Instance():GetSelectQuestId()
 		LuaUnityDebugLog(selectQuestId)
 		enemySpawnTable = QuestConfig[selectQuestId].EnemySpawnTable
 
-		this.EnemySpawnInterval = QuestConfig[selectQuestId].SpawnInterval
-		this.EnemySpawnIntervalCounter = 15-- 最初は、すぐに出現するように、カウンターをマックスの状態にしておく
+		this.WaveInterval = QuestConfig[selectQuestId].SpawnInterval
+		this.WaveIntervalCounter = 15-- 最初は、すぐに出現するように、カウンターをマックスの状態にしておく
 
 		--EnemyManager:CreateSpawnController(enemySpawnTable)
 		EnemyManager:CreateNewSpawnController(enemySpawnTable, this.MaxWave)
-		self.EndTime = enemySpawnTable.EndTime
+		self.EndTime = self.MaxWave * self.WaveIntervalCounter -- 経過時間は、とりあえずウェーブ数*ウェーブ切り替え時間が経過したら見るようにする
+
 		self.EndTimeCounter = 0
 		self.EndCheckIntervalCounter = 0
 		
@@ -226,21 +227,24 @@ function BattleScene.new()
 			end
 
 			-- 敵の出現
-			self.EnemySpawnIntervalCounter = self.EnemySpawnIntervalCounter + deltaTime
-			if self.EnemySpawnIntervalCounter >= self.EnemySpawnInterval then
-				EnemyManager.Instance():OrderSpawnEnemy(this.WaveCounter)
-				-- ウェーブの初期値は1なので、カウントを足す前に、現在ウェーブを渡して処理する
-				self:UpdateWaveText(self.WaveCounter, self.MaxWave)
-				this.WaveCounter = this.WaveCounter + 1
-				this.EnemySpawnIntervalCounter = 0
+			self.WaveIntervalCounter = self.WaveIntervalCounter + deltaTime
+			if self.WaveCounter < self.MaxWave then
+				if self.WaveIntervalCounter >= self.WaveInterval then
+					-- 先にセーブをする
+					self:SaveDataFromFileIO()
+					this.WaveCounter = this.WaveCounter + 1
+					EnemyManager.Instance():OrderSpawnEnemy(this.WaveCounter)
+					self:UpdateWaveText()
+					this.WaveIntervalCounter = 0
+				end
 			end
 
-			-- タイマーを確認して、情報をセーブ
-			self.SaveIntervalCounter = self.SaveIntervalCounter + deltaTime
-			if self.SaveIntervalCounter > self.SaveInterval then
-				self:SaveDataFromFileIO()
-				self.SaveIntervalCounter = 0
-			end
+			---- タイマーを確認して、情報をセーブ
+			--self.SaveIntervalCounter = self.SaveIntervalCounter + deltaTime
+			--if self.SaveIntervalCounter > self.SaveInterval then
+			--	self:SaveDataFromFileIO()
+			--	self.SaveIntervalCounter = 0
+			--end
 
 
 		end
@@ -838,6 +842,9 @@ function BattleScene.new()
 		player:AddEXP(SaveObject.BattleExp)
 		player:SetNowHp(SaveObject.BattleHp)
 
+		self.WaveCounter = SaveObject.BattleNowWave
+		self.MaxWave = SaveObject.BattleMaxWave
+		self:UpdateWaveText()
 		
 		-- こいつらは、Update呼ばれたら更新されるからおｋ
 		self.ComboCount = SaveObject.BattleComboCount
@@ -866,14 +873,16 @@ function BattleScene.new()
 		SaveObject.BattleBulletLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
 		SaveObject.BattleComboCount = self.ComboCount
 		SaveObject.BattleKarikari = self.GetKarikari
+		SaveObject.BattleNowWave = self.WaveCounter
+		SaveObject.BattleMaxWave = self.MaxWave
 		SaveObject.BattleSaveEnable = 1
 
 		FileIOManager.Instance():Save()
 	end
 	
-	this.UpdateWaveText = function(self, nowWave, maxWave)
-		LuaSetText("BattleMaxWaveText", maxWave)
-		LuaSetText("BattleNowWaveText", nowWave)
+	this.UpdateWaveText = function(self)
+		LuaSetText("BattleMaxWaveText", self.MaxWave)
+		LuaSetText("BattleNowWaveText", self.WaveCounter)
 	end
 	
 	return this

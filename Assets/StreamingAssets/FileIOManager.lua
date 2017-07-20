@@ -99,6 +99,8 @@ function FileIOManager:Save()
 	saveString = saveString.."BattleBulletLevel = "..SaveObject.BattleBulletLevel..",\r\n"
 	saveString = saveString.."BattleComboCount = "..SaveObject.BattleComboCount..",\r\n"
 	saveString = saveString.."BattleKarikari = "..SaveObject.BattleKarikari..",\r\n"
+	saveString = saveString.."BattleNowWave = "..SaveObject.BattleNowWave..",\r\n"
+	saveString = saveString.."BattleMaxWave = "..SaveObject.BattleMaxWave..",\r\n"
 	saveString = saveString.."BattleSaveEnable = "..SaveObject.BattleSaveEnable..",\r\n"-- セーブデータの有効無効
 	
 
@@ -172,6 +174,8 @@ function FileIOManager:CreateDefaultSaveObject()
 		BattleBulletLevel = 0,
 		BattleComboCount = 0,
 		BattleKarikari = 0,
+		BattleNowWave = 0,
+		BattleMaxWave = 0,
 		BattleSaveEnable = 0,
 	}
 end
@@ -309,6 +313,14 @@ function FileIOManager:CheckSaveFile()
 	
 	if SaveObject.BattleKarikari == nil then
 		SaveObject.BattleKarikari = 0
+	end
+	
+	if SaveObject.BattleNowWave == nil then
+		SaveObject.BattleNowWave = 0
+	end
+	
+	if SaveObject.BattleMaxWave == nil then
+		SaveObject.BattleMaxWave = 0
 	end
 	
 	if SaveObject.BattleSaveEnable == nil then
