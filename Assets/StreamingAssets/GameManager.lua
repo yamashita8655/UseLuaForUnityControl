@@ -23,7 +23,7 @@ function GameManager:Initialize()
 	self.HaveMochiPointValue = 0
 	self.HaveBillingPointValue = 0
 	self.HaveSpecialPointValue = 0
-	self.KarikariSpawnRate = 1000--1%扱い。乱数は1000で割る為。
+	self.KarikariSpawnRate = 15--10で1%扱い。乱数は1000で割る為。
 	self.GachaItemList = {}
 	self.GachaItemAddParameterList = {}
 	self.GachaItemCanNotAddParameterList = {}
