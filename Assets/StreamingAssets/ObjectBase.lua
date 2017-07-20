@@ -135,6 +135,11 @@ function ObjectBase.new(position, rotate, name, number, width, height)
 		end
 		return isAlive
 	end
+	
+	-- 識別番号
+	this.GetNumber = function(self) 
+		return self.Number
+	end
 
 	-- メタテーブルセット
 	--return setmetatable(this, {__index = ObjectBase})

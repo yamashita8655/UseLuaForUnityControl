@@ -16,8 +16,8 @@ function EnemyShooter.new(position, rotate, name, number, width, height)
 	-- メソッド定義
 	-- 初期化
 	this.EnemyBaseInitialize = this.Initialize
-	this.Initialize = function(self, nowHp, maxHp, attack)
-		this:EnemyBaseInitialize(nowHp, maxHp, attack)
+	this.Initialize = function(self, uniqueId, nowHp, maxHp, attack)
+		this:EnemyBaseInitialize(uniqueId, nowHp, maxHp, attack)
 	end
 	
 	-- 更新

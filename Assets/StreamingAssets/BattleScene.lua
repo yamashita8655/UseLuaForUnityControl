@@ -796,7 +796,8 @@ function BattleScene.new()
 
 		-- 経過時間設定
 		self.EndTimeCounter = SaveObject.BattleEndTimeCounter
-		EnemyManager:SetTimer(self.EndTimeCounter) 
+		--TODO 新しいウェーブ指定方式の場合、タイマーが無いので、いったん無効
+		--EnemyManager:SetTimer(self.EndTimeCounter) 
 		
 		-- プレイヤーに付随する情報
 		local player = PlayerManager:Instance():GetPlayer()

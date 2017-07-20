@@ -47,7 +47,7 @@ function NewSpawnController.new()
 
 				for i = 1, #self.SelectSpawnDataList[index] do
 					local listData = NewSpawnListData.new()
-					listData:Initialize(self.SelectSpawnDataList[index][i], self.WaveCounter)
+					listData:Initialize(self.SelectSpawnDataList[index][i], self.WaveCounter, self.MaxWave)
 					table.insert(self.SpawnDataList, listData)
 				end
 			end
@@ -99,14 +99,16 @@ function NewSpawnListData.new()
 		Timer = 0,
 		IntervalCounter = 0,
 		WaveCount = 0,
+		MaxWave = 0,
 	}
 
 	-- メソッド定義
 	-- 初期化
-	this.Initialize = function(self, spawnTableData, waveCount)
+	this.Initialize = function(self, spawnTableData, waveCount, maxWave)
 		self.SpawnData = spawnTableData
 		self.IsEnable = true
 		self.WaveCount = waveCount
+		self.MaxWave = maxWave
 	end
 	
 	-- 有効確認
@@ -124,7 +126,16 @@ function NewSpawnListData.new()
 			local posy = self.SpawnData.Position.y
 			local radian = math.atan2(posy, posx)
 			local degree = radian * 180 / 3.1415
-			EnemyManager:CreateEnemy(posx+(ScreenWidth/2), posy+(ScreenHeight/2), degree-90-180, self.SpawnData.EnemyType)
+			local enemy = EnemyManager.Instance():CreateEnemy(posx+(ScreenWidth/2), posy+(ScreenHeight/2), degree-90-180, self.SpawnData.EnemyType)
+
+			-- 基本値に加算した物に対して、割合をかけた物から、基本値を引いてバフ値とする
+			local buffMoveSpeed = (enemy:GetMoveSpeed()+self.MaxWave/10)*(1+(self.WaveCount*0.05))-enemy:GetMoveSpeed()
+			local buffAttack = (enemy:GetAttack()+self.MaxWave/10)*(1+(self.WaveCount*0.05))-enemy:GetAttack()
+			local buffMaxHp = (enemy:GetMaxHp()+self.MaxWave/10)*(1+(self.WaveCount*0.05))-enemy:GetMaxHp()
+			LuaUnityDebugLog("buff:"..buffMoveSpeed..":"..buffAttack..":"..buffMaxHp);
+			-- enemyで直接行ってしまうと問題なので、Setはマネージャを通す
+			EnemyManager.Instance():SetBuffAndInitializeParameter(enemy:GetNumber(), buffMoveSpeed, buffAttack, buffMaxHp)
+
 			self.IntervalCounter = 0
 			self.SpawnedCounter = self.SpawnedCounter + 1
 			if self.SpawnedCounter >= self.SpawnData.Value then

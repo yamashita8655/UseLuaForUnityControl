@@ -88,6 +88,22 @@ function EnemyManager:CreateEnemy(posx, posy, degree, enemyConfig)
 	self.EnemyCounter = self.EnemyCounter + 1
 	table.insert(self.EnemyList, enemy)
 	LuaSetPosition(enemy.Name, enemy.Position.x, enemy.Position.y, enemy.Position.z)
+
+	return enemy
+end
+
+function EnemyManager:SetBuffAndInitializeParameter(number, buffMoveSpeed, buffAttack, buffHp)
+	local enemyCount = #self.EnemyList
+	for i = 1 , enemyCount do
+		local enemyNumber = self.EnemyList[i]:GetNumber()
+		if enemyNumber == number then
+			self.EnemyList[i]:SetBuffMoveSpeed(buffMoveSpeed)
+			self.EnemyList[i]:SetBuffAttack(buffAttack)
+			self.EnemyList[i]:SetBuffMaxHp(buffHp)
+			self.EnemyList[i]:InitializeParameter()
+			break;
+		end
+	end
 end
 
 function EnemyManager:Update(deltaTime) 
