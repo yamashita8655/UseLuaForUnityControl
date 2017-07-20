@@ -106,6 +106,10 @@ function EnemyManager:SetBuffAndInitializeParameter(number, buffMoveSpeed, buffA
 	end
 end
 
+function EnemyManager:OrderSpawnEnemy(waveCount) 
+	self.SpawnController:OrderSpawnEnemy(waveCount)
+end
+
 function EnemyManager:Update(deltaTime) 
 	self.SpawnController:Update(deltaTime)
 	

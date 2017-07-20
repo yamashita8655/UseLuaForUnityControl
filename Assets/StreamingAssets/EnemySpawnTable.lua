@@ -8,7 +8,7 @@
 
 -- 敵出現テーブル。時間の経過で、どのSpawnDataが発生するのかチェックする
 NewSpawnTable = {
-	SpawnInterval = 15,		-- 1ウェーブ15秒クリア目安
+--	SpawnInterval = 15,		-- 1ウェーブ15秒クリア目安
 	SelectSpawnDataList = {	-- このまとまりから、ランダムで敵が発生する
 		{
 			SpawnWave001_001,

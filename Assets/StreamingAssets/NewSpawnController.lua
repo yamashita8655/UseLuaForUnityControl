@@ -16,6 +16,7 @@ function NewSpawnController.new()
 		MaxWave = 0,
 		WaveCounter = 0,
 		SpawnDataList = {},
+		SpawnOrder = false,
 	}
 
 	-- メソッド定義
@@ -26,6 +27,13 @@ function NewSpawnController.new()
 		self.SpawnIntervalCounter = spawnTable.SpawnInterval-- 始まってすぐに出現するようにする
 		self.WaveCounter = 0
 		self.MaxWave = maxWave
+		self.SpawnOrder = false
+	end
+	
+	-- 敵出現を要求
+	this.OrderSpawnEnemy = function(self, waveCount)
+		self.SpawnOrder = true
+		self.WaveCounter = waveCount
 	end
 
 	-- タイマーを外部からセット。途中復帰用。
@@ -36,21 +44,33 @@ function NewSpawnController.new()
 	-- 更新
 	this.Update = function(self, deltaTime)
 		
-		self.SpawnIntervalCounter = self.SpawnIntervalCounter + deltaTime
-		
-		-- 出現インターバルを過ぎたら、次のウェーブの敵を作成する
-		if self.SpawnIntervalCounter >= self.SpawnInterval then
-			if self.WaveCounter + 1 <= self.MaxWave then
-				self.SpawnIntervalCounter = 0
-				self.WaveCounter = self.WaveCounter + 1
-				local index = math.random(1, #self.SelectSpawnDataList)
+		--self.SpawnIntervalCounter = self.SpawnIntervalCounter + deltaTime
+		--
+		---- 出現インターバルを過ぎたら、次のウェーブの敵を作成する
+		--if self.SpawnIntervalCounter >= self.SpawnInterval then
+		--	if self.WaveCounter + 1 <= self.MaxWave then
+		--		self.SpawnIntervalCounter = 0
+		--		self.WaveCounter = self.WaveCounter + 1
+		--		local index = math.random(1, #self.SelectSpawnDataList)
 
-				for i = 1, #self.SelectSpawnDataList[index] do
-					local listData = NewSpawnListData.new()
-					listData:Initialize(self.SelectSpawnDataList[index][i], self.WaveCounter, self.MaxWave)
-					table.insert(self.SpawnDataList, listData)
-				end
+		--		for i = 1, #self.SelectSpawnDataList[index] do
+		--			local listData = NewSpawnListData.new()
+		--			listData:Initialize(self.SelectSpawnDataList[index][i], self.WaveCounter, self.MaxWave)
+		--			table.insert(self.SpawnDataList, listData)
+		--		end
+		--	end
+		--end
+		
+		if self.SpawnOrder == true then
+			local index = math.random(1, #self.SelectSpawnDataList)
+
+			for i = 1, #self.SelectSpawnDataList[index] do
+				local listData = NewSpawnListData.new()
+				listData:Initialize(self.SelectSpawnDataList[index][i], self.WaveCounter, self.MaxWave)
+				table.insert(self.SpawnDataList, listData)
 			end
+
+			self.SpawnOrder = false
 		end
 		
 		-- 敵出現クラスの更新

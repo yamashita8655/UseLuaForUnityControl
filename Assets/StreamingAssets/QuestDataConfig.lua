@@ -29,6 +29,7 @@ QuestConfig = {
 		QuestName = "クイックバトル",
 		--EnemySpawnTable = SpawnTable_003,
 		EnemySpawnTable = NewSpawnTable,
+		SpawnInterval = 15,
 	},
 }
 
