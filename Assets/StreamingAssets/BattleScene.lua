@@ -64,6 +64,8 @@ function BattleScene.new()
 		LuaFindObject("BattleNowWaveText")
 		LuaFindObject("BattleMaxWaveText")
 		
+		LuaFindObject("BattleWaveSpawnGaugeImage")
+		
 		this.IsGamePause = true
 		this.ComboCount = 0
 		this.GetKarikari = 0
@@ -78,6 +80,7 @@ function BattleScene.new()
 
 		this.WaveInterval = QuestConfig[selectQuestId].SpawnInterval
 		this.WaveIntervalCounter = 15-- 最初は、すぐに出現するように、カウンターをマックスの状態にしておく
+		self:UpdateSpawnGaugeScale(self.WaveIntervalCounter / self.WaveInterval)
 
 		--EnemyManager:CreateSpawnController(enemySpawnTable)
 		EnemyManager:CreateNewSpawnController(enemySpawnTable, this.MaxWave)
@@ -152,7 +155,8 @@ function BattleScene.new()
 		LuaSetText("BattleMaxWaveText", this.MaxWave)
 		
 		--LuaSetScale("BattleObjectRoot", 1.0, 1.0, 1.0)
-		LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
+		--LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
+		LuaSetScale("BattleObjectRoot", 0.5, 0.5, 0.5)
 		--self.AlignPosition.x = -200
 		--self.AlignPosition.y = -200
 		--self.AlignPosition.z = 0
@@ -227,8 +231,9 @@ function BattleScene.new()
 			end
 
 			-- 敵の出現
-			self.WaveIntervalCounter = self.WaveIntervalCounter + deltaTime
 			if self.WaveCounter < self.MaxWave then
+				self.WaveIntervalCounter = self.WaveIntervalCounter + deltaTime
+				self:UpdateSpawnGaugeScale(self.WaveIntervalCounter / self.WaveInterval)
 				if self.WaveIntervalCounter >= self.WaveInterval then
 					-- 先にセーブをする
 					self:SaveDataFromFileIO()
@@ -883,6 +888,10 @@ function BattleScene.new()
 	this.UpdateWaveText = function(self)
 		LuaSetText("BattleMaxWaveText", self.MaxWave)
 		LuaSetText("BattleNowWaveText", self.WaveCounter)
+	end
+	
+	this.UpdateSpawnGaugeScale = function(self, scale)
+		LuaSetScale("BattleWaveSpawnGaugeImage", scale, 1, 1)
 	end
 	
 	return this
