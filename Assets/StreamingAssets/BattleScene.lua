@@ -95,26 +95,28 @@ function BattleScene.new()
 		self.SelectCharacter = GameManager.Instance():GetSelectPlayerCharacterData()
 		PlayerManager.Instance():CreatePlayer(self.SelectCharacter, posx, posy, 0)
 		
-		----Test
-		--local enemyPrefabNameList = {}
-		--local spawnTable = enemySpawnTable.Table
-		--for i = 1, #spawnTable do
-		--	local spawnData = spawnTable[i].SpawnData
-		--	local enemyData = spawnData.EnemyType
-		--	if enemyData.EnemyType == EnemyTypeEnum.BulletShooter then
-		--		local enemyBulletList = enemyData.EquipBulletList
-		--		for j = 1, #enemyBulletList do
-		--			local prefabName = enemyBulletList[j].PrefabName
-		--			table.insert(enemyPrefabNameList, prefabName)
-		--		end
-		--	end
-		--end
-		--
-		--local outputList, dup = UtilityFunction.Instance().ListUniq(enemyPrefabNameList) 
-		--for i,v in pairs(outputList) do
-		--	local prefabName = i
-		--	BulletManager.Instance():CreateBulletTest(prefabName, CharacterType.Enemy)
-		--end
+		--Test
+		local enemyPrefabNameList = {}
+		local spawnTable = enemySpawnTable.SelectSpawnDataList
+		for i = 1, #spawnTable do
+			for j = 1, #spawnTable[i] do
+				local spawnData = spawnTable[i][j]
+				local enemyData = spawnData.EnemyType
+				if enemyData.EnemyType == EnemyTypeEnum.BulletShooter then
+					local enemyBulletList = enemyData.EquipBulletList
+					for j = 1, #enemyBulletList do
+						local prefabName = enemyBulletList[j].PrefabName
+						table.insert(enemyPrefabNameList, prefabName)
+					end
+				end
+			end
+		end
+		
+		local outputList, dup = UtilityFunction.Instance().ListUniq(enemyPrefabNameList) 
+		for i,v in pairs(outputList) do
+			local prefabName = i
+			BulletManager.Instance():CreateBulletTest(prefabName, CharacterType.Enemy)
+		end
 		
 		--Test
 		local player = PlayerManager:Instance():GetPlayer()
