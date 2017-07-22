@@ -28,6 +28,7 @@ function GameManager:Initialize()
 	self.GachaItemAddParameterList = {}
 	self.GachaItemCanNotAddParameterList = {}
 	self.QuestEditWaveCount = 0
+	self.AutoSkillLevelUp = true
 end
 
 -- 選択しているキャラクターデータ指定
@@ -127,6 +128,14 @@ function GameManager:SetQuestEditWaveCount(count)
 end
 function GameManager:GetQuestEditWaveCount() 
 	return self.QuestEditWaveCount
+end
+
+-- バトル時に、自動でスキルレベルアップするのかどうか
+function GameManager:SetAutoSkillLevelUp(flag) 
+	self.AutoSkillLevelUp = flag
+end
+function GameManager:GetAutoSkillLevelUp() 
+	return self.AutoSkillLevelUp
 end
 
 

@@ -543,7 +543,47 @@ function BattleScene.new()
 								self.SkillLevelUpNowFlag = player:AddEXP(exp)
 								if self.SkillLevelUpNowFlag == true then
 									SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SkillLevelUp)
-									LuaPlayAnimator("BattleOptionButton", "Move", false, false, "LuaCallback", "")
+									if GameManager.Instance():GetAutoSkillLevelUp() == true then
+
+										-- 自動でスキルレベルアップをする
+										local skillConfig = player:GetSkillConfig()
+										
+										local emitterNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+										local emitterMaxLevel = skillConfig:GetMaxSkillLevel(SkillTypeEnum.Emitter)
+										local bulletNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+										local bulletMaxLevel = skillConfig:GetMaxSkillLevel(SkillTypeEnum.Bullet)
+										local skillType = nil
+										if bulletNowLevel < emitterNowLevel then
+											if bulletNowLevel < bulletMaxLevel then
+												skillType = SkillTypeEnum.Bullet
+											else
+												if emitterNowLevel < emitterMaxLevel then
+													skillType = SkillTypeEnum.Emitter
+												end
+											end
+										else
+											if emitterNowLevel < emitterMaxLevel then
+												skillType = SkillTypeEnum.Emitter
+											else
+												if bulletNowLevel < bulletMaxLevel then
+													skillType = SkillTypeEnum.Bullet
+												end
+											end
+										end
+										
+										if skillType ~= nil then
+											skillConfig:AddSkillLevel(skillType)
+											local skillTable = skillConfig:GetSkillTable()
+											local emitterNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+											local bulletNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+											
+											player:ClearBulletEmitter()
+											player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][emitterNowLevelAfterLevelUp].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][bulletNowLevelAfterLevelUp].EquipBulletList, CharacterType.Player)
+											player:AddHaveSkillPoint(-1)
+										end
+									else
+										LuaPlayAnimator("BattleOptionButton", "Move", false, false, "LuaCallback", "")
+									end
 								end
 								comboAddCounter = comboAddCounter + 1
 								local karikari = self:LotKarikari()
