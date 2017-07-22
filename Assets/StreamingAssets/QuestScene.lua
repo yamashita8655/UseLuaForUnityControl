@@ -105,6 +105,10 @@ function QuestScene.new()
 
 		QuestEditDialog.Instance():OnClickButton(buttonName)
 	end
+
+	this.OnToggleValueChange = function(self, hierarchyName, value)
+		QuestEditDialog.Instance():OnToggleValueChange(hierarchyName, value)
+	end
 	
 	-- コールバック
 	this.F2SCallback = function(arg, unityArg)

@@ -73,6 +73,9 @@ function FileIOManager:Save()
 	-- 持ってる特別ポイント数
 	saveString = saveString.."HaveSpecialPointValue = "..SaveObject.HaveSpecialPointValue..",\r\n"
 	
+	-- 自動スキルレベルアップチェック状態
+	saveString = saveString.."AutoSkillLevelUpValue = "..SaveObject.AutoSkillLevelUpValue..",\r\n"
+	
 	-- キャラクターのステータス状態
 	saveString = saveString.."CharacterList = {\r\n"
 	for i = 1, #SaveObject.CharacterList do
@@ -132,6 +135,7 @@ function FileIOManager:CreateDefaultSaveObject()
 		HaveMochiPointValue = 0,
 		HaveBillingPointValue = 0,
 		HaveSpecialPointValue = 0,
+		AutoSkillLevelUpValue = 1,
 		CharacterList = {
 			{0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -237,6 +241,9 @@ function FileIOManager:CheckSaveFile()
 	end
 	if SaveObject.HaveSpecialPointValue == nil then
 		SaveObject.HaveSpecialPointValue = 0
+	end
+	if SaveObject.AutoSkillLevelUpValue == nil then
+		SaveObject.AutoSkillLevelUpValue = 1
 	end
 	
 	if SaveObject.CharacterList == nil then

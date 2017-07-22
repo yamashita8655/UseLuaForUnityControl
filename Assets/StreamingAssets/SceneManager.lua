@@ -106,6 +106,12 @@ function SceneManager:OnClickButton(buttonName)
 	end
 end
 
+-- トグルイベント検知
+function SceneManager:OnToggleValueChange(hierarchyName, value) 
+	SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.ButtonePush)
+	self.CurrentScene:OnToggleValueChange(hierarchyName, value)
+end
+
 -- スライダーイベント検知
 function SceneManager:OnChangeSliderValue(sliderName, value) 
 	self.CurrentScene:OnChangeSliderValue(sliderName, value)

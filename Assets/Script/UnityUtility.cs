@@ -522,6 +522,24 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		return 0;
 	}
+	
+	// トグルの切り替え
+	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
+	public static int UnitySetToggleFlag(IntPtr luaState)
+	{
+		uint res;
+		IntPtr res_s = NativeMethods.lua_tolstring(luaState, 1, out res);
+		string objectName = Marshal.PtrToStringAnsi(res_s);
+
+		bool res_bool = Convert.ToBoolean(NativeMethods.lua_toboolean(luaState, 2));//true=1 false=0
+		
+		GameObject obj = GameObjectCacheManager.Instance.FindGameObject(objectName);
+		Toggle toggle = obj.GetComponent<Toggle>();
+
+		toggle.isOn = res_bool;
+
+		return 0;
+	}
 
 	// シーンを切り替える
 	[MonoPInvokeCallbackAttribute(typeof(LuaManager.DelegateLuaBindFunction))]
@@ -1290,6 +1308,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		LuaManager.DelegateLuaBindFunction LuaUnitySetMaxSliderValue = new LuaManager.DelegateLuaBindFunction (UnitySetMaxSliderValue);
 		IntPtr LuaUnitySetMaxSliderValueIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetMaxSliderValue);
 		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetMaxSliderValue", LuaUnitySetMaxSliderValueIntPtr, LuaUnitySetMaxSliderValue);
+		
+		// トグルの切り替え
+		LuaManager.DelegateLuaBindFunction LuaUnitySetToggleFlag = new LuaManager.DelegateLuaBindFunction (UnitySetToggleFlag);
+		IntPtr LuaUnitySetToggleFlagIntPtr = Marshal.GetFunctionPointerForDelegate(LuaUnitySetToggleFlag);
+		LuaManager.Instance.AddUnityFunction(scriptName, "UnitySetToggleFlag", LuaUnitySetToggleFlagIntPtr, LuaUnitySetToggleFlag);
 
 		// シーン(と呼んでる、オブジェクト)の切り替え
 		LuaManager.DelegateLuaBindFunction LuaUnityChangeScene = new LuaManager.DelegateLuaBindFunction (UnityChangeScene);

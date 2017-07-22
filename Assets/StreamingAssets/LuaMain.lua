@@ -618,6 +618,14 @@ function EventClickButtonFromUnity(buttonName)
 	DialogManager.Instance():OnClickButton(buttonName) 
 end
 
+--Unity側から呼び出される。Event系の関数
+function EventToggleValueChangeFromUnity(hierarchyName, value)
+	LuaUnityDebugLog(hierarchyName)
+	LuaUnityDebugLog(value)
+	SceneManager.Instance():OnToggleValueChange(hierarchyName, value) 
+	DialogManager.Instance():OnToggleValueChange(hierarchyName, value) 
+end
+
 -- BGMのAudioClipを読んで、マネージャに登録
 function LuaUnityAddBGMAudioSourceAndClip(assetBundleName, assetName)
 	UnityAddBGMAudioSourceAndClip(assetBundleName, assetName)
@@ -657,6 +665,10 @@ end
 
 function OnMouseUpFromUnity(touchx, touchy)
 	SceneManager.Instance():OnMouseUp(touchx, touchy)
+end
+
+function LuaUnitySetToggleFlag(objectName, isOn)
+	UnitySetToggleFlag(objectName, isOn)
 end
 
 --Unity側から呼ばれる、更新関数

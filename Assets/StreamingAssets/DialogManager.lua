@@ -127,3 +127,8 @@ function DialogManager:OnClickButton(buttonName)
 	end
 end
 
+function DialogManager:OnToggleValueChange(hierarchyName, value)
+	if self.IsDialogActive == false then
+		return
+	end
+end

@@ -31,6 +31,7 @@ function QuestEditDialog:Initialize()
 	LuaFindObject("QuestEditWaveValueTenPlusButton")
 	LuaFindObject("QuestEditPlayTimeText")
 	LuaFindObject("QuestEditPlayTimeHUNorIJOU")
+	LuaFindObject("QuestEditAutoSkillLevelUpToggle")
 	
 	LuaSetActive("QuestEditDialog", false)
 end
@@ -50,6 +51,13 @@ function QuestEditDialog:OpenDialog(okAfterCloseCallback)
 		self:UpdateButtonInteractable() 
 		self:UpdateTimeText() 
 
+		if GameManager.Instance():GetAutoSkillLevelUp() == true then
+			LuaUnityDebugLog("FirstTRUE")
+			LuaUnitySetToggleFlag("QuestEditAutoSkillLevelUpToggle", true)
+		else
+			LuaUnityDebugLog("FirstFALSE")
+			LuaUnitySetToggleFlag("QuestEditAutoSkillLevelUpToggle", false)
+		end
 
 		--LuaSetText("GachaRollOneTimePriceText", price)
 		--LuaSetText("GachaRollHavePointText", math.floor(havePoint))
@@ -141,6 +149,21 @@ function QuestEditDialog:OnClickButton(buttonName)
 		self:UpdateWaveText()
 		self:UpdateButtonInteractable() 
 		self:UpdateTimeText() 
+	end
+end
+
+function QuestEditDialog:OnToggleValueChange(hierarchyName, value) 
+	if hierarchyName == "QuestEditAutoSkillLevelUpToggle" then
+		LuaUnityDebugLog("CHANGE")
+		if value == 0 then
+			LuaUnityDebugLog(value)
+			GameManager.Instance():SetAutoSkillLevelUp(false)
+		else
+			LuaUnityDebugLog(value)
+			GameManager.Instance():SetAutoSkillLevelUp(true)
+		end
+		SaveObject.AutoSkillLevelUpValue = value
+		FileIOManager.Instance():Save()
 	end
 end
 
