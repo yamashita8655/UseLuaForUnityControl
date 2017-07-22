@@ -72,7 +72,6 @@ function BattleScene.new()
 	
 		this.MaxWave = GameManager.Instance():GetQuestEditWaveCount()
 		this.WaveCounter = 0
-		self:UpdateWaveText()
 		
 		local selectQuestId = GameManager.Instance():GetSelectQuestId()
 		LuaUnityDebugLog(selectQuestId)
@@ -81,10 +80,6 @@ function BattleScene.new()
 		this.WaveInterval = QuestConfig[selectQuestId].SpawnInterval
 		this.WaveIntervalCounter = 15-- 最初は、すぐに出現するように、カウンターをマックスの状態にしておく
 		self:UpdateSpawnGaugeScale(self.WaveIntervalCounter / self.WaveInterval)
-
-		--EnemyManager:CreateSpawnController(enemySpawnTable)
-		EnemyManager:CreateNewSpawnController(enemySpawnTable, this.MaxWave)
-		self.EndTime = self.MaxWave * self.WaveIntervalCounter -- 経過時間は、とりあえずウェーブ数*ウェーブ切り替え時間が経過したら見るようにする
 
 		self.EndTimeCounter = 0
 		self.EndCheckIntervalCounter = 0
@@ -180,6 +175,13 @@ function BattleScene.new()
 		if SaveObject.BattleSaveEnable == 1 then
 			self:LoadDataFromFileIO()
 		end
+		
+		self:UpdateWaveText()
+		--EnemyManager:CreateSpawnController(enemySpawnTable)
+		EnemyManager:CreateNewSpawnController(enemySpawnTable, this.MaxWave)
+		self.EndTime = self.MaxWave * self.WaveIntervalCounter -- 経過時間は、とりあえずウェーブ数*ウェーブ切り替え時間が経過したら見るようにする
+		LuaUnityDebugLog("MaxWave:"..self.MaxWave)
+		LuaUnityDebugLog("WaveIntervalCounter:"..self.WaveIntervalCounter)
 		
 		this:SceneBaseInitialize()
 		
@@ -888,6 +890,14 @@ function BattleScene.new()
 		
 		player:AddEXP(SaveObject.BattleExp)
 		player:SetNowHp(SaveObject.BattleHp)
+
+		local skillTable = skillConfig:GetSkillTable()
+		local emitterNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+		local bulletNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+		
+		player:ClearBulletEmitter()
+		player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][emitterNowLevelAfterLevelUp].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][bulletNowLevelAfterLevelUp].EquipBulletList, CharacterType.Player)
+
 
 		self.WaveCounter = SaveObject.BattleNowWave
 		self.MaxWave = SaveObject.BattleMaxWave

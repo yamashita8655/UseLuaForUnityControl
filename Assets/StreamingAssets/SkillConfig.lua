@@ -183,8 +183,8 @@ SkillTable_001 = {
 	
 	-- ExpTable
 	{
-		100,
-		300,
+		30,
+		250,
 		1000,
 		2500,
 		5000,
@@ -209,7 +209,8 @@ SkillTable_Tora = {
 		{
 			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
 			BulletEmitterList = {
-				Emitter001.new(0.15, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.10, Vector2.new(35, 50), 3, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.10, Vector2.new(-35, 50), -3, EmitterTypeEnum.Satellite),
 				Emitter001.new(0.33, Vector2.new(0, -110), 180, EmitterTypeEnum.Satellite),
 			},
 		},
@@ -217,7 +218,8 @@ SkillTable_Tora = {
 		{
 			100,
 			BulletEmitterList = {
-				Emitter001.new(0.10, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.075, Vector2.new(35, 50), 3, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.075, Vector2.new(-35, 50), -3, EmitterTypeEnum.Satellite),
 				Emitter001.new(0.33, Vector2.new(0, -110), 180, EmitterTypeEnum.Satellite),
 			}
 		},
@@ -225,7 +227,8 @@ SkillTable_Tora = {
 		{
 			100,
 			BulletEmitterList = {
-				Emitter001.new(0.05, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.05, Vector2.new(35, 50), 3, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.05, Vector2.new(-35, 50), -3, EmitterTypeEnum.Satellite),
 				
 				Emitter001.new(0.33, Vector2.new(0, -110), 180, EmitterTypeEnum.Satellite),
 				
@@ -241,6 +244,7 @@ SkillTable_Tora = {
 			0,	
 			EquipBulletList = {
 				Bullet_Tora_Bullet_1,
+				Bullet_Tora_Bullet_1,
 				Bullet_Tora_Bullet_Circle1,
 				Bullet_Tora_Bullet_Homing1,
 				Bullet_Tora_Bullet_Homing1,
@@ -250,6 +254,7 @@ SkillTable_Tora = {
 		{
 			1000,
 			EquipBulletList = {
+				Bullet_Tora_Bullet_2,
 				Bullet_Tora_Bullet_2,
 				Bullet_Tora_Bullet_Circle1,
 				Bullet_Tora_Bullet_Homing1,
@@ -261,6 +266,7 @@ SkillTable_Tora = {
 			1000,
 			EquipBulletList = {
 				Bullet_Tora_Bullet_3,
+				Bullet_Tora_Bullet_3,
 				Bullet_Tora_Bullet_Circle1,
 				Bullet_Tora_Bullet_Homing1,
 				Bullet_Tora_Bullet_Homing1,
@@ -270,8 +276,8 @@ SkillTable_Tora = {
 	
 	-- ExpTable
 	{
-		100,
-		300,
+		30,
+		250,
 		1000,
 		2500,
 		5000,
@@ -294,20 +300,20 @@ SkillTable_Buchi = {
 		{
 			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
 			BulletEmitterList = {
-				Emitter001.new(2.5, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(2.0, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 
-				Emitter001.new(0.33, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(0.33, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 			},
 		},
 		
 		{
 			100,
 			BulletEmitterList = {
-				Emitter001.new(2.0, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.75, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 
-				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 			}
 		},
 		
@@ -316,8 +322,8 @@ SkillTable_Buchi = {
 			BulletEmitterList = {
 				Emitter001.new(1.5, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 
-				Emitter001.new(0.17, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(0.17, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
 			}
 		},
 	},
@@ -354,8 +360,8 @@ SkillTable_Buchi = {
 	
 	-- ExpTable
 	{
-		100,
-		300,
+		30,
+		250,
 		1000,
 		2500,
 		5000,
@@ -380,9 +386,9 @@ SkillTable_Sakura = {
 		{
 			0,-- 次のレベルに必要な値？ちょっと設計見直してコメント書く 
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(1.25, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(1.25, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.0, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(1.0, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
 				Emitter001.new(6.0, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
 				Emitter001.new(6.0, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
 				Emitter001.new(6.0, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
@@ -392,24 +398,24 @@ SkillTable_Sakura = {
 		{
 			100,
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(1.25, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(1.25, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(6.0, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
-				Emitter001.new(6.0, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
-				Emitter001.new(6.0, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.75, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.75, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(5.9, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(5.9, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
+				Emitter001.new(5.9, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
 			}
 		},
 		
 		{
 			100,
 			BulletEmitterList = {
-				Emitter001.new(0.25, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(1.25, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(1.25, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
-				Emitter001.new(6.0, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
-				Emitter001.new(6.0, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
-				Emitter001.new(6.0, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.16, Vector2.new(0, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.5, Vector2.new(25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(0.5, Vector2.new(-25, 50), 0, EmitterTypeEnum.Satellite),
+				Emitter001.new(5.8, Vector2.new(0, -100), 180, EmitterTypeEnum.Satellite),
+				Emitter001.new(5.8, Vector2.new(100, 0), -90, EmitterTypeEnum.Satellite),
+				Emitter001.new(5.8, Vector2.new(-100, 0), 90, EmitterTypeEnum.Satellite),
 			}
 		},
 	},
@@ -455,13 +461,20 @@ SkillTable_Sakura = {
 	
 	-- ExpTable
 	{
-		100,
+		30,
+		250,
 		300,
-		1000,
-		2500,
-		5000,
-		10000,
+		350,
+		400,
+		450,
 		-1,
+		--30,
+		--250,
+		--1000,
+		--2500,
+		--5000,
+		--10000,
+		---1,
 	},
 }
 
