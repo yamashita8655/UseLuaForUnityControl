@@ -430,7 +430,6 @@ function BattleScene.new()
 		local enemyList = EnemyManager.Instance():GetList()
 		local player = PlayerManager:GetPlayer()
 
-		local LoopCounter = 0
 
 		for i = 1, #playerBulletList do
 			local bullet = playerBulletList[i]
@@ -439,27 +438,10 @@ function BattleScene.new()
 				local cellNumber = cellNumberList[j]
 				if cellNumber ~= -1 then
 					AreaCellManager.Instance():AddPlayerBullet(bullet, cellNumber)
-					--LuaUnityDebugLog("Name:"..bullet:GetName())
-					--LuaUnityDebugLog("Cell:"..cellNumber)
 				end
-				LoopCounter = LoopCounter + 1
 			end
 		end
 		
-		--LuaUnityDebugLog("PlayerBulletCellNumber")
-		--local bumpList = AreaCellManager.Instance():GetBumpList()
-		--LuaUnityDebugLog(#bumpList)
-		--for i = 1, #AreaCellManager.Instance():GetBumpList() do
-		--	local playerBulletList = AreaCellManager.Instance():GetBumpList()[i]:GetPlayerBullet()
-		--	if #playerBulletList > 0 then
-		--		LuaUnityDebugLog("bumpIndex:"..i)
-		--		LuaUnityDebugLog("areaIndex:"..AreaCellManager.Instance():GetBumpList()[i].AreaNumber)
-
-		--		LuaUnityDebugLog("bulletCount:"..#playerBulletList)
-		--	end
-		--end
-		
-		--LuaUnityDebugLog("EnemyBulletCellNumber")
 		for i = 1, #enemyBulletList do
 			local bullet = enemyBulletList[i]
 			local cellNumberList = AreaCellManager.Instance():GetCellNumber(bullet) 
@@ -467,25 +449,10 @@ function BattleScene.new()
 				local cellNumber = cellNumberList[j]
 				if cellNumber ~= -1 then
 					AreaCellManager.Instance():AddEnemyBullet(bullet, cellNumber)
-					--LuaUnityDebugLog("Name:"..bullet:GetName())
-					--LuaUnityDebugLog("Cell:"..cellNumber)
 				end
-				LoopCounter = LoopCounter + 1
 			end
 		end
 
-		--LuaUnityDebugLog("EnemyBulletCellNumber")
-		--local bumpList2 = AreaCellManager.Instance():GetBumpList()
-		--LuaUnityDebugLog(#bumpList2)
-		--for i = 1, #AreaCellManager.Instance():GetBumpList() do
-		--	local enemyBulletList = AreaCellManager.Instance():GetBumpList()[i]:GetEnemyBullet()
-		--	if #enemyBulletList > 0 then
-		--		LuaUnityDebugLog("bumpIndex:"..i)
-		--		LuaUnityDebugLog("areaIndex:"..AreaCellManager.Instance():GetBumpList()[i].AreaNumber)
-		--		LuaUnityDebugLog("bulletCount:"..#enemyBulletList)
-		--	end
-		--end
-		
 		for i = 1, #enemyList do
 			local enemy = enemyList[i]
 			local cellNumberList = AreaCellManager.Instance():GetCellNumber(enemy) 
@@ -494,7 +461,6 @@ function BattleScene.new()
 				if cellNumber ~= -1 then
 					AreaCellManager.Instance():AddEnemy(enemy, cellNumber)
 				end
-				LoopCounter = LoopCounter + 1
 			end
 		end
 			
@@ -504,31 +470,25 @@ function BattleScene.new()
 			if cellNumber ~= -1 then
 				AreaCellManager.Instance():AddPlayer(player, cellNumber)
 			end
-			LoopCounter = LoopCounter + 1
 		end
 
 		--AreaCellManager:GetCellNumber(position) 
 		
 
 		local list = AreaCellManager.Instance():GetBumpList()
-		local bumpCounter = 0
 		for i = 1, #list do
 			local data = list[i]
-			bumpCounter = bumpCounter + self:CheckBump2(data)
-			LoopCounter = LoopCounter + 1
+			self:CheckBump2(data)
 		end
 
 		-- 死亡フラグが立っている物を削除する
 		EnemyManager:RemoveDeadObject()
 		BulletManager:RemoveDeadObject()
 
-		--LuaUnityDebugLog("loop:"..LoopCounter)
-		--LuaUnityDebugLog("bumpCounter:"..bumpCounter)
 	end
 	
 	--当たり判定
 	this.CheckBump2 = function(self, checkBumpObject)
-		local LoopCounter = 0
 		local playerBulletList = checkBumpObject:GetPlayerBullet()
 		local enemyBulletList = checkBumpObject:GetEnemyBullet()
 		local enemyList = checkBumpObject:GetEnemy()
@@ -627,7 +587,6 @@ function BattleScene.new()
 							bullet:AddNowHp(-1)
 						end
 					end
-					LoopCounter = LoopCounter + 1
 				end
 			end
 		end
@@ -665,7 +624,6 @@ function BattleScene.new()
 					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.EnemyDeath)
 				end
 			end
-			LoopCounter = LoopCounter + 1
 		end
 		
 		-- 敵弾と自キャラとのあたり判定
@@ -701,12 +659,10 @@ function BattleScene.new()
 					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
 				end
 			end
-			LoopCounter = LoopCounter + 1
 		end
 		
 		-- 敵弾と自弾とのあたり判定
 		if #playerBulletList > 0 and #enemyBulletList > 0 then
-			LuaUnityDebugLog("PlayerBullet:"..#playerBulletList.."/EnemyBullet:"..#enemyBulletList)
 			for playerBulletIndex = 1, #playerBulletList do
 				for enemyBulletIndex = 1, #enemyBulletList do
 					local enemyBullet = enemyBulletList[enemyBulletIndex]
@@ -725,10 +681,6 @@ function BattleScene.new()
 	
 						local isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
 
-						LuaUnityDebugLog("Left x:"..enemyBulletPosition.x.."y:"..enemyBulletPosition.y.."width:"..enemyBulletWidth.."height:"..enemyBulletHeight)
-						LuaUnityDebugLog("BulletName:"..playerBullet:GetName())
-						LuaUnityDebugLog("Right x:"..playerBulletPosition.x.."y:"..playerBulletPosition.y.."width:"..playerBulletWidth.."height:"..playerBulletHeight)
-	
 						if isHit == true then
 							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemyBullet:GetPosition())
 							local playerBulletAttack = playerBullet:GetAttack()
@@ -737,7 +689,6 @@ function BattleScene.new()
 							playerBullet:AddNowHp(-enemyBulletAttack)
 						end
 					end
-					LoopCounter = LoopCounter + 1
 				end
 			end
 		end
@@ -760,9 +711,6 @@ function BattleScene.new()
 				LuaPlayAnimator("BattleComboCounterText", "Play2", false, true, "LuaCallback", "BattleComboCounter")
 			end
 		end
-
-
-		return LoopCounter
 	end
 
 	--当たり判定
@@ -779,9 +727,6 @@ function BattleScene.new()
 		local rightTR = {rightPosX+rightWidth/2, rightPosY+rightHeight/2}
 		local rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
 		local rightBR = {rightPosX+rightWidth/2, rightPosY-rightHeight/2}
-
-		--LuaUnityDebugLog("Left x:"..leftPosX.."y:"..leftPosY.."height:"..leftHeight.."width:"..leftWidth)
-		--LuaUnityDebugLog("Right x:"..rightPosX.."y:"..rightPosY.."height:"..rightHeight.."width:"..rightWidth)
 
 		--左オブジェクトの左上が、右オブジェクトの範囲内に入っているかどうか
 		--x座標が範囲内か確認
@@ -883,9 +828,6 @@ function BattleScene.new()
 --・
 	this.LoadDataFromFileIO = function(self)
 
-		LuaUnityDebugLog("LoadDataFromFileIO")
-
-
 		---- こっちは、デバッグ用に仮うちの値でゲーム開始
 		--self.EndTimeCounter = 45
 		--EnemyManager:SetTimer(self.EndTimeCounter) 
@@ -945,13 +887,11 @@ function BattleScene.new()
 	end
 	
 	this.SaveDataFromFileIO = function(self)
-		LuaUnityDebugLog("SaveDataFromFileIO")
 		
 		local player = PlayerManager:Instance():GetPlayer()
 		local skillConfig = player:GetSkillConfig()
 		
 		SaveObject.BattleSelectQuestId = GameManager.Instance():GetSelectQuestId()
-		LuaUnityDebugLog(SaveObject.BattleSelectQuestId)
 		SaveObject.BattleEndTimeCounter = self.EndTimeCounter
 		SaveObject.BattleExp = player:GetEXP()
 		SaveObject.BattleSkillPoint = player:GetHaveSkillPoint()
