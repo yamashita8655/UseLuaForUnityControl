@@ -34,6 +34,16 @@ function SceneBase.new()
 		return self.IsActive
 	end
 	
+	-- サスペンド
+	this.OnSuspend = function(self)
+		LuaUnityDebugLog("BaseSuspend")
+	end
+	
+	-- レジューム
+	this.OnResume = function(self)
+		LuaUnityDebugLog("BaseResume")
+	end
+	
 	return this
 end
 

@@ -24,8 +24,8 @@ URL = "http://natural-nail-eye.sakura.ne.jp/Work"
 --URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
 -- TODO ローカルのリソースを使って、ローカルのLuaスクリプトを使う時は、これをTrueにする事
---IsUseLocalFile = true
-IsUseLocalFile = false
+IsUseLocalFile = true
+--IsUseLocalFile = false
 
 Platform = ""
 
@@ -628,6 +628,16 @@ function EventToggleValueChangeFromUnity(hierarchyName, value)
 	LuaUnityDebugLog(value)
 	SceneManager.Instance():OnToggleValueChange(hierarchyName, value) 
 	DialogManager.Instance():OnToggleValueChange(hierarchyName, value) 
+end
+
+--Unity側から呼び出される。Event系の関数
+function EventSuspendFromUnity()
+	SceneManager.Instance():OnSuspend() 
+end
+
+--Unity側から呼び出される。Event系の関数
+function EventResumeFromUnity()
+	SceneManager.Instance():OnResume() 
 end
 
 -- BGMのAudioClipを読んで、マネージャに登録

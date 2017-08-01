@@ -22,19 +22,19 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	private static Action LuaMainEndCallback = null;
 	
 	// ローカルのファイルで完結できるようにするかどうか。開発中用フラグ
-	//public static bool IsUseLocalFile = true;
-	public static bool IsUseLocalFile = false;
+	public static bool IsUseLocalFile = true;
+	//public static bool IsUseLocalFile = false;
 
 #if UNITY_EDITOR
-	//public static bool IsUseLocalAssetBundle = true;
-	//public static bool IsCheckVersionFile = false;
-	public static bool IsUseLocalAssetBundle = false;
-	public static bool IsCheckVersionFile = true;
+	public static bool IsUseLocalAssetBundle = true;
+	public static bool IsCheckVersionFile = false;
+	//public static bool IsUseLocalAssetBundle = false;
+	//public static bool IsCheckVersionFile = true;
 #else
-	//public static bool IsUseLocalAssetBundle = true;
-	//public static bool IsCheckVersionFile = false;
-	public static bool IsUseLocalAssetBundle = false;
-	public static bool IsCheckVersionFile = true;
+	public static bool IsUseLocalAssetBundle = true;
+	public static bool IsCheckVersionFile = false;
+	//public static bool IsUseLocalAssetBundle = false;
+	//public static bool IsCheckVersionFile = true;
 #endif
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
