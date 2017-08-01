@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1102802962
+CRC: 2794099706
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 69dc1b0c456d5d74366ff2824e48b412
+    Hash: 3ea7588839944a2ec9119ed00a8d4a4e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3882ceb989201f5e184f55aa33f06848
+    Hash: 1478befe4399c273f8ddc667141ef7dc
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,6 +21,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -50,4 +52,4 @@ Assets:
 - Assets/Resources/HomeScene/HomeCharacter3.prefab
 - Assets/Resources/HomeScene/HomeScene.prefab
 Dependencies:
-- Assets/AssetBundles/Android/common
+- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common

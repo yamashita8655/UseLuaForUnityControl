@@ -146,6 +146,7 @@ end
 
 function BulletManager:LocalShootBulletTest(posx, posy, degree, bulletConfig, characterType, canShootingList, nowShootingList)
 	local prefabName = bulletConfig.PrefabName
+	LuaUnityDebugLog(prefabName)
 	if #canShootingList[prefabName] == 0 then
 		return
 	end

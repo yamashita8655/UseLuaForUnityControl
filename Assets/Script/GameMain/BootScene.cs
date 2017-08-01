@@ -30,7 +30,8 @@ public class BootScene : MonoBehaviour {
 	string ServerVersionString = "";
 	string LocalVersionString = "";
 
-	string ServerURL = "http://natural-nail-eye.sakura.ne.jp";
+	//string ServerURL = "http://natural-nail-eye.sakura.ne.jp";
+	string ServerURL = "http://natural-nail-eye.sakura.ne.jp/Work";
 	
 	private enum FuncState {
 		None = 0,
@@ -45,6 +46,11 @@ public class BootScene : MonoBehaviour {
 		Application.targetFrameRate = 60;
 		RetryButton.gameObject.SetActive(false);
 		StartCoroutine(CoroutineStart());
+#if UNITY_EDITOR
+		Debug.logger.logEnabled = false;
+#else
+		Debug.logger.logEnabled = false;
+#endif
 	}
 
 	private IEnumerator CoroutineStart() {
@@ -200,7 +206,7 @@ public class BootScene : MonoBehaviour {
 
 #if UNITY_EDITOR
 		string url = "";
-		if (UnityUtility.IsUseLocalAssetBundle = true) {
+		if (UnityUtility.IsUseLocalAssetBundle == true) {
 			url = "file:///" + Application.dataPath + "/AssetBundles";
 		} else {
 			url = ServerURL;

@@ -60,6 +60,7 @@ function ResultDialog:CloseDialog()
 end
 
 function ResultDialog.DialogOpenCallback(arg, unityArg) 
+	SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SlideDialogOpen)
 end
 
 function ResultDialog.DialogCloseCallback(arg, unityArg) 

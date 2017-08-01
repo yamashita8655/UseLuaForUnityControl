@@ -3,6 +3,11 @@
 -- クラス定義
 BattleScene = {}
 
+-- とりあえず、Player弾が2なのは、グリッド範囲に入っているのが2箇所という意味なので、間違ってはい無さそう
+-- リストに格納されている弾が、別の弾の可能性があるので、名前とヒエラルキーを見て、正しい物が入っているか確認する
+	-- セル分割の時点で、想定している弾と敵の弾のセルが異なるので、あたり判定が交わる事が無いことがわかったので、
+-- GetCellNumberでの座標位置を確認して、同じ位置に来ない原因を調べる
+
 -- コンストラクタ
 function BattleScene.new()
 	local this = SceneBase.new()
@@ -12,6 +17,9 @@ function BattleScene.new()
 	
 	this.EndCheckInterval = 5
 	this.EndCheckIntervalCounter = 0
+	
+	this.WaveInterval = 0
+	this.WaveIntervalCounter = 0
 	
 	this.SaveInterval = 30 -- セーブ処理を走らせる間隔秒
 	--this.SaveInterval = 10000 -- セーブ処理を走らせる間隔秒
@@ -24,6 +32,10 @@ function BattleScene.new()
 	this.ComboCount = 0
 	this.GetKarikari = 0
 	this.SelectCharacter = nil
+	this.SkillLevelUpNowFlag = false
+	
+	this.MaxWave = 0
+	this.WaveCounter = 0
 	
 	-- メソッド定義
 	-- 初期化
@@ -51,16 +63,28 @@ function BattleScene.new()
 		LuaSetActive("BattleComboLabel", false)
 		LuaSetActive("BattleComboCounterText", false)
 		
+		LuaFindObject("BattleOptionButton")
+		
+		LuaFindObject("BattleWaveRoot")
+		LuaFindObject("BattleNowWaveText")
+		LuaFindObject("BattleMaxWaveText")
+		
+		LuaFindObject("BattleWaveSpawnGaugeImage")
+		
 		this.IsGamePause = true
 		this.ComboCount = 0
 		this.GetKarikari = 0
+	
+		this.MaxWave = GameManager.Instance():GetQuestEditWaveCount()
+		this.WaveCounter = 0
 		
 		local selectQuestId = GameManager.Instance():GetSelectQuestId()
-		LuaUnityDebugLog(selectQuestId)
 		enemySpawnTable = QuestConfig[selectQuestId].EnemySpawnTable
 
-		EnemyManager:CreateSpawnController(enemySpawnTable)
-		self.EndTime = enemySpawnTable.EndTime
+		this.WaveInterval = QuestConfig[selectQuestId].SpawnInterval
+		this.WaveIntervalCounter = 15-- 最初は、すぐに出現するように、カウンターをマックスの状態にしておく
+		self:UpdateSpawnGaugeScale(self.WaveIntervalCounter / self.WaveInterval)
+
 		self.EndTimeCounter = 0
 		self.EndCheckIntervalCounter = 0
 		
@@ -72,15 +96,17 @@ function BattleScene.new()
 		
 		--Test
 		local enemyPrefabNameList = {}
-		local spawnTable = enemySpawnTable.Table
+		local spawnTable = enemySpawnTable.SelectSpawnDataList
 		for i = 1, #spawnTable do
-			local spawnData = spawnTable[i].SpawnData
-			local enemyData = spawnData.EnemyType
-			if enemyData.EnemyType == EnemyTypeEnum.BulletShooter then
-				local enemyBulletList = enemyData.EquipBulletList
-				for j = 1, #enemyBulletList do
-					local prefabName = enemyBulletList[j].PrefabName
-					table.insert(enemyPrefabNameList, prefabName)
+			for j = 1, #spawnTable[i] do
+				local spawnData = spawnTable[i][j]
+				local enemyData = spawnData.EnemyType
+				if enemyData.EnemyType == EnemyTypeEnum.BulletShooter then
+					local enemyBulletList = enemyData.EquipBulletList
+					for j = 1, #enemyBulletList do
+						local prefabName = enemyBulletList[j].PrefabName
+						table.insert(enemyPrefabNameList, prefabName)
+					end
 				end
 			end
 		end
@@ -98,7 +124,6 @@ function BattleScene.new()
 		local addHp = characterAddParameter[CharacterParameterEnum.AddHp]
 		player:SetNowHp(baseHp + addHp)
 		player:SetMaxHp(baseHp + addHp)
-		LuaUnityDebugLog("baseHp:"..baseHp.." addHp:"..addHp)
 		local skillConfig = player:GetSkillConfig()
 		local skillTable = skillConfig:GetSkillTable()
 		local bulletList = skillTable[SkillTypeEnum.Bullet]
@@ -127,8 +152,11 @@ function BattleScene.new()
 		LuaSetText("ExpText", 0)
 		LuaSetText("BattleKarikariText", 0)
 		
+		LuaSetText("BattleMaxWaveText", this.MaxWave)
+		
 		--LuaSetScale("BattleObjectRoot", 1.0, 1.0, 1.0)
-		LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
+		--LuaSetScale("BattleObjectRoot", 0.7, 0.7, 0.7)
+		LuaSetScale("BattleObjectRoot", 0.5, 0.5, 0.5)
 		--self.AlignPosition.x = -200
 		--self.AlignPosition.y = -200
 		--self.AlignPosition.z = 0
@@ -151,7 +179,14 @@ function BattleScene.new()
 			self:LoadDataFromFileIO()
 		end
 		
+		self:UpdateWaveText()
+		--EnemyManager:CreateSpawnController(enemySpawnTable)
+		EnemyManager:CreateNewSpawnController(enemySpawnTable, this.MaxWave)
+		self.EndTime = self.MaxWave * self.WaveIntervalCounter -- 経過時間は、とりあえずウェーブ数*ウェーブ切り替え時間が経過したら見るようにする
+		
 		this:SceneBaseInitialize()
+		
+		SoundManager.Instance():PlayBGM(SoundManager.Instance().BGMIndexList.BattleSceneBgm)
 	end
 
 
@@ -200,12 +235,28 @@ function BattleScene.new()
 				self:LoseSequence()
 			end
 
-			-- タイマーを確認して、情報をセーブ
-			self.SaveIntervalCounter = self.SaveIntervalCounter + deltaTime
-			if self.SaveIntervalCounter > self.SaveInterval then
-				self:SaveDataFromFileIO()
-				self.SaveIntervalCounter = 0
+			-- 敵の出現
+			if self.WaveCounter < self.MaxWave then
+				self.WaveIntervalCounter = self.WaveIntervalCounter + deltaTime
+				self:UpdateSpawnGaugeScale(self.WaveIntervalCounter / self.WaveInterval)
+				if self.WaveIntervalCounter >= self.WaveInterval then
+					-- 先にセーブをする
+					self:SaveDataFromFileIO()
+					this.WaveCounter = this.WaveCounter + 1
+					EnemyManager.Instance():OrderSpawnEnemy(this.WaveCounter)
+					self:UpdateWaveText()
+					this.WaveIntervalCounter = 0
+				end
 			end
+
+			---- タイマーを確認して、情報をセーブ
+			--self.SaveIntervalCounter = self.SaveIntervalCounter + deltaTime
+			--if self.SaveIntervalCounter > self.SaveInterval then
+			--	self:SaveDataFromFileIO()
+			--	self.SaveIntervalCounter = 0
+			--end
+
+
 		end
 	end
 	
@@ -223,6 +274,8 @@ function BattleScene.new()
 	
 	-- 勝ちエフェクト
 	this.WinSequence = function(self)
+		SoundManager.Instance():StopBGM(SoundManager.Instance().BGMIndexList.BattleSceneBgm)
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.BattleWin)
 		CallbackManager.Instance():AddCallback("Battle_WinSequence", {self}, self.WinSequenceCallback)
 		LuaPlayAnimator("WinEffect", "Play", false, true, "LuaCallback", "Battle_WinSequence")
 	end
@@ -245,6 +298,8 @@ function BattleScene.new()
 	
 	-- 負けエフェクト
 	this.LoseSequence = function(self)
+		SoundManager.Instance():StopBGM(SoundManager.Instance().BGMIndexList.BattleSceneBgm)
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.BattleLose)
 		CallbackManager.Instance():AddCallback("Battle_LoseSequence", {self}, self.LoseSequenceCallback)
 		LuaPlayAnimator("LoseEffect", "Play", false, true, "LuaCallback", "Battle_LoseSequence")
 	end
@@ -315,10 +370,11 @@ function BattleScene.new()
 					EffectManager.Instance():ResumeEffect()
 				end
 			)
+			LuaPlayAnimator("BattleOptionButton", "Stop", false, false, "LuaCallback", "")
 		end
 		if buttonName == "BattleExitButton" then
 			self.IsGamePause = true
-			DialogManager.Instance():OpenDialog(
+			DialogManager.Instance():OpenOkCancelDialog(
 				"ねずみ退治をやめますか？\n※獲得したポイント等は破棄されます",
 				function()
 				end,
@@ -369,12 +425,11 @@ function BattleScene.new()
 	this.CheckBump = function(self)
 		AreaCellManager.Instance():Clear() 
 
-		playerBulletList = BulletManager.Instance():GetPlayerBulletList()
-		enemyBulletList = BulletManager.Instance():GetEnemyBulletList()
-		enemyList = EnemyManager.Instance():GetList()
-		player = PlayerManager:GetPlayer()
+		local playerBulletList = BulletManager.Instance():GetPlayerBulletList()
+		local enemyBulletList = BulletManager.Instance():GetEnemyBulletList()
+		local enemyList = EnemyManager.Instance():GetList()
+		local player = PlayerManager:GetPlayer()
 
-		local LoopCounter = 0
 
 		for i = 1, #playerBulletList do
 			local bullet = playerBulletList[i]
@@ -384,7 +439,6 @@ function BattleScene.new()
 				if cellNumber ~= -1 then
 					AreaCellManager.Instance():AddPlayerBullet(bullet, cellNumber)
 				end
-				LoopCounter = LoopCounter + 1
 			end
 		end
 		
@@ -396,10 +450,9 @@ function BattleScene.new()
 				if cellNumber ~= -1 then
 					AreaCellManager.Instance():AddEnemyBullet(bullet, cellNumber)
 				end
-				LoopCounter = LoopCounter + 1
 			end
 		end
-		
+
 		for i = 1, #enemyList do
 			local enemy = enemyList[i]
 			local cellNumberList = AreaCellManager.Instance():GetCellNumber(enemy) 
@@ -408,7 +461,6 @@ function BattleScene.new()
 				if cellNumber ~= -1 then
 					AreaCellManager.Instance():AddEnemy(enemy, cellNumber)
 				end
-				LoopCounter = LoopCounter + 1
 			end
 		end
 			
@@ -418,39 +470,33 @@ function BattleScene.new()
 			if cellNumber ~= -1 then
 				AreaCellManager.Instance():AddPlayer(player, cellNumber)
 			end
-			LoopCounter = LoopCounter + 1
 		end
 
 		--AreaCellManager:GetCellNumber(position) 
 		
 
 		local list = AreaCellManager.Instance():GetBumpList()
-		local bumpCounter = 0
 		for i = 1, #list do
 			local data = list[i]
-			bumpCounter = bumpCounter + self:CheckBump2(data)
-			LoopCounter = LoopCounter + 1
+			self:CheckBump2(data)
 		end
 
 		-- 死亡フラグが立っている物を削除する
 		EnemyManager:RemoveDeadObject()
 		BulletManager:RemoveDeadObject()
 
-		--LuaUnityDebugLog("loop:"..LoopCounter)
-		--LuaUnityDebugLog("bumpCounter:"..bumpCounter)
 	end
 	
 	--当たり判定
 	this.CheckBump2 = function(self, checkBumpObject)
-		local LoopCounter = 0
-		playerBulletList = checkBumpObject:GetPlayerBullet()
-		enemyBulletList = checkBumpObject:GetEnemyBullet()
-		enemyList = checkBumpObject:GetEnemy()
-		player = PlayerManager:GetPlayer()
+		local playerBulletList = checkBumpObject:GetPlayerBullet()
+		local enemyBulletList = checkBumpObject:GetEnemyBullet()
+		local enemyList = checkBumpObject:GetEnemy()
+		local player = PlayerManager:GetPlayer()
 
 		local comboAddCounter = 0
 		local takeDamage = false
-	
+
 		-- 弾と敵とのあたり判定
 		-- 当たったオブジェクト双方に、DeadFlagのtrueを付与する
 		if #playerBulletList > 0 and #enemyList > 0 then
@@ -464,13 +510,13 @@ function BattleScene.new()
 	
 					if (enemyIsAlive == false) or (bulletIsAlive == false) then
 					else
-						enemyPosition = enemy:GetPosition()
-						enemyWidth, enemyHeight = enemy:GetSize()
+						local enemyPosition = enemy:GetPosition()
+						local enemyWidth, enemyHeight = enemy:GetSize()
 	
-						bulletPosition = bullet:GetPosition()
-						bulletWidth, bulletHeight = bullet:GetSize()
+						local bulletPosition = bullet:GetPosition()
+						local bulletWidth, bulletHeight = bullet:GetSize()
 	
-						isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
+						local isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight)
 	
 						if isHit == true then
 							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemy:GetPosition())
@@ -480,24 +526,67 @@ function BattleScene.new()
 							local characterAddParameter = SaveObject.CharacterList[self.SelectCharacter.IdIndex]
 							local addAttack = characterAddParameter[CharacterParameterEnum.AddAttack]
 							local playerAttack = baseAttack + addAttack
-							-- TODO 後で消す
-							LuaUnityDebugLog("bulletAtk:"..bulletAttack.." baseAtk:"..baseAttack.." addAtk:"..addAttack)
 							enemy:AddNowHp(-(bulletAttack+playerAttack))
 							if enemy:IsAlive() == false then
+								SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.EnemyDeath)
 								local exp = enemy:GetEXP()
 								exp = exp * (1 + (self.ComboCount/1000))
-								player:AddEXP(exp)
+								self.SkillLevelUpNowFlag = player:AddEXP(exp)
+								if self.SkillLevelUpNowFlag == true then
+									SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SkillLevelUp)
+									if GameManager.Instance():GetAutoSkillLevelUp() == true then
+
+										-- 自動でスキルレベルアップをする
+										local skillConfig = player:GetSkillConfig()
+										
+										local emitterNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+										local emitterMaxLevel = skillConfig:GetMaxSkillLevel(SkillTypeEnum.Emitter)
+										local bulletNowLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+										local bulletMaxLevel = skillConfig:GetMaxSkillLevel(SkillTypeEnum.Bullet)
+										local skillType = nil
+										if bulletNowLevel < emitterNowLevel then
+											if bulletNowLevel < bulletMaxLevel then
+												skillType = SkillTypeEnum.Bullet
+											else
+												if emitterNowLevel < emitterMaxLevel then
+													skillType = SkillTypeEnum.Emitter
+												end
+											end
+										else
+											if emitterNowLevel < emitterMaxLevel then
+												skillType = SkillTypeEnum.Emitter
+											else
+												if bulletNowLevel < bulletMaxLevel then
+													skillType = SkillTypeEnum.Bullet
+												end
+											end
+										end
+										
+										if skillType ~= nil then
+											skillConfig:AddSkillLevel(skillType)
+											local skillTable = skillConfig:GetSkillTable()
+											local emitterNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+											local bulletNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+											
+											player:ClearBulletEmitter()
+											player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][emitterNowLevelAfterLevelUp].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][bulletNowLevelAfterLevelUp].EquipBulletList, CharacterType.Player)
+											player:AddHaveSkillPoint(-1)
+										end
+									else
+										LuaPlayAnimator("BattleOptionButton", "Move", false, false, "LuaCallback", "")
+									end
+								end
 								comboAddCounter = comboAddCounter + 1
 								local karikari = self:LotKarikari()
 								if karikari == true then
 									EffectManager.Instance():SpawnEffect(EffectNameEnum.KarikariEffect, enemy:GetPosition())
 									self.GetKarikari = self.GetKarikari + 1
+									SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.RareDrop)
 								end
 							end
 							bullet:AddNowHp(-1)
 						end
 					end
-					LoopCounter = LoopCounter + 1
 				end
 			end
 		end
@@ -505,19 +594,19 @@ function BattleScene.new()
 		-- 敵と自キャラとのあたり判定
 		-- 当たったら、敵の種別を判定して、削除する敵だったら、DeadFlagのtrueを付与する
 		for enemyIndex = 1, #enemyList do
-			enemy = enemyList[enemyIndex]
+			local enemy = enemyList[enemyIndex]
 	
-			enemyIsAlive = enemy:IsAlive()
+			local enemyIsAlive = enemy:IsAlive()
 	
 			if (enemyIsAlive == false)then
 			else
-				enemyPosition = enemy:GetPosition()
-				enemyWidth, enemyHeight = enemy:GetSize()
+				local enemyPosition = enemy:GetPosition()
+				local enemyWidth, enemyHeight = enemy:GetSize()
 	
-				playerPosition = player:GetPosition()
-				playerWidth, playerHeight = player:GetSize()
+				local playerPosition = player:GetPosition()
+				local playerWidth, playerHeight = player:GetSize()
 	
-				isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
+				local isHit = self:IsHit(enemyPosition.x, enemyPosition.y, enemyWidth, enemyHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
 	
 				if isHit == true then
 					local attack = enemy:GetAttack()
@@ -529,31 +618,30 @@ function BattleScene.new()
 						damage = 0
 					end
 					enemy:SetNowHp(0)
-					LuaUnityDebugLog("atk:"..attack.." baseDef:"..baseDeffense.." addDef:"..addDeffense)
 					player:AddNowHp(-damage)
-					LuaUnityDebugLog("nowHp:"..player:GetNowHp())
 					takeDamage = true
+					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
+					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.EnemyDeath)
 				end
 			end
-			LoopCounter = LoopCounter + 1
 		end
 		
 		-- 敵弾と自キャラとのあたり判定
 		-- 当たったら、敵の種別を判定して、削除する敵だったら、DeadFlagのtrueを付与する
 		for bulletIndex = 1, #enemyBulletList do
-			bullet = enemyBulletList[bulletIndex]
+			local bullet = enemyBulletList[bulletIndex]
 	
-			bulletIsAlive = bullet:IsAlive()
+			local bulletIsAlive = bullet:IsAlive()
 	
 			if (bulletIsAlive == false)then
 			else
-				bulletPosition = bullet:GetPosition()
-				bulletWidth, bulletHeight = bullet:GetSize()
+				local bulletPosition = bullet:GetPosition()
+				local bulletWidth, bulletHeight = bullet:GetSize()
 	
-				playerPosition = player:GetPosition()
-				playerWidth, playerHeight = player:GetSize()
+				local playerPosition = player:GetPosition()
+				local playerWidth, playerHeight = player:GetSize()
 	
-				isHit = self:IsHit(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
+				local isHit = self:IsHit(bulletPosition.x, bulletPosition.y, bulletWidth, bulletHeight, playerPosition.x, playerPosition.y, playerWidth, playerHeight)
 	
 				if isHit == true then
 					local attack = bullet:GetAttack()
@@ -566,34 +654,33 @@ function BattleScene.new()
 					if damage < 0 then
 						damage = 0
 					end
-					LuaUnityDebugLog("atk:"..attack.." baseDef:"..baseDeffense.." addDef:"..addDeffense)
 					player:AddNowHp(-damage)
 					takeDamage = true
+					SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SelfHit)
 				end
 			end
-			LoopCounter = LoopCounter + 1
 		end
 		
 		-- 敵弾と自弾とのあたり判定
 		if #playerBulletList > 0 and #enemyBulletList > 0 then
 			for playerBulletIndex = 1, #playerBulletList do
 				for enemyBulletIndex = 1, #enemyBulletList do
-					enemyBullet = enemyBulletList[enemyBulletIndex]
-					playerBullet = playerBulletList[playerBulletIndex]
+					local enemyBullet = enemyBulletList[enemyBulletIndex]
+					local playerBullet = playerBulletList[playerBulletIndex]
 	
 					local enemyBulletIsAlive = enemyBullet:IsAlive()
 					local playerBulletIsAlive = playerBullet:IsAlive()
 	
 					if (enemyBulletIsAlive == false) or (playerBulletIsAlive == false) then
 					else
-						enemyBulletPosition = enemyBullet:GetPosition()
-						enemyBulletWidth, enemyBulletHeight = enemyBullet:GetSize()
+						local enemyBulletPosition = enemyBullet:GetPosition()
+						local enemyBulletWidth, enemyBulletHeight = enemyBullet:GetSize()
 	
-						playerBulletPosition = playerBullet:GetPosition()
-						playerBulletWidth, playerBulletHeight = playerBullet:GetSize()
+						local playerBulletPosition = playerBullet:GetPosition()
+						local playerBulletWidth, playerBulletHeight = playerBullet:GetSize()
 	
-						isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
-	
+						local isHit = self:IsHit(enemyBulletPosition.x, enemyBulletPosition.y, enemyBulletWidth, enemyBulletHeight, playerBulletPosition.x, playerBulletPosition.y, playerBulletWidth, playerBulletHeight)
+
 						if isHit == true then
 							EffectManager.Instance():SpawnEffect(EffectNameEnum.HitEffect, enemyBullet:GetPosition())
 							local playerBulletAttack = playerBullet:GetAttack()
@@ -602,7 +689,6 @@ function BattleScene.new()
 							playerBullet:AddNowHp(-enemyBulletAttack)
 						end
 					end
-					LoopCounter = LoopCounter + 1
 				end
 			end
 		end
@@ -625,9 +711,6 @@ function BattleScene.new()
 				LuaPlayAnimator("BattleComboCounterText", "Play2", false, true, "LuaCallback", "BattleComboCounter")
 			end
 		end
-
-
-		return LoopCounter
 	end
 
 	--当たり判定
@@ -644,9 +727,6 @@ function BattleScene.new()
 		local rightTR = {rightPosX+rightWidth/2, rightPosY+rightHeight/2}
 		local rightBL = {rightPosX-rightWidth/2, rightPosY-rightHeight/2}
 		local rightBR = {rightPosX+rightWidth/2, rightPosY-rightHeight/2}
-
-		--LuaUnityDebugLog("Left x:"..leftPosX.."y:"..leftPosY.."height:"..leftHeight.."width:"..leftWidth)
-		--LuaUnityDebugLog("Right x:"..rightPosX.."y:"..rightPosY.."height:"..rightHeight.."width:"..rightWidth)
 
 		--左オブジェクトの左上が、右オブジェクトの範囲内に入っているかどうか
 		--x座標が範囲内か確認
@@ -748,9 +828,6 @@ function BattleScene.new()
 --・
 	this.LoadDataFromFileIO = function(self)
 
-		LuaUnityDebugLog("LoadDataFromFileIO")
-
-
 		---- こっちは、デバッグ用に仮うちの値でゲーム開始
 		--self.EndTimeCounter = 45
 		--EnemyManager:SetTimer(self.EndTimeCounter) 
@@ -772,7 +849,8 @@ function BattleScene.new()
 
 		-- 経過時間設定
 		self.EndTimeCounter = SaveObject.BattleEndTimeCounter
-		EnemyManager:SetTimer(self.EndTimeCounter) 
+		--TODO 新しいウェーブ指定方式の場合、タイマーが無いので、いったん無効
+		--EnemyManager:SetTimer(self.EndTimeCounter) 
 		
 		-- プレイヤーに付随する情報
 		local player = PlayerManager:Instance():GetPlayer()
@@ -786,6 +864,17 @@ function BattleScene.new()
 		player:AddEXP(SaveObject.BattleExp)
 		player:SetNowHp(SaveObject.BattleHp)
 
+		local skillTable = skillConfig:GetSkillTable()
+		local emitterNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Emitter)
+		local bulletNowLevelAfterLevelUp = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
+		
+		player:ClearBulletEmitter()
+		player = UtilityFunction.Instance().SetEmitter(player, skillTable[SkillTypeEnum.Emitter][emitterNowLevelAfterLevelUp].BulletEmitterList, skillTable[SkillTypeEnum.Bullet][bulletNowLevelAfterLevelUp].EquipBulletList, CharacterType.Player)
+
+
+		self.WaveCounter = SaveObject.BattleNowWave
+		self.MaxWave = SaveObject.BattleMaxWave
+		self:UpdateWaveText()
 		
 		-- こいつらは、Update呼ばれたら更新されるからおｋ
 		self.ComboCount = SaveObject.BattleComboCount
@@ -798,13 +887,11 @@ function BattleScene.new()
 	end
 	
 	this.SaveDataFromFileIO = function(self)
-		LuaUnityDebugLog("SaveDataFromFileIO")
 		
 		local player = PlayerManager:Instance():GetPlayer()
 		local skillConfig = player:GetSkillConfig()
 		
 		SaveObject.BattleSelectQuestId = GameManager.Instance():GetSelectQuestId()
-		LuaUnityDebugLog(SaveObject.BattleSelectQuestId)
 		SaveObject.BattleEndTimeCounter = self.EndTimeCounter
 		SaveObject.BattleExp = player:GetEXP()
 		SaveObject.BattleSkillPoint = player:GetHaveSkillPoint()
@@ -814,9 +901,20 @@ function BattleScene.new()
 		SaveObject.BattleBulletLevel = skillConfig:GetSkillLevel(SkillTypeEnum.Bullet)
 		SaveObject.BattleComboCount = self.ComboCount
 		SaveObject.BattleKarikari = self.GetKarikari
+		SaveObject.BattleNowWave = self.WaveCounter
+		SaveObject.BattleMaxWave = self.MaxWave
 		SaveObject.BattleSaveEnable = 1
 
 		FileIOManager.Instance():Save()
+	end
+	
+	this.UpdateWaveText = function(self)
+		LuaSetText("BattleMaxWaveText", self.MaxWave)
+		LuaSetText("BattleNowWaveText", self.WaveCounter)
+	end
+	
+	this.UpdateSpawnGaugeScale = function(self, scale)
+		LuaSetScale("BattleWaveSpawnGaugeImage", scale, 1, 1)
 	end
 	
 	return this

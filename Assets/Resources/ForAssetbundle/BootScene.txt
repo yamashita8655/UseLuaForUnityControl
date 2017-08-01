@@ -54,6 +54,11 @@ function BootScene.new()
 		GameManager:SetMochiPointValue(SaveObject.HaveMochiPointValue)
 		GameManager:SetBillingPointValue(SaveObject.HaveBillingPointValue)
 		GameManager:SetSpecialPointValue(SaveObject.HaveSpecialPointValue)
+		if SaveObject.AutoSkillLevelUpValue == 1 then
+			GameManager:SetAutoSkillLevelUp(true)
+		else
+			GameManager:SetAutoSkillLevelUp(false)
+		end
 		
 		LuaUnityDebugLog("ChangeSceneBefore")
 

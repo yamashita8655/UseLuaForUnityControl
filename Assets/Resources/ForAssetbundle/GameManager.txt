@@ -23,10 +23,12 @@ function GameManager:Initialize()
 	self.HaveMochiPointValue = 0
 	self.HaveBillingPointValue = 0
 	self.HaveSpecialPointValue = 0
-	self.KarikariSpawnRate = 1000--1%扱い。乱数は1000で割る為。
+	self.KarikariSpawnRate = 15--10で1%扱い。乱数は1000で割る為。
 	self.GachaItemList = {}
 	self.GachaItemAddParameterList = {}
 	self.GachaItemCanNotAddParameterList = {}
+	self.QuestEditWaveCount = 0
+	self.AutoSkillLevelUp = true
 end
 
 -- 選択しているキャラクターデータ指定
@@ -119,6 +121,21 @@ function GameManager:SetGachaItemCanNotAddParameterList(list)
 end
 function GameManager:GetGachaItemCanNotAddParameterList() 
 	return self.GachaItemCanNotAddParameterList
+end
+-- クエストウェーブ数指定で指定されたウェーブ数
+function GameManager:SetQuestEditWaveCount(count) 
+	self.QuestEditWaveCount = count
+end
+function GameManager:GetQuestEditWaveCount() 
+	return self.QuestEditWaveCount
+end
+
+-- バトル時に、自動でスキルレベルアップするのかどうか
+function GameManager:SetAutoSkillLevelUp(flag) 
+	self.AutoSkillLevelUp = flag
+end
+function GameManager:GetAutoSkillLevelUp() 
+	return self.AutoSkillLevelUp
 end
 
 

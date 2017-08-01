@@ -97,7 +97,7 @@ function CharacterDetailDialog:OnClickButton(buttonName)
 	elseif buttonName == "CharacterDetailStatusResetButton" then
 		local isUnlocked = SaveObject.CustomScene_CharacterUnlockList[self.CharacterData.IdIndex]
 		if isUnlocked == 0 then
-			DialogManager.Instance():OpenDialog(
+			DialogManager.Instance():OpenOkCancelDialog(
 				"この子はまだ仲間になっていませんが、スキルをリセットしていいですか？",
 				function()
 					local characterAddParameter = SaveObject.CharacterList[self.CharacterData.IdIndex]
@@ -116,7 +116,7 @@ function CharacterDetailDialog:OnClickButton(buttonName)
 				end
 			)
 		else
-			DialogManager.Instance():OpenDialog(
+			DialogManager.Instance():OpenOkCancelDialog(
 				"本当にスキルをリセットしていいですか？",
 				function()
 					local characterAddParameter = SaveObject.CharacterList[self.CharacterData.IdIndex]

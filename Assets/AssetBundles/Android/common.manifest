@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3544890765
+CRC: 3568161348
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0f7d694bfa924b790c81293a1de0ef0e
+    Hash: 4836c48f34a61f2b54a1a6ea41589965
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 68c3e9d467851e84fef12406fcc781dd
+    Hash: 307ca674f870db26de8ce8a2b3951615
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -56,6 +58,7 @@ Assets:
 - Assets/Resources/Common/CloudButtonAnimator.controller
 - Assets/Resources/Common/CloudButtonAnimation.anim
 - Assets/Resources/Common/HomeCharacterMoveDorodoro.anim
+- Assets/Resources/Common/HomeCharacterMovePyonpyon.anim
 - Assets/Resources/Common/FooterObject.prefab
 - Assets/Resources/Common/FadeInAnimation.anim
 - Assets/Resources/Common/OkCancelDialog.prefab
@@ -89,6 +92,7 @@ Assets:
 - Assets/Resources/Common/HomeFrame.png
 - Assets/Resources/Common/DialogCloseAnimation.anim
 - Assets/Resources/Common/DialogOpenAnimation.anim
+- Assets/Resources/Common/OkDialog.prefab
 - Assets/Resources/Common/eyeWinkImage.png
 - Assets/Resources/Common/MochiGold.png
 - Assets/Resources/Common/HpOnAnimation.anim
@@ -101,5 +105,6 @@ Assets:
 - Assets/Resources/Common/CharacterParameterIconResetAnimation.anim
 - Assets/Resources/Common/EyeWinkAnimator.controller
 - Assets/Resources/Common/CommonCharacterIcon3.prefab
+- Assets/Resources/Common/SelectHand.png
 - Assets/Resources/Common/FadeOutAnimation.anim
 Dependencies: []

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1578492344
+CRC: 2443049564
 Hashes:
   AssetFileHash:
     serializedVersion: 2
     Hash: f563a312d862b53951a9d69cb48a7b4f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 242ec771f30157af22ed5a485cf7264f
+    Hash: cfc2c91ac6b01336fd2d70a469ea6936
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -78,4 +78,4 @@ Assets:
 - Assets/Resources/GachaResultScene/GachaResultGetItemListItem.prefab
 - Assets/Resources/GachaResultScene/CharacterParameterUpDialog.prefab
 Dependencies:
-- Assets/AssetBundles/Android/common
+- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common

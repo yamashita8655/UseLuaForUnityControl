@@ -47,7 +47,7 @@ function AreaCellManager:GetBumpList()
 	return self.CheckBumpList
 end
 
-function AreaCellManager:AddPlayerBullet(bullet, cellIndex) 
+function AreaCellManager:AddPlayerBullet(bullet, cellIndex)
 	self.CheckBumpList[cellIndex]:AddPlayerBullet(bullet)
 end
 
@@ -98,7 +98,7 @@ function AreaCellManager:GetCellNumber(object)
 	local TR_cellNumber = CalcCellNumber(TR_x, TR_y)
 	table.insert(cellNumberList, TR_cellNumber)
 	
-	local BL_x = x+width/2
+	local BL_x = x-width/2
 	local BL_y = y-height/2
 	local BL_cellNumber = CalcCellNumber(BL_x, BL_y)
 	table.insert(cellNumberList, BL_cellNumber)

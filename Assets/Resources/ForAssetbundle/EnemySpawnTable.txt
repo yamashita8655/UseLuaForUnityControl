@@ -1,6 +1,181 @@
 ﻿--直接Unityには登録しないスクリプト。いわゆる、ライブラリ化した奴
+--・コントローラに、出現データを渡す
+--・Updateで、SpawnInterval分カウンターが進んだら、
+--　リストの総数でRandamをして、出た配列番目のデータの内容で、敵を生成する。
+--・ただ、敵は一体ではなくインターバルごとにカウンター分でるので、それは別のクラスに請け負わせる
+--・
+
 
 -- 敵出現テーブル。時間の経過で、どのSpawnDataが発生するのかチェックする
+NewSpawnTable = {
+--	SpawnInterval = 15,		-- 1ウェーブ15秒クリア目安
+	SelectSpawnDataList = {	-- このまとまりから、ランダムで敵が発生する
+		-- 上斜め3ウェイ
+		{
+			SpawnWave001_001,
+			SpawnWave001_002,
+			SpawnWave001_003,
+		},
+		-- 上斜め左右5ウェイ
+		{
+			SpawnWave002_001,
+			SpawnWave002_002,
+			SpawnWave002_003,
+			SpawnWave002_004,
+			SpawnWave002_005,
+		},
+		-- 上下中サイズ弾打ち
+		{
+			SpawnWave003_001,
+			SpawnWave003_002,
+		},
+		-- 上下斜め6方向通常敵
+		{
+			SpawnWave004_001,
+			SpawnWave004_002,
+			SpawnWave004_003,
+			SpawnWave004_004,
+			SpawnWave004_005,
+			SpawnWave004_006,
+		},
+		-- 斜め4方向、1蛇行
+		{
+			SpawnWave006_001,
+			SpawnWave006_002,
+			SpawnWave006_003,
+			SpawnWave006_004,
+		},
+		-- 上下左右2蛇行
+		{
+			SpawnWave008_001,
+			SpawnWave008_002,
+			SpawnWave008_003,
+			SpawnWave008_004,
+			SpawnWave008_005,
+			SpawnWave008_006,
+			SpawnWave008_007,
+			SpawnWave008_010,
+		},
+		-- 上下左右高速
+		{
+			SpawnWave009_001,
+			SpawnWave009_002,
+			SpawnWave009_003,
+			SpawnWave009_004,
+		},
+		-- 上左右高速、斜め弾打ち1体ずつ
+		{
+			SpawnWave010_001,
+			SpawnWave010_002,
+			SpawnWave010_003,
+			SpawnWave010_004,
+			SpawnWave010_005,
+		},
+		-- 上斜め、弾固弾のボスっぽい出現
+		{
+			SpawnWave020_001,
+			SpawnWave020_002,
+			SpawnWave020_003,
+			SpawnWave020_004,
+			SpawnWave020_005,
+			SpawnWave020_006,
+		},
+		-- 斜め回転弾打ち
+		{
+			SpawnWave023_001,
+			SpawnWave023_002,
+		},
+		-- 上左右斜め5体、中型弾打ち
+		{
+			SpawnWave029_001,
+			SpawnWave029_002,
+			SpawnWave029_003,
+			SpawnWave029_004,
+			SpawnWave029_005,
+		},
+		-- 斜め4箇所雑魚、上左右斜め5箇所高速
+		{
+			SpawnWave030_001,
+			SpawnWave030_002,
+			SpawnWave030_003,
+			SpawnWave030_004,
+			SpawnWave030_005,
+			SpawnWave030_006,
+			SpawnWave030_007,
+			SpawnWave030_008,
+			SpawnWave030_009,
+		},
+	},
+	
+	EndTime = 300,	-- この秒数が経過してら、バトル終了チェックを周期的に開始する
+}
+
+SpawnTable_001 = {
+	Table = {
+		{
+			Time      = 5,						--出現開始時間
+			SpawnData = Spawn001_001_001,		--出現情報
+		},
+		{
+			Time      = 10,						--出現開始時間
+			SpawnData = Spawn001_002_001,		--出現情報
+		},
+		{
+			Time      = 15,						--出現開始時間
+			SpawnData = Spawn001_001_001,		--出現情報
+		},
+		{
+			Time      = 20,						--出現開始時間
+			SpawnData = Spawn001_002_001,		--出現情報
+		},
+		{
+			Time      = 25,						--出現開始時間
+			SpawnData = Spawn001_001_001,		--出現情報
+		},
+		{
+			Time      = 25,						--出現開始時間
+			SpawnData = Spawn001_002_001,		--出現情報
+		},
+		{
+			Time      = 25,						--出現開始時間
+			SpawnData = Spawn001_003_001,		--出現情報
+		},
+		{
+			Time      = 26,						--出現開始時間
+			SpawnData = Spawn001_004_001,		--出現情報
+		},
+	},
+	EndTime = 30,	-- この秒数が経過してら、バトル終了チェックを周期的に開始する
+}
+
+SpawnTable_002 = {
+	Table = {
+		{
+			Time      = 5,						--出現開始時間
+			SpawnData = Spawn002_001_001,		--出現情報
+		},
+		{
+			Time      = 5,						--出現開始時間
+			SpawnData = Spawn002_001_002,		--出現情報
+		},
+		{
+			Time      = 8,						--出現開始時間
+			SpawnData = Spawn002_001_003,		--出現情報
+		},
+		{
+			Time      = 8,						--出現開始時間
+			SpawnData = Spawn002_001_004,		--出現情報
+		},
+		{
+			Time      = 11,						--出現開始時間
+			SpawnData = Spawn002_001_005,		--出現情報
+		},
+		{
+			Time      = 11,						--出現開始時間
+			SpawnData = Spawn002_001_006,		--出現情報
+		},
+	}
+}
 SpawnTableTest = {
 	Table = {
 		{

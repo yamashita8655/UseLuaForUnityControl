@@ -18,6 +18,9 @@ function EnemyBase.new(position, rotate, name, number, width, height)
 	this.MoveController = nil
 	this.BulletEmitterList = {}
 	this.EXP = 0
+	this.BuffMoveSpeed = 0 -- どこかで計算後の実数値
+	this.BuffAttack = 0 -- どこかで計算後の実数値
+	this.BuffMaxHp = 0 -- どこかで計算後の実数値
 
 	-- メソッド定義
 	-- 初期化
@@ -27,14 +30,44 @@ function EnemyBase.new(position, rotate, name, number, width, height)
 		self.Attack = attack
 	end
 	
+	-- バフ補正値の設定
+	this.SetBuffMoveSpeed = function(self, moveSpeed)
+		self.BuffMoveSpeed = moveSpeed 
+	end
+	this.SetBuffAttack = function(self, attack)
+		self.BuffAttack = attack 
+	end
+	this.SetBuffMaxHp = function(self, hp)
+		self.BuffMaxHp = hp
+	end
+	
+	-- パラメータの更新(というよりは、HPも全回復させるので、初期化に近い)
+	-- バフの適用もここで行う
+	this.InitializeParameter = function(self)
+		self.Attack = self.Attack + self.BuffAttack
+		self.MoveSpeed = self.MoveSpeed + self.BuffMoveSpeed
+		self.NowHp = self.MaxHp + self.BuffMaxHp
+		self.MaxHp = self.MaxHp + self.BuffMaxHp
+	end
+	
 	--移動処理クラスの設定
 	this.SetMoveController = function(self, controller)
 		self.MoveController = controller
 	end
 	
+	-- 速度の取得
+	this.GetMoveSpeed = function(self)
+		return self.MoveSpeed
+	end
+	
 	-- 攻撃力の取得
 	this.GetAttack = function(self)
 		return self.Attack
+	end
+	
+	-- 最大HPの取得
+	this.GetMaxHp = function(self)
+		return self.MaxHp
 	end
 	
 	-- 経験値の操作

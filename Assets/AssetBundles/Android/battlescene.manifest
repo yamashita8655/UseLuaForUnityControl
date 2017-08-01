@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 105450448
+CRC: 1661206249
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d0db54092a0b718c1738d32c04c3926b
+    Hash: 3bcba70644c807daeed128ba4886035e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 572195e8d4fa6339a2a95a39d16e92bf
+    Hash: e486af7767ece4d0f681e4d246e0e092
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,6 +27,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -59,6 +61,7 @@ Assets:
 - Assets/Resources/BattleScene/g.png
 - Assets/Resources/BattleScene/hpGauge.png
 - Assets/Resources/BattleScene/HitEffect1.controller
+- Assets/Resources/BattleScene/SkillButtonStopAnimation.anim
 - Assets/Resources/BattleScene/HitEffect1Animation.anim
 - Assets/Resources/BattleScene/SkillWindowCloseAnimation.anim
 - Assets/Resources/BattleScene/HitEffect2.prefab
@@ -72,6 +75,7 @@ Assets:
 - Assets/Resources/BattleScene/SpawnKarikariAnimation.anim
 - Assets/Resources/BattleScene/enemyMouse.png
 - Assets/Resources/BattleScene/SkillWindowAnimator.controller
+- Assets/Resources/BattleScene/SkillButtonAnimatorController.controller
 - Assets/Resources/BattleScene/BulletObjectTooth24.prefab
 - Assets/Resources/BattleScene/BulletObjectEnemyTooth1.prefab
 - Assets/Resources/BattleScene/enemyMouseRed.png
@@ -85,6 +89,7 @@ Assets:
 - Assets/Resources/BattleScene/EnemyCharacterCircleBulletMouse.prefab
 - Assets/Resources/BattleScene/BattleScene.prefab
 - Assets/Resources/BattleScene/BulletObjectTooth16.prefab
+- Assets/Resources/BattleScene/spawnGauge.png
 - Assets/Resources/BattleScene/hit1.png
 - Assets/Resources/BattleScene/SpawnKarikariAnimator.controller
 - Assets/Resources/BattleScene/BattleStartAnimation.anim
@@ -116,6 +121,7 @@ Assets:
 - Assets/Resources/BattleScene/WinEffectAnimation.anim
 - Assets/Resources/BattleScene/LoseEffect.prefab
 - Assets/Resources/BattleScene/BattleComboCounterAnimator.controller
+- Assets/Resources/BattleScene/SkillButtonMoveAnimation.anim
 - Assets/Resources/BattleScene/skill.png
 Dependencies:
-- Assets/AssetBundles/Android/common
+- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common

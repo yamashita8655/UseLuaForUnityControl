@@ -60,6 +60,7 @@ function CharacterParameterUpDialog:OpenDialog(openCallback, closeCallback, base
 		self.IsActive = true
 		CallbackManager.Instance():AddCallback("CharacterParameterUpDialogManager_OpenCallback", {self}, self.DialogOpenCallback)
 		LuaPlayAnimator("CharacterParameterUpDialog", "Open", false, false, "LuaCallback", "CharacterParameterUpDialogManager_OpenCallback")
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.SlideDialogOpen)
 	end
 end
 

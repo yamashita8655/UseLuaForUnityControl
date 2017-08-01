@@ -38,7 +38,9 @@ function EmitterBase.new()
 			--BulletManager.Instance():CreateBullet(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree+self.RotateOffset, self.BulletConfig, self.CharacterType);
 			BulletManager.Instance():ShootBulletTest(self.Position.x+self.ParentPosition.x, self.Position.y+self.ParentPosition.y, degree+self.RotateOffset, self.BulletConfig, self.CharacterType);
 			self:ResetBulletCooltime()
+			return true
 		end
+		return false
 	end
 	
 	-- 弾のクールタイムが終わっているかどうか

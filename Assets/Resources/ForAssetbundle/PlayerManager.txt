@@ -88,7 +88,10 @@ function PlayerManager:OnMouseDown(touchx, touchy)
 	
 	self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
 	PlayerManager.Instance():SetRotate(0, 0, degree-90)
-	self.PlayerCharacterInstance:ShootBullet(degree-90)
+	isShoot = self.PlayerCharacterInstance:ShootBullet(degree-90)
+	if isShoot == true then
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.BulletShoot)
+	end
 
 	-- TODO:test
 	--local skillData = self.PlayerCharacterInstance:GetSkillConfig()
@@ -128,7 +131,10 @@ function PlayerManager:OnMouseDrag(touchx, touchy)
 	
 	self.PlayerCharacterInstance:UpdateSatelliteEmitterPosition(radian, degree-90)
 	PlayerManager.Instance():SetRotate(0, 0, degree-90)
-	self.PlayerCharacterInstance:ShootBullet(degree-90)
+	isShoot = self.PlayerCharacterInstance:ShootBullet(degree-90)
+	if isShoot == true then
+		SoundManager.Instance():PlaySE("sound", SoundManager.Instance().SENameList.BulletShoot)
+	end
 end
 
 function PlayerManager:OnMouseUp(touchx, touchy) 

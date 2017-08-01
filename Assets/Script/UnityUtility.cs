@@ -22,18 +22,19 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	private static Action LuaMainEndCallback = null;
 	
 	// ローカルのファイルで完結できるようにするかどうか。開発中用フラグ
-	public static bool IsUseLocalFile = true;
+	//public static bool IsUseLocalFile = true;
+	public static bool IsUseLocalFile = false;
 
 #if UNITY_EDITOR
-	public static bool IsUseLocalAssetBundle = true;
-	public static bool IsCheckVersionFile = false;
-	//public static bool IsUseLocalAssetBundle = false;
-	//public static bool IsCheckVersionFile = true;
+	//public static bool IsUseLocalAssetBundle = true;
+	//public static bool IsCheckVersionFile = false;
+	public static bool IsUseLocalAssetBundle = false;
+	public static bool IsCheckVersionFile = true;
 #else
-	public static bool IsUseLocalAssetBundle = true;
-	public static bool IsCheckVersionFile = false;
-	//public static bool IsUseLocalAssetBundle = false;
-	//public static bool IsCheckVersionFile = true;
+	//public static bool IsUseLocalAssetBundle = true;
+	//public static bool IsCheckVersionFile = false;
+	public static bool IsUseLocalAssetBundle = false;
+	public static bool IsCheckVersionFile = true;
 #endif
 	
 	Dictionary<string, GameObject> GameObjectCacheDict = new Dictionary<string, GameObject>();
@@ -703,6 +704,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 							false, 
 							System.Text.Encoding.UTF8
 						);
+						Debug.Log("PATH:"+path);
 						sw.Write(resultObject.text);
 						sw.Close();
 					} catch (IOException e) {
@@ -855,7 +857,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		if (IsUseLocalFile == true) {
 			audioClip = GameObjectCacheManager.Instance.LoadAudioClip(assetBundleName+"/"+soundName);
 		} else {
-			audioClip = GameObjectCacheManager.Instance.LoadAudioClipFromAssetBundle(assetBundleName, soundName);
+			audioClip = GameObjectCacheManager.Instance.LoadAudioClipFromAssetBundle(assetBundleName.ToLower(), soundName);
 		}
 
 		SoundManager.Instance.AddBGMAudioSource(audioClip);

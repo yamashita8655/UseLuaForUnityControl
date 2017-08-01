@@ -1,4 +1,5 @@
 ManifestFileVersion: 0
+CRC: 3027722711
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -17,8 +18,7 @@ AssetBundleManifest:
     Info_4:
       Name: customscene
       Dependencies:
-        Dependency_0: battlescene
-        Dependency_1: common
+        Dependency_0: common
     Info_5:
       Name: gachaeffectscene
       Dependencies:
@@ -52,4 +52,11 @@ AssetBundleManifest:
         Dependency_0: common
     Info_13:
       Name: luamain
+      Dependencies: {}
+    Info_14:
+      Name: creditscene
+      Dependencies:
+        Dependency_0: common
+    Info_15:
+      Name: sound
       Dependencies: {}

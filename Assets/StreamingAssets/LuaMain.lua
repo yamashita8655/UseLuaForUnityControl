@@ -20,10 +20,12 @@ SaveScriptFileCounter = 0
 --URL = "http://natural-nail-eye.sakura.ne.jp"
 -- TODO 開発中のサーバー接続はこっち
 URL = "http://natural-nail-eye.sakura.ne.jp/Work"
+-- TODO ローカルはこれ？
 --URL = "file:///C:/yamashita/github/UseLuaForUnityControl/UseLuaForUnityControl/Assets/AssetBundles";
 
 -- TODO ローカルのリソースを使って、ローカルのLuaスクリプトを使う時は、これをTrueにする事
-IsUseLocalFile = true
+--IsUseLocalFile = true
+IsUseLocalFile = false
 
 Platform = ""
 
@@ -139,6 +141,7 @@ function LuaMain()
 		if LocalVersionString == "" then
 			-- とりあえず、アセットバンドルを全部読み込んで、ファイル化しておく
 			-- セーブの方は、ファイル化するついでに、マネージャにキャッシュもしてる
+			LuaUnityDebugLog(ServerVersionString)
 			SaveAssetBundleStringList = StringSplit(ServerVersionString, "\n")
 			LuaUnityDebugLog(#SaveAssetBundleStringList)
 			SaveAssetBundleCounter = 1
@@ -392,6 +395,7 @@ end
 --Luaの分割ファイル読み込み
 function LoadAllLuaScriptCallback()
 	local index = LuaFileLoadedCount+1
+	LuaUnityDebugLog("ERROR CHECK")
 	dofile(PersistentDataPath.."/"..LuaFileList[index])
 	LuaFileLoadedCount = LuaFileLoadedCount + 1
 	UpdateLoadingData()

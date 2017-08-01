@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3877222893
+CRC: 3106607997
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 309fe52ac3539a5034509737635b0dcf
+    Hash: 13aa57784e6d2fbcd3948cb35dbcddaa
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
@@ -14,6 +14,7 @@ ClassTypes:
 Assets:
 - Assets/Resources/ForAssetbundle/BattleScene.txt
 - Assets/Resources/ForAssetbundle/SkillLevelUpDialog.txt
+- Assets/Resources/ForAssetbundle/QuestEditDialog.txt
 - Assets/Resources/ForAssetbundle/CharacterParameter.txt
 - Assets/Resources/ForAssetbundle/TimerCallbackManager.txt
 - Assets/Resources/ForAssetbundle/SinCurveEnemy.txt
@@ -26,6 +27,7 @@ Assets:
 - Assets/Resources/ForAssetbundle/ResultDialog.txt
 - Assets/Resources/ForAssetbundle/NormalBullet.txt
 - Assets/Resources/ForAssetbundle/GachaTable.txt
+- Assets/Resources/ForAssetbundle/NewSpawnController.txt
 - Assets/Resources/ForAssetbundle/LoadingScene.txt
 - Assets/Resources/ForAssetbundle/EnemySpawnTable.txt
 - Assets/Resources/ForAssetbundle/GachaConfig.txt
@@ -50,6 +52,7 @@ Assets:
 - Assets/Resources/ForAssetbundle/BaseMoveController.txt
 - Assets/Resources/ForAssetbundle/QuestScene.txt
 - Assets/Resources/ForAssetbundle/SpawnController.txt
+- Assets/Resources/ForAssetbundle/SoundManager.txt
 - Assets/Resources/ForAssetbundle/BootScene.txt
 - Assets/Resources/ForAssetbundle/GachaResultGetItemListDialog.txt
 - Assets/Resources/ForAssetbundle/SceneManager.txt
@@ -66,6 +69,7 @@ Assets:
 - Assets/Resources/ForAssetbundle/EnemyManager.txt
 - Assets/Resources/ForAssetbundle/NormalEnemyCharacter.txt
 - Assets/Resources/ForAssetbundle/GachaScene.txt
+- Assets/Resources/ForAssetbundle/CreditScene.txt
 - Assets/Resources/ForAssetbundle/BulletBase.txt
 - Assets/Resources/ForAssetbundle/LuaUtility.txt
 - Assets/Resources/ForAssetbundle/LuaMainTest.txt
