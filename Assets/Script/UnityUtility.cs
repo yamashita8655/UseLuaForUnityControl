@@ -1030,8 +1030,13 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 			savePath = Application.persistentDataPath + "/" + scriptName;
 		}
 #elif UNITY_IPHONE
-		loadPath = Application.streamingAssetsPath + "/IOS/" + scriptName;
-		savePath = Application.persistentDataPath + "/" + scriptName;
+		if (IsUseLocalFile == true) {
+			loadPath = Application.streamingAssetsPath + "/" + scriptName;
+			savePath = Application.persistentDataPath + "/" + scriptName;
+		} else {
+			loadPath = Application.streamingAssetsPath + "/IOS/" + scriptName;
+			savePath = Application.persistentDataPath + "/" + scriptName;
+		}
 #endif
 		if (IsUseLocalFile == true) {
 			StartCoroutine(LoadLuaMainFile(loadPath, () => {
@@ -1119,9 +1124,11 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 			output = www.text;
 #elif UNITY_IPHONE
 			output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+			//output = File.OpenRead(loadPath).ToString();
 #endif
 		} else {
 			output = File.ReadAllText(loadPath, System.Text.Encoding.UTF8);
+
 		}
 
 		Debug.Log(loadPath+":end");
