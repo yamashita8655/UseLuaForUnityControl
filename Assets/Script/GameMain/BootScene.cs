@@ -95,6 +95,7 @@ public class BootScene : MonoBehaviour {
 				RetryText.text = "アプリケーションのバージョンが異なります。\n最新にアップデートして再起動してください。";
 				LoadingObject.gameObject.SetActive(false);
 				SliderObject.gameObject.SetActive(false);
+				RetryButton.gameObject.SetActive(true);
 			} else {
 				LoadServerVersionFile();
 			}
@@ -310,6 +311,13 @@ public class BootScene : MonoBehaviour {
 
 	public void OnClickRetryButton() {
 		if (State == FuncState.GetApplicationVersionString) {
+#if UNITY_EDITOR
+			Application.OpenURL("https://play.google.com/store/apps/details?id=com.mochimoffu.mofuneko");
+#elif UNITY_ANDROID
+			Application.OpenURL("https://play.google.com/store/apps/details?id=com.mochimoffu.mofuneko");
+#elif UNITY_IPHONE
+			Application.OpenURL("itms-apps://itunes.apple.com/app/id1247130262?mt=8");
+#endif
 			CheckApplicationVersion();
 		} else if (State == FuncState.GetServerVersionString) {
 			LoadServerVersionFile();
