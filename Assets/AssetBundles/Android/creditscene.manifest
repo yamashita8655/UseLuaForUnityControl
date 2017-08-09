@@ -3,7 +3,7 @@ CRC: 1284084395
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c30182497ce0a2ba6bdcf868c76af009
+    Hash: fb479232a3b45cc115667b2503f148c6
   TypeTreeHash:
     serializedVersion: 2
     Hash: 49ce45898b92ccc1a04b88f5e1d16790
@@ -42,4 +42,4 @@ ClassTypes:
 Assets:
 - Assets/Resources/CreditScene/CreditScene.prefab
 Dependencies:
-- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/Android/common

@@ -1,55 +1,62 @@
 ManifestFileVersion: 0
+CRC: 3209599677
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: common
       Dependencies: {}
     Info_1:
-      Name: loadingscene
+      Name: sound
       Dependencies: {}
     Info_2:
+      Name: loadingscene
+      Dependencies: {}
+    Info_3:
       Name: gachascene
       Dependencies:
         Dependency_0: common
-    Info_3:
+    Info_4:
       Name: questscene
       Dependencies:
         Dependency_0: common
-    Info_4:
+    Info_5:
       Name: gacharesultscene
       Dependencies:
         Dependency_0: common
-    Info_5:
+    Info_6:
       Name: battlescene
       Dependencies:
         Dependency_0: common
-    Info_6:
+    Info_7:
       Name: titlescene
       Dependencies:
         Dependency_0: common
-    Info_7:
+    Info_8:
       Name: homescene
       Dependencies:
         Dependency_0: common
-    Info_8:
+    Info_9:
       Name: optionscene
       Dependencies:
         Dependency_0: common
-    Info_9:
+    Info_10:
       Name: customscene
       Dependencies:
         Dependency_0: common
-        Dependency_1: battlescene
-    Info_10:
+    Info_11:
       Name: gachaeffectscene
       Dependencies:
         Dependency_0: common
-    Info_11:
+    Info_12:
       Name: bootscene
       Dependencies: {}
-    Info_12:
+    Info_13:
+      Name: creditscene
+      Dependencies:
+        Dependency_0: common
+    Info_14:
       Name: luascript
       Dependencies: {}
-    Info_13:
+    Info_15:
       Name: luamain
       Dependencies: {}

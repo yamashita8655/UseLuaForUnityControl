@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3029330747
+CRC: 358827650
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 73d3c254ff8d7406149a6849d85474ba
+    Hash: 738d016d785e326ecc7709e628ac3da8
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7ad6879d10ec0dee3c4efb71891d28c7
+    Hash: fb91c199b3eda4552d9823990d55113c
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,12 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -63,4 +69,4 @@ Assets:
 - Assets/Resources/TitleScene/CatAndMouseAnimation.anim
 - Assets/Resources/TitleScene/TitleShootingAnimation.anim
 Dependencies:
-- Assets/AssetBundles/IOS/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/IOS/common

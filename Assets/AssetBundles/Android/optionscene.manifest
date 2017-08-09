@@ -3,7 +3,7 @@ CRC: 2205676753
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1cdef497ffc59a155eef1c3f34c2348a
+    Hash: 66ccdb2f3fd21c93744f754cc376af18
   TypeTreeHash:
     serializedVersion: 2
     Hash: 277a8a5d9a94ec09a1324297b8665b9d
@@ -42,4 +42,4 @@ ClassTypes:
 Assets:
 - Assets/Resources/OptionScene/OptionScene.prefab
 Dependencies:
-- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/Android/common

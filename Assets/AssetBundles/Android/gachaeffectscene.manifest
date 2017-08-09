@@ -3,7 +3,7 @@ CRC: 1952539322
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 81f6f3ddc9f1e02568dda453674984d0
+    Hash: bb41820d07f3d8da54378e7f0e43df29
   TypeTreeHash:
     serializedVersion: 2
     Hash: 5357be04dd74a5c508c998bef46b6020
@@ -58,4 +58,4 @@ Assets:
 - Assets/Resources/GachaEffectScene/WoodMortarRight.png
 - Assets/Resources/GachaEffectScene/GoldMortarRight.png
 Dependencies:
-- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/Android/common

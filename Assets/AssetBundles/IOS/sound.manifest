@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 3291995356
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 244cefba4010fe51ee92e85eadec142f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c516f2a3b2b6b67ef759f6410a790acd
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Sound/selfBulletShoot.mp3
+- Assets/Resources/Sound/BGM_MusMus_TitleBgm.mp3
+- Assets/Resources/Sound/BGM_MusMus_BattleBgm.mp3
+- Assets/Resources/Sound/SE_MusMus_RareDrop.mp3
+- Assets/Resources/Sound/ResultStringVisible.mp3
+- Assets/Resources/Sound/enemyDeath.mp3
+- Assets/Resources/Sound/SkillLevelUp.mp3
+- Assets/Resources/Sound/SlideDialogOpen.mp3
+- Assets/Resources/Sound/boardSlide.mp3
+- Assets/Resources/Sound/Jingle_MusMus_BattleWin.mp3
+- Assets/Resources/Sound/buttonPush.mp3
+- Assets/Resources/Sound/Jingle_MusMus_BattleLose.mp3
+- Assets/Resources/Sound/BGM_MusMus_HomeBgm.mp3
+- Assets/Resources/Sound/selfHit.mp3
+Dependencies: []

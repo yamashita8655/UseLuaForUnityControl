@@ -3,7 +3,7 @@ CRC: 2794099706
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3ea7588839944a2ec9119ed00a8d4a4e
+    Hash: bff0cf0fd2d6835aa334212a06ffb21e
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1478befe4399c273f8ddc667141ef7dc
@@ -52,4 +52,4 @@ Assets:
 - Assets/Resources/HomeScene/HomeCharacter3.prefab
 - Assets/Resources/HomeScene/HomeScene.prefab
 Dependencies:
-- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/Android/common

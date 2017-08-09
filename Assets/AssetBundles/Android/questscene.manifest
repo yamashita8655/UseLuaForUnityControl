@@ -3,7 +3,7 @@ CRC: 3981984694
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 89f9f07378450bc417cbe06c3a826cb0
+    Hash: dc4c726818542e841473df709b6142b7
   TypeTreeHash:
     serializedVersion: 2
     Hash: 61caedefa9adbf71b5ecd743eaa5d603
@@ -80,4 +80,4 @@ Assets:
 - Assets/Resources/QuestScene/QuickGameImage.png
 - Assets/Resources/QuestScene/QuestScene.prefab
 Dependencies:
-- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/Android/common

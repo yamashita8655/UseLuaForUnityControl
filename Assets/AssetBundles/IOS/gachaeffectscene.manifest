@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 427784601
+CRC: 1516413727
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c17061c33d50c96f279d8dbf44fff8c0
+    Hash: 49cd6e3b020d1be254e9daa2110a6ad7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: fc77deef45b5c97131846a6d906d2ba3
+    Hash: 5357be04dd74a5c508c998bef46b6020
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -58,4 +58,4 @@ Assets:
 - Assets/Resources/GachaEffectScene/WoodMortarRight.png
 - Assets/Resources/GachaEffectScene/GoldMortarRight.png
 Dependencies:
-- Assets/AssetBundles/IOS/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/IOS/common

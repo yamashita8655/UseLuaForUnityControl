@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3862331269
+CRC: 2208653054
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 939e3a80887889c3f6f0ab31a3b2a596
+    Hash: 26d3834bc2ab7c695ea5f80ccdc490e0
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6c523016a62c6e65a9e584d965977d66
+    Hash: 51b33686bcc8f5f57c39d900f217acdb
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -65,6 +65,7 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Resources/CustomScene/CustomPlayerSelectListNode2.prefab
+- Assets/Resources/CustomScene/SpotLight.png
 - Assets/Resources/CustomScene/CharacterDetailDialogAnimator.controller
 - Assets/Resources/CustomScene/CustomPlayerSelectListNode1.prefab
 - Assets/Resources/CustomScene/CharacterDetailDialogOpenAnimation.anim
@@ -77,5 +78,4 @@ Assets:
 - Assets/Resources/CustomScene/CharacterDetailDialog.prefab
 - Assets/Resources/CustomScene/CustomPlayerSelectListNode3.prefab
 Dependencies:
-- Assets/AssetBundles/IOS/common
-- Assets/AssetBundles/IOS/battlescene
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/IOS/common

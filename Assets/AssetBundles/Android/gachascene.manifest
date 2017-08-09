@@ -3,7 +3,7 @@ CRC: 3087693860
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 05c41bfefef4836923982e203fd0cafe
+    Hash: eb39a89f0a25fc64298fac2b6df50711
   TypeTreeHash:
     serializedVersion: 2
     Hash: c73847242cc3750b3610b6ec9b8ae306
@@ -70,4 +70,4 @@ Assets:
 - Assets/Resources/GachaScene/GachaRollDialog.prefab
 - Assets/Resources/GachaScene/GachaScene.prefab
 Dependencies:
-- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/Android/common

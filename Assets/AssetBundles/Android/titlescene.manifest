@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1761317217
+CRC: 3847110408
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a8dbe70f3a1b0be77c10a9d50756fc66
+    Hash: 417ce6e1d0d44814cc56941a0c73ae1d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b311945b160803b57c949a1e3a4363dc
+    Hash: fb91c199b3eda4552d9823990d55113c
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,6 +23,12 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 - Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -63,4 +69,4 @@ Assets:
 - Assets/Resources/TitleScene/CatAndMouseAnimation.anim
 - Assets/Resources/TitleScene/TitleShootingAnimation.anim
 Dependencies:
-- C:/yamashita/github/UseLuaForUnityControl/Assets/AssetBundles/Android/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/Android/common

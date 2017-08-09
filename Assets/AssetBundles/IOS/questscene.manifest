@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2068122610
+CRC: 1435944664
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bb9b9972c3d2c24860a4fa2cf8a6811e
+    Hash: 4c2479e751b8b7e498e77e6e738a4aba
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 20dd4fec9267a494fe47d491ae36ce79
+    Hash: 61caedefa9adbf71b5ecd743eaa5d603
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -24,6 +24,14 @@ ClassTypes:
 - Class: 95
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 60cad3307f7a082448e61744a2a1307e, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 2109663825, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
   Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -33,6 +41,8 @@ ClassTypes:
   Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: -1200242548, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: -2061169968, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
@@ -58,12 +68,16 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
+- Assets/Resources/QuestScene/QuestEditDialogOpenAnimation.anim
+- Assets/Resources/QuestScene/QuestEditDialog.prefab
 - Assets/Resources/QuestScene/QuestChangeResetAnimation.anim
 - Assets/Resources/QuestScene/QuestChangePanelAnimator.controller
 - Assets/Resources/QuestScene/QuestChangePanelS2FAnimation.anim
 - Assets/Resources/QuestScene/QuestSelectListNode.prefab
 - Assets/Resources/QuestScene/QuestChangePanelF2SAnimation.anim
+- Assets/Resources/QuestScene/QuestEditDialogCloseAnimation.anim
+- Assets/Resources/QuestScene/QuestEditDialogAnimator.controller
 - Assets/Resources/QuestScene/QuickGameImage.png
 - Assets/Resources/QuestScene/QuestScene.prefab
 Dependencies:
-- Assets/AssetBundles/IOS/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/IOS/common

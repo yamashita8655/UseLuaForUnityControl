@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1031920447
+CRC: 4093998927
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 66bb6417d8616ce7eea5f24ccbdf4bf8
+    Hash: a8ce1d350f46804667b0c2216f776497
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 48f0079b2b2b2d715b4d9dcd4fe94836
+    Hash: 277a8a5d9a94ec09a1324297b8665b9d
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -42,4 +42,4 @@ ClassTypes:
 Assets:
 - Assets/Resources/OptionScene/OptionScene.prefab
 Dependencies:
-- Assets/AssetBundles/IOS/common
+- C:/Users/tyamashita/Documents/UseLuaForUnityControl/Assets/AssetBundles/IOS/common
