@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class BootScene : MonoBehaviour {
 
-	private readonly int AppicationVersion = 1;
+	private readonly int AppicationVersion = 2;
 
 	class AssetBundleData {
 		public string AssetBundleName { get; set; }
@@ -31,7 +31,7 @@ public class BootScene : MonoBehaviour {
 	string LocalVersionString = "";
 
 	//string ServerURL = "http://natural-nail-eye.sakura.ne.jp";
-	string ServerURL = "http://natural-nail-eye.sakura.ne.jp/Work";
+	string ServerURL = "http://natural-nail-eye.sakura.ne.jp/20170809";
 	
 	private enum FuncState {
 		None = 0,
