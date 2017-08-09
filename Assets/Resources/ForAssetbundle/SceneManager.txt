@@ -117,6 +117,16 @@ function SceneManager:OnChangeSliderValue(sliderName, value)
 	self.CurrentScene:OnChangeSliderValue(sliderName, value)
 end
 
+-- サスペンド
+function SceneManager:OnSuspend() 
+	self.CurrentScene:OnSuspend()
+end
+
+-- レジューム
+function SceneManager:OnResume() 
+	self.CurrentScene:OnResume()
+end
+
 -- 更新
 function SceneManager:Update(deltaTime) 
 	self.CurrentScene:Update(deltaTime)

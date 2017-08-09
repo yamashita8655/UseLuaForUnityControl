@@ -17,6 +17,14 @@ function TitleScene.new()
 		LuaSetActive("OkCancelDialog", false)
 		LuaChangeScene("Title", "MainCanvas")
 		
+		LuaFindObject("TitleResetBattleSaveButton")
+
+		if SaveObject.BattleSaveEnable == 1 then
+			LuaSetActive("TitleResetBattleSaveButton", true)
+		else
+			LuaSetActive("TitleResetBattleSaveButton", false)
+		end
+
 		SoundManager.Instance():PlayBGM(SoundManager.Instance().BGMIndexList.TitleSceneBgm)
 	end
 	
@@ -46,6 +54,23 @@ function TitleScene.new()
 			else
 				SceneManager.Instance():ChangeScene(SceneNameEnum.Home)
 			end
+		end
+		
+		if buttonName == "TitleResetBattleSaveButton" then
+			DialogManager.Instance():OpenOkCancelDialog(
+				"進行中のバトルをやめますが、よろしいですか？\n",
+				function()
+					SaveObject.BattleSaveEnable = 0
+					FileIOManager.Instance():Save()
+					LuaSetActive("TitleResetBattleSaveButton", false)
+				end,
+				function()
+				end,
+				function()
+				end,
+				function()
+				end
+			)
 		end
 	end
 	

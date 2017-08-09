@@ -36,11 +36,14 @@ function BattleScene.new()
 	
 	this.MaxWave = 0
 	this.WaveCounter = 0
+		
+	this.CanSave = false
 	
 	-- メソッド定義
 	-- 初期化
 	this.SceneBaseInitialize = this.Initialize
 	this.Initialize = function(self)
+		this.CanSave = false
 		LuaChangeScene("Battle", "MainCanvas")
 		
 		PlayerManager.Instance():Initialize()
@@ -240,8 +243,8 @@ function BattleScene.new()
 				self.WaveIntervalCounter = self.WaveIntervalCounter + deltaTime
 				self:UpdateSpawnGaugeScale(self.WaveIntervalCounter / self.WaveInterval)
 				if self.WaveIntervalCounter >= self.WaveInterval then
-					-- 先にセーブをする
-					self:SaveDataFromFileIO()
+					-- セーブデータを更新する
+					self:UpdateSaveData()
 					this.WaveCounter = this.WaveCounter + 1
 					EnemyManager.Instance():OrderSpawnEnemy(this.WaveCounter)
 					self:UpdateWaveText()
@@ -270,6 +273,7 @@ function BattleScene.new()
 		local self = arg[1]
 		LuaSetActive("BattleStartEffect", false)
 		self.IsGamePause = false
+		self.CanSave = true
 	end
 	
 	-- 勝ちエフェクト
@@ -886,7 +890,7 @@ function BattleScene.new()
 		self.GetKarikari = SaveObject.BattleKarikari
 	end
 	
-	this.SaveDataFromFileIO = function(self)
+	this.UpdateSaveData = function(self)
 		
 		local player = PlayerManager:Instance():GetPlayer()
 		local skillConfig = player:GetSkillConfig()
@@ -904,8 +908,6 @@ function BattleScene.new()
 		SaveObject.BattleNowWave = self.WaveCounter
 		SaveObject.BattleMaxWave = self.MaxWave
 		SaveObject.BattleSaveEnable = 1
-
-		FileIOManager.Instance():Save()
 	end
 	
 	this.UpdateWaveText = function(self)
@@ -915,6 +917,17 @@ function BattleScene.new()
 	
 	this.UpdateSpawnGaugeScale = function(self, scale)
 		LuaSetScale("BattleWaveSpawnGaugeImage", scale, 1, 1)
+	end
+	
+	this.SceneBaseOnSuspend = this.OnSuspend
+	this.OnSuspend = function(self)
+		if self.CanSave == true then
+			FileIOManager.Instance():Save()
+		end
+	end
+	
+	this.SceneBaseOnResume = this.OnResume
+	this.OnResume = function(self)
 	end
 	
 	return this
