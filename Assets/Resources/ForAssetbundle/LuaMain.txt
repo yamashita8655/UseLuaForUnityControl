@@ -347,7 +347,7 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionS
 	ServerVersionString = serverVersionString
 	StreamingDataPath = streamingDataPath 
 	--PersistentDataPath = persistentDataPath
-	PersistentDataPath = "/data/data/com.mochimoffu.mofuneko/files/"
+	PersistentDataPath = "/data/data/com.mochimoffu.mofuneko/files"
 	Platform = platform
 	
 end
