@@ -33,6 +33,35 @@ function FileIOManager:Initialize()
 	self.EndCallback = nil
 end
 
+-- セーブファイルの引継ぎ（ディレクトリパスが変わった問題の対策）
+function FileIOManager:CopySaveFile() 
+	local basePath = "/storage/emulated/0/Android/data/com.mochimoffu.mofuneko/files/SaveData.lua"
+	local afterPath = "/data/data/com.mochimoffu.mofuneko/files/SaveData.lua"
+	local baseIO = io.open(basePath, "r")
+	if baseIO ~= nil then
+		LuaUnityDebugLog("COPY:baseIO not nil")
+		local src = baseIO:read()
+		LuaUnityDebugLog("COPY:"..src)
+		local afterIO = io.open(afterPath, "w")
+		afterIO:write(src)
+		afterIO:close()
+	end
+	baseIO:close()
+	
+	local existIO = io.open(afterPath, "r")
+	if existIO ~= nil then
+		LuaUnityDebugLog("COPY:existIO not nil")
+		os.remove(basePath)
+	end
+	existIO:close()
+	
+	baseIO = io.open(basePath, "r")
+	if baseIO == nil then
+		LuaUnityDebugLog("COPY:baseIO deleted!!")
+	end
+	baseIO:close()
+end
+
 -- デバッグ機能：セーブファイルを削除する
 function FileIOManager:DebugDeleteSaveFile()
 	res, mes = os.remove(self.FileName)
@@ -199,6 +228,7 @@ function FileIOManager:Load(endCallback)
 		CallbackManager.Instance():AddCallback("FileIOManager_LoadCallback", {self}, self.LoadCallback)
 		LuaUnityLoadSaveFile(self.FileName, self.OneTimeLoadFileName, "LuaCallback", "FileIOManager_LoadCallback")
 	end
+	f:close()
 end
 
 -- ロード

@@ -346,7 +346,8 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionS
 	LocalVersionString = localVersionString
 	ServerVersionString = serverVersionString
 	StreamingDataPath = streamingDataPath 
-	PersistentDataPath = persistentDataPath
+	--PersistentDataPath = persistentDataPath
+	PersistentDataPath = "/data/data/com.mochimoffu.mofuneko/files/"
 	Platform = platform
 	
 end
@@ -381,6 +382,10 @@ function InitGame()
 	SceneManager.Instance():Initialize()
 	DialogManager.Instance():Initialize()
 	SoundManager.Instance():Initialize()
+	
+	if Platform == "Android" then
+		FileIOManager.Instance():CopySaveFile()
+	end
 	
 	--FileIOManager.Instance():DebugDeleteSaveFile()
 	--FileIOManager.Instance():Save()
