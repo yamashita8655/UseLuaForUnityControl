@@ -191,11 +191,13 @@ function LuaMain()
 				for i = 1, #serverStringList do
 					local serverParams = StringSplit(serverStringList[i], ",")
 					if #serverParams >= 3 then
+						local isFind = false
 						for j = 1, #localStringList do
 							local localParams = StringSplit(localStringList[j], ",")
 							if #localParams >= 3 then
 								if serverParams[1] ~= "version" and serverParams[1] ~= "luamain" then
 									if (serverParams[1] == localParams[1]) then
+										isFind = true
 										if (serverParams[2] ~= localParams[2]) then
 											-- バージョンが違うので、セーブリストにリスト追加
 											table.insert(SaveAssetBundleStringList, serverStringList[i])
@@ -208,6 +210,12 @@ function LuaMain()
 										end
 									end
 								end
+							end
+						end
+						if isFind == false then
+							if serverParams[1] ~= "version" and serverParams[1] ~= "luamain" then
+								-- Localに無くて、Serverで新規追加された物の追加
+								table.insert(SaveAssetBundleStringList, serverStringList[i])
 							end
 						end
 					end

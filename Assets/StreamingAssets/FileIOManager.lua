@@ -45,21 +45,22 @@ function FileIOManager:CopySaveFile()
 		local afterIO = io.open(afterPath, "w")
 		afterIO:write(src)
 		afterIO:close()
+		baseIO:close()
 	end
-	baseIO:close()
 	
 	local existIO = io.open(afterPath, "r")
 	if existIO ~= nil then
 		LuaUnityDebugLog("COPY:existIO not nil")
 		os.remove(basePath)
+		existIO:close()
 	end
-	existIO:close()
 	
 	baseIO = io.open(basePath, "r")
 	if baseIO == nil then
 		LuaUnityDebugLog("COPY:baseIO deleted!!")
+	else
+		baseIO:close()
 	end
-	baseIO:close()
 end
 
 -- デバッグ機能：セーブファイルを削除する
