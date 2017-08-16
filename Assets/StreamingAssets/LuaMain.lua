@@ -10,6 +10,8 @@ CanvasFactor = 0.0
 LoadAssetBundleStringList = {}
 SaveAssetBundleStringList = {}
 
+AndroidPersistentDataPath = "/data/data/com.mochimoffu.mofuneko/files"
+
 AfterSaveAssetBundleCallback = nil
 AfterLoadAssetBundleCallback = nil
 
@@ -346,8 +348,11 @@ function SetUnityGameData(screenWidth, screenHeight, canvasFactor, localVersionS
 	LocalVersionString = localVersionString
 	ServerVersionString = serverVersionString
 	StreamingDataPath = streamingDataPath 
-	--PersistentDataPath = persistentDataPath
-	PersistentDataPath = "/data/data/com.mochimoffu.mofuneko/files"
+	if platform == "Android" then
+		PersistentDataPath = AndroidPersistentDataPath
+	else
+		PersistentDataPath = persistentDataPath
+	end
 	Platform = platform
 	
 end

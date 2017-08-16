@@ -176,7 +176,8 @@ public class BootScene : MonoBehaviour {
 #if UNITY_EDITOR
 			path = Application.persistentDataPath;
 #elif UNITY_ANDROID
-			path = Application.persistentDataPath;
+			//path = Application.persistentDataPath;
+			path = UnityUtility.AndroidPersistentDataPath;
 #elif UNITY_IPHONE
 			path = Application.persistentDataPath;
 #endif
@@ -200,7 +201,8 @@ public class BootScene : MonoBehaviour {
 #if UNITY_EDITOR
 		path = Application.persistentDataPath;
 #elif UNITY_ANDROID
-		path = Application.persistentDataPath;
+		//path = Application.persistentDataPath;
+		path = UnityUtility.AndroidPersistentDataPath;
 #elif UNITY_IPHONE
 		path = Application.persistentDataPath;
 #endif
@@ -222,8 +224,10 @@ public class BootScene : MonoBehaviour {
 		loadPath = "file:///" + Application.persistentDataPath;
 		url += "/" + "Android/luamain";
 #elif UNITY_ANDROID
-		savePath = Application.persistentDataPath;
-		loadPath = "file:///" + Application.persistentDataPath;
+		//savePath = Application.persistentDataPath;
+		//loadPath = "file:///" + Application.persistentDataPath;
+		savePath = UnityUtility.AndroidPersistentDataPath;
+		loadPath = "file:///" + UnityUtility.AndroidPersistentDataPath;
 		url += "/" + "Android/luamain";
 #elif UNITY_IPHONE
 		savePath = Application.persistentDataPath;

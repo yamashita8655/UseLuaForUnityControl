@@ -24,6 +24,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 	// ローカルのファイルで完結できるようにするかどうか。開発中用フラグ
 	//public static bool IsUseLocalFile = true;
 	public static bool IsUseLocalFile = false;
+	
+	public static string AndroidPersistentDataPath = "/data/data/com.mochimoffu.mofuneko/files";
 
 #if UNITY_EDITOR
 	public static bool IsUseLocalAssetBundle = true;
@@ -329,6 +331,8 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 		
 		IntPtr res_objectName = NativeMethods.lua_tolstring(luaState, 3, out res);
 		string objectName = Marshal.PtrToStringAnsi(res_objectName);
+
+		Debug.Log(assetBundleName+":"+prefabname+":"+objectName);
 
 		string ext = Path.GetExtension(prefabname);
 		string path = prefabname.Substring(0, prefabname.Length - ext.Length);
@@ -998,6 +1002,7 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 #endif
 		list.Add(streamingAssetsPath);
 		list.Add(Application.persistentDataPath);
+
 		list.Add(platform);
 		data.argList = list;
 		ArrayList returnList = LuaManager.Instance.Call(scriptName, data);
@@ -1024,10 +1029,12 @@ public class UnityUtility : SingletonMonoBehaviour<UnityUtility> {
 #elif UNITY_ANDROID
 		if (IsUseLocalFile == true) {
 			loadPath = Application.streamingAssetsPath + "/" + scriptName;
-			savePath = Application.persistentDataPath + "/" + scriptName;
+			//savePath = Application.persistentDataPath + "/" + scriptName;
+			savePath = AndroidPersistentDataPath + "/" + scriptName;
 		} else {
 			loadPath = Application.streamingAssetsPath + "/Android/" + scriptName;
-			savePath = Application.persistentDataPath + "/" + scriptName;
+			//savePath = Application.persistentDataPath + "/" + scriptName;
+			savePath = AndroidPersistentDataPath + "/" + scriptName;
 		}
 #elif UNITY_IPHONE
 		if (IsUseLocalFile == true) {
