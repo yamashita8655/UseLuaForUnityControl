@@ -228,8 +228,8 @@ function FileIOManager:Load(endCallback)
 		self.EndCallback = endCallback
 		CallbackManager.Instance():AddCallback("FileIOManager_LoadCallback", {self}, self.LoadCallback)
 		LuaUnityLoadSaveFile(self.FileName, self.OneTimeLoadFileName, "LuaCallback", "FileIOManager_LoadCallback")
+		f:close()
 	end
-	f:close()
 end
 
 -- ロード
